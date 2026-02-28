@@ -18,3 +18,18 @@ export type { ProbabilityGaugeProps } from './ProbabilityGauge';
 
 export { ScenarioCompare } from './ScenarioCompare';
 export type { ScenarioCompareProps, ScenarioData } from './ScenarioCompare';
+
+export { MonteCarloFanChart } from './MonteCarloFanChart';
+export type { MonteCarloFanChartProps } from './MonteCarloFanChart';
+
+export { CashFlowBarChart } from './CashFlowBarChart';
+export type { CashFlowBarChartProps } from './CashFlowBarChart';
+
+export { TaxProjectionChart } from './TaxProjectionChart';
+export type { TaxProjectionChartProps } from './TaxProjectionChart';
+
+export { NetWorthTimelineChart } from './NetWorthTimelineChart';
+export type { NetWorthTimelineChartProps } from './NetWorthTimelineChart';
+
+export { GoalCardsGrid } from './GoalCardsGrid';
+export type { GoalCardsGridProps, GoalCardData, GoalStatus } from './GoalCardsGrid';

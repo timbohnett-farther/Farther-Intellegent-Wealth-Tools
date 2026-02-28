@@ -731,6 +731,9 @@ model PlanResult {
   projectedEstateValue        Float?   @map("projected_estate_value")
   projectedEstateTaxDue       Float?   @map("projected_estate_tax_due")
 
+  // Full result data (JSON blob with cash flows, percentile bands, roth conversions)
+  resultData                  String?  @map("result_data")
+
   createdAt                   DateTime @default(now()) @map("created_at")
 
   plan                        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)

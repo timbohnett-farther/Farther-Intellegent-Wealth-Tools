@@ -1,28 +1,414 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { PlanNav } from '@/components/prism/layouts/PlanNav';
-import { ShieldCheck, Clock } from 'lucide-react';
+import {
+  LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer, ReferenceLine, Legend, Dot,
+} from 'recharts';
+import { Users, TrendingUp, Shield, AlertCircle, Clock, DollarSign } from 'lucide-react';
+import { calculateSSBenefit } from '@/lib/calc-engine/retirement/social-security-benefit';
+import type { SSBenefitInput } from '@/lib/calc-engine/types';
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface PlanResults {
+  clientPIA?: number;
+  clientFRA?: number;
+  clientCurrentAge?: number;
+  coClientPIA?: number;
+  coClientFRA?: number;
+  coClientCurrentAge?: number;
+  coClientName?: string;
+  clientName?: string;
+  filingStatus?: string;
+  otherMAGIIncome?: number;
+  taxExemptInterest?: number;
+  colaRate?: number;
+}
+
+interface ClaimScenario {
+  claimAge: number;
+  label: string;
+  monthlyBenefit: number;
+  annualBenefit: number;
+  adjustmentFactor: number;
+  adjustmentLabel: string;
+  note: string;
+  lifetimeToAge90: number;
+  breakEvenVs62: number;
+  breakEvenVsFRA: number;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function formatCurrency(value: number): string {
+  return '$' + Math.round(value).toLocaleString('en-US');
+}
+
+function formatCurrencyShort(value: number): string {
+  if (Math.abs(value) >= 1_000_000) {
+    return '$' + (value / 1_000_000).toFixed(1) + 'M';
+  }
+  if (Math.abs(value) >= 1_000) {
+    return '$' + (value / 1_000).toFixed(0) + 'K';
+  }
+  return '$' + Math.round(value).toLocaleString('en-US');
+}
+
+function formatCurrencyCompact(value: number): string {
+  if (Math.abs(value) >= 1_000_000) {
+    return '$' + (value / 1_000_000).toFixed(2) + 'M';
+  }
+  return '$' + Math.round(value).toLocaleString('en-US');
+}
+
+// ---------------------------------------------------------------------------
+// Provisional income thresholds for SS taxation
+// ---------------------------------------------------------------------------
+
+const SS_TAX_THRESHOLDS = {
+  single: { lower: 25000, upper: 34000 },
+  mfj: { lower: 32000, upper: 44000 },
+};
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export default function SocialSecurityPage() {
   const params = useParams();
   const planId = params.planId as string;
 
+  // ---- State ----
+  const [loading, setLoading] = useState(true);
+  const [planResults, setPlanResults] = useState<PlanResults | null>(null);
+  const [fetchError, setFetchError] = useState(false);
+
+  // Editable inputs
+  const [pia, setPia] = useState(2800);
+  const [fra, setFra] = useState(67);
+  const [colaRate, setColaRate] = useState(0.023);
+  const [otherIncome, setOtherIncome] = useState(60000);
+  const [hasCoClient, setHasCoClient] = useState(false);
+  const [coClientPIA, setCoClientPIA] = useState(1800);
+
+  // ---- Fetch plan results ----
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchResults() {
+      try {
+        const res = await fetch(`/api/prism/plans/${planId}/results`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!cancelled) {
+            setPlanResults(data);
+            if (data.clientPIA) setPia(data.clientPIA);
+            if (data.clientFRA) setFra(data.clientFRA);
+            if (data.colaRate) setColaRate(data.colaRate);
+            if (data.otherMAGIIncome) setOtherIncome(data.otherMAGIIncome);
+            if (data.coClientPIA) {
+              setCoClientPIA(data.coClientPIA);
+              setHasCoClient(true);
+            }
+          }
+        } else {
+          // API returned non-OK (e.g. 501 stub) -- use defaults
+          if (!cancelled) setFetchError(true);
+        }
+      } catch {
+        if (!cancelled) setFetchError(true);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchResults();
+    return () => { cancelled = true; };
+  }, [planId]);
+
+  // ---- Calculate SS benefits for three claim ages ----
+  const scenarios: ClaimScenario[] = useMemo(() => {
+    const ages = [62, fra, 70] as const;
+    const labels = ['Claim at 62', `Claim at FRA (${fra})`, 'Claim at 70'] as const;
+    const adjustmentLabels = ['70% of PIA', '100% of PIA', '124% of PIA'];
+    const notes = [
+      'Earliest eligibility; permanently reduced benefit',
+      'Full retirement age; receive your full PIA',
+      'Maximum delayed credits; highest monthly amount',
+    ];
+
+    return ages.map((claimAge, i) => {
+      const input: SSBenefitInput = {
+        pia,
+        fullRetirementAge: fra,
+        claimAge,
+        colaRate,
+        ssHaircut: 0,
+        wep: false,
+        wepNoncoveredPension: 0,
+        gpo: false,
+        gpoNoncoveredPension: 0,
+      };
+
+      const result = calculateSSBenefit(input);
+
+      // Lifetime total to age 90: annual benefit * (90 - claimAge) with COLA
+      let lifetimeTotal = 0;
+      let annualBenefit = result.annualBenefitAtClaimAge;
+      for (let age = claimAge; age < 90; age++) {
+        lifetimeTotal += annualBenefit;
+        annualBenefit *= (1 + colaRate);
+      }
+
+      return {
+        claimAge,
+        label: labels[i],
+        monthlyBenefit: result.monthlyBenefitAtClaimAge,
+        annualBenefit: result.annualBenefitAtClaimAge,
+        adjustmentFactor: result.adjustmentFactor,
+        adjustmentLabel: adjustmentLabels[i],
+        note: notes[i],
+        lifetimeToAge90: lifetimeTotal,
+        breakEvenVs62: result.breakEvenAgeVsAge62,
+        breakEvenVsFRA: result.breakEvenAgeVsFRA,
+      };
+    });
+  }, [pia, fra, colaRate]);
+
+  // Determine optimal strategy (highest lifetime total to 90)
+  const optimalIndex = useMemo(() => {
+    let maxIdx = 0;
+    let maxVal = 0;
+    scenarios.forEach((s, i) => {
+      if (s.lifetimeToAge90 > maxVal) {
+        maxVal = s.lifetimeToAge90;
+        maxIdx = i;
+      }
+    });
+    return maxIdx;
+  }, [scenarios]);
+
+  // ---- Break-even chart data ----
+  const breakEvenData = useMemo(() => {
+    const data: Array<{ age: number; claim62: number; claim67: number; claim70: number }> = [];
+
+    // Track cumulative for each scenario
+    let cum62 = 0;
+    let cum67 = 0;
+    let cum70 = 0;
+    let annual62 = scenarios[0].annualBenefit;
+    let annual67 = scenarios[1].annualBenefit;
+    let annual70 = scenarios[2].annualBenefit;
+
+    for (let age = 62; age <= 95; age++) {
+      // Add benefits for the current year
+      if (age >= 62) {
+        cum62 += annual62;
+        annual62 *= (1 + colaRate);
+      }
+      if (age >= fra) {
+        cum67 += annual67;
+        annual67 *= (1 + colaRate);
+      }
+      if (age >= 70) {
+        cum70 += annual70;
+        annual70 *= (1 + colaRate);
+      }
+
+      data.push({
+        age,
+        claim62: Math.round(cum62),
+        claim67: Math.round(cum67),
+        claim70: Math.round(cum70),
+      });
+    }
+
+    return data;
+  }, [scenarios, fra, colaRate]);
+
+  // ---- Find break-even ages from chart data ----
+  const breakEvenAge67vs62 = useMemo(() => {
+    for (const d of breakEvenData) {
+      if (d.claim67 >= d.claim62 && d.age >= fra) return d.age;
+    }
+    return null;
+  }, [breakEvenData, fra]);
+
+  const breakEvenAge70vs62 = useMemo(() => {
+    for (const d of breakEvenData) {
+      if (d.claim70 >= d.claim62 && d.age >= 70) return d.age;
+    }
+    return null;
+  }, [breakEvenData]);
+
+  const breakEvenAge70vs67 = useMemo(() => {
+    for (const d of breakEvenData) {
+      if (d.claim70 >= d.claim67 && d.age >= 70) return d.age;
+    }
+    return null;
+  }, [breakEvenData]);
+
+  // ---- SS Taxation data ----
+  const taxationData = useMemo(() => {
+    const filingStatus = hasCoClient ? 'mfj' : 'single';
+    const thresholds = SS_TAX_THRESHOLDS[filingStatus === 'mfj' ? 'mfj' : 'single'];
+
+    // For each claim age, show the taxation impact by age
+    const data: Array<{
+      age: number;
+      provisionalIncome62: number;
+      provisionalIncome67: number;
+      provisionalIncome70: number;
+      zone0: number;
+      zone50: number;
+      zone85: number;
+    }> = [];
+
+    let annual62 = scenarios[0].annualBenefit;
+    let annual67 = scenarios[1].annualBenefit;
+    let annual70 = scenarios[2].annualBenefit;
+
+    for (let age = 62; age <= 85; age++) {
+      const ss62 = age >= 62 ? annual62 : 0;
+      const ss67 = age >= fra ? annual67 : 0;
+      const ss70 = age >= 70 ? annual70 : 0;
+
+      const prov62 = otherIncome + ss62 * 0.5;
+      const prov67 = otherIncome + ss67 * 0.5;
+      const prov70 = otherIncome + ss70 * 0.5;
+
+      data.push({
+        age,
+        provisionalIncome62: Math.round(prov62),
+        provisionalIncome67: Math.round(prov67),
+        provisionalIncome70: Math.round(prov70),
+        zone0: thresholds.lower,
+        zone50: thresholds.upper,
+        zone85: thresholds.upper + 50000,
+      });
+
+      if (age >= 62) annual62 *= (1 + colaRate);
+      if (age >= fra) annual67 *= (1 + colaRate);
+      if (age >= 70) annual70 *= (1 + colaRate);
+    }
+
+    return data;
+  }, [scenarios, fra, colaRate, otherIncome, hasCoClient]);
+
+  // ---- COLA Sensitivity table ----
+  const colaSensitivity = useMemo(() => {
+    const rates = [0.015, 0.020, 0.025, 0.030, 0.035];
+    const yearsForward = 10;
+
+    return rates.map((rate) => {
+      // Calculate base monthly benefit at each claim age
+      const base62 = scenarios[0].monthlyBenefit;
+      const baseFRA = scenarios[1].monthlyBenefit;
+      const base70 = scenarios[2].monthlyBenefit;
+
+      // Project forward 10 years from the claim age
+      const projected62 = base62 * Math.pow(1 + rate, yearsForward);
+      const projectedFRA = baseFRA * Math.pow(1 + rate, yearsForward);
+      const projected70 = base70 * Math.pow(1 + rate, yearsForward);
+
+      return {
+        rate: (rate * 100).toFixed(1) + '%',
+        at62: Math.round(projected62),
+        atFRA: Math.round(projectedFRA),
+        at70: Math.round(projected70),
+      };
+    });
+  }, [scenarios]);
+
+  // ---- Spousal calculations ----
+  const spousalData = useMemo(() => {
+    if (!hasCoClient) return null;
+
+    const higherPIA = Math.max(pia, coClientPIA);
+    const lowerPIA = Math.min(pia, coClientPIA);
+    const higherEarnerLabel = pia >= coClientPIA ? 'Client' : 'Co-Client';
+    const lowerEarnerLabel = pia >= coClientPIA ? 'Co-Client' : 'Client';
+
+    // Individual benefits at FRA
+    const clientBenefitFRA = pia;
+    const coClientBenefitFRA = coClientPIA;
+
+    // Spousal benefit = 50% of higher earner's PIA
+    const spousalBenefit = Math.round(higherPIA * 0.5);
+
+    // Survivor benefit = 100% of higher earner's PIA at FRA
+    const survivorBenefit = higherPIA;
+
+    // Determine if lower earner benefits from spousal
+    const lowerOwnBenefit = lowerPIA;
+    const spousalTopUp = Math.max(0, spousalBenefit - lowerOwnBenefit);
+
+    let strategy: string;
+    if (spousalTopUp > 0) {
+      strategy = `${lowerEarnerLabel} should consider claiming spousal benefits ($${formatCurrency(spousalBenefit)}/mo) instead of their own ($${formatCurrency(lowerOwnBenefit)}/mo). ` +
+        `${higherEarnerLabel} should consider delaying to age 70 to maximize the survivor benefit to $${formatCurrency(Math.round(higherPIA * 1.24))}/mo.`;
+    } else {
+      strategy = `Both spouses should claim on their own records. ${higherEarnerLabel} should consider delaying to age 70 to maximize the survivor benefit.`;
+    }
+
+    return {
+      clientBenefitFRA,
+      coClientBenefitFRA,
+      spousalBenefit,
+      survivorBenefit,
+      spousalTopUp,
+      higherEarnerLabel,
+      lowerEarnerLabel,
+      strategy,
+    };
+  }, [hasCoClient, pia, coClientPIA]);
+
+  // ---- Loading state ----
+  if (loading) {
+    return (
+      <div>
+        <PlanNav
+          planId={planId}
+          clientName="Sarah & Michael Chen"
+          planName="Comprehensive Financial Plan"
+        />
+        <div className="max-w-content mx-auto px-6 py-6">
+          <div className="flex items-center justify-center py-32">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-500">Loading Social Security analysis...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---- Tooltip formatters ----
+  const currencyFormatter = (value: number) => formatCurrency(value);
+  const compactFormatter = (value: number) => formatCurrencyShort(value);
+
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       <PlanNav
         planId={planId}
         clientName="Sarah & Michael Chen"
         planName="Comprehensive Financial Plan"
       />
 
-      <div className="max-w-content mx-auto px-6 py-6">
+      <div className="max-w-content mx-auto px-6 py-6 space-y-6">
         {/* Module header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <ShieldCheck size={20} className="text-brand-500" />
+              <Shield size={20} className="text-brand-500" />
               <h1 className="text-xl font-bold text-gray-900">Social Security</h1>
             </div>
             <p className="text-sm text-gray-500">
@@ -31,17 +417,594 @@ export default function SocialSecurityPage() {
           </div>
         </div>
 
-        {/* Stage 2 placeholder */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-4">
-              <Clock size={24} className="text-orange-400" />
+        {/* Input controls bar */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="flex flex-wrap items-end gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">
+                Primary Insurance Amount (PIA)
+              </label>
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-gray-400">$</span>
+                <input
+                  type="number"
+                  value={pia}
+                  onChange={(e) => setPia(Number(e.target.value) || 0)}
+                  className="w-24 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                />
+                <span className="text-xs text-gray-400">/mo</span>
+              </div>
             </div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-1">Coming in Stage 2</h3>
-            <p className="text-sm text-gray-500 max-w-sm">
-              Social Security analysis will be available after plan data is entered (Stage 2).
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">
+                Full Retirement Age
+              </label>
+              <input
+                type="number"
+                value={fra}
+                onChange={(e) => setFra(Number(e.target.value) || 67)}
+                min={65}
+                max={67}
+                step={1}
+                className="w-16 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">
+                COLA Assumption
+              </label>
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  value={(colaRate * 100).toFixed(1)}
+                  onChange={(e) => setColaRate((Number(e.target.value) || 0) / 100)}
+                  step={0.1}
+                  min={0}
+                  max={10}
+                  className="w-16 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                />
+                <span className="text-xs text-gray-400">%</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">
+                Other Income (MAGI)
+              </label>
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-gray-400">$</span>
+                <input
+                  type="number"
+                  value={otherIncome}
+                  onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
+                  className="w-28 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="block text-xs font-medium text-gray-500">Co-Client</label>
+              <button
+                onClick={() => setHasCoClient(!hasCoClient)}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                  hasCoClient ? 'bg-brand-500' : 'bg-gray-200'
+                }`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                    hasCoClient ? 'translate-x-4' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+            </div>
+            {hasCoClient && (
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  Co-Client PIA
+                </label>
+                <div className="flex items-center gap-1">
+                  <span className="text-sm text-gray-400">$</span>
+                  <input
+                    type="number"
+                    value={coClientPIA}
+                    onChange={(e) => setCoClientPIA(Number(e.target.value) || 0)}
+                    className="w-24 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  />
+                  <span className="text-xs text-gray-400">/mo</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ================================================================
+            ROW 1: Claiming Strategy Comparison
+            ================================================================ */}
+        <div>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <DollarSign size={16} className="text-brand-500" />
+            Claiming Strategy Comparison
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {scenarios.map((s, i) => {
+              const isOptimal = i === optimalIndex;
+              return (
+                <div
+                  key={s.claimAge}
+                  className={`bg-white rounded-xl shadow-sm p-5 relative ${
+                    isOptimal
+                      ? 'border-2 border-blue-400 ring-1 ring-blue-100'
+                      : 'border border-gray-200'
+                  }`}
+                >
+                  {isOptimal && (
+                    <span className="absolute -top-2.5 left-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+                      Recommended
+                    </span>
+                  )}
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">{s.label}</h3>
+
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-xs text-gray-500">Monthly Benefit</p>
+                      <p className="text-2xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                        {formatCurrency(s.monthlyBenefit)}
+                        <span className="text-sm font-normal text-gray-400">/mo</span>
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-gray-500">Annual Benefit</p>
+                        <p className="text-sm font-semibold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                          {formatCurrency(s.annualBenefit)}
+                          <span className="text-xs font-normal text-gray-400">/yr</span>
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">Adjustment</p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {s.adjustmentLabel}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-gray-100">
+                      <p className="text-xs text-gray-500">Lifetime Total (to age 90)</p>
+                      <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                        {formatCurrencyCompact(s.lifetimeToAge90)}
+                      </p>
+                    </div>
+
+                    <p className="text-[11px] text-gray-400 leading-tight">
+                      {s.note}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ================================================================
+            ROW 2: Break-Even Chart
+            ================================================================ */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <TrendingUp size={16} className="text-brand-500" />
+                Break-Even Analysis
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Cumulative lifetime Social Security income by claiming age
+              </p>
+            </div>
+          </div>
+
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={breakEvenData}
+                margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                <XAxis
+                  dataKey="age"
+                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tickLine={false}
+                  axisLine={{ stroke: '#E5E7EB' }}
+                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#9CA3AF' }}
+                />
+                <YAxis
+                  tickFormatter={compactFormatter}
+                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tickLine={false}
+                  axisLine={{ stroke: '#E5E7EB' }}
+                  width={65}
+                />
+                <Tooltip
+                  formatter={(value: number, name: string) => [formatCurrency(value), name]}
+                  labelFormatter={(label) => `Age ${label}`}
+                  contentStyle={{
+                    fontSize: 12,
+                    borderRadius: 8,
+                    border: '1px solid #E5E7EB',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  }}
+                />
+                <Legend
+                  verticalAlign="top"
+                  height={36}
+                  iconType="line"
+                  wrapperStyle={{ fontSize: 12 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="claim62"
+                  name="Claim at 62"
+                  stroke="#EF4444"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="claim67"
+                  name={`Claim at ${fra}`}
+                  stroke="#F59E0B"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="claim70"
+                  name="Claim at 70"
+                  stroke="#10B981"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+                {/* Break-even reference lines */}
+                {breakEvenAge67vs62 && (
+                  <ReferenceLine
+                    x={breakEvenAge67vs62}
+                    stroke="#F59E0B"
+                    strokeDasharray="4 4"
+                    strokeWidth={1}
+                    label={{
+                      value: `BE: ${breakEvenAge67vs62}`,
+                      position: 'top',
+                      fontSize: 10,
+                      fill: '#F59E0B',
+                    }}
+                  />
+                )}
+                {breakEvenAge70vs62 && (
+                  <ReferenceLine
+                    x={breakEvenAge70vs62}
+                    stroke="#10B981"
+                    strokeDasharray="4 4"
+                    strokeWidth={1}
+                    label={{
+                      value: `BE: ${breakEvenAge70vs62}`,
+                      position: 'top',
+                      fontSize: 10,
+                      fill: '#10B981',
+                    }}
+                  />
+                )}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Break-even annotation text */}
+          <div className="mt-3 flex flex-wrap gap-4">
+            {breakEvenAge67vs62 && (
+              <p className="text-xs text-gray-500">
+                <span className="inline-block w-3 h-0.5 bg-amber-500 mr-1 align-middle" />
+                FRA surpasses 62 at age <span className="font-semibold text-gray-700">{breakEvenAge67vs62}</span>
+              </p>
+            )}
+            {breakEvenAge70vs62 && (
+              <p className="text-xs text-gray-500">
+                <span className="inline-block w-3 h-0.5 bg-green-500 mr-1 align-middle" />
+                Age 70 surpasses 62 at age <span className="font-semibold text-gray-700">{breakEvenAge70vs62}</span>
+              </p>
+            )}
+            {breakEvenAge70vs67 && (
+              <p className="text-xs text-gray-500">
+                <span className="inline-block w-3 h-0.5 bg-emerald-600 mr-1 align-middle" />
+                Age 70 surpasses FRA at age <span className="font-semibold text-gray-700">{breakEvenAge70vs67}</span>
+              </p>
+            )}
+          </div>
+          {breakEvenAge70vs62 && (
+            <div className="mt-2 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+              <p className="text-xs text-blue-700">
+                <AlertCircle size={12} className="inline mr-1 -mt-0.5" />
+                If you live past age <span className="font-semibold">{breakEvenAge70vs62}</span>, waiting to 70 pays off compared to claiming at 62.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ================================================================
+            ROW 3: Spousal Strategy Panel
+            ================================================================ */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-4">
+            <Users size={16} className="text-brand-500" />
+            Spousal Strategy
+          </h2>
+
+          {hasCoClient && spousalData ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-xs text-gray-500 mb-1">Client Benefit at FRA</p>
+                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    {formatCurrency(spousalData.clientBenefitFRA)}/mo
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-xs text-gray-500 mb-1">Co-Client Benefit at FRA</p>
+                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    {formatCurrency(spousalData.coClientBenefitFRA)}/mo
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-xs text-gray-500 mb-1">Spousal Benefit (50% of higher)</p>
+                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    {formatCurrency(spousalData.spousalBenefit)}/mo
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-xs text-gray-500 mb-1">Survivor Benefit (100% of higher)</p>
+                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    {formatCurrency(spousalData.survivorBenefit)}/mo
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
+                <p className="text-xs font-semibold text-blue-800 mb-1">Recommended Coordinated Strategy</p>
+                <p className="text-xs text-blue-700 leading-relaxed">
+                  {spousalData.strategy}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 py-8 justify-center">
+              <AlertCircle size={18} className="text-gray-400" />
+              <p className="text-sm text-gray-500">
+                Spousal analysis requires co-client information. Enable the co-client toggle above to see coordinated strategies.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ================================================================
+            ROW 4: SS Taxation Impact
+            ================================================================ */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="mb-4">
+            <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <DollarSign size={16} className="text-brand-500" />
+              Social Security Taxation Impact
+            </h2>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Provisional income by claim age relative to SS taxation thresholds
             </p>
           </div>
+
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={taxationData}
+                margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+              >
+                <defs>
+                  <linearGradient id="zone0Gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#10B981" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#10B981" stopOpacity={0.05} />
+                  </linearGradient>
+                  <linearGradient id="zone50Gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#F59E0B" stopOpacity={0.05} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                <XAxis
+                  dataKey="age"
+                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tickLine={false}
+                  axisLine={{ stroke: '#E5E7EB' }}
+                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#9CA3AF' }}
+                />
+                <YAxis
+                  tickFormatter={compactFormatter}
+                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tickLine={false}
+                  axisLine={{ stroke: '#E5E7EB' }}
+                  width={65}
+                />
+                <Tooltip
+                  formatter={(value: number, name: string) => [formatCurrency(value), name]}
+                  labelFormatter={(label) => `Age ${label}`}
+                  contentStyle={{
+                    fontSize: 12,
+                    borderRadius: 8,
+                    border: '1px solid #E5E7EB',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  }}
+                />
+                <Legend
+                  verticalAlign="top"
+                  height={36}
+                  iconType="line"
+                  wrapperStyle={{ fontSize: 12 }}
+                />
+
+                {/* Threshold reference lines */}
+                <ReferenceLine
+                  y={SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower}
+                  stroke="#10B981"
+                  strokeDasharray="6 3"
+                  strokeWidth={1}
+                  label={{
+                    value: '0% taxable threshold',
+                    position: 'insideTopRight',
+                    fontSize: 10,
+                    fill: '#10B981',
+                  }}
+                />
+                <ReferenceLine
+                  y={SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper}
+                  stroke="#F59E0B"
+                  strokeDasharray="6 3"
+                  strokeWidth={1}
+                  label={{
+                    value: '50% taxable threshold',
+                    position: 'insideTopRight',
+                    fontSize: 10,
+                    fill: '#F59E0B',
+                  }}
+                />
+
+                {/* Zone shading */}
+                <Area
+                  type="monotone"
+                  dataKey="zone0"
+                  name="0% Zone"
+                  fill="url(#zone0Gradient)"
+                  stroke="none"
+                  legendType="none"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="zone50"
+                  name="50% Zone"
+                  fill="url(#zone50Gradient)"
+                  stroke="none"
+                  legendType="none"
+                />
+
+                {/* Provisional income lines */}
+                <Line
+                  type="monotone"
+                  dataKey="provisionalIncome62"
+                  name="Prov. Income (Claim 62)"
+                  stroke="#EF4444"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="provisionalIncome67"
+                  name={`Prov. Income (Claim ${fra})`}
+                  stroke="#F59E0B"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="provisionalIncome70"
+                  name="Prov. Income (Claim 70)"
+                  stroke="#10B981"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
+            <div className="bg-green-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-green-800">0% Taxable Zone</p>
+              <p className="text-green-700">
+                Provisional income below {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower)}
+              </p>
+            </div>
+            <div className="bg-amber-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-amber-800">Up to 50% Taxable</p>
+              <p className="text-amber-700">
+                {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower)} &ndash; {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper)}
+              </p>
+            </div>
+            <div className="bg-red-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-red-800">Up to 85% Taxable</p>
+              <p className="text-red-700">
+                Above {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ================================================================
+            ROW 5: COLA Sensitivity Analysis
+            ================================================================ */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="mb-4">
+            <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <Clock size={16} className="text-brand-500" />
+              COLA Sensitivity Analysis
+            </h2>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Projected monthly benefit 10 years after claiming, under different COLA assumptions
+            </p>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    COLA Rate
+                  </th>
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    At 62
+                  </th>
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    At FRA ({fra})
+                  </th>
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    At 70
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {colaSensitivity.map((row, i) => (
+                  <tr
+                    key={row.rate}
+                    className={`border-b border-gray-50 ${
+                      i % 2 === 0 ? 'bg-gray-50/50' : 'bg-white'
+                    }`}
+                  >
+                    <td className="py-2.5 px-3 font-medium text-gray-700" style={{ fontFeatureSettings: '"tnum"' }}>
+                      {row.rate}
+                    </td>
+                    <td className="py-2.5 px-3 text-right text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                      {formatCurrency(row.at62)}/mo
+                    </td>
+                    <td className="py-2.5 px-3 text-right text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                      {formatCurrency(row.atFRA)}/mo
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-semibold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                      {formatCurrency(row.at70)}/mo
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-3 text-[11px] text-gray-400">
+            Values represent the projected monthly benefit amount 10 years after the respective claim age,
+            adjusted for the specified annual COLA rate. Based on a PIA of {formatCurrency(pia)}/mo.
+          </p>
         </div>
       </div>
     </div>
