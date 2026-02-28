@@ -31,6 +31,22 @@ const TOOLS: ToolCard[] = [
     tags: ['Options', 'Lending', 'Tax Planning', 'Risk Analysis'],
   },
   {
+    title: 'Farther Focus — Risk Profile',
+    description:
+      'FINRA and CFP Board compliant risk assessment across 7 dimensions. Weighted scoring with contradiction detection, confidence metrics, and automated asset allocation recommendations from a 395-question bank.',
+    href: '/risk-profile',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a10 10 0 1 0 10 10" />
+        <path d="M12 12 12 2" />
+        <path d="M12 12l7.07-7.07" />
+      </svg>
+    ),
+    color: 'from-teal-500 to-emerald-600',
+    tags: ['Risk Profile', 'Compliance', 'Questionnaire', 'Allocation'],
+  },
+  {
     title: 'Securities-Based Lending Analyzer',
     description:
       'Evaluate securities-backed lines of credit (SBLOCs) with detailed LTV analysis, collateral eligibility screening, and rate comparisons across custodians.',
