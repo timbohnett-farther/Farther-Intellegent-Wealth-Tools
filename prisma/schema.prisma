@@ -1,0 +1,755 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ==================== FIRMS ====================
+model Firm {
+  id          String   @id @default(cuid())
+  name        String
+  crdNumber   String?  @map("crd_number")
+  secNumber   String?  @map("sec_number")
+  addressLine1 String? @map("address_line1")
+  addressLine2 String? @map("address_line2")
+  city        String?
+  state       String?
+  zip         String?
+  country     String   @default("US")
+  phone       String?
+  website     String?
+  logoUrl     String?  @map("logo_url")
+  plan        String   @default("professional")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  advisors    Advisor[]
+  households  Household[]
+  clients     Client[]
+  plans       Plan[]
+
+  @@map("firms")
+}
+
+// ==================== ADVISORS ====================
+model Advisor {
+  id          String   @id @default(cuid())
+  firmId      String   @map("firm_id")
+  authUserId  String   @unique @map("auth_user_id")
+  firstName   String   @map("first_name")
+  lastName    String   @map("last_name")
+  email       String   @unique
+  phone       String?
+  title       String?
+  crdNumber   String?  @map("crd_number")
+  role        String   @default("advisor")
+  avatarUrl   String?  @map("avatar_url")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  firm        Firm     @relation(fields: [firmId], references: [id])
+  households  Household[]
+  clients     Client[]
+  plans       Plan[]
+
+  @@map("advisors")
+}
+
+// ==================== HOUSEHOLDS ====================
+model Household {
+  id          String   @id @default(cuid())
+  firmId      String   @map("firm_id")
+  advisorId   String   @map("advisor_id")
+  name        String
+  externalCrmId String? @map("external_crm_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  firm        Firm     @relation(fields: [firmId], references: [id])
+  advisor     Advisor  @relation(fields: [advisorId], references: [id])
+  clients     Client[]
+  dependents  Dependent[]
+  plans       Plan[]
+
+  @@map("households")
+}
+
+// ==================== CLIENTS ====================
+model Client {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  firmId          String   @map("firm_id")
+  advisorId       String   @map("advisor_id")
+  role            String   @default("primary")
+
+  // Identity
+  firstName       String   @map("first_name")
+  middleName      String?  @map("middle_name")
+  lastName        String   @map("last_name")
+  preferredName   String?  @map("preferred_name")
+  suffix          String?
+  email           String?
+  phoneMobile     String?  @map("phone_mobile")
+  phoneHome       String?  @map("phone_home")
+  dateOfBirth     DateTime @map("date_of_birth")
+  gender          String?
+  ssnLastFour     String?  @map("ssn_last_four")
+  citizenship     String   @default("US")
+
+  // Address
+  addressLine1    String?  @map("address_line1")
+  addressLine2    String?  @map("address_line2")
+  city            String?
+  state           String?
+  zip             String?
+  country         String   @default("US")
+  domicileState   String?  @map("domicile_state")
+
+  // Personal
+  maritalStatus   String?  @map("marital_status")
+  filingStatus    String?  @map("filing_status")
+  dependentsCount Int      @default(0) @map("dependents_count")
+  employmentStatus String? @map("employment_status")
+  employerName    String?  @map("employer_name")
+  occupation      String?
+  industry        String?
+
+  // Planning
+  wealthTier      String   @default("mass_affluent") @map("wealth_tier")
+  planningHorizon Int?     @map("planning_horizon")
+  lifeExpectancy  Int?     @map("life_expectancy")
+  riskProfileId   String?  @map("risk_profile_id")
+  currentPlanId   String?  @map("current_plan_id")
+
+  // Metadata
+  externalCrmId   String?  @map("external_crm_id")
+  tags            String?  // JSON array since SQLite doesn't support arrays
+  notes           String?
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  household       Household @relation(fields: [householdId], references: [id])
+  firm            Firm      @relation(fields: [firmId], references: [id])
+  advisor         Advisor   @relation(fields: [advisorId], references: [id])
+  plansAsPrimary  Plan[]    @relation("PrimaryClient")
+  plansAsCo       Plan[]    @relation("CoClient")
+  incomeSources   IncomeSource[]
+  accounts        Account[] @relation("AccountOwner")
+  coOwnedAccounts Account[] @relation("AccountCoOwner")
+  insurancePolicies InsurancePolicy[]
+  estateDocuments EstateDocument[]
+
+  @@index([dateOfBirth])
+  @@map("clients")
+}
+
+// ==================== DEPENDENTS ====================
+model Dependent {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  firstName       String   @map("first_name")
+  lastName        String?  @map("last_name")
+  relationship    String
+  dateOfBirth     DateTime @map("date_of_birth")
+  isSpecialNeeds  Boolean  @default(false) @map("is_special_needs")
+  educationGoalId String?  @map("education_goal_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  household       Household @relation(fields: [householdId], references: [id])
+
+  @@map("dependents")
+}
+
+// ==================== PLANS ====================
+model Plan {
+  id                    String   @id @default(cuid())
+  householdId           String   @map("household_id")
+  firmId                String   @map("firm_id")
+  advisorId             String   @map("advisor_id")
+  primaryClientId       String   @map("primary_client_id")
+  coClientId            String?  @map("co_client_id")
+
+  name                  String   @default("Financial Plan")
+  status                String   @default("draft")
+  planType              String   @default("comprehensive") @map("plan_type")
+  wealthTier            String   @map("wealth_tier")
+
+  // Plan horizon
+  startYear             Int      @map("start_year")
+  endYear               Int      @map("end_year")
+  baseYear              Int      @map("base_year")
+
+  // Completion tracking
+  completionScore       Float    @default(0) @map("completion_score")
+  sectionsComplete      String?  @map("sections_complete") // JSON
+
+  // Advisor notes
+  planNotes             String?  @map("plan_notes")
+  lastReviewedAt        DateTime? @map("last_reviewed_at")
+  nextReviewAt          DateTime? @map("next_review_at")
+
+  // Sharing
+  clientPortalEnabled   Boolean  @default(false) @map("client_portal_enabled")
+  clientPortalToken     String?  @map("client_portal_token")
+
+  // Versioning
+  version               Int      @default(1)
+  parentPlanId          String?  @map("parent_plan_id")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  household             Household @relation(fields: [householdId], references: [id])
+  firm                  Firm      @relation(fields: [firmId], references: [id])
+  advisor               Advisor   @relation(fields: [advisorId], references: [id])
+  primaryClient         Client    @relation("PrimaryClient", fields: [primaryClientId], references: [id])
+  coClient              Client?   @relation("CoClient", fields: [coClientId], references: [id])
+
+  assumptions           PlanAssumption?
+  incomeSources         IncomeSource[]
+  expenses              Expense[]
+  accounts              Account[]
+  goals                 Goal[]
+  insurancePolicies     InsurancePolicy[]
+  estateDocuments       EstateDocument[]
+  beneficiaryDesignations BeneficiaryDesignation[]
+  scenarios             Scenario[]
+  planResults           PlanResult[]
+
+  @@index([status])
+  @@map("plans")
+}
+
+// ==================== PLAN ASSUMPTIONS ====================
+model PlanAssumption {
+  id                    String   @id @default(cuid())
+  planId                String   @unique @map("plan_id")
+
+  // Returns assumptions
+  equityReturn          Float    @default(0.0700) @map("equity_return")
+  bondReturn            Float    @default(0.0400) @map("bond_return")
+  cashReturn            Float    @default(0.0450) @map("cash_return")
+  realEstateReturn      Float    @default(0.0500) @map("real_estate_return")
+  peReturn              Float    @default(0.1000) @map("pe_return")
+  inflationRate         Float    @default(0.0280) @map("inflation_rate")
+  healthcareInflation   Float    @default(0.0500) @map("healthcare_inflation")
+  collegeInflation      Float    @default(0.0500) @map("college_inflation")
+
+  // Monte Carlo
+  monteCarloRuns        Int      @default(1000) @map("monte_carlo_runs")
+  mcEquityStdDev        Float    @default(0.1700) @map("mc_equity_std_dev")
+  mcBondStdDev          Float    @default(0.0600) @map("mc_bond_std_dev")
+  successThreshold      Float    @default(0.8500) @map("success_threshold")
+
+  // Social Security
+  ssColaRate            Float    @default(0.0250) @map("ss_cola_rate")
+  ssHaircut             Float    @default(0.0000) @map("ss_haircut")
+  ssFullRetirementAge   Int?     @map("ss_full_retirement_age")
+
+  // Tax law
+  taxLawScenario        String   @default("current") @map("tax_law_scenario")
+  tcjaPermanent         Boolean  @default(true) @map("tcja_permanent")
+
+  // Life expectancy
+  lifeExpectancySource  String   @default("ssa_tables") @map("life_expectancy_source")
+  customLifeExpClient   Int?     @map("custom_life_exp_client")
+  customLifeExpCo       Int?     @map("custom_life_exp_co")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("plan_assumptions")
+}
+
+// ==================== INCOME SOURCES ====================
+model IncomeSource {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  clientId              String   @map("client_id")
+
+  name                  String
+  type                  String
+
+  // Amounts
+  annualAmount          Float    @map("annual_amount")
+  frequency             String   @default("annual")
+
+  // Timing
+  startYear             Int?     @map("start_year")
+  endYear               Int?     @map("end_year")
+  startAge              Int?     @map("start_age")
+  endAge                Int?     @map("end_age")
+
+  // Growth
+  growthRate            Float    @default(0) @map("growth_rate")
+  isInflationAdjusted   Boolean  @default(false) @map("is_inflation_adjusted")
+
+  // Employer
+  employerName          String?  @map("employer_name")
+  isW2                  Boolean  @default(false) @map("is_w2")
+
+  // Self-employment
+  isSelfEmployment      Boolean  @default(false) @map("is_self_employment")
+  seExpenseRatio        Float?   @map("se_expense_ratio")
+
+  // Tax character
+  isTaxable             Boolean  @default(true) @map("is_taxable")
+  taxCharacter          String   @default("ordinary") @map("tax_character")
+  stateTaxable          Boolean  @default(true) @map("state_taxable")
+
+  // Social Security specific
+  ssPia                 Float?   @map("ss_pia")
+  ssClaimAge            Int?     @map("ss_claim_age")
+  ssStrategy            String?  @map("ss_strategy")
+  ssWepApplicable       Boolean  @default(false) @map("ss_wep_applicable")
+  ssGpoApplicable       Boolean  @default(false) @map("ss_gpo_applicable")
+
+  // Pension specific
+  pensionType           String?  @map("pension_type")
+  pensionCola           Float?   @map("pension_cola")
+  survivorBenefitPct    Float?   @map("survivor_benefit_pct")
+
+  // Rental specific
+  rentalGross           Float?   @map("rental_gross")
+  rentalExpenses        Float?   @map("rental_expenses")
+  rentalDepreciation    Float?   @map("rental_depreciation")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  client                Client   @relation(fields: [clientId], references: [id])
+
+  @@map("income_sources")
+}
+
+// ==================== EXPENSES ====================
+model Expense {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  name                  String
+  category              String
+  isEssential           Boolean  @default(true) @map("is_essential")
+
+  // Amount
+  annualAmount          Float    @map("annual_amount")
+  frequency             String   @default("annual")
+
+  // Timing
+  startYear             Int?     @map("start_year")
+  endYear               Int?     @map("end_year")
+  startAge              Int?     @map("start_age")
+  endAge                Int?     @map("end_age")
+
+  // Growth
+  growthRate            Float    @default(0) @map("growth_rate")
+  isInflationAdjusted   Boolean  @default(true) @map("is_inflation_adjusted")
+  inflationOverride     Float?   @map("inflation_override")
+
+  // Retirement adjustment
+  retirementFactor      Float?   @map("retirement_factor")
+
+  // Flags
+  isPreRetirementOnly   Boolean  @default(false) @map("is_pre_retirement_only")
+  isPostRetirementOnly  Boolean  @default(false) @map("is_post_retirement_only")
+  appliesToClient       String   @default("both") @map("applies_to_client")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("expenses")
+}
+
+// ==================== ACCOUNTS (ASSETS & LIABILITIES) ====================
+model Account {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  clientId              String   @map("client_id")
+  coOwnerId             String?  @map("co_owner_id")
+
+  name                  String
+  institution           String?
+  accountNumberLast4    String?  @map("account_number_last4")
+
+  // Classification
+  accountType           String   @map("account_type")
+  registration          String
+  taxBucket             String   @map("tax_bucket")
+
+  // Balance
+  currentBalance        Float    @map("current_balance")
+  balanceAsOf           DateTime @default(now()) @map("balance_as_of")
+
+  // Cost basis
+  costBasis             Float?   @map("cost_basis")
+  unrealizedGain        Float?   @map("unrealized_gain")
+
+  // Asset allocation
+  equityPct             Float?   @map("equity_pct")
+  bondPct               Float?   @map("bond_pct")
+  cashPct               Float?   @map("cash_pct")
+  alternativePct        Float?   @map("alternative_pct")
+
+  // Growth assumptions
+  expectedReturn        Float?   @map("expected_return")
+
+  // Employer plans
+  employerMatchPct      Float?   @map("employer_match_pct")
+  employerMatchLimitPct Float?   @map("employer_match_limit_pct")
+  vestingSchedule       String?  @map("vesting_schedule")
+  vestingYearsComplete  Int?     @map("vesting_years_complete")
+
+  // Real estate
+  propertyAddress       String?  @map("property_address")
+  propertyType          String?  @map("property_type")
+  estimatedValue        Float?   @map("estimated_value")
+  mortgageAccountId     String?  @map("mortgage_account_id")
+  annualRentIncome      Float?   @map("annual_rent_income")
+  annualPropertyTax     Float?   @map("annual_property_tax")
+  annualInsurance       Float?   @map("annual_insurance")
+  annualHoa             Float?   @map("annual_hoa")
+  annualMaintenance     Float?   @map("annual_maintenance")
+  depreciationBasis     Float?   @map("depreciation_basis")
+
+  // Life insurance
+  policyType            String?  @map("policy_type")
+  deathBenefit          Float?   @map("death_benefit")
+  cashSurrenderValue    Float?   @map("cash_surrender_value")
+  annualPremium         Float?   @map("annual_premium")
+  policyLoanBalance     Float?   @map("policy_loan_balance")
+  insuredClientId       String?  @map("insured_client_id")
+  beneficiaryPrimary    String?  @map("beneficiary_primary")
+  beneficiaryContingent String?  @map("beneficiary_contingent")
+  maturityDate          DateTime? @map("maturity_date")
+
+  // Annuity
+  annuityType           String?  @map("annuity_type")
+  surrenderChargePct    Float?   @map("surrender_charge_pct")
+  surrenderPeriodEnd    DateTime? @map("surrender_period_end")
+  annuityStartDate      DateTime? @map("annuity_start_date")
+  guaranteedIncome      Float?   @map("guaranteed_income")
+
+  // Private equity / alternatives
+  fundName              String?  @map("fund_name")
+  vintageYear           Int?     @map("vintage_year")
+  committedCapital      Float?   @map("committed_capital")
+  calledCapital         Float?   @map("called_capital")
+  distributedCapital    Float?   @map("distributed_capital")
+  nav                   Float?
+  irr                   Float?
+  expectedExitYear      Int?     @map("expected_exit_year")
+
+  // Business interest
+  businessName          String?  @map("business_name")
+  businessType          String?  @map("business_type")
+  ownershipPct          Float?   @map("ownership_pct")
+  ebitda                Float?
+  valuationMultiple     Float?   @map("valuation_multiple")
+  expectedSaleYear      Int?     @map("expected_sale_year")
+
+  // Crypto / digital assets
+  tokenSymbol           String?  @map("token_symbol")
+  unitsHeld             Float?   @map("units_held")
+  costBasisPerUnit      Float?   @map("cost_basis_per_unit")
+  walletType            String?  @map("wallet_type")
+
+  // Collectibles
+  collectibleType       String?  @map("collectible_type")
+  appraisedValue        Float?   @map("appraised_value")
+  lastAppraisalDate     DateTime? @map("last_appraisal_date")
+
+  // Debt / liability fields
+  isLiability           Boolean  @default(false) @map("is_liability")
+  originalBalance       Float?   @map("original_balance")
+  interestRate          Float?   @map("interest_rate")
+  loanType              String?  @map("loan_type")
+  monthlyPayment        Float?   @map("monthly_payment")
+  remainingTermMonths   Int?     @map("remaining_term_months")
+  originationDate       DateTime? @map("origination_date")
+  debtMaturityDate      DateTime? @map("debt_maturity_date")
+  isTaxDeductible       Boolean  @default(false) @map("is_tax_deductible")
+
+  // 529 specific
+  beneficiaryId         String?  @map("beneficiary_id")
+  plan529State          String?  @map("plan_529_state")
+
+  // HSA specific
+  hsaInvestableBalance  Float?   @map("hsa_investable_balance")
+
+  // Data source
+  dataSource            String   @default("manual") @map("data_source")
+  lastSyncAt            DateTime? @map("last_sync_at")
+  externalAccountId     String?  @map("external_account_id")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  owner                 Client   @relation("AccountOwner", fields: [clientId], references: [id])
+  coOwner               Client?  @relation("AccountCoOwner", fields: [coOwnerId], references: [id])
+  beneficiaryDesignations BeneficiaryDesignation[]
+
+  @@index([accountType])
+  @@index([taxBucket])
+  @@map("accounts")
+}
+
+// ==================== GOALS ====================
+model Goal {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  name                  String
+  type                  String
+  priority              String   @default("needs")
+  priorityOrder         Int?     @map("priority_order")
+
+  // Target
+  targetAmount          Float?   @map("target_amount")
+  targetYear            Int?     @map("target_year")
+  targetAge             Int?     @map("target_age")
+  recurringAmount       Float?   @map("recurring_amount")
+
+  // Funding
+  fundingSource         String   @default("portfolio") @map("funding_source")
+  fundedAccounts        String?  @map("funded_accounts") // JSON array
+  currentSavings        Float    @default(0) @map("current_savings")
+  monthlyContribution   Float    @default(0) @map("monthly_contribution")
+
+  // Education specific
+  educationBeneficiaryId String? @map("education_beneficiary_id")
+  educationSchoolType   String?  @map("education_school_type")
+  educationDurationYears Int?    @map("education_duration_years")
+  educationAnnualCost   Float?   @map("education_annual_cost")
+  educationPctFunded    Float?   @map("education_pct_funded")
+
+  // Retirement goal
+  retirementAgeClient   Int?     @map("retirement_age_client")
+  retirementAgeCo       Int?     @map("retirement_age_co")
+  retirementIncomeNeed  Float?   @map("retirement_income_need")
+  retirementIncomePct   Float?   @map("retirement_income_pct")
+  retirementPortfolioNeeded Float? @map("retirement_portfolio_needed")
+
+  // Legacy goal
+  legacyAmount          Float?   @map("legacy_amount")
+  legacyBeneficiaries   String?  @map("legacy_beneficiaries")
+
+  // Timing
+  startYear             Int?     @map("start_year")
+  endYear               Int?     @map("end_year")
+  isInflationAdjusted   Boolean  @default(true) @map("is_inflation_adjusted")
+  growthRate            Float?   @map("growth_rate")
+
+  // Success tracking
+  probabilityOfSuccess  Float?   @map("probability_of_success")
+  fundedRatio           Float?   @map("funded_ratio")
+  onTrack               Boolean? @map("on_track")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}
+
+// ==================== INSURANCE POLICIES ====================
+model InsurancePolicy {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  insuredClientId       String   @map("insured_client_id")
+
+  type                  String
+
+  // Coverage
+  deathBenefit          Float?   @map("death_benefit")
+  monthlyBenefit        Float?   @map("monthly_benefit")
+  benefitPeriod         String?  @map("benefit_period")
+  eliminationPeriodDays Int?     @map("elimination_period_days")
+
+  // Premium
+  annualPremium         Float?   @map("annual_premium")
+  premiumWaived         Boolean  @default(false) @map("premium_waived")
+
+  // Policy details
+  policyNumber          String?  @map("policy_number")
+  carrier               String?
+  issueDate             DateTime? @map("issue_date")
+  expiryDate            DateTime? @map("expiry_date")
+  isEmployerPaid        Boolean  @default(false) @map("is_employer_paid")
+
+  // Disability specific
+  ownOcc                Boolean? @map("own_occ")
+  anyOcc                Boolean? @map("any_occ")
+  monthlyBenefitMax     Float?   @map("monthly_benefit_max")
+
+  // LTC specific
+  ltcDailyBenefit       Float?   @map("ltc_daily_benefit")
+  ltcInflationProtection String? @map("ltc_inflation_protection")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  insuredClient         Client   @relation(fields: [insuredClientId], references: [id])
+
+  @@map("insurance_policies")
+}
+
+// ==================== ESTATE DOCUMENTS ====================
+model EstateDocument {
+  id              String   @id @default(cuid())
+  planId          String   @map("plan_id")
+  clientId        String   @map("client_id")
+
+  documentType    String   @map("document_type")
+  status          String
+  lastUpdated     DateTime? @map("last_updated")
+  attorneyName    String?  @map("attorney_name")
+  notes           String?
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  plan            Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  client          Client   @relation(fields: [clientId], references: [id])
+
+  @@map("estate_documents")
+}
+
+// ==================== BENEFICIARY DESIGNATIONS ====================
+model BeneficiaryDesignation {
+  id                String   @id @default(cuid())
+  accountId         String   @map("account_id")
+  planId            String   @map("plan_id")
+
+  beneficiaryName   String   @map("beneficiary_name")
+  beneficiaryType   String   @map("beneficiary_type")
+  relationship      String?
+  designationType   String   @map("designation_type")
+  percentage        Float
+
+  isCurrent         Boolean  @default(true) @map("is_current")
+  notes             String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  account           Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  plan              Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("beneficiary_designations")
+}
+
+// ==================== SCENARIOS ====================
+model Scenario {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  name                  String
+  description           String?
+  isBaseCase            Boolean  @default(false) @map("is_base_case")
+
+  // What changed from base
+  overrides             String?  // JSON
+
+  // Results
+  probabilityOfSuccess  Float?   @map("probability_of_success")
+  netWorthAtEnd         Float?   @map("net_worth_at_end")
+  estateValue           Float?   @map("estate_value")
+  totalTaxesLifetime    Float?   @map("total_taxes_lifetime")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planResults           PlanResult[]
+
+  @@map("scenarios")
+}
+
+// ==================== PLAN RESULTS ====================
+model PlanResult {
+  id                          String   @id @default(cuid())
+  planId                      String   @map("plan_id")
+  scenarioId                  String?  @map("scenario_id")
+  calculatedAt                DateTime @default(now()) @map("calculated_at")
+  calcEngineVersion           String   @map("calc_engine_version")
+
+  // Top-level results
+  probabilityOfSuccess        Float    @map("probability_of_success")
+  probabilityOfSuccessAdj     Float?   @map("probability_of_success_adj")
+
+  // Monte Carlo outputs
+  mcRuns                      Int      @map("mc_runs")
+  mcMedianTerminalValue       Float    @map("mc_median_terminal_value")
+  mcP10TerminalValue          Float    @map("mc_p10_terminal_value")
+  mcP25TerminalValue          Float    @map("mc_p25_terminal_value")
+  mcP75TerminalValue          Float    @map("mc_p75_terminal_value")
+  mcP90TerminalValue          Float    @map("mc_p90_terminal_value")
+
+  // Annual projections (JSON arrays)
+  annualIncome                String?  @map("annual_income")
+  annualExpenses              String?  @map("annual_expenses")
+  annualTaxes                 String?  @map("annual_taxes")
+  annualSavings               String?  @map("annual_savings")
+  annualPortfolio             String?  @map("annual_portfolio")
+  annualNetWorth              String?  @map("annual_net_worth")
+  annualRmd                   String?  @map("annual_rmd")
+  annualSsBenefit             String?  @map("annual_ss_benefit")
+  annualCashFlow              String?  @map("annual_cash_flow")
+
+  // Goal results
+  goalResults                 String?  @map("goal_results") // JSON
+
+  // Tax summary
+  totalTaxesLifetime          Float?   @map("total_taxes_lifetime")
+  avgEffectiveTaxRate         Float?   @map("avg_effective_tax_rate")
+  peakTaxYear                 Int?     @map("peak_tax_year")
+  peakTaxAmount               Float?   @map("peak_tax_amount")
+
+  // Estate
+  projectedEstateValue        Float?   @map("projected_estate_value")
+  projectedEstateTaxDue       Float?   @map("projected_estate_tax_due")
+
+  createdAt                   DateTime @default(now()) @map("created_at")
+
+  plan                        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  scenario                    Scenario? @relation(fields: [scenarioId], references: [id])
+
+  @@map("plan_results")
+}
+
+// ==================== TAX TABLES ====================
+model TaxTable {
+  id              String   @id @default(cuid())
+  taxYear         Int      @map("tax_year")
+  tableType       String   @map("table_type")
+  filingStatus    String?  @map("filing_status")
+  data            String   // JSON
+  notes           String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([taxYear, tableType, filingStatus])
+  @@map("tax_tables")
+}

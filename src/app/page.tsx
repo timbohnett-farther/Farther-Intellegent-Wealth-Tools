@@ -15,6 +15,22 @@ interface ToolCard {
 
 const TOOLS: ToolCard[] = [
   {
+    title: 'Farther Prism — Financial Planning',
+    description:
+      'Comprehensive financial planning platform for advisors. Manage client profiles, build detailed financial plans with income, expenses, net worth, goals, tax planning, Social Security optimization, estate planning, and more. Full lifecycle planning from data entry through Monte Carlo analysis.',
+    href: '/prism/dashboard',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5Z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+    ),
+    color: 'from-brand-500 to-blue-700',
+    tags: ['Financial Planning', 'Tax', 'Retirement', 'Estate', 'Goals'],
+  },
+  {
     title: 'Box Spread Lending Calculator',
     description:
       'Comprehensive analysis tool for portfolio-based liquidity via box spreads. Compare borrowing costs, model tax efficiency under Section 1256, stress test margin safety, and run Monte Carlo simulations — all in one interactive dashboard.',
