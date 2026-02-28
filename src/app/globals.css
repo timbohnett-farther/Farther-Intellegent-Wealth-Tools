@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --safe: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --box-spread: #3B82F6;
+  --margin-loan: #6B7280;
+  --sbloc: #F97316;
+  --heloc: #8B5CF6;
+  --savings: #10B981;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+  }
+  .dark .card {
+    @apply bg-gray-900 border-gray-800;
+  }
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           bg-white;
+  }
+  .dark .input-field {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+  .label {
+    @apply block text-xs font-medium text-gray-600 mb-1;
+  }
+  .dark .label {
+    @apply text-gray-400;
+  }
+  .tab-active {
+    @apply border-b-2 border-blue-500 text-blue-600 font-medium;
+  }
+  .tab-inactive {
+    @apply text-gray-500 hover:text-gray-700;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .card {
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+    break-inside: avoid;
+  }
+}
