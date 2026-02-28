@@ -1,14 +1,20 @@
 // Questionnaire Generator
-// Selects a balanced subset of 15 questions from the 395-question bank
-// for a single questionnaire session, filtered by wealth tier.
+// Selects a balanced subset of 15 questions from the question bank,
+// distributed across axes and filtered by wealth tier.
 
-import type { Category, WealthTier, RiskQuestion } from './types';
-import { CATEGORY_WEIGHTS } from './types';
+import type { QuestionAxis, WealthTier, RiskQuestion } from './types';
 import { QUESTION_BANK } from './questions';
+
+/** Target distribution of 15 questions across axes */
+const AXIS_DISTRIBUTION: Record<QuestionAxis, number> = {
+  tolerance: 5,
+  capacity: 4,
+  bias: 4,
+  complexity: 2,
+};
 
 /**
  * Fisher-Yates in-place shuffle on a copy of the array.
- * Returns a new shuffled array without mutating the original.
  */
 export function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -21,75 +27,35 @@ export function shuffleArray<T>(array: T[]): T[] {
 
 /**
  * Generates a balanced 15-question questionnaire from the question bank,
- * distributed across the 7 risk categories according to CATEGORY_WEIGHTS
+ * distributed across the 4 risk axes (tolerance, capacity, bias, complexity)
  * and filtered to the selected wealth tier.
  *
- * Higher wealth tiers receive more complex, scenario-based questions.
- *
- * @param wealthTier - The client's wealth tier (hnw, vhnw, uhnw)
+ * @param wealthTier - The client's wealth tier
  * @returns A shuffled array of 15 selected RiskQuestion objects
  */
 export function generateQuestionnaire(
-  wealthTier: WealthTier = 'hnw'
+  wealthTier: WealthTier = 'emerging'
 ): RiskQuestion[] {
-  const totalQuestions = 15;
-  const categories = Object.keys(CATEGORY_WEIGHTS) as Category[];
-
-  // Distribute 15 questions across categories based on weights
-  const distribution: Record<Category, number> = {} as Record<Category, number>;
-  let distributed = 0;
-
-  for (const category of categories) {
-    const count = Math.round(totalQuestions * CATEGORY_WEIGHTS[category]);
-    distribution[category] = Math.max(count, 1); // at least 1 per category
-    distributed += distribution[category];
-  }
-
-  // Adjust to hit exact total by trimming from the largest category
-  while (distributed > totalQuestions) {
-    let largestCategory = categories[0];
-    for (const category of categories) {
-      if (distribution[category] > distribution[largestCategory]) {
-        largestCategory = category;
-      }
-    }
-    distribution[largestCategory] -= 1;
-    distributed -= 1;
-  }
-  while (distributed < totalQuestions) {
-    let largestCategory = categories[0];
-    for (const category of categories) {
-      if (CATEGORY_WEIGHTS[category] > CATEGORY_WEIGHTS[largestCategory] &&
-          distribution[category] <= Math.round(totalQuestions * CATEGORY_WEIGHTS[category])) {
-        largestCategory = category;
-      }
-    }
-    distribution[largestCategory] += 1;
-    distributed += 1;
-  }
-
-  // For each category, filter by wealth tier and randomly select
+  const axes = Object.keys(AXIS_DISTRIBUTION) as QuestionAxis[];
   const selected: RiskQuestion[] = [];
 
-  for (const category of categories) {
-    const requiredCount = distribution[category];
-    if (requiredCount <= 0) continue;
+  for (const axis of axes) {
+    const requiredCount = AXIS_DISTRIBUTION[axis];
 
-    // Filter to this category and wealth tier
+    // Filter to this axis and wealth tier
     let pool = QUESTION_BANK.filter(
-      (q) => q.category === category && q.wealthTier === wealthTier
+      (q) => q.axis === axis && q.wealthTier === wealthTier
     );
 
     // Fallback: if not enough questions for this tier, include all tiers
     if (pool.length < requiredCount) {
-      pool = QUESTION_BANK.filter((q) => q.category === category);
+      pool = QUESTION_BANK.filter((q) => q.axis === axis);
     }
 
     const shuffled = shuffleArray(pool);
-    const picked = shuffled.slice(0, requiredCount);
-    selected.push(...picked);
+    selected.push(...shuffled.slice(0, requiredCount));
   }
 
-  // Shuffle the final combined array to avoid predictable category ordering
+  // Shuffle the final combined array to avoid predictable axis ordering
   return shuffleArray(selected);
 }

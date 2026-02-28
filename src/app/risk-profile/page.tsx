@@ -2,80 +2,67 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import {
+import type {
   RiskQuestion,
   RiskProfile,
-  WealthTier,
-  WEALTH_TIER_LABELS,
-  WEALTH_TIER_DESCRIPTIONS,
+  ClientIntake,
 } from '@/lib/risk-profile/types';
 import { generateQuestionnaire } from '@/lib/risk-profile/generator';
 import { calculateRiskProfile } from '@/lib/risk-profile/scoring';
+import IntakeForm from '@/components/risk-profile/IntakeForm';
 import QuestionCard from '@/components/risk-profile/QuestionCard';
 import ProgressBar from '@/components/risk-profile/ProgressBar';
 import ResultsDashboard from '@/components/risk-profile/ResultsDashboard';
 
-type Phase = 'setup' | 'questionnaire' | 'results';
+type Phase = 'intro' | 'intake' | 'questionnaire' | 'results';
 
-function SetupScreen({ onStart }: { onStart: (wealthTier: WealthTier) => void }) {
-  const [wealthTier, setWealthTier] = useState<WealthTier>('hnw');
-
-  const tiers: WealthTier[] = ['hnw', 'vhnw', 'uhnw'];
-
+function IntroScreen({ onContinue }: { onContinue: () => void }) {
   return (
     <div className="max-w-xl mx-auto">
-      <div className="card p-8">
+      <div className="card p-8 text-center">
         {/* Icon */}
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2a10 10 0 1 0 10 10" />
             <path d="M12 12 12 2" />
             <path d="M12 12l7.07-7.07" />
           </svg>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 text-center mb-2">
-          Risk Profile Assessment
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          Farther Focus
         </h2>
-        <p className="text-sm text-gray-500 text-center mb-8 max-w-md mx-auto leading-relaxed">
-          This FINRA and CFP Board compliant assessment evaluates risk tolerance across 7 dimensions: time horizon, loss tolerance, volatility comfort, investment knowledge, financial goals, behavioral biases, and liquidity needs.
+        <p className="text-base text-gray-600 mb-6 leading-relaxed max-w-md mx-auto">
+          This is not a test. It&apos;s a conversation to understand how you think and feel about risk, and what your finances can realistically support.
         </p>
 
-        {/* Wealth Tier Selector */}
-        <div>
-          <label className="label">Client Wealth Tier</label>
-          <div className="grid grid-cols-3 gap-2">
-            {tiers.map((tier) => (
-              <button
-                key={tier}
-                onClick={() => setWealthTier(tier)}
-                className={`py-3 text-sm font-medium rounded-lg border-2 transition-all ${
-                  wealthTier === tier
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                }`}
-              >
-                {WEALTH_TIER_LABELS[tier]}
-                <span className="block text-[10px] font-normal text-gray-400 mt-0.5">
-                  {WEALTH_TIER_DESCRIPTIONS[tier]}
-                </span>
-              </button>
-            ))}
-          </div>
+        <div className="space-y-3 text-left max-w-sm mx-auto mb-8">
+          {[
+            { step: '1', label: 'Quick Profile', desc: 'Basic financial picture and goals' },
+            { step: '2', label: 'Risk Assessment', desc: '15 adaptive questions tailored to your wealth tier' },
+            { step: '3', label: 'Your Risk Blueprint', desc: 'Multi-axis profile, portfolio options, and backtests' },
+          ].map(({ step, label, desc }) => (
+            <div key={step} className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold">
+                {step}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-800">{label}</p>
+                <p className="text-xs text-gray-500">{desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Start button */}
         <button
-          onClick={() => onStart(wealthTier)}
-          className="mt-8 w-full py-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all shadow-sm"
+          onClick={onContinue}
+          className="w-full py-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all shadow-sm"
         >
-          Begin Assessment
+          Get Started
         </button>
 
-        {/* Info note */}
-        <p className="text-[10px] text-gray-400 text-center mt-4">
-          15 questions sourced from a 395-question FINRA/CFP compliant question bank.
-          Scoring uses weighted averages across 7 risk dimensions with contradiction detection.
+        <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
+          FINRA 2111 / Reg BI / CFA Institute compliant. Multi-axis scoring across risk tolerance, capacity, behavioral biases, and complexity preference. Results include 7-band portfolio mapping with 32-year backtesting.
         </p>
       </div>
     </div>
@@ -83,7 +70,8 @@ function SetupScreen({ onStart }: { onStart: (wealthTier: WealthTier) => void })
 }
 
 export default function RiskProfilePage() {
-  const [phase, setPhase] = useState<Phase>('setup');
+  const [phase, setPhase] = useState<Phase>('intro');
+  const [intake, setIntake] = useState<ClientIntake | null>(null);
   const [questions, setQuestions] = useState<RiskQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [responses, setResponses] = useState<Map<number, number>>(new Map());
@@ -91,12 +79,12 @@ export default function RiskProfilePage() {
 
   const answeredCount = useMemo(() => responses.size, [responses]);
 
-  const handleStart = useCallback((wealthTier: WealthTier) => {
-    const qs = generateQuestionnaire(wealthTier);
+  const handleIntakeComplete = useCallback((clientIntake: ClientIntake) => {
+    setIntake(clientIntake);
+    const qs = generateQuestionnaire(clientIntake.wealthTier);
     setQuestions(qs);
     setCurrentIndex(0);
     setResponses(new Map());
-    setRiskProfile(null);
     setPhase('questionnaire');
   }, []);
 
@@ -121,17 +109,19 @@ export default function RiskProfilePage() {
   }, [currentIndex]);
 
   const handleSubmit = useCallback(() => {
+    if (!intake) return;
     const responseArray = Array.from(responses.entries()).map(([questionId, answerValue]) => ({
       questionId,
       answerValue,
     }));
-    const result = calculateRiskProfile(responseArray);
+    const result = calculateRiskProfile(responseArray, intake);
     setRiskProfile(result);
     setPhase('results');
-  }, [responses]);
+  }, [responses, intake]);
 
   const handleRestart = useCallback(() => {
-    setPhase('setup');
+    setPhase('intro');
+    setIntake(null);
     setQuestions([]);
     setCurrentIndex(0);
     setResponses(new Map());
@@ -141,6 +131,9 @@ export default function RiskProfilePage() {
   const currentQuestion = questions[currentIndex] ?? null;
   const currentAnswer = currentQuestion ? (responses.get(currentQuestion.id) ?? null) : null;
   const allAnswered = answeredCount === questions.length && questions.length > 0;
+
+  // Phase label for header
+  const phaseLabel = phase === 'intro' ? '' : phase === 'intake' ? 'Client Profile' : phase === 'questionnaire' ? 'Risk Assessment' : 'Results';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -157,30 +150,37 @@ export default function RiskProfilePage() {
             </Link>
             <div>
               <h1 className="text-lg font-bold text-gray-900">Farther Focus</h1>
-              <p className="text-xs text-gray-500">Risk Profile Assessment</p>
+              <p className="text-xs text-gray-500">
+                {phaseLabel || 'Intelligent Risk Profile Assessment'}
+              </p>
             </div>
           </div>
-          {phase === 'questionnaire' && (
-            <div className="text-xs text-gray-400">
-              {answeredCount}/{questions.length} answered
-            </div>
-          )}
+          <div className="flex items-center gap-3 text-xs text-gray-400">
+            {phase === 'questionnaire' && (
+              <span>{answeredCount}/{questions.length} answered</span>
+            )}
+          </div>
         </div>
       </header>
 
       <div className="max-w-[1200px] mx-auto px-4 py-8">
-        {/* Setup Phase */}
-        {phase === 'setup' && <SetupScreen onStart={handleStart} />}
+        {/* Intro Phase */}
+        {phase === 'intro' && (
+          <IntroScreen onContinue={() => setPhase('intake')} />
+        )}
+
+        {/* Intake Phase */}
+        {phase === 'intake' && (
+          <IntakeForm onComplete={handleIntakeComplete} />
+        )}
 
         {/* Questionnaire Phase */}
         {phase === 'questionnaire' && currentQuestion && (
           <div className="space-y-6">
-            {/* Progress */}
             <div className="max-w-2xl mx-auto">
               <ProgressBar current={answeredCount} total={questions.length} />
             </div>
 
-            {/* Question */}
             <QuestionCard
               question={currentQuestion}
               selectedValue={currentAnswer}
@@ -237,7 +237,6 @@ export default function RiskProfilePage() {
               )}
             </div>
 
-            {/* Skip / jump to unanswered */}
             {currentAnswer !== null && currentIndex < questions.length - 1 && (
               <div className="text-center">
                 <button
