@@ -1,225 +1,204 @@
 'use client';
 
-import React, { useState, useMemo, useCallback, useRef } from 'react';
-import InputPanel from '@/components/InputPanel';
-import ExecutiveSummarySection from '@/components/sections/ExecutiveSummarySection';
-import LoanStructureSection from '@/components/sections/LoanStructureSection';
-import CostComparisonSection from '@/components/sections/CostComparisonSection';
-import TaxEfficiencySection from '@/components/sections/TaxEfficiencySection';
-import StressTestSection from '@/components/sections/StressTestSection';
-import OpportunityCostSection from '@/components/sections/OpportunityCostSection';
-import LiquidationSection from '@/components/sections/LiquidationSection';
-import CashFlowSection from '@/components/sections/CashFlowSection';
-import MonteCarloSection from '@/components/sections/MonteCarloSection';
-import { CalculatorInputs } from '@/lib/types';
-import { calculateAll } from '@/lib/calculations';
-import {
-  getMarginalOrdinaryRate,
-  getLTCGRate,
-  getNIITRate,
-  getBlended1256Rate,
-} from '@/lib/data/taxBrackets';
-import { getStateCGRate } from '@/lib/data/stateTaxRates';
+import React from 'react';
+import Link from 'next/link';
 
-const TABS = [
-  { id: 'summary', label: 'Summary' },
-  { id: 'structure', label: 'Loan Structure' },
-  { id: 'costs', label: 'Costs' },
-  { id: 'tax', label: 'Tax' },
-  { id: 'risk', label: 'Risk' },
-  { id: 'opportunity', label: 'Opportunity' },
-  { id: 'liquidation', label: 'Liquidation' },
-  { id: 'cashflow', label: 'Cash Flow' },
-  { id: 'montecarlo', label: 'Monte Carlo' },
-] as const;
-
-type TabId = (typeof TABS)[number]['id'];
-
-function deriveInputs(inputs: CalculatorInputs): CalculatorInputs {
-  const derived = JSON.parse(JSON.stringify(inputs)) as CalculatorInputs;
-  const { taxableIncome, filingStatus, state } = derived.tax;
-
-  derived.tax.ltcgRate = getLTCGRate(taxableIncome, filingStatus);
-  derived.tax.stcgRate = getMarginalOrdinaryRate(taxableIncome, filingStatus);
-  derived.tax.niitRate = getNIITRate(taxableIncome, filingStatus);
-  derived.tax.stateCGRate = getStateCGRate(state);
-  derived.tax.blended1256Rate = getBlended1256Rate(
-    derived.tax.ltcgRate,
-    derived.tax.stcgRate,
-    derived.tax.niitRate
-  );
-
-  const portfolioValue = derived.loan.portfolioValue;
-  const costBasis = derived.portfolio.costBasis;
-  derived.portfolio.unrealizedGainPct =
-    portfolioValue > 0 ? Math.max(0, (portfolioValue - costBasis) / portfolioValue) : 0;
-
-  if (derived.loan.marginType === 'portfolio_margin') {
-    derived.portfolio.initialMarginPct = 0.85;
-    derived.portfolio.maintenanceMarginPct = 0.15;
-  } else {
-    switch (derived.loan.portfolioComposition) {
-      case 'equities':
-        derived.portfolio.initialMarginPct = 0.50;
-        derived.portfolio.maintenanceMarginPct = 0.35;
-        break;
-      case 'etfs':
-        derived.portfolio.initialMarginPct = 0.40;
-        derived.portfolio.maintenanceMarginPct = 0.30;
-        break;
-      default:
-        derived.portfolio.initialMarginPct = 0.50;
-        derived.portfolio.maintenanceMarginPct = 0.30;
-    }
-  }
-
-  return derived;
+interface ToolCard {
+  title: string;
+  description: string;
+  href: string;
+  status: 'live' | 'coming_soon';
+  icon: React.ReactNode;
+  color: string;
+  tags: string[];
 }
 
-const DEFAULT_INPUTS: CalculatorInputs = {
-  loan: {
-    portfolioValue: 10000000,
-    loanAmount: 2000000,
-    termYears: 3,
-    boxRate: 0.042,
-    managerFee: 0.0035,
-    marginType: 'reg_t',
-    portfolioComposition: 'mixed',
+const TOOLS: ToolCard[] = [
+  {
+    title: 'Box Spread Lending Calculator',
+    description:
+      'Comprehensive analysis tool for portfolio-based liquidity via box spreads. Compare borrowing costs, model tax efficiency under Section 1256, stress test margin safety, and run Monte Carlo simulations — all in one interactive dashboard.',
+    href: '/box-spread-calculator',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18" />
+        <path d="M9 3v18" />
+      </svg>
+    ),
+    color: 'from-blue-500 to-indigo-600',
+    tags: ['Options', 'Lending', 'Tax Planning', 'Risk Analysis'],
   },
-  tax: {
-    filingStatus: 'mfj',
-    taxableIncome: 800000,
-    state: 'CA',
-    ltcgRate: 0.20,
-    stcgRate: 0.37,
-    niitRate: 0.038,
-    stateCGRate: 0.133,
-    annualCGRealized: 100000,
-    blended1256Rate: 0.306,
+  {
+    title: 'Securities-Based Lending Analyzer',
+    description:
+      'Evaluate securities-backed lines of credit (SBLOCs) with detailed LTV analysis, collateral eligibility screening, and rate comparisons across custodians.',
+    href: '#',
+    status: 'coming_soon',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 17a5 5 0 0 0 10 0c0-2.76-2.24-5-5-5s-5 2.24-5 5Z" />
+        <path d="M12 17a5 5 0 0 0 10 0c0-2.76-2.24-5-5-5s-5 2.24-5 5Z" />
+        <path d="M7 7a5 5 0 0 0 10 0c0-2.76-2.24-5-5-5S7 4.24 7 7Z" />
+      </svg>
+    ),
+    color: 'from-orange-500 to-amber-600',
+    tags: ['SBLOC', 'Collateral', 'Lending'],
   },
-  portfolio: {
-    costBasis: 5000000,
-    unrealizedGainPct: 0.50,
-    expectedReturn: 0.08,
-    volatility: 0.15,
-    initialMarginPct: 0.50,
-    maintenanceMarginPct: 0.30,
+  {
+    title: 'Tax-Loss Harvesting Engine',
+    description:
+      'Identify tax-loss harvesting opportunities across client portfolios. Model wash sale implications, track carryforward balances, and quantify after-tax alpha.',
+    href: '#',
+    status: 'coming_soon',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+      </svg>
+    ),
+    color: 'from-green-500 to-emerald-600',
+    tags: ['Tax', 'Harvesting', 'Portfolio'],
   },
-  comparison: {
-    marginRate: 0.10,
-    sblocRate: 0.065,
-    helocRate: 0.08,
+  {
+    title: 'Margin Optimization Tool',
+    description:
+      'Analyze margin requirements across Reg T and Portfolio Margin regimes. Optimize collateral allocation to maximize borrowing capacity while minimizing margin call risk.',
+    href: '#',
+    status: 'coming_soon',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 3v18h18" />
+        <path d="m19 9-5 5-4-4-3 3" />
+      </svg>
+    ),
+    color: 'from-purple-500 to-violet-600',
+    tags: ['Margin', 'Risk', 'Optimization'],
   },
-};
+];
 
-export default function Home() {
-  const [rawInputs, setRawInputs] = useState<CalculatorInputs>(DEFAULT_INPUTS);
-  const [activeTab, setActiveTab] = useState<TabId>('summary');
-  const [mcKey, setMcKey] = useState(0);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
-
-  const inputs = useMemo(() => deriveInputs(rawInputs), [rawInputs]);
-
-  const results = useMemo(() => {
-    return calculateAll(inputs);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputs, mcKey]);
-
-  const handleInputChange = useCallback((newInputs: CalculatorInputs) => {
-    setRawInputs(newInputs);
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setMcKey(k => k + 1);
-    }, 1000);
-  }, []);
-
-  const handleExportPDF = useCallback(() => {
-    window.print();
-  }, []);
-
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 no-print">
-        <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">Box Spread Lending Analysis Tool</h1>
-            <p className="text-xs text-gray-500">Portfolio-Based Liquidity Planning</p>
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+              <span className="text-white font-bold text-lg">F</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900 tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
+              <p className="text-xs text-gray-500">Investment Lending Tools</p>
+            </div>
           </div>
-          <button
-            onClick={handleExportPDF}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Export PDF
-          </button>
         </div>
       </header>
 
-      <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row">
-        {/* Left Input Panel */}
-        <aside className="lg:w-[320px] lg:min-w-[320px] p-4 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:overflow-y-auto no-print">
-          <InputPanel inputs={rawInputs} onChange={handleInputChange} />
-        </aside>
-
-        {/* Right Output Dashboard */}
-        <main className="flex-1 p-4 min-w-0">
-          {/* Tabs */}
-          <div className="mb-4 no-print overflow-x-auto">
-            <div className="flex gap-1 border-b border-gray-200 min-w-max">
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  className={`px-3 py-2 text-sm whitespace-nowrap transition-colors ${
-                    activeTab === tab.id
-                      ? 'tab-active'
-                      : 'tab-inactive'
-                  }`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl">
+            Intelligent tools for modern wealth management
+          </h2>
+          <p className="mt-4 text-lg text-slate-300 max-w-xl leading-relaxed">
+            Empower your client conversations with institutional-grade calculators, comparison engines, and risk analytics — built for advisors who serve UHNW and HNW families.
+          </p>
+          <div className="mt-6 flex items-center gap-4 text-sm text-slate-400">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-green-400"></span>
+              {TOOLS.filter(t => t.status === 'live').length} tool{TOOLS.filter(t => t.status === 'live').length !== 1 ? 's' : ''} live
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+              {TOOLS.filter(t => t.status === 'coming_soon').length} coming soon
+            </span>
           </div>
+        </div>
+      </section>
 
-          {/* Derived Rates Banner */}
-          <div className="mb-4 card p-3">
-            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500">
-              <span>LTV: <strong className="text-gray-800">{((inputs.loan.loanAmount / inputs.loan.portfolioValue) * 100).toFixed(1)}%</strong></span>
-              <span>All-In Rate: <strong className="text-blue-700">{((inputs.loan.boxRate + inputs.loan.managerFee) * 100).toFixed(2)}%</strong></span>
-              <span>Fed LTCG: <strong>{(inputs.tax.ltcgRate * 100).toFixed(0)}%</strong></span>
-              <span>Fed STCG: <strong>{(inputs.tax.stcgRate * 100).toFixed(0)}%</strong></span>
-              <span>NIIT: <strong>{(inputs.tax.niitRate * 100).toFixed(1)}%</strong></span>
-              <span>State CG: <strong>{(inputs.tax.stateCGRate * 100).toFixed(1)}%</strong></span>
-              <span>Blended 1256: <strong className="text-green-700">{(inputs.tax.blended1256Rate * 100).toFixed(1)}%</strong></span>
-            </div>
-          </div>
+      {/* Tools Grid */}
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Available Tools</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {TOOLS.map((tool) => {
+            const isLive = tool.status === 'live';
+            const className = `group card p-6 transition-all duration-200 ${
+              isLive
+                ? 'hover:shadow-lg hover:border-blue-200 hover:-translate-y-0.5 cursor-pointer'
+                : 'opacity-60 cursor-default'
+            }`;
 
-          {/* Tab Content */}
-          <div>
-            {activeTab === 'summary' && <ExecutiveSummarySection data={results.executiveSummary} />}
-            {activeTab === 'structure' && <LoanStructureSection data={results.loanStructure} config={inputs.loan} />}
-            {activeTab === 'costs' && <CostComparisonSection data={results.costComparison} config={inputs.loan} />}
-            {activeTab === 'tax' && <TaxEfficiencySection data={results.taxAnalysis} />}
-            {activeTab === 'risk' && <StressTestSection data={results.stressTest} />}
-            {activeTab === 'opportunity' && <OpportunityCostSection data={results.opportunityCost} />}
-            {activeTab === 'liquidation' && <LiquidationSection data={results.liquidationComparison} />}
-            {activeTab === 'cashflow' && <CashFlowSection data={results.cashFlowSchedule} />}
-            {activeTab === 'montecarlo' && <MonteCarloSection data={results.monteCarlo} />}
-          </div>
+            const content = (
+                <div className="flex items-start gap-4">
+                  {/* Icon */}
+                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white shadow-sm`}>
+                    {tool.icon}
+                  </div>
 
-          {/* Disclosures */}
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg text-[10px] text-gray-400 space-y-1 leading-relaxed">
-            <p>This tool is for educational and illustrative purposes only and does not constitute investment, tax, or legal advice.</p>
-            <p>Box spread lending involves risk, including the possibility of margin calls if portfolio values decline significantly.</p>
-            <p>Past market performance is not indicative of future results. Monte Carlo simulations are hypothetical and based on assumptions that may not reflect actual market conditions.</p>
-            <p>Tax treatment of box spreads under Section 1256 is based on current IRS guidance and may be subject to change. Consult a qualified tax professional.</p>
-            <p>Options trading requires approval from the account custodian. Not all accounts or account types are eligible.</p>
-            <p>Actual borrowing rates, margin requirements, and fees may differ from the illustrative values shown.</p>
-            <p>All projections assume reinvestment of proceeds and do not account for advisory fees unless specifically included.</p>
-          </div>
-        </main>
-      </div>
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
+                        {tool.title}
+                      </h4>
+                      {isLive ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">
+                          LIVE
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500">
+                          COMING SOON
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-500 leading-relaxed">{tool.description}</p>
+
+                    {/* Tags */}
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {tool.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-[11px] font-medium text-gray-500"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* CTA */}
+                    {isLive && (
+                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 group-hover:text-blue-700">
+                        Open tool
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </div>
+                    )}
+                  </div>
+                </div>
+            );
+
+            return isLive ? (
+              <Link key={tool.title} href={tool.href} className={className}>
+                {content}
+              </Link>
+            ) : (
+              <div key={tool.title} className={className}>
+                {content}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 bg-white mt-8">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-400">
+          <p>Farther Intelligent Wealth Advisor Platform. For authorized advisor use only.</p>
+          <p>Tools are for educational and illustrative purposes and do not constitute investment advice.</p>
+        </div>
+      </footer>
     </div>
   );
 }
