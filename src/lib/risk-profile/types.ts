@@ -11,7 +11,19 @@ export type Category =
   | 'behavior'
   | 'liquidity';
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type WealthTier = 'hnw' | 'vhnw' | 'uhnw';
+
+export const WEALTH_TIER_LABELS: Record<WealthTier, string> = {
+  hnw: 'HNW',
+  vhnw: 'Very HNW',
+  uhnw: 'UHNW',
+};
+
+export const WEALTH_TIER_DESCRIPTIONS: Record<WealthTier, string> = {
+  hnw: '$1M – $10M investable assets',
+  vhnw: '$10M – $30M investable assets',
+  uhnw: '$30M+ investable assets',
+};
 
 export type ComplianceTag = 'finra' | 'cfp' | 'general';
 
@@ -40,7 +52,7 @@ export interface RiskQuestion {
   riskDimension: RiskDimension;
   weight: number;
   complianceTag: ComplianceTag;
-  difficulty: Difficulty;
+  wealthTier: WealthTier;
 }
 
 export interface QuestionResponse {

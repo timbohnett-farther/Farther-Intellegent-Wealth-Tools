@@ -2,7 +2,13 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import { RiskQuestion, RiskProfile, Difficulty } from '@/lib/risk-profile/types';
+import {
+  RiskQuestion,
+  RiskProfile,
+  WealthTier,
+  WEALTH_TIER_LABELS,
+  WEALTH_TIER_DESCRIPTIONS,
+} from '@/lib/risk-profile/types';
 import { generateQuestionnaire } from '@/lib/risk-profile/generator';
 import { calculateRiskProfile } from '@/lib/risk-profile/scoring';
 import QuestionCard from '@/components/risk-profile/QuestionCard';
@@ -11,14 +17,10 @@ import ResultsDashboard from '@/components/risk-profile/ResultsDashboard';
 
 type Phase = 'setup' | 'questionnaire' | 'results';
 
-interface SetupConfig {
-  questionCount: number;
-  difficulty: Difficulty | 'mixed';
-}
+function SetupScreen({ onStart }: { onStart: (wealthTier: WealthTier) => void }) {
+  const [wealthTier, setWealthTier] = useState<WealthTier>('hnw');
 
-function SetupScreen({ onStart }: { onStart: (config: SetupConfig) => void }) {
-  const [questionCount, setQuestionCount] = useState(25);
-  const [difficulty, setDifficulty] = useState<Difficulty | 'mixed'>('mixed');
+  const tiers: WealthTier[] = ['hnw', 'vhnw', 'uhnw'];
 
   return (
     <div className="max-w-xl mx-auto">
@@ -36,66 +38,43 @@ function SetupScreen({ onStart }: { onStart: (config: SetupConfig) => void }) {
           Risk Profile Assessment
         </h2>
         <p className="text-sm text-gray-500 text-center mb-8 max-w-md mx-auto leading-relaxed">
-          This FINRA and CFP Board compliant assessment evaluates your risk tolerance across 7 dimensions: time horizon, loss tolerance, volatility comfort, investment knowledge, financial goals, behavioral biases, and liquidity needs.
+          This FINRA and CFP Board compliant assessment evaluates risk tolerance across 7 dimensions: time horizon, loss tolerance, volatility comfort, investment knowledge, financial goals, behavioral biases, and liquidity needs.
         </p>
 
-        {/* Config */}
-        <div className="space-y-5">
-          {/* Question count */}
-          <div>
-            <label className="label">Number of Questions</label>
-            <div className="grid grid-cols-3 gap-2">
-              {[15, 25, 40].map((count) => (
-                <button
-                  key={count}
-                  onClick={() => setQuestionCount(count)}
-                  className={`py-2.5 text-sm font-medium rounded-lg border-2 transition-all ${
-                    questionCount === count
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                  }`}
-                >
-                  {count} questions
-                  <span className="block text-[10px] font-normal text-gray-400 mt-0.5">
-                    {count === 15 ? '~5 min' : count === 25 ? '~8 min' : '~15 min'}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Difficulty */}
-          <div>
-            <label className="label">Difficulty Level</label>
-            <div className="grid grid-cols-4 gap-2">
-              {(['mixed', 'easy', 'medium', 'hard'] as const).map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDifficulty(d)}
-                  className={`py-2 text-sm font-medium rounded-lg border-2 transition-all capitalize ${
-                    difficulty === d
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
+        {/* Wealth Tier Selector */}
+        <div>
+          <label className="label">Client Wealth Tier</label>
+          <div className="grid grid-cols-3 gap-2">
+            {tiers.map((tier) => (
+              <button
+                key={tier}
+                onClick={() => setWealthTier(tier)}
+                className={`py-3 text-sm font-medium rounded-lg border-2 transition-all ${
+                  wealthTier === tier
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                }`}
+              >
+                {WEALTH_TIER_LABELS[tier]}
+                <span className="block text-[10px] font-normal text-gray-400 mt-0.5">
+                  {WEALTH_TIER_DESCRIPTIONS[tier]}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
 
         {/* Start button */}
         <button
-          onClick={() => onStart({ questionCount, difficulty })}
+          onClick={() => onStart(wealthTier)}
           className="mt-8 w-full py-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all shadow-sm"
         >
           Begin Assessment
         </button>
 
-        {/* Compliance note */}
+        {/* Info note */}
         <p className="text-[10px] text-gray-400 text-center mt-4">
-          Questions sourced from a {395}-question FINRA/CFP compliant question bank.
+          15 questions sourced from a 395-question FINRA/CFP compliant question bank.
           Scoring uses weighted averages across 7 risk dimensions with contradiction detection.
         </p>
       </div>
@@ -112,8 +91,8 @@ export default function RiskProfilePage() {
 
   const answeredCount = useMemo(() => responses.size, [responses]);
 
-  const handleStart = useCallback((config: SetupConfig) => {
-    const qs = generateQuestionnaire(config.questionCount, config.difficulty);
+  const handleStart = useCallback((wealthTier: WealthTier) => {
+    const qs = generateQuestionnaire(wealthTier);
     setQuestions(qs);
     setCurrentIndex(0);
     setResponses(new Map());
@@ -222,27 +201,20 @@ export default function RiskProfilePage() {
               </button>
 
               <div className="flex items-center gap-2">
-                {/* Question dots (show max 15 dots with overflow indicator) */}
-                {questions.length <= 30 ? (
-                  questions.map((q, i) => (
-                    <button
-                      key={q.id}
-                      onClick={() => setCurrentIndex(i)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        i === currentIndex
-                          ? 'bg-blue-500 w-3 h-3'
-                          : responses.has(q.id)
-                            ? 'bg-blue-300'
-                            : 'bg-gray-300'
-                      }`}
-                      aria-label={`Go to question ${i + 1}`}
-                    />
-                  ))
-                ) : (
-                  <span className="text-xs text-gray-400">
-                    Question {currentIndex + 1} of {questions.length}
-                  </span>
-                )}
+                {questions.map((q, i) => (
+                  <button
+                    key={q.id}
+                    onClick={() => setCurrentIndex(i)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === currentIndex
+                        ? 'bg-blue-500 w-3 h-3'
+                        : responses.has(q.id)
+                          ? 'bg-blue-300'
+                          : 'bg-gray-300'
+                    }`}
+                    aria-label={`Go to question ${i + 1}`}
+                  />
+                ))}
               </div>
 
               {currentIndex < questions.length - 1 ? (
@@ -270,14 +242,12 @@ export default function RiskProfilePage() {
               <div className="text-center">
                 <button
                   onClick={() => {
-                    // Find next unanswered question
                     for (let i = currentIndex + 1; i < questions.length; i++) {
                       if (!responses.has(questions[i].id)) {
                         setCurrentIndex(i);
                         return;
                       }
                     }
-                    // All remaining answered, go to last
                     setCurrentIndex(questions.length - 1);
                   }}
                   className="text-xs text-gray-400 hover:text-gray-600 transition-colors"

@@ -7,7 +7,7 @@ import type {
   QuestionType,
   Category,
   RiskDimension,
-  Difficulty,
+  WealthTier,
   ComplianceTag,
 } from './types';
 import { DIMENSION_FOR_CATEGORY } from './types';
@@ -21,7 +21,7 @@ interface QuestionTemplate {
   options: QuestionOption[];
 }
 
-const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
+const WEALTH_TIERS: WealthTier[] = ['hnw', 'vhnw', 'uhnw'];
 const COMPLIANCE_TAGS: ComplianceTag[] = ['finra', 'finra', 'finra', 'cfp', 'general'];
 
 function buildCategory(
@@ -36,7 +36,7 @@ function buildCategory(
   for (let i = 0; i < targetCount; i++) {
     const t = templates[i % templates.length];
     const variationIndex = Math.floor(i / templates.length);
-    const difficulty = DIFFICULTIES[i % 3];
+    const wealthTier = WEALTH_TIERS[i % 3];
     const complianceTag = COMPLIANCE_TAGS[i % COMPLIANCE_TAGS.length];
     const weight = 1.0 + (i % 5) * 0.25; // 1.0, 1.25, 1.5, 1.75, 2.0
 
@@ -68,7 +68,7 @@ function buildCategory(
       riskDimension: dimension,
       weight: Math.round(weight * 100) / 100,
       complianceTag,
-      difficulty,
+      wealthTier,
     });
   }
 
