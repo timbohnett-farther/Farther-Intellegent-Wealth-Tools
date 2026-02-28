@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type {
   RiskQuestion,
   RiskProfile,
   ClientIntake,
+  QuestionResponse,
 } from '@/lib/risk-profile/types';
 import { generateQuestionnaire } from '@/lib/risk-profile/generator';
 import { calculateRiskProfile } from '@/lib/risk-profile/scoring';
@@ -15,6 +16,8 @@ import ProgressBar from '@/components/risk-profile/ProgressBar';
 import ResultsDashboard from '@/components/risk-profile/ResultsDashboard';
 
 type Phase = 'intro' | 'intake' | 'questionnaire' | 'results';
+
+const TOTAL_QUESTIONS = 15;
 
 function IntroScreen({ onContinue }: { onContinue: () => void }) {
   return (
@@ -39,8 +42,8 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
         <div className="space-y-3 text-left max-w-sm mx-auto mb-8">
           {[
             { step: '1', label: 'Quick Profile', desc: 'Basic financial picture and goals' },
-            { step: '2', label: 'Risk Assessment', desc: '15 adaptive questions tailored to your wealth tier' },
-            { step: '3', label: 'Your Risk Blueprint', desc: 'Multi-axis profile, portfolio options, and backtests' },
+            { step: '2', label: 'Risk Assessment', desc: '15 AI-adaptive questions tailored to you' },
+            { step: '3', label: 'Your Risk Blueprint', desc: 'AI-powered profile, portfolio options, and backtests' },
           ].map(({ step, label, desc }) => (
             <div key={step} className="flex items-start gap-3">
               <div className="flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold">
@@ -62,8 +65,24 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
         </button>
 
         <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
-          FINRA 2111 / Reg BI / CFA Institute compliant. Multi-axis scoring across risk tolerance, capacity, behavioral biases, and complexity preference. Results include 7-band portfolio mapping with 32-year backtesting.
+          FINRA 2111 / Reg BI / CFA Institute compliant. AI-powered adaptive questioning with multi-axis scoring across risk tolerance, capacity, behavioral biases, and complexity preference. Results include 7-band portfolio mapping with 32-year backtesting.
         </p>
+      </div>
+    </div>
+  );
+}
+
+function LoadingSpinner({ message }: { message: string }) {
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="card p-8 text-center">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-teal-50 mb-4">
+          <svg className="animate-spin h-6 w-6 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+        </div>
+        <p className="text-sm text-gray-600">{message}</p>
       </div>
     </div>
   );
@@ -77,16 +96,142 @@ export default function RiskProfilePage() {
   const [responses, setResponses] = useState<Map<number, number>>(new Map());
   const [riskProfile, setRiskProfile] = useState<RiskProfile | null>(null);
 
+  // AI state
+  const [useAI, setUseAI] = useState<boolean | null>(null); // null = not checked yet
+  const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+  const [aiMode, setAiMode] = useState<'ai' | 'static'>('static');
+
+  // Static fallback questions (pre-generated when AI fails)
+  const staticQuestionsRef = useRef<RiskQuestion[]>([]);
+
   const answeredCount = useMemo(() => responses.size, [responses]);
 
-  const handleIntakeComplete = useCallback((clientIntake: ClientIntake) => {
+  // Check if AI is available on mount
+  useEffect(() => {
+    fetch('/api/risk-profile/status')
+      .then(res => res.json())
+      .then(data => setUseAI(data.aiEnabled ?? false))
+      .catch(() => setUseAI(false));
+  }, []);
+
+  // Build response array helper
+  const buildResponseArray = useCallback((): QuestionResponse[] => {
+    return Array.from(responses.entries()).map(([questionId, answerValue]) => ({
+      questionId,
+      answerValue,
+    }));
+  }, [responses]);
+
+  // Fetch the next AI question
+  const fetchAIQuestion = useCallback(async (
+    clientIntake: ClientIntake,
+    prevQuestions: RiskQuestion[],
+    prevResponses: QuestionResponse[],
+    questionNum: number,
+  ): Promise<RiskQuestion | null> => {
+    try {
+      const res = await fetch('/api/risk-profile/next-question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          intake: clientIntake,
+          previousQuestions: prevQuestions,
+          previousResponses: prevResponses,
+          questionNumber: questionNum,
+          totalQuestions: TOTAL_QUESTIONS,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        if (data.fallback) return null;
+        return null;
+      }
+
+      const data = await res.json();
+      return data.question ?? null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  // Generate the AI profile
+  const fetchAIProfile = useCallback(async (
+    clientIntake: ClientIntake,
+    qs: RiskQuestion[],
+    resps: QuestionResponse[],
+  ): Promise<RiskProfile | null> => {
+    try {
+      const res = await fetch('/api/risk-profile/generate-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          intake: clientIntake,
+          questions: qs,
+          responses: resps,
+        }),
+      });
+
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      return data.profile ?? null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  // Fall back to static: generate all remaining questions from the bank
+  const fallbackToStatic = useCallback((clientIntake: ClientIntake, existingQuestions: RiskQuestion[]) => {
+    setAiMode('static');
+    if (staticQuestionsRef.current.length === 0) {
+      staticQuestionsRef.current = generateQuestionnaire(clientIntake.wealthTier);
+    }
+
+    const remaining = TOTAL_QUESTIONS - existingQuestions.length;
+    if (remaining > 0) {
+      // Pick static questions that haven't been used (by ID)
+      const usedIds = new Set(existingQuestions.map(q => q.id));
+      const available = staticQuestionsRef.current.filter(q => !usedIds.has(q.id));
+      const fill = available.slice(0, remaining);
+      return [...existingQuestions, ...fill];
+    }
+    return existingQuestions;
+  }, []);
+
+  // Handle intake complete → start questioning
+  const handleIntakeComplete = useCallback(async (clientIntake: ClientIntake) => {
     setIntake(clientIntake);
-    const qs = generateQuestionnaire(clientIntake.wealthTier);
-    setQuestions(qs);
     setCurrentIndex(0);
     setResponses(new Map());
     setPhase('questionnaire');
-  }, []);
+
+    // Pre-generate static questions as fallback
+    staticQuestionsRef.current = generateQuestionnaire(clientIntake.wealthTier);
+
+    if (useAI) {
+      // Try AI for the first question
+      setIsLoadingQuestion(true);
+      setAiMode('ai');
+
+      const aiQuestion = await fetchAIQuestion(clientIntake, [], [], 1);
+
+      if (aiQuestion) {
+        setQuestions([aiQuestion]);
+      } else {
+        // AI failed — fall back to full static set
+        setQuestions(staticQuestionsRef.current);
+        setAiMode('static');
+      }
+
+      setIsLoadingQuestion(false);
+    } else {
+      // No AI — use static questions
+      setQuestions(staticQuestionsRef.current);
+      setAiMode('static');
+    }
+  }, [useAI, fetchAIQuestion]);
 
   const handleSelect = useCallback((value: number) => {
     setResponses(prev => {
@@ -96,11 +241,33 @@ export default function RiskProfilePage() {
     });
   }, [questions, currentIndex]);
 
-  const handleNext = useCallback(() => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(i => i + 1);
+  // Handle next: in AI mode, fetch the next adaptive question
+  const handleNext = useCallback(async () => {
+    if (currentIndex >= questions.length - 1 && aiMode === 'static') return;
+
+    const nextIdx = currentIndex + 1;
+
+    if (aiMode === 'ai' && nextIdx >= questions.length && nextIdx < TOTAL_QUESTIONS && intake) {
+      // Need to fetch the next AI question
+      setIsLoadingQuestion(true);
+
+      const responseArray = buildResponseArray();
+      const aiQuestion = await fetchAIQuestion(intake, questions, responseArray, nextIdx + 1);
+
+      if (aiQuestion) {
+        setQuestions(prev => [...prev, aiQuestion]);
+      } else {
+        // AI failed mid-flow — fill remaining with static
+        const filled = fallbackToStatic(intake, questions);
+        setQuestions(filled);
+      }
+
+      setIsLoadingQuestion(false);
+      setCurrentIndex(nextIdx);
+    } else {
+      setCurrentIndex(nextIdx);
     }
-  }, [currentIndex, questions.length]);
+  }, [currentIndex, questions, aiMode, intake, buildResponseArray, fetchAIQuestion, fallbackToStatic]);
 
   const handlePrev = useCallback(() => {
     if (currentIndex > 0) {
@@ -108,16 +275,32 @@ export default function RiskProfilePage() {
     }
   }, [currentIndex]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (!intake) return;
-    const responseArray = Array.from(responses.entries()).map(([questionId, answerValue]) => ({
-      questionId,
-      answerValue,
-    }));
+
+    const responseArray = buildResponseArray();
+
+    if (aiMode === 'ai') {
+      // Try AI profile generation
+      setIsLoadingProfile(true);
+      const aiProfile = await fetchAIProfile(intake, questions, responseArray);
+
+      if (aiProfile) {
+        setRiskProfile(aiProfile);
+        setPhase('results');
+        setIsLoadingProfile(false);
+        return;
+      }
+
+      // AI failed — fall back to static scoring
+      setIsLoadingProfile(false);
+    }
+
+    // Static fallback scoring
     const result = calculateRiskProfile(responseArray, intake);
     setRiskProfile(result);
     setPhase('results');
-  }, [responses, intake]);
+  }, [responses, intake, aiMode, questions, buildResponseArray, fetchAIProfile]);
 
   const handleRestart = useCallback(() => {
     setPhase('intro');
@@ -126,11 +309,17 @@ export default function RiskProfilePage() {
     setCurrentIndex(0);
     setResponses(new Map());
     setRiskProfile(null);
+    setAiMode('static');
+    staticQuestionsRef.current = [];
   }, []);
 
   const currentQuestion = questions[currentIndex] ?? null;
   const currentAnswer = currentQuestion ? (responses.get(currentQuestion.id) ?? null) : null;
-  const allAnswered = answeredCount === questions.length && questions.length > 0;
+  const effectiveTotal = aiMode === 'ai' ? TOTAL_QUESTIONS : questions.length;
+  const allAnswered = answeredCount >= effectiveTotal && effectiveTotal > 0;
+  const isLastQuestion = aiMode === 'ai'
+    ? (currentIndex === TOTAL_QUESTIONS - 1)
+    : (currentIndex === questions.length - 1);
 
   // Phase label for header
   const phaseLabel = phase === 'intro' ? '' : phase === 'intake' ? 'Client Profile' : phase === 'questionnaire' ? 'Risk Assessment' : 'Results';
@@ -157,7 +346,14 @@ export default function RiskProfilePage() {
           </div>
           <div className="flex items-center gap-3 text-xs text-gray-400">
             {phase === 'questionnaire' && (
-              <span>{answeredCount}/{questions.length} answered</span>
+              <>
+                <span>{answeredCount}/{effectiveTotal} answered</span>
+                {aiMode === 'ai' && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-teal-50 text-teal-600 text-[10px] font-medium">
+                    AI
+                  </span>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -175,87 +371,121 @@ export default function RiskProfilePage() {
         )}
 
         {/* Questionnaire Phase */}
-        {phase === 'questionnaire' && currentQuestion && (
-          <div className="space-y-6">
-            <div className="max-w-2xl mx-auto">
-              <ProgressBar current={answeredCount} total={questions.length} />
-            </div>
+        {phase === 'questionnaire' && (
+          <>
+            {/* Loading state for AI question generation */}
+            {isLoadingQuestion && !currentQuestion && (
+              <LoadingSpinner message="Generating your first adaptive question..." />
+            )}
 
-            <QuestionCard
-              question={currentQuestion}
-              selectedValue={currentAnswer}
-              onSelect={handleSelect}
-              questionNumber={currentIndex + 1}
-              totalQuestions={questions.length}
-            />
+            {/* Loading state for AI profile generation */}
+            {isLoadingProfile && (
+              <LoadingSpinner message="AI is analyzing your responses and generating your risk profile..." />
+            )}
 
-            {/* Navigation */}
-            <div className="max-w-2xl mx-auto flex items-center justify-between">
-              <button
-                onClick={handlePrev}
-                disabled={currentIndex === 0}
-                className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                Previous
-              </button>
+            {/* Question display */}
+            {!isLoadingProfile && currentQuestion && (
+              <div className="space-y-6">
+                <div className="max-w-2xl mx-auto">
+                  <ProgressBar current={answeredCount} total={effectiveTotal} />
+                </div>
 
-              <div className="flex items-center gap-2">
-                {questions.map((q, i) => (
+                <QuestionCard
+                  question={currentQuestion}
+                  selectedValue={currentAnswer}
+                  onSelect={handleSelect}
+                  questionNumber={currentIndex + 1}
+                  totalQuestions={effectiveTotal}
+                />
+
+                {/* Navigation */}
+                <div className="max-w-2xl mx-auto flex items-center justify-between">
                   <button
-                    key={q.id}
-                    onClick={() => setCurrentIndex(i)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      i === currentIndex
-                        ? 'bg-blue-500 w-3 h-3'
-                        : responses.has(q.id)
-                          ? 'bg-blue-300'
-                          : 'bg-gray-300'
-                    }`}
-                    aria-label={`Go to question ${i + 1}`}
-                  />
-                ))}
-              </div>
+                    onClick={handlePrev}
+                    disabled={currentIndex === 0 || isLoadingQuestion}
+                    className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    Previous
+                  </button>
 
-              {currentIndex < questions.length - 1 ? (
-                <button
-                  onClick={handleNext}
-                  disabled={currentAnswer === null}
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
-                >
-                  Next
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </button>
-              ) : (
-                <button
-                  onClick={handleSubmit}
-                  disabled={!allAnswered}
-                  className="px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Submit Assessment
-                </button>
-              )}
-            </div>
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: effectiveTotal }, (_, i) => {
+                      const q = questions[i];
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => i < questions.length && setCurrentIndex(i)}
+                          disabled={i >= questions.length}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            i === currentIndex
+                              ? 'bg-blue-500 w-3 h-3'
+                              : q && responses.has(q.id)
+                                ? 'bg-blue-300'
+                                : i < questions.length
+                                  ? 'bg-gray-300'
+                                  : 'bg-gray-200'
+                          }`}
+                          aria-label={`Go to question ${i + 1}`}
+                        />
+                      );
+                    })}
+                  </div>
 
-            {currentAnswer !== null && currentIndex < questions.length - 1 && (
-              <div className="text-center">
-                <button
-                  onClick={() => {
-                    for (let i = currentIndex + 1; i < questions.length; i++) {
-                      if (!responses.has(questions[i].id)) {
-                        setCurrentIndex(i);
-                        return;
-                      }
-                    }
-                    setCurrentIndex(questions.length - 1);
-                  }}
-                  className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  Jump to next unanswered
-                </button>
+                  {!isLastQuestion ? (
+                    <button
+                      onClick={handleNext}
+                      disabled={currentAnswer === null || isLoadingQuestion}
+                      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                    >
+                      {isLoadingQuestion ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Thinking...
+                        </>
+                      ) : (
+                        <>
+                          Next
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!allAnswered || isLoadingProfile}
+                      className="px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 rounded-lg hover:from-teal-600 hover:to-emerald-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {isLoadingProfile ? 'Analyzing...' : 'Submit Assessment'}
+                    </button>
+                  )}
+                </div>
+
+                {/* Jump to next unanswered (static mode only) */}
+                {aiMode === 'static' && currentAnswer !== null && !isLastQuestion && (
+                  <div className="text-center">
+                    <button
+                      onClick={() => {
+                        for (let i = currentIndex + 1; i < questions.length; i++) {
+                          if (!responses.has(questions[i].id)) {
+                            setCurrentIndex(i);
+                            return;
+                          }
+                        }
+                        setCurrentIndex(questions.length - 1);
+                      }}
+                      className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      Jump to next unanswered
+                    </button>
+                  </div>
+                )}
               </div>
             )}
-          </div>
+          </>
         )}
 
         {/* Results Phase */}
