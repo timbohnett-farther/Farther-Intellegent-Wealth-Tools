@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { RiskQuestion, CATEGORY_LABELS, Category, AXIS_LABELS, QuestionAxis } from '@/lib/risk-profile/types';
+import { RiskQuestion, CATEGORY_LABELS, Category, AXIS_LABELS, QuestionAxis, CATEGORY_TO_AXIS } from '@/lib/risk-profile/types';
 
 interface QuestionCardProps {
   question: RiskQuestion;
@@ -19,7 +19,8 @@ export default function QuestionCard({
   totalQuestions,
 }: QuestionCardProps) {
   const categoryLabel = CATEGORY_LABELS[question.category as Category] ?? question.category;
-  const axisLabel = AXIS_LABELS[question.axis as QuestionAxis] ?? question.axis;
+  const resolvedAxis = question.axis ?? CATEGORY_TO_AXIS[question.category as Category];
+  const axisLabel = resolvedAxis ? (AXIS_LABELS[resolvedAxis] ?? resolvedAxis) : '';
 
   return (
     <div className="card p-6 sm:p-8 max-w-2xl mx-auto">
@@ -29,9 +30,11 @@ export default function QuestionCard({
           <span className="inline-block px-2 py-0.5 rounded-md bg-blue-50 text-[11px] font-semibold text-blue-600 uppercase tracking-wide">
             {categoryLabel}
           </span>
-          <span className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-[10px] font-medium text-gray-500">
-            {axisLabel}
-          </span>
+          {axisLabel && (
+            <span className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-[10px] font-medium text-gray-500">
+              {axisLabel}
+            </span>
+          )}
         </div>
         <span className="text-xs text-gray-400">
           {questionNumber} of {totalQuestions}

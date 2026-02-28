@@ -49,8 +49,7 @@ function resolveAxis(question: RiskQuestion): QuestionAxis | undefined {
   }
 
   // Legacy fallback: map old riskDimension names to new axes
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const legacyDim = (question as unknown as Record<string, unknown>).riskDimension as string | undefined;
+  const legacyDim = question.riskDimension;
   if (legacyDim) {
     const legacyMap: Record<string, QuestionAxis> = {
       time_horizon_score: 'capacity',

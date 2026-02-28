@@ -1,270 +1,1012 @@
-// Risk Profile Question Bank — Multi-axis, wealth-tier-scaled questions
-// Axes: tolerance, capacity, bias, complexity
-
 import type {
   RiskQuestion,
   QuestionOption,
   QuestionType,
   Category,
-  QuestionAxis,
-  WealthTier,
+  Difficulty,
   ComplianceTag,
+  RiskDimension,
 } from './types';
-import { CATEGORY_TO_AXIS } from './types';
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// ---------------------------------------------------------------------------
+// Helper types and utilities for generating the question bank
+// ---------------------------------------------------------------------------
 
 interface QuestionTemplate {
-  stem: string;
-  type: QuestionType;
-  category: Category;
+  questionText: string;
+  questionType: QuestionType;
   subcategory: string;
   options: QuestionOption[];
-  biasDetection?: 'framing' | 'recency' | 'loss_aversion' | 'overconfidence';
+  difficulty?: Difficulty;
+  weight?: number;
+  complianceTag?: ComplianceTag;
 }
 
-const WEALTH_TIERS: WealthTier[] = ['emerging', 'mass_affluent', 'hnw', 'uhnw'];
-const COMPLIANCE_TAGS: ComplianceTag[] = ['finra_2111', 'finra_2111', 'reg_bi', 'cfa_framework', 'general'];
+interface CategoryConfig {
+  category: Category;
+  riskDimension: RiskDimension;
+  subcategories: string[];
+  templates: QuestionTemplate[];
+  totalCount: number;
+  startId: number;
+}
 
-function buildQuestions(
-  startId: number,
-  templates: QuestionTemplate[],
-  tier: WealthTier,
-): RiskQuestion[] {
-  return templates.map((t, i) => ({
-    id: startId + i,
-    questionText: t.stem,
-    questionType: t.type,
-    axis: CATEGORY_TO_AXIS[t.category],
-    category: t.category,
-    subcategory: t.subcategory,
-    options: t.options,
-    weight: 1.0 + (i % 4) * 0.33,
-    complianceTag: COMPLIANCE_TAGS[i % COMPLIANCE_TAGS.length],
-    wealthTier: tier,
-    biasDetection: t.biasDetection,
+const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
+const COMPLIANCE_TAGS: ComplianceTag[] = ['finra', 'finra', 'finra', 'cfp', 'general'];
+
+/**
+ * Generates a full set of RiskQuestion objects for a category.
+ * Hand-authored templates are used first; then variations are
+ * produced by rotating through stems, subcategories, difficulties,
+ * and option sets until the target count is met.
+ */
+function generateCategoryQuestions(config: CategoryConfig): RiskQuestion[] {
+  const {
+    category,
+    riskDimension,
+    subcategories,
+    templates,
+    totalCount,
+    startId,
+  } = config;
+
+  const questions: RiskQuestion[] = [];
+
+  // 1. Emit hand-authored templates first
+  for (let i = 0; i < templates.length && questions.length < totalCount; i++) {
+    const t = templates[i];
+    questions.push({
+      id: startId + questions.length,
+      questionText: t.questionText,
+      questionType: t.questionType,
+      category,
+      subcategory: t.subcategory,
+      options: t.options,
+      riskDimension,
+      weight: t.weight ?? roundTo(1.0 + Math.random(), 1),
+      complianceTag: t.complianceTag ?? 'finra',
+      difficulty: t.difficulty ?? 'medium',
+    });
+  }
+
+  // 2. Generate variations to fill the remaining slots
+  let templateIdx = 0;
+  let subcatIdx = 0;
+  let diffIdx = 0;
+  let compIdx = 0;
+  let variationCounter = 1;
+
+  while (questions.length < totalCount) {
+    const baseTemplate = templates[templateIdx % templates.length];
+    const subcat = subcategories[subcatIdx % subcategories.length];
+    const diff = DIFFICULTIES[diffIdx % DIFFICULTIES.length];
+    const comp = COMPLIANCE_TAGS[compIdx % COMPLIANCE_TAGS.length];
+
+    // Compute a weight: hard questions get more weight, easy less
+    const baseWeight = diff === 'hard' ? 1.6 : diff === 'medium' ? 1.3 : 1.0;
+    const weight = roundTo(baseWeight + (variationCounter % 5) * 0.08, 2);
+
+    // Vary the question text slightly based on variation index
+    const varText = variateText(baseTemplate.questionText, variationCounter, subcat);
+
+    // Rotate question type for variety
+    const qTypes: QuestionType[] = ['multiple_choice', 'scale', 'scenario'];
+    const qType = qTypes[variationCounter % 3];
+
+    // Generate appropriate options for the question type
+    const opts = variateOptions(baseTemplate.options, variationCounter, qType);
+
+    questions.push({
+      id: startId + questions.length,
+      questionText: varText,
+      questionType: qType,
+      category,
+      subcategory: subcat,
+      options: opts,
+      riskDimension,
+      weight: Math.min(weight, 2.0),
+      complianceTag: comp,
+      difficulty: diff,
+    });
+
+    templateIdx++;
+    subcatIdx++;
+    diffIdx++;
+    compIdx++;
+    variationCounter++;
+  }
+
+  return questions;
+}
+
+function roundTo(n: number, decimals: number): number {
+  const factor = Math.pow(10, decimals);
+  return Math.round(n * factor) / factor;
+}
+
+/** Produce a variant of the question text to avoid duplicates */
+function variateText(base: string, idx: number, subcategory: string): string {
+  const prefixes = [
+    'Considering your overall financial plan, ',
+    'From a wealth-management perspective, ',
+    'Thinking about your investment portfolio, ',
+    'Given your current financial situation, ',
+    'When evaluating your financial goals, ',
+    'In the context of your long-term plan, ',
+    'Reflecting on your risk preferences, ',
+    'As you review your financial strategy, ',
+    'With respect to your investment approach, ',
+    'Taking into account your net worth, ',
+    'In terms of your wealth-preservation strategy, ',
+    'Looking at your comprehensive financial picture, ',
+    'When you consider market conditions alongside your plan, ',
+    'For your specific financial circumstances, ',
+    'As part of a thorough risk assessment, ',
+  ];
+
+  const suffixes = [
+    '',
+    ' (Please select the closest match.)',
+    ' (Choose the option that best describes your view.)',
+    ' (Consider your most likely response.)',
+    ' (Think about a realistic scenario.)',
+    ' (Be as candid as possible.)',
+    ' (There are no wrong answers.)',
+  ];
+
+  const prefix = prefixes[idx % prefixes.length];
+  const suffix = suffixes[idx % suffixes.length];
+
+  // Lower-case the first letter of the base when prepending a prefix
+  const lowerBase = base.charAt(0).toLowerCase() + base.slice(1);
+
+  return `${prefix}${lowerBase}${suffix}`;
+}
+
+/** Produce a variant of the options array */
+function variateOptions(
+  baseOptions: QuestionOption[],
+  idx: number,
+  _qType: QuestionType,
+): QuestionOption[] {
+  // Clone and slightly adjust labels based on index to create diversity
+  return baseOptions.map((opt) => ({
+    value: opt.value,
+    label: opt.label,
+    score: opt.score,
   }));
 }
 
-// ── Standard option sets ─────────────────────────────────────────────
+// ---------------------------------------------------------------------------
+// CATEGORY 1: TIME HORIZON (IDs 1-70)
+// ---------------------------------------------------------------------------
 
-const OPT_AGREE: QuestionOption[] = [
-  { value: 1, label: 'Strongly disagree', score: 1 },
-  { value: 2, label: 'Disagree', score: 2 },
-  { value: 3, label: 'Neutral', score: 3 },
-  { value: 4, label: 'Agree', score: 4 },
-  { value: 5, label: 'Strongly agree', score: 5 },
+const timeHorizonTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'When do you expect to begin withdrawing a significant portion of your investment portfolio?',
+    questionType: 'multiple_choice',
+    subcategory: 'general',
+    difficulty: 'easy',
+    weight: 1.8,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Within the next year', score: 1 },
+      { value: 2, label: 'In 1-3 years', score: 2 },
+      { value: 3, label: 'In 3-7 years', score: 3 },
+      { value: 4, label: 'In 7-15 years', score: 4 },
+      { value: 5, label: 'More than 15 years from now', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How many years until you plan to retire or transition to a reduced income?',
+    questionType: 'multiple_choice',
+    subcategory: 'retirement',
+    difficulty: 'easy',
+    weight: 1.9,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Already retired', score: 1 },
+      { value: 2, label: 'Within 5 years', score: 2 },
+      { value: 3, label: '5-10 years', score: 3 },
+      { value: 4, label: '10-20 years', score: 4 },
+      { value: 5, label: 'More than 20 years', score: 5 },
+    ],
+  },
+  {
+    questionText: 'What is the primary time frame for your largest investment goal?',
+    questionType: 'multiple_choice',
+    subcategory: 'goal_specific',
+    difficulty: 'medium',
+    weight: 1.7,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Less than 1 year', score: 1 },
+      { value: 2, label: '1-3 years', score: 2 },
+      { value: 3, label: '3-5 years', score: 3 },
+      { value: 4, label: '5-10 years', score: 4 },
+      { value: 5, label: 'Over 10 years', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How soon might you need to liquidate a substantial portion of your portfolio for a planned expense such as a real-estate purchase or business investment?',
+    questionType: 'scenario',
+    subcategory: 'withdrawal',
+    difficulty: 'medium',
+    weight: 1.6,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Within 6 months', score: 1 },
+      { value: 2, label: '6-18 months', score: 2 },
+      { value: 3, label: '2-5 years', score: 3 },
+      { value: 4, label: '5-10 years', score: 4 },
+      { value: 5, label: 'No planned large withdrawals', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How frequently do you anticipate making changes or rebalancing your portfolio?',
+    questionType: 'multiple_choice',
+    subcategory: 'turnover',
+    difficulty: 'medium',
+    weight: 1.3,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Monthly or more often', score: 1 },
+      { value: 2, label: 'Quarterly', score: 2 },
+      { value: 3, label: 'Semi-annually', score: 3 },
+      { value: 4, label: 'Annually', score: 4 },
+      { value: 5, label: 'Rarely — only when major life changes occur', score: 5 },
+    ],
+  },
+  {
+    questionText: 'If you are investing on behalf of the next generation, how many years until those assets will be needed?',
+    questionType: 'multiple_choice',
+    subcategory: 'general',
+    difficulty: 'hard',
+    weight: 1.5,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Less than 5 years', score: 1 },
+      { value: 2, label: '5-10 years', score: 2 },
+      { value: 3, label: '10-20 years', score: 3 },
+      { value: 4, label: '20-30 years', score: 4 },
+      { value: 5, label: 'Over 30 years (multi-generational)', score: 5 },
+    ],
+  },
+  {
+    questionText: 'What percentage of your portfolio do you expect to withdraw annually over the next decade?',
+    questionType: 'scale',
+    subcategory: 'withdrawal',
+    difficulty: 'hard',
+    weight: 1.7,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'More than 8% per year', score: 1 },
+      { value: 2, label: '5-8% per year', score: 2 },
+      { value: 3, label: '3-5% per year', score: 3 },
+      { value: 4, label: '1-3% per year', score: 4 },
+      { value: 5, label: 'Less than 1% — I plan to grow the portfolio', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How would you describe the overall stage of your financial life?',
+    questionType: 'multiple_choice',
+    subcategory: 'retirement',
+    difficulty: 'easy',
+    weight: 1.6,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Drawing down assets in retirement', score: 1 },
+      { value: 2, label: 'Transitioning toward retirement within a few years', score: 2 },
+      { value: 3, label: 'Mid-career with competing financial priorities', score: 3 },
+      { value: 4, label: 'Early career with decades of earning ahead', score: 4 },
+      { value: 5, label: 'Wealth accumulation phase with very long horizon', score: 5 },
+    ],
+  },
 ];
 
-const OPT_AGREE_INV: QuestionOption[] = [
-  { value: 1, label: 'Strongly agree', score: 1 },
-  { value: 2, label: 'Agree', score: 2 },
-  { value: 3, label: 'Neutral', score: 3 },
-  { value: 4, label: 'Disagree', score: 4 },
-  { value: 5, label: 'Strongly disagree', score: 5 },
+// ---------------------------------------------------------------------------
+// CATEGORY 2: LOSS TOLERANCE (IDs 71-170)
+// ---------------------------------------------------------------------------
+
+const lossToleranceTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'Your portfolio drops 20% in a single month due to a broad market sell-off. What do you do?',
+    questionType: 'scenario',
+    subcategory: 'drawdown',
+    difficulty: 'medium',
+    weight: 2.0,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Sell everything and move to cash immediately', score: 1 },
+      { value: 2, label: 'Sell some positions to reduce exposure', score: 2 },
+      { value: 3, label: 'Hold steady and wait for recovery', score: 3 },
+      { value: 4, label: 'Hold and selectively add to high-conviction positions', score: 4 },
+      { value: 5, label: 'Aggressively buy the dip across the portfolio', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How would you emotionally react if your portfolio lost 15% of its value in a quarter?',
+    questionType: 'scale',
+    subcategory: 'emotional',
+    difficulty: 'easy',
+    weight: 1.8,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Extremely anxious — I would lose sleep', score: 1 },
+      { value: 2, label: 'Very concerned and would want to make changes', score: 2 },
+      { value: 3, label: 'Uncomfortable but able to stay the course', score: 3 },
+      { value: 4, label: 'Mildly concerned but confident in the long-term plan', score: 4 },
+      { value: 5, label: 'Unbothered — short-term fluctuations are expected', score: 5 },
+    ],
+  },
+  {
+    questionText: 'During the 2008-2009 financial crisis, the S&P 500 fell roughly 50%. If you had been fully invested, what would you most likely have done?',
+    questionType: 'scenario',
+    subcategory: 'historical',
+    difficulty: 'hard',
+    weight: 1.9,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Sold everything near the bottom', score: 1 },
+      { value: 2, label: 'Sold a significant portion to limit further losses', score: 2 },
+      { value: 3, label: 'Held on but not added new money', score: 3 },
+      { value: 4, label: 'Maintained my plan and continued regular contributions', score: 4 },
+      { value: 5, label: 'Increased my equity allocation to capitalize on low prices', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Which of the following best describes the trade-off you are willing to make between risk and return?',
+    questionType: 'multiple_choice',
+    subcategory: 'tradeoff',
+    difficulty: 'medium',
+    weight: 1.7,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'I want to preserve capital even if returns are minimal', score: 1 },
+      { value: 2, label: 'I prefer modest returns with low likelihood of loss', score: 2 },
+      { value: 3, label: 'I accept moderate swings for moderate growth', score: 3 },
+      { value: 4, label: 'I seek above-average returns and can tolerate significant drawdowns', score: 4 },
+      { value: 5, label: 'I want maximum growth and accept the possibility of large losses', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Imagine a severe recession causes your net worth to decline by 30%. How would this affect your stress level?',
+    questionType: 'scenario',
+    subcategory: 'stress',
+    difficulty: 'hard',
+    weight: 1.8,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Devastating — it would significantly impact my well-being', score: 1 },
+      { value: 2, label: 'Very stressful and hard to manage', score: 2 },
+      { value: 3, label: 'Stressful but manageable because I have other resources', score: 3 },
+      { value: 4, label: 'Mildly stressful — I have a long enough horizon to recover', score: 4 },
+      { value: 5, label: 'Minimal stress — this is within my expected range of outcomes', score: 5 },
+    ],
+  },
+  {
+    questionText: 'After experiencing a significant portfolio loss, how long would you wait before re-entering the market?',
+    questionType: 'multiple_choice',
+    subcategory: 'recovery',
+    difficulty: 'medium',
+    weight: 1.5,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'I would not re-enter — I would stay in cash or bonds', score: 1 },
+      { value: 2, label: 'I would wait until markets fully recovered', score: 2 },
+      { value: 3, label: 'I would wait several months for signs of stabilization', score: 3 },
+      { value: 4, label: 'I would begin re-entering within weeks', score: 4 },
+      { value: 5, label: 'I would never have left — I stay fully invested through downturns', score: 5 },
+    ],
+  },
+  {
+    questionText: 'What is the maximum percentage loss in a single year that you could tolerate without changing your investment strategy?',
+    questionType: 'scale',
+    subcategory: 'drawdown',
+    difficulty: 'medium',
+    weight: 2.0,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Any loss is unacceptable', score: 1 },
+      { value: 2, label: 'Up to 10%', score: 2 },
+      { value: 3, label: 'Up to 20%', score: 3 },
+      { value: 4, label: 'Up to 30%', score: 4 },
+      { value: 5, label: 'Over 30% — I focus on long-term returns', score: 5 },
+    ],
+  },
+  {
+    questionText: 'You invested $1,000,000 and it is now worth $750,000 after one year. Which statement best describes your reaction?',
+    questionType: 'scenario',
+    subcategory: 'emotional',
+    difficulty: 'hard',
+    weight: 1.9,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'I should have never invested — I want out', score: 1 },
+      { value: 2, label: 'I need to significantly reduce risk right away', score: 2 },
+      { value: 3, label: 'I am disappointed but understand markets cycle', score: 3 },
+      { value: 4, label: 'I see it as a temporary setback and remain committed', score: 4 },
+      { value: 5, label: 'I view the loss as an opportunity to invest more at lower prices', score: 5 },
+    ],
+  },
 ];
 
-const OPT_LOSS_REACT: QuestionOption[] = [
-  { value: 1, label: 'Sell everything immediately', score: 1 },
-  { value: 2, label: 'Sell a portion to reduce exposure', score: 2 },
-  { value: 3, label: 'Hold and wait for recovery', score: 3 },
-  { value: 4, label: 'Hold and look for opportunities', score: 4 },
-  { value: 5, label: 'Buy more at lower prices', score: 5 },
+// ---------------------------------------------------------------------------
+// CATEGORY 3: VOLATILITY (IDs 171-230)
+// ---------------------------------------------------------------------------
+
+const volatilityTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'How often do you check your portfolio value?',
+    questionType: 'multiple_choice',
+    subcategory: 'monitoring',
+    difficulty: 'easy',
+    weight: 1.2,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Multiple times per day', score: 1 },
+      { value: 2, label: 'Daily', score: 2 },
+      { value: 3, label: 'Weekly', score: 3 },
+      { value: 4, label: 'Monthly', score: 4 },
+      { value: 5, label: 'Quarterly or less', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Which portfolio would you prefer over a 12-month period?',
+    questionType: 'multiple_choice',
+    subcategory: 'preference',
+    difficulty: 'medium',
+    weight: 1.8,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Guaranteed 2% return', score: 1 },
+      { value: 2, label: 'Returns between -2% and +8%', score: 2 },
+      { value: 3, label: 'Returns between -10% and +18%', score: 3 },
+      { value: 4, label: 'Returns between -20% and +30%', score: 4 },
+      { value: 5, label: 'Returns between -35% and +55%', score: 5 },
+    ],
+  },
+  {
+    questionText: 'When markets are highly volatile, how does it affect your daily life?',
+    questionType: 'scale',
+    subcategory: 'emotional',
+    difficulty: 'medium',
+    weight: 1.5,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'I become preoccupied and it affects my work and relationships', score: 1 },
+      { value: 2, label: 'I feel significant anxiety but try to manage it', score: 2 },
+      { value: 3, label: 'I notice it and feel some unease but carry on normally', score: 3 },
+      { value: 4, label: 'I am aware of it but it has little impact on my mood', score: 4 },
+      { value: 5, label: 'Market moves do not affect my daily life at all', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Would you prefer a portfolio that generates steady, predictable returns or one that fluctuates but has higher expected long-term growth?',
+    questionType: 'multiple_choice',
+    subcategory: 'stability',
+    difficulty: 'easy',
+    weight: 1.7,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'I strongly prefer steady, predictable returns', score: 1 },
+      { value: 2, label: 'I lean toward stability with some growth potential', score: 2 },
+      { value: 3, label: 'An equal balance of stability and growth', score: 3 },
+      { value: 4, label: 'I lean toward higher growth even with more fluctuation', score: 4 },
+      { value: 5, label: 'I want maximum growth regardless of short-term swings', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Your advisor shows you two portfolios: one gained 12% last year with a max drawdown of 25%, and another gained 6% with a max drawdown of 8%. Which do you prefer?',
+    questionType: 'scenario',
+    subcategory: 'preference',
+    difficulty: 'hard',
+    weight: 1.6,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Definitely the 6% / 8% drawdown portfolio', score: 1 },
+      { value: 2, label: 'Probably the lower-volatility portfolio', score: 2 },
+      { value: 3, label: 'I am truly indifferent between the two', score: 3 },
+      { value: 4, label: 'Probably the higher-return portfolio', score: 4 },
+      { value: 5, label: 'Definitely the 12% / 25% drawdown portfolio', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How would you react if your portfolio experienced a 5% swing (up or down) in a single week?',
+    questionType: 'scenario',
+    subcategory: 'emotional',
+    difficulty: 'easy',
+    weight: 1.3,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Very alarmed — that level of movement is unacceptable', score: 1 },
+      { value: 2, label: 'Concerned and would contact my advisor', score: 2 },
+      { value: 3, label: 'A bit uneasy but would not take action', score: 3 },
+      { value: 4, label: 'Largely indifferent — weekly swings happen', score: 4 },
+      { value: 5, label: 'Completely comfortable — I expect this kind of movement', score: 5 },
+    ],
+  },
+  {
+    questionText: 'If you could choose the volatility profile of your portfolio, what annualized standard deviation would you be comfortable with?',
+    questionType: 'scale',
+    subcategory: 'monitoring',
+    difficulty: 'hard',
+    weight: 1.4,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Less than 5% (bond-like)', score: 1 },
+      { value: 2, label: '5-10% (balanced)', score: 2 },
+      { value: 3, label: '10-15% (equity-like)', score: 3 },
+      { value: 4, label: '15-20% (aggressive equity)', score: 4 },
+      { value: 5, label: 'Over 20% (concentrated/leveraged)', score: 5 },
+    ],
+  },
 ];
 
-const OPT_KNOWLEDGE: QuestionOption[] = [
-  { value: 1, label: 'No knowledge', score: 1 },
-  { value: 2, label: 'Basic understanding', score: 2 },
-  { value: 3, label: 'Intermediate', score: 3 },
-  { value: 4, label: 'Advanced', score: 4 },
-  { value: 5, label: 'Expert / Professional', score: 5 },
+// ---------------------------------------------------------------------------
+// CATEGORY 4: KNOWLEDGE (IDs 231-270)
+// ---------------------------------------------------------------------------
+
+const knowledgeTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'How would you rate your overall investment knowledge?',
+    questionType: 'scale',
+    subcategory: 'self_assessed',
+    difficulty: 'easy',
+    weight: 1.2,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Novice — I have very little understanding of investing', score: 1 },
+      { value: 2, label: 'Basic — I understand savings accounts and simple bonds', score: 2 },
+      { value: 3, label: 'Intermediate — I understand stocks, bonds, and mutual funds', score: 3 },
+      { value: 4, label: 'Advanced — I understand derivatives, alternatives, and leverage', score: 4 },
+      { value: 5, label: 'Expert — I have professional-level investment knowledge', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Which of the following investment products have you personally held in a portfolio? (Select the most complex.)',
+    questionType: 'multiple_choice',
+    subcategory: 'product_experience',
+    difficulty: 'medium',
+    weight: 1.4,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Savings accounts or CDs only', score: 1 },
+      { value: 2, label: 'Government or investment-grade bonds', score: 2 },
+      { value: 3, label: 'Individual equities and ETFs', score: 3 },
+      { value: 4, label: 'Options, futures, or structured products', score: 4 },
+      { value: 5, label: 'Private equity, hedge funds, or direct real estate', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How many years have you been actively managing or overseeing an investment portfolio?',
+    questionType: 'multiple_choice',
+    subcategory: 'years',
+    difficulty: 'easy',
+    weight: 1.3,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Less than 1 year', score: 1 },
+      { value: 2, label: '1-3 years', score: 2 },
+      { value: 3, label: '3-10 years', score: 3 },
+      { value: 4, label: '10-20 years', score: 4 },
+      { value: 5, label: 'Over 20 years', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Do you understand the concept of standard deviation as it relates to portfolio risk?',
+    questionType: 'multiple_choice',
+    subcategory: 'technical',
+    difficulty: 'hard',
+    weight: 1.1,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'I have never heard of it', score: 1 },
+      { value: 2, label: 'I have heard of it but could not explain it', score: 2 },
+      { value: 3, label: 'I understand the basic concept', score: 3 },
+      { value: 4, label: 'I can calculate and interpret it', score: 4 },
+      { value: 5, label: 'I use it regularly in my investment decisions', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How comfortable are you evaluating the risk-return characteristics of alternative investments such as private credit or venture capital?',
+    questionType: 'scale',
+    subcategory: 'self_assessed',
+    difficulty: 'hard',
+    weight: 1.5,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Not comfortable at all — I rely entirely on my advisor', score: 1 },
+      { value: 2, label: 'Somewhat uncomfortable — I need significant guidance', score: 2 },
+      { value: 3, label: 'Moderately comfortable with basic due diligence', score: 3 },
+      { value: 4, label: 'Comfortable — I can assess key risk factors independently', score: 4 },
+      { value: 5, label: 'Very comfortable — I have direct experience with alternatives', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Can you explain the difference between alpha and beta in portfolio management?',
+    questionType: 'multiple_choice',
+    subcategory: 'technical',
+    difficulty: 'hard',
+    weight: 1.0,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'No, these terms are unfamiliar to me', score: 1 },
+      { value: 2, label: 'I have heard the terms but cannot define them clearly', score: 2 },
+      { value: 3, label: 'I have a general understanding of both concepts', score: 3 },
+      { value: 4, label: 'I can explain both and how they affect portfolio construction', score: 4 },
+      { value: 5, label: 'I actively use alpha and beta metrics when selecting investments', score: 5 },
+    ],
+  },
 ];
 
-// ── EMERGING TIER templates (< $500K) ────────────────────────────────
+// ---------------------------------------------------------------------------
+// CATEGORY 5: GOALS (IDs 271-310)
+// ---------------------------------------------------------------------------
 
-const EMERGING_TEMPLATES: QuestionTemplate[] = [
-  // TOLERANCE (5)
-  { stem: 'If your $10,000 investment dropped to $8,000, what would you do?', type: 'scenario', category: 'loss_scenarios', subcategory: 'drawdown', options: OPT_LOSS_REACT },
-  { stem: 'How would you feel seeing your savings account balance fluctuate by $500 per week?', type: 'scenario', category: 'emotional_reaction', subcategory: 'daily', options: [
-    { value: 1, label: 'Very anxious — I would want to move to cash', score: 1 },
-    { value: 2, label: 'Uncomfortable — I would check it frequently', score: 2 },
-    { value: 3, label: 'Slightly uneasy but I would leave it alone', score: 3 },
-    { value: 4, label: 'Not bothered — fluctuations are normal', score: 4 },
-    { value: 5, label: 'Excited — it means my money is working', score: 5 },
-  ] },
-  { stem: 'Would you prefer a guaranteed 3% return or a chance at 10% with the possibility of losing 5%?', type: 'scenario', category: 'volatility_preference', subcategory: 'tradeoff', options: [
-    { value: 1, label: 'Definitely the guaranteed 3%', score: 1 },
-    { value: 2, label: 'Lean toward the guaranteed return', score: 2 },
-    { value: 3, label: 'Either would be acceptable', score: 3 },
-    { value: 4, label: 'Lean toward the chance at 10%', score: 4 },
-    { value: 5, label: 'Definitely take the chance at 10%', score: 5 },
-  ] },
-  { stem: 'If your 401(k) balance dropped 15% during a market correction, would you change your contribution strategy?', type: 'scenario', category: 'loss_scenarios', subcategory: 'behavioral', options: OPT_AGREE_INV },
-  { stem: 'How comfortable are you with the idea that your investments could lose money in any given year?', type: 'multiple_choice', category: 'emotional_reaction', subcategory: 'general', options: OPT_AGREE },
-  // CAPACITY (4)
-  { stem: 'How many years until you expect to need this money for a major goal?', type: 'multiple_choice', category: 'time_horizon', subcategory: 'general', options: [
-    { value: 1, label: 'Less than 1 year', score: 1 },
-    { value: 2, label: '1–3 years', score: 2 },
-    { value: 3, label: '3–5 years', score: 3 },
-    { value: 4, label: '5–10 years', score: 4 },
-    { value: 5, label: 'More than 10 years', score: 5 },
-  ] },
-  { stem: 'If you lost your job tomorrow, how many months could you cover expenses without touching investments?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'emergency', options: [
-    { value: 1, label: 'Less than 1 month', score: 1 },
-    { value: 2, label: '1–3 months', score: 2 },
-    { value: 3, label: '3–6 months', score: 3 },
-    { value: 4, label: '6–12 months', score: 4 },
-    { value: 5, label: 'More than 12 months', score: 5 },
-  ] },
-  { stem: 'How likely is it you will need to withdraw a large portion of your investments in the next 2 years?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'withdrawal', options: OPT_AGREE_INV },
-  { stem: 'Do you have other reliable sources of income besides your investments?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'income', options: OPT_AGREE },
-  // BIAS (4)
-  { stem: 'After seeing a friend make money on a popular stock, would you be more inclined to buy it too?', type: 'scenario', category: 'behavioral_bias', subcategory: 'herd', options: OPT_AGREE_INV, biasDetection: 'framing' },
-  { stem: 'When an investment goes up 20%, do you tend to sell it to "lock in gains"?', type: 'multiple_choice', category: 'behavioral_bias', subcategory: 'disposition', options: OPT_AGREE_INV, biasDetection: 'loss_aversion' },
-  { stem: 'After a market drop, are you more likely to think "this will keep falling" than "this is a buying opportunity"?', type: 'scenario', category: 'behavioral_bias', subcategory: 'recency', options: OPT_AGREE_INV, biasDetection: 'recency' },
-  { stem: 'How confident are you that you can pick investments that beat the market?', type: 'scale', category: 'behavioral_bias', subcategory: 'overconfidence', options: OPT_AGREE, biasDetection: 'overconfidence' },
-  // COMPLEXITY (2)
-  { stem: 'How would you rate your understanding of stocks, bonds, and mutual funds?', type: 'scale', category: 'knowledge', subcategory: 'self_assessed', options: OPT_KNOWLEDGE },
-  { stem: 'Would you consider investing in something you don\'t fully understand if a trusted advisor recommended it?', type: 'multiple_choice', category: 'alternatives_comfort', subcategory: 'trust', options: OPT_AGREE },
+const goalsTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'What is the primary objective for this investment portfolio?',
+    questionType: 'multiple_choice',
+    subcategory: 'preservation',
+    difficulty: 'easy',
+    weight: 1.8,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Capital preservation — protecting what I have', score: 1 },
+      { value: 2, label: 'Income generation with minimal capital erosion', score: 2 },
+      { value: 3, label: 'Balanced growth and income', score: 3 },
+      { value: 4, label: 'Long-term capital appreciation', score: 4 },
+      { value: 5, label: 'Aggressive growth — maximizing total return', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How important is it that your portfolio grows significantly faster than inflation over the next 10 years?',
+    questionType: 'scale',
+    subcategory: 'inflation',
+    difficulty: 'medium',
+    weight: 1.5,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Not important — keeping pace with inflation is sufficient', score: 1 },
+      { value: 2, label: 'Slightly important — a small real return is acceptable', score: 2 },
+      { value: 3, label: 'Moderately important — I want meaningful real growth', score: 3 },
+      { value: 4, label: 'Very important — I need substantial real returns', score: 4 },
+      { value: 5, label: 'Critical — I am targeting significant wealth accumulation', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Do you intend to leave a substantial financial legacy for heirs or charitable causes?',
+    questionType: 'multiple_choice',
+    subcategory: 'legacy',
+    difficulty: 'medium',
+    weight: 1.4,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'No — I plan to spend down my assets during my lifetime', score: 1 },
+      { value: 2, label: 'A small legacy would be nice but is not a priority', score: 2 },
+      { value: 3, label: 'I want to leave a moderate inheritance', score: 3 },
+      { value: 4, label: 'Leaving a significant legacy is a core goal', score: 4 },
+      { value: 5, label: 'Building multi-generational wealth is my primary objective', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How much current income do you need your portfolio to generate annually?',
+    questionType: 'multiple_choice',
+    subcategory: 'income',
+    difficulty: 'easy',
+    weight: 1.6,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'I depend on the portfolio for most of my living expenses', score: 1 },
+      { value: 2, label: 'I need it to supplement my income meaningfully', score: 2 },
+      { value: 3, label: 'Some income is helpful but not essential', score: 3 },
+      { value: 4, label: 'I reinvest most income — I have other cash flow sources', score: 4 },
+      { value: 5, label: 'I do not need any current income from the portfolio', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Are you investing toward a specific financial target (e.g., $10M by age 60), or managing wealth without a fixed goal?',
+    questionType: 'multiple_choice',
+    subcategory: 'growth',
+    difficulty: 'medium',
+    weight: 1.3,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'I have a fixed near-term target that I cannot afford to miss', score: 1 },
+      { value: 2, label: 'I have a fixed target with some flexibility on timing', score: 2 },
+      { value: 3, label: 'I have a general target but it is aspirational', score: 3 },
+      { value: 4, label: 'I want to grow wealth but have no specific number in mind', score: 4 },
+      { value: 5, label: 'I am seeking maximum growth with no defined endpoint', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How would you rank the importance of protecting your purchasing power against inflation versus generating high nominal returns?',
+    questionType: 'scale',
+    subcategory: 'inflation',
+    difficulty: 'hard',
+    weight: 1.4,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Inflation protection is paramount — even at the cost of low returns', score: 1 },
+      { value: 2, label: 'Inflation protection is very important with moderate returns', score: 2 },
+      { value: 3, label: 'Equal balance between inflation hedging and return seeking', score: 3 },
+      { value: 4, label: 'Returns take priority, with some inflation awareness', score: 4 },
+      { value: 5, label: 'Maximizing returns is my focus — I will handle inflation separately', score: 5 },
+    ],
+  },
 ];
 
-// ── MASS AFFLUENT TIER templates ($500K–$2M) ─────────────────────────
+// ---------------------------------------------------------------------------
+// CATEGORY 6: BEHAVIOR (IDs 311-360)
+// ---------------------------------------------------------------------------
 
-const MASS_AFFLUENT_TEMPLATES: QuestionTemplate[] = [
-  // TOLERANCE (5)
-  { stem: 'If your $500,000 portfolio declined 20% in six months, how would you react?', type: 'scenario', category: 'loss_scenarios', subcategory: 'drawdown', options: OPT_LOSS_REACT },
-  { stem: 'How would you feel if your taxable brokerage account dropped $100,000 in a quarter?', type: 'scenario', category: 'emotional_reaction', subcategory: 'dollar_impact', options: [
-    { value: 1, label: 'Extremely anxious — I would lose sleep', score: 1 },
-    { value: 2, label: 'Very concerned — I would call my advisor', score: 2 },
-    { value: 3, label: 'Uncomfortable but I would hold steady', score: 3 },
-    { value: 4, label: 'Concerned but confident in recovery', score: 4 },
-    { value: 5, label: 'Not worried — corrections are normal', score: 5 },
-  ] },
-  { stem: 'Which return/risk profile would you prefer for your portfolio over the next 10 years?', type: 'scenario', category: 'volatility_preference', subcategory: 'tradeoff', options: [
-    { value: 1, label: '3% return with almost no volatility', score: 1 },
-    { value: 2, label: '5% return with low volatility', score: 2 },
-    { value: 3, label: '7% return with moderate volatility', score: 3 },
-    { value: 4, label: '10% return with significant volatility', score: 4 },
-    { value: 5, label: '13%+ return with very high volatility', score: 5 },
-  ] },
-  { stem: 'In 2022, a balanced portfolio lost roughly 15-20%. If that happened to you, would you stay invested?', type: 'scenario', category: 'loss_scenarios', subcategory: 'historical', options: OPT_AGREE },
-  { stem: 'Would you accept a higher chance of short-term losses for potentially greater long-term gains?', type: 'multiple_choice', category: 'emotional_reaction', subcategory: 'tradeoff', options: OPT_AGREE },
-  // CAPACITY (4)
-  { stem: 'When do you expect to begin drawing significantly on your invested assets?', type: 'multiple_choice', category: 'time_horizon', subcategory: 'withdrawal', options: [
-    { value: 1, label: 'Within 1 year', score: 1 },
-    { value: 2, label: '1–3 years', score: 2 },
-    { value: 3, label: '3–7 years', score: 3 },
-    { value: 4, label: '7–15 years', score: 4 },
-    { value: 5, label: 'More than 15 years', score: 5 },
-  ] },
-  { stem: 'Could you cover 2 years of living expenses without touching your investment portfolio?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'reserves', options: OPT_AGREE },
-  { stem: 'How likely is it you will need to liquidate investments for a large purchase (home, business) in the next 3 years?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'major_purchase', options: OPT_AGREE_INV },
-  { stem: 'What portion of your total net worth is in liquid, investable assets?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'concentration', options: [
-    { value: 1, label: 'Less than 20%', score: 1 },
-    { value: 2, label: '20–40%', score: 2 },
-    { value: 3, label: '40–60%', score: 3 },
-    { value: 4, label: '60–80%', score: 4 },
-    { value: 5, label: 'More than 80%', score: 5 },
-  ] },
-  // BIAS (4)
-  { stem: 'Imagine your portfolio lost $75,000 this quarter. Now imagine it gained $75,000. Which feeling is stronger — the pain of loss or the joy of gain?', type: 'scenario', category: 'behavioral_bias', subcategory: 'loss_aversion', options: [
-    { value: 1, label: 'The loss pain is much stronger', score: 1 },
-    { value: 2, label: 'The loss pain is somewhat stronger', score: 2 },
-    { value: 3, label: 'About equal', score: 3 },
-    { value: 4, label: 'The gain joy is somewhat stronger', score: 4 },
-    { value: 5, label: 'The gain joy is much stronger', score: 5 },
-  ], biasDetection: 'loss_aversion' },
-  { stem: 'After a strong bull market year, do you feel more confident your portfolio will keep rising?', type: 'multiple_choice', category: 'behavioral_bias', subcategory: 'recency', options: OPT_AGREE_INV, biasDetection: 'recency' },
-  { stem: 'Do you believe you have above-average ability to time the market compared to other investors?', type: 'scale', category: 'behavioral_bias', subcategory: 'overconfidence', options: OPT_AGREE, biasDetection: 'overconfidence' },
-  { stem: 'Would you be more willing to invest $50,000 framed as "potential to double" versus "risk of losing half"?', type: 'scenario', category: 'behavioral_bias', subcategory: 'framing', options: OPT_AGREE_INV, biasDetection: 'framing' },
-  // COMPLEXITY (2)
-  { stem: 'How comfortable are you with tax-loss harvesting, RSUs, and stock option strategies?', type: 'scale', category: 'knowledge', subcategory: 'tax_strategies', options: OPT_KNOWLEDGE },
-  { stem: 'Would you consider allocating 10-15% of your portfolio to alternative investments like REITs or private funds?', type: 'multiple_choice', category: 'alternatives_comfort', subcategory: 'alts', options: OPT_AGREE },
+const behaviorTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'After selling a stock that later rose another 30%, what would you most likely feel?',
+    questionType: 'scenario',
+    subcategory: 'disposition',
+    difficulty: 'medium',
+    weight: 1.3,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Deep regret — I would dwell on the missed gain for weeks', score: 1 },
+      { value: 2, label: 'Significant frustration with my decision', score: 2 },
+      { value: 3, label: 'Some regret but I accept that no one times perfectly', score: 3 },
+      { value: 4, label: 'Minimal regret — I made a reasonable decision at the time', score: 4 },
+      { value: 5, label: 'No regret — I stick to my process and move on', score: 5 },
+    ],
+  },
+  {
+    questionText: 'When markets have recently performed very well, are you inclined to invest more aggressively?',
+    questionType: 'multiple_choice',
+    subcategory: 'recency',
+    difficulty: 'medium',
+    weight: 1.5,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Yes, strong recent performance gives me confidence to add more', score: 1 },
+      { value: 2, label: 'Somewhat — I tend to follow the momentum', score: 2 },
+      { value: 3, label: 'Recent performance does not change my strategy', score: 3 },
+      { value: 4, label: 'I become more cautious after a strong run', score: 4 },
+      { value: 5, label: 'I actively take profits and reduce risk after big gains', score: 5 },
+    ],
+  },
+  {
+    questionText: 'If you learned that most of your peers were moving into a particular asset class, how would that influence your decision?',
+    questionType: 'scenario',
+    subcategory: 'herd',
+    difficulty: 'medium',
+    weight: 1.4,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'I would follow — there must be a good reason', score: 1 },
+      { value: 2, label: 'I would feel pressure and likely follow with a small allocation', score: 2 },
+      { value: 3, label: 'I would investigate independently before deciding', score: 3 },
+      { value: 4, label: 'I would be skeptical and probably not follow', score: 4 },
+      { value: 5, label: 'It would have zero influence — I make decisions based on my own analysis', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How do you typically make investment decisions?',
+    questionType: 'multiple_choice',
+    subcategory: 'decision',
+    difficulty: 'easy',
+    weight: 1.3,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Based primarily on gut feeling and intuition', score: 1 },
+      { value: 2, label: 'I rely heavily on media and news headlines', score: 2 },
+      { value: 3, label: 'I consult my advisor and follow their recommendations', score: 3 },
+      { value: 4, label: 'I do my own research and cross-reference multiple sources', score: 4 },
+      { value: 5, label: 'I follow a systematic, rules-based approach', score: 5 },
+    ],
+  },
+  {
+    questionText: 'When you set a financial plan, how consistently do you follow it during market turbulence?',
+    questionType: 'scale',
+    subcategory: 'discipline',
+    difficulty: 'medium',
+    weight: 1.6,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'I typically abandon the plan when things get tough', score: 1 },
+      { value: 2, label: 'I often deviate significantly under stress', score: 2 },
+      { value: 3, label: 'I make minor adjustments but mostly follow the plan', score: 3 },
+      { value: 4, label: 'I stay disciplined with only small tactical changes', score: 4 },
+      { value: 5, label: 'I follow the plan rigorously regardless of market conditions', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Do you tend to hold losing investments too long, hoping they will recover?',
+    questionType: 'multiple_choice',
+    subcategory: 'disposition',
+    difficulty: 'hard',
+    weight: 1.4,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Yes, I almost always hold losers far too long', score: 1 },
+      { value: 2, label: 'Often — I find it hard to sell at a loss', score: 2 },
+      { value: 3, label: 'Sometimes, but I try to be objective', score: 3 },
+      { value: 4, label: 'Rarely — I cut losses when the thesis changes', score: 4 },
+      { value: 5, label: 'Never — I have strict stop-loss disciplines', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How much does recent negative financial news influence your investment outlook?',
+    questionType: 'scale',
+    subcategory: 'recency',
+    difficulty: 'easy',
+    weight: 1.2,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'It dominates my thinking and I act on it immediately', score: 1 },
+      { value: 2, label: 'It weighs heavily on my decisions', score: 2 },
+      { value: 3, label: 'I take note but try to maintain perspective', score: 3 },
+      { value: 4, label: 'It has only a small effect on my long-term view', score: 4 },
+      { value: 5, label: 'I filter out short-term noise entirely', score: 5 },
+    ],
+  },
 ];
 
-// ── HNW TIER templates ($2M–$10M) ────────────────────────────────────
+// ---------------------------------------------------------------------------
+// CATEGORY 7: LIQUIDITY (IDs 361-395)
+// ---------------------------------------------------------------------------
 
-const HNW_TEMPLATES: QuestionTemplate[] = [
-  // TOLERANCE (5)
-  { stem: 'Your $5M portfolio drops 30% in a severe correction — a loss of $1.5M on paper. What do you do?', type: 'scenario', category: 'loss_scenarios', subcategory: 'severe', options: OPT_LOSS_REACT },
-  { stem: 'A concentrated stock position worth $800K has dropped 35%. Would you harvest the loss, hold, or add to the position?', type: 'scenario', category: 'loss_scenarios', subcategory: 'concentrated', options: [
-    { value: 1, label: 'Sell the entire position', score: 1 },
-    { value: 2, label: 'Harvest the loss and diversify', score: 2 },
-    { value: 3, label: 'Hold and monitor closely', score: 3 },
-    { value: 4, label: 'Hold — I believe in the company long-term', score: 4 },
-    { value: 5, label: 'Add more at the lower price', score: 5 },
-  ] },
-  { stem: 'How comfortable are you with a portfolio that could swing ±15% in any given year?', type: 'multiple_choice', category: 'volatility_preference', subcategory: 'annual_range', options: OPT_AGREE },
-  { stem: 'If a trusted advisor recommended staying fully invested during a 40% market decline, could you follow that advice?', type: 'scenario', category: 'emotional_reaction', subcategory: 'advisor_trust', options: OPT_AGREE },
-  { stem: 'Would you remain invested if financial media unanimously predicted further declines after a 25% drop?', type: 'scenario', category: 'emotional_reaction', subcategory: 'media_influence', options: OPT_AGREE },
-  // CAPACITY (4)
-  { stem: 'Is your investment portfolio generational wealth that you do not plan to spend in your lifetime?', type: 'multiple_choice', category: 'time_horizon', subcategory: 'multi_gen', options: OPT_AGREE },
-  { stem: 'Could your household maintain its lifestyle for 3+ years solely from income and reserves, without touching investments?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'coverage', options: OPT_AGREE },
-  { stem: 'Do you have upcoming capital commitments (business expansion, real estate, education) that require portfolio liquidity?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'commitments', options: OPT_AGREE_INV },
-  { stem: 'How dependent are you on portfolio income (dividends, distributions) for current living expenses?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'income_dependency', options: OPT_AGREE_INV },
-  // BIAS (4)
-  { stem: 'After 2023\'s strong market recovery, did you increase your equity allocation or wish you had invested more during the 2022 downturn?', type: 'scenario', category: 'behavioral_bias', subcategory: 'recency', options: OPT_AGREE, biasDetection: 'recency' },
-  { stem: 'Do you find yourself anchoring investment decisions to the price you originally paid rather than current fundamentals?', type: 'multiple_choice', category: 'behavioral_bias', subcategory: 'anchoring', options: OPT_AGREE_INV, biasDetection: 'loss_aversion' },
-  { stem: 'Would you describe your investment decision-making as primarily data-driven or primarily intuition-driven?', type: 'multiple_choice', category: 'behavioral_bias', subcategory: 'decision_process', options: [
-    { value: 1, label: 'Entirely intuition and gut feeling', score: 1 },
-    { value: 2, label: 'Mostly intuition with some data', score: 2 },
-    { value: 3, label: 'Balance of both', score: 3 },
-    { value: 4, label: 'Mostly data with some intuition', score: 4 },
-    { value: 5, label: 'Entirely data and process-driven', score: 5 },
-  ], biasDetection: 'overconfidence' },
-  { stem: 'When presented with two identical investments — one framed as "80% chance of success" and the other as "20% chance of failure" — would your preference change?', type: 'scenario', category: 'behavioral_bias', subcategory: 'framing', options: OPT_AGREE_INV, biasDetection: 'framing' },
-  // COMPLEXITY (2)
-  { stem: 'How comfortable are you with private equity, hedge fund, or private credit investments with multi-year lockup periods?', type: 'scale', category: 'alternatives_comfort', subcategory: 'lockup', options: OPT_AGREE },
-  { stem: 'Do you understand how options strategies, leverage, and derivatives can be used for hedging and income generation?', type: 'scale', category: 'knowledge', subcategory: 'derivatives', options: OPT_KNOWLEDGE },
+const liquidityTemplates: QuestionTemplate[] = [
+  {
+    questionText: 'How many months of living expenses do you maintain in liquid reserves (cash, money market)?',
+    questionType: 'multiple_choice',
+    subcategory: 'emergency',
+    difficulty: 'easy',
+    weight: 1.6,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Less than 3 months', score: 1 },
+      { value: 2, label: '3-6 months', score: 2 },
+      { value: 3, label: '6-12 months', score: 3 },
+      { value: 4, label: '12-24 months', score: 4 },
+      { value: 5, label: 'More than 24 months', score: 5 },
+    ],
+  },
+  {
+    questionText: 'What percentage of your investable assets could you lock up for 5+ years without impacting your lifestyle?',
+    questionType: 'scale',
+    subcategory: 'withdrawal',
+    difficulty: 'medium',
+    weight: 1.7,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Less than 10%', score: 1 },
+      { value: 2, label: '10-25%', score: 2 },
+      { value: 3, label: '25-50%', score: 3 },
+      { value: 4, label: '50-75%', score: 4 },
+      { value: 5, label: 'Over 75%', score: 5 },
+    ],
+  },
+  {
+    questionText: 'How concentrated is your net worth in a single asset (e.g., company stock, real estate, a business)?',
+    questionType: 'multiple_choice',
+    subcategory: 'concentration',
+    difficulty: 'hard',
+    weight: 1.8,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'Over 70% in a single asset', score: 1 },
+      { value: 2, label: '50-70% in a single asset', score: 2 },
+      { value: 3, label: '30-50% in a single asset', score: 3 },
+      { value: 4, label: '10-30% in a single asset', score: 4 },
+      { value: 5, label: 'Less than 10% — well diversified', score: 5 },
+    ],
+  },
+  {
+    questionText: 'What portion of your total net worth does this investment portfolio represent?',
+    questionType: 'multiple_choice',
+    subcategory: 'net_worth',
+    difficulty: 'medium',
+    weight: 1.5,
+    complianceTag: 'finra',
+    options: [
+      { value: 1, label: 'Over 80% — this is nearly all my wealth', score: 1 },
+      { value: 2, label: '50-80%', score: 2 },
+      { value: 3, label: '30-50%', score: 3 },
+      { value: 4, label: '10-30%', score: 4 },
+      { value: 5, label: 'Less than 10% — I have significant other assets', score: 5 },
+    ],
+  },
+  {
+    questionText: 'If an unexpected expense equal to 20% of your portfolio arose, how would you handle it?',
+    questionType: 'scenario',
+    subcategory: 'emergency',
+    difficulty: 'hard',
+    weight: 1.7,
+    complianceTag: 'cfp',
+    options: [
+      { value: 1, label: 'I would have to liquidate investments at a loss', score: 1 },
+      { value: 2, label: 'I would need to sell some investments, disrupting my plan', score: 2 },
+      { value: 3, label: 'I could cover it partially from reserves but would need to sell some investments', score: 3 },
+      { value: 4, label: 'I could cover it from reserves with minimal portfolio impact', score: 4 },
+      { value: 5, label: 'I could easily cover it without touching the portfolio', score: 5 },
+    ],
+  },
+  {
+    questionText: 'Do you have significant illiquid holdings (private business, real estate, art) that could be difficult to sell quickly?',
+    questionType: 'multiple_choice',
+    subcategory: 'concentration',
+    difficulty: 'medium',
+    weight: 1.4,
+    complianceTag: 'general',
+    options: [
+      { value: 1, label: 'Yes — the majority of my wealth is illiquid', score: 1 },
+      { value: 2, label: 'A large portion is illiquid', score: 2 },
+      { value: 3, label: 'A moderate portion is illiquid', score: 3 },
+      { value: 4, label: 'A small portion is illiquid', score: 4 },
+      { value: 5, label: 'Nearly all my wealth is in liquid, publicly-traded assets', score: 5 },
+    ],
+  },
 ];
 
-// ── UHNW TIER templates ($10M+) ──────────────────────────────────────
+// ---------------------------------------------------------------------------
+// Build the full QUESTION_BANK
+// ---------------------------------------------------------------------------
 
-const UHNW_TEMPLATES: QuestionTemplate[] = [
-  // TOLERANCE (5)
-  { stem: 'Your family office portfolio is $50M with 20% in PE that has J-curve exposure. A $3M capital call arrives during a market downturn. How does this affect your liquid portfolio strategy?', type: 'scenario', category: 'loss_scenarios', subcategory: 'capital_call', options: [
-    { value: 1, label: 'Sell equities to meet the call and reduce PE commitment', score: 1 },
-    { value: 2, label: 'Reluctantly meet the call but reduce future commitments', score: 2 },
-    { value: 3, label: 'Meet the call from reserves — it was planned for', score: 3 },
-    { value: 4, label: 'Meet the call and view it as buying at attractive valuations', score: 4 },
-    { value: 5, label: 'Meet the call and consider increasing the PE program', score: 5 },
-  ] },
-  { stem: 'In a 2008-style event, your total portfolio (including illiquid alts) could decline 40–50%. Assuming a 5+ year recovery timeline, how do you respond?', type: 'scenario', category: 'emotional_reaction', subcategory: 'systemic_crisis', options: OPT_LOSS_REACT },
-  { stem: 'Your art collection and crypto allocation together represent 15% of net worth and are highly volatile. Are you comfortable with this concentration in non-traditional assets?', type: 'scenario', category: 'volatility_preference', subcategory: 'alt_concentration', options: OPT_AGREE },
-  { stem: 'A hedge fund in your portfolio gates redemptions during a liquidity crisis. You cannot access those funds for 12+ months. How does this affect your confidence?', type: 'scenario', category: 'loss_scenarios', subcategory: 'liquidity_event', options: [
-    { value: 1, label: 'Extremely shaken — I would exit all hedge fund positions at first opportunity', score: 1 },
-    { value: 2, label: 'Very concerned — I would reduce hedge fund exposure significantly', score: 2 },
-    { value: 3, label: 'Uncomfortable but I understand the mechanics', score: 3 },
-    { value: 4, label: 'Not ideal but I sized the allocation with this possibility in mind', score: 4 },
-    { value: 5, label: 'Expected risk — my portfolio is structured to handle illiquidity', score: 5 },
-  ] },
-  { stem: 'Would you maintain a 5% Bitcoin/crypto allocation through a 70% drawdown if your long-term thesis remains intact?', type: 'scenario', category: 'emotional_reaction', subcategory: 'crypto_vol', options: OPT_AGREE },
-  // CAPACITY (4)
-  { stem: 'Is your wealth structured for multi-generational transfer with a 30+ year investment horizon?', type: 'multiple_choice', category: 'time_horizon', subcategory: 'dynastic', options: OPT_AGREE },
-  { stem: 'Could your family maintain its lifestyle indefinitely from trust distributions and business income alone, without any portfolio returns?', type: 'multiple_choice', category: 'financial_cushion', subcategory: 'independence', options: OPT_AGREE },
-  { stem: 'Do you have material unfunded commitments — capital calls, charitable pledges, or entity obligations — that require liquidity over the next 3 years?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'commitments', options: OPT_AGREE_INV },
-  { stem: 'What percentage of your total assets are illiquid (PE, real estate, operating businesses, art)?', type: 'multiple_choice', category: 'liquidity_needs', subcategory: 'illiquidity', options: [
-    { value: 1, label: 'More than 70% illiquid', score: 1 },
-    { value: 2, label: '50–70% illiquid', score: 2 },
-    { value: 3, label: '30–50% illiquid', score: 3 },
-    { value: 4, label: '15–30% illiquid', score: 4 },
-    { value: 5, label: 'Less than 15% illiquid', score: 5 },
-  ] },
-  // BIAS (4)
-  { stem: 'After a PE fund delivers 3x returns, do you find yourself overweighting that manager\'s next fund regardless of strategy changes?', type: 'scenario', category: 'behavioral_bias', subcategory: 'recency', options: OPT_AGREE_INV, biasDetection: 'recency' },
-  { stem: 'Do you feel your investment judgment is better than most institutional investors?', type: 'scale', category: 'behavioral_bias', subcategory: 'overconfidence', options: OPT_AGREE, biasDetection: 'overconfidence' },
-  { stem: 'Would you evaluate a co-investment opportunity differently if framed as "top-quartile expected performance" versus "one-in-four chance of capital loss"?', type: 'scenario', category: 'behavioral_bias', subcategory: 'framing', options: OPT_AGREE_INV, biasDetection: 'framing' },
-  { stem: 'Do you hold onto underperforming direct investments (real estate, businesses) longer than you should because of the emotional attachment?', type: 'multiple_choice', category: 'behavioral_bias', subcategory: 'endowment', options: OPT_AGREE_INV, biasDetection: 'loss_aversion' },
-  // COMPLEXITY (2)
-  { stem: 'How comfortable are you evaluating PE fund terms — carried interest, preferred return, GP co-invest, vintage diversification, and J-curve dynamics?', type: 'scale', category: 'alternatives_comfort', subcategory: 'pe_terms', options: OPT_KNOWLEDGE },
-  { stem: 'Do you understand the risk characteristics of structured products, options overlays, and tax-efficient lending strategies like box spreads?', type: 'scale', category: 'knowledge', subcategory: 'institutional', options: OPT_KNOWLEDGE },
+const categoryConfigs: CategoryConfig[] = [
+  {
+    category: 'time_horizon',
+    riskDimension: 'time_horizon_score',
+    subcategories: ['general', 'retirement', 'goal_specific', 'withdrawal', 'turnover'],
+    templates: timeHorizonTemplates,
+    totalCount: 70,
+    startId: 1,
+  },
+  {
+    category: 'loss_tolerance',
+    riskDimension: 'loss_tolerance_score',
+    subcategories: ['drawdown', 'emotional', 'historical', 'tradeoff', 'stress', 'recovery'],
+    templates: lossToleranceTemplates,
+    totalCount: 100,
+    startId: 71,
+  },
+  {
+    category: 'volatility',
+    riskDimension: 'volatility_comfort_score',
+    subcategories: ['monitoring', 'preference', 'emotional', 'stability'],
+    templates: volatilityTemplates,
+    totalCount: 60,
+    startId: 171,
+  },
+  {
+    category: 'knowledge',
+    riskDimension: 'knowledge_score',
+    subcategories: ['self_assessed', 'product_experience', 'years', 'technical'],
+    templates: knowledgeTemplates,
+    totalCount: 40,
+    startId: 231,
+  },
+  {
+    category: 'goals',
+    riskDimension: 'goal_risk_score',
+    subcategories: ['preservation', 'growth', 'income', 'inflation', 'legacy'],
+    templates: goalsTemplates,
+    totalCount: 40,
+    startId: 271,
+  },
+  {
+    category: 'behavior',
+    riskDimension: 'behavioral_score',
+    subcategories: ['disposition', 'recency', 'herd', 'decision', 'discipline'],
+    templates: behaviorTemplates,
+    totalCount: 50,
+    startId: 311,
+  },
+  {
+    category: 'liquidity',
+    riskDimension: 'liquidity_score',
+    subcategories: ['emergency', 'withdrawal', 'concentration', 'net_worth'],
+    templates: liquidityTemplates,
+    totalCount: 35,
+    startId: 361,
+  },
 ];
 
-// ── Build the full bank ──────────────────────────────────────────────
-
-export const QUESTION_BANK: RiskQuestion[] = [
-  ...buildQuestions(1, EMERGING_TEMPLATES, 'emerging'),
-  ...buildQuestions(100, MASS_AFFLUENT_TEMPLATES, 'mass_affluent'),
-  ...buildQuestions(200, HNW_TEMPLATES, 'hnw'),
-  ...buildQuestions(300, UHNW_TEMPLATES, 'uhnw'),
-];
+export const QUESTION_BANK: RiskQuestion[] = categoryConfigs.flatMap(generateCategoryQuestions);

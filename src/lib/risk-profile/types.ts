@@ -95,9 +95,26 @@ export type Category =
   | 'financial_cushion'
   | 'behavioral_bias'
   | 'alternatives_comfort'
-  | 'knowledge';
+  | 'knowledge'
+  // Legacy categories (395-question bank)
+  | 'loss_tolerance'
+  | 'volatility'
+  | 'goals'
+  | 'behavior'
+  | 'liquidity';
 
-export type ComplianceTag = 'finra_2111' | 'reg_bi' | 'cfa_framework' | 'general';
+export type ComplianceTag = 'finra_2111' | 'reg_bi' | 'cfa_framework' | 'general' | 'finra' | 'cfp';
+
+export type Difficulty = 'easy' | 'medium' | 'hard';
+
+export type RiskDimension =
+  | 'time_horizon_score'
+  | 'loss_tolerance_score'
+  | 'volatility_comfort_score'
+  | 'knowledge_score'
+  | 'goal_risk_score'
+  | 'behavioral_score'
+  | 'liquidity_score';
 
 export interface QuestionOption {
   value: number;
@@ -109,14 +126,17 @@ export interface RiskQuestion {
   id: number;
   questionText: string;
   questionType: QuestionType;
-  axis: QuestionAxis;
+  axis?: QuestionAxis;
   category: Category;
   subcategory: string;
   options: QuestionOption[];
   weight: number;
   complianceTag: ComplianceTag;
-  wealthTier: WealthTier;
+  wealthTier?: WealthTier;
   biasDetection?: 'framing' | 'recency' | 'loss_aversion' | 'overconfidence';
+  // Legacy fields (395-question bank)
+  riskDimension?: RiskDimension;
+  difficulty?: Difficulty;
 }
 
 export interface QuestionResponse {
@@ -278,6 +298,12 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   behavioral_bias: 'Behavioral Tendencies',
   alternatives_comfort: 'Alternatives Comfort',
   knowledge: 'Investment Knowledge',
+  // Legacy categories
+  loss_tolerance: 'Loss Tolerance',
+  volatility: 'Volatility',
+  goals: 'Goals',
+  behavior: 'Behavior',
+  liquidity: 'Liquidity',
 };
 
 export const AXIS_LABELS: Record<QuestionAxis, string> = {
@@ -297,4 +323,10 @@ export const CATEGORY_TO_AXIS: Record<Category, QuestionAxis> = {
   behavioral_bias: 'bias',
   alternatives_comfort: 'complexity',
   knowledge: 'complexity',
+  // Legacy categories
+  loss_tolerance: 'tolerance',
+  volatility: 'tolerance',
+  goals: 'tolerance',
+  behavior: 'bias',
+  liquidity: 'capacity',
 };
