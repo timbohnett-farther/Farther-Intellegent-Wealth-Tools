@@ -52,6 +52,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Insights', href: '/prism/insights', icon: <Lightbulb size={20} /> },
   { label: 'Templates', href: '/prism/templates', icon: <Copy size={20} /> },
   { label: 'Settings', href: '/prism/settings', icon: <Settings size={20} /> },
+  { label: 'Admin', href: '/admin', icon: <Settings size={20} /> },
   { label: 'Help', href: '/prism/help', icon: <HelpCircle size={20} /> },
 ];
 

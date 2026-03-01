@@ -231,6 +231,9 @@ model Plan {
   lifeEvents            LifeEvent[]
   planBuilderSessions   PlanBuilderSession[]
   generatedReports      GeneratedReport[]
+  planAlerts            PlanAlert[]
+  planInsights          PlanInsight[]
+  regBIDocuments        RegBIDocumentation[]
 
   @@index([status])
   @@map("plans")
@@ -1085,6 +1088,252 @@ model GeneratedReport {
   plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
 
   @@map("generated_reports")
+}
+
+// ==================== STAGE 4: AI INSIGHTS ====================
+model PlanAlert {
+  id                  String   @id @default(cuid())
+  planId              String   @map("plan_id")
+  triggerId           String   @map("trigger_id")
+
+  severity            String   // critical | warning | info
+  category            String   // tax | retirement | estate | insurance | investments | cash_flow | goals
+  title               String
+  description         String
+  recommendedAction   String   @map("recommended_action")
+  estimatedImpact     String?  @map("estimated_impact")
+  deadline            DateTime?
+  autoActionAvailable Boolean  @default(false) @map("auto_action_available")
+
+  status              String   @default("active") // active | dismissed | resolved | snoozed
+  dismissedAt         DateTime? @map("dismissed_at")
+  dismissedBy         String?  @map("dismissed_by")
+  resolvedAt          DateTime? @map("resolved_at")
+  snoozedUntil        DateTime? @map("snoozed_until")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  plan                Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, severity])
+  @@index([status])
+  @@map("plan_alerts")
+}
+
+model PlanInsight {
+  id                  String   @id @default(cuid())
+  planId              String   @map("plan_id")
+
+  rank                Int
+  category            String   // tax | retirement | estate | insurance | investments | cash_flow | goals
+  type                String   // opportunity | risk | action_required | informational
+  title               String
+  summary             String
+  detail              String?
+  estimatedImpactType String?  @map("estimated_impact_type")
+  estimatedImpactAmt  Float?   @map("estimated_impact_amt")
+  estimatedTimeframe  String?  @map("estimated_timeframe")
+
+  actions             String?  // JSON array of action objects
+  aiGenerated         Boolean  @default(false) @map("ai_generated")
+  aiModel             String?  @map("ai_model")
+
+  dismissed           Boolean  @default(false)
+  dismissedAt         DateTime? @map("dismissed_at")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  plan                Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, rank])
+  @@map("plan_insights")
+}
+
+// ==================== STAGE 4: AUDIT LOG ====================
+model AuditEntry {
+  id                  String   @id @default(cuid())
+  timestamp           DateTime @default(now())
+  firmId              String   @map("firm_id")
+
+  actorType           String   @map("actor_type") // advisor | client | system | api
+  actorId             String   @map("actor_id")
+  actorName           String   @map("actor_name")
+  ipAddress           String?  @map("ip_address")
+  userAgent           String?  @map("user_agent")
+
+  action              String   // CREATE | UPDATE | DELETE | VIEW | EXPORT | CALCULATE | LOGIN | LOGOUT
+  resourceType        String   @map("resource_type") // client | plan | account | income | expense | report | etc.
+  resourceId          String?  @map("resource_id")
+
+  beforeState         String?  @map("before_state") // JSON
+  afterState          String?  @map("after_state")   // JSON
+
+  planId              String?  @map("plan_id")
+  clientId            String?  @map("client_id")
+  sessionId           String?  @map("session_id")
+
+  @@index([firmId, timestamp])
+  @@index([actorId, timestamp])
+  @@index([planId])
+  @@index([resourceType, resourceId])
+  @@map("audit_entries")
+}
+
+// ==================== STAGE 4: REG BI COMPLIANCE ====================
+model RegBIDocumentation {
+  id                  String   @id @default(cuid())
+  planId              String   @map("plan_id")
+  advisorId           String   @map("advisor_id")
+  clientId            String   @map("client_id")
+
+  documentationDate   DateTime @map("documentation_date")
+
+  // Care obligation documentation (JSON)
+  clientProfile       String   @map("client_profile")   // JSON
+  recommendations     String   // JSON array of recommendation objects
+
+  // Conflict of interest
+  conflictsDisclosed  Boolean  @default(true)  @map("conflicts_disclosed")
+  conflictDetails     String?  @map("conflict_details")
+
+  // Client acknowledgment
+  clientAcknowledgedAt DateTime? @map("client_acknowledged_at")
+  deliveryMethod      String?   @map("delivery_method")
+
+  // Immutability
+  locked              Boolean  @default(false)
+  lockHash            String?  @map("lock_hash") // SHA-256
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  plan                Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId])
+  @@index([advisorId])
+  @@map("reg_bi_documentation")
+}
+
+// ==================== STAGE 4: WORKFLOW AUTOMATION ====================
+model WorkflowTemplate {
+  id                  String   @id @default(cuid())
+  firmId              String?  @map("firm_id")
+
+  name                String
+  description         String?
+  triggerType         String   @map("trigger_type") // client_created | plan_calculated | scheduled | life_event | account_synced | manual
+  triggerConfig       String?  @map("trigger_config") // JSON (e.g., cron expression)
+  steps               String   // JSON array of workflow steps
+  isActive            Boolean  @default(true) @map("is_active")
+  isSystem            Boolean  @default(false) @map("is_system") // built-in templates
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  executions          WorkflowExecution[]
+
+  @@map("workflow_templates")
+}
+
+model WorkflowExecution {
+  id                  String   @id @default(cuid())
+  workflowId          String   @map("workflow_id")
+  planId              String?  @map("plan_id")
+  clientId            String?  @map("client_id")
+
+  status              String   @default("pending") // pending | running | completed | failed | cancelled
+  triggerData         String?  @map("trigger_data") // JSON
+  stepResults         String?  @map("step_results") // JSON array of step outcomes
+  currentStep         Int      @default(0) @map("current_step")
+  error               String?
+
+  startedAt           DateTime? @map("started_at")
+  completedAt         DateTime? @map("completed_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  workflow            WorkflowTemplate @relation(fields: [workflowId], references: [id])
+
+  @@index([workflowId, status])
+  @@map("workflow_executions")
+}
+
+// ==================== STAGE 4: CUSTODIAN CONNECTIONS ====================
+model CustodianConnection {
+  id                  String   @id @default(cuid())
+  firmId              String   @map("firm_id")
+
+  custodian           String   // schwab | fidelity | pershing | orion | plaid | byallaccounts
+  displayName         String   @map("display_name")
+  status              String   @default("disconnected") // connected | disconnected | error | syncing
+  credentials         String?  // Encrypted JSON (API keys, tokens)
+
+  lastSyncAt          DateTime? @map("last_sync_at")
+  lastSyncStatus      String?   @map("last_sync_status") // success | partial | error
+  lastSyncError       String?   @map("last_sync_error")
+  accountsSynced      Int       @default(0) @map("accounts_synced")
+
+  syncFrequency       String    @default("nightly") @map("sync_frequency") // nightly | hourly | manual
+  isActive            Boolean   @default(true) @map("is_active")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([firmId])
+  @@map("custodian_connections")
+}
+
+// ==================== STAGE 4: MARKET DATA ====================
+model MarketDataSnapshot {
+  id                  String   @id @default(cuid())
+  date                DateTime
+  dataType            String   @map("data_type") // daily_close | monthly_afr | annual_7520 | quarterly_irmaa
+
+  sp500Price          Float?   @map("sp500_price")
+  sp500YtdReturn      Float?   @map("sp500_ytd_return")
+  tenYearTreasury     Float?   @map("ten_year_treasury")
+  thirtyYearTreasury  Float?   @map("thirty_year_treasury")
+  fedFundsRate        Float?   @map("fed_funds_rate")
+  cpiYoy              Float?   @map("cpi_yoy")
+  afrShortTerm        Float?   @map("afr_short_term")
+  afrMidTerm          Float?   @map("afr_mid_term")
+  afrLongTerm         Float?   @map("afr_long_term")
+  sec7520Rate         Float?   @map("sec_7520_rate")
+
+  rawData             String?  @map("raw_data") // JSON for any additional data
+  source              String?
+
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@unique([date, dataType])
+  @@index([dataType, date])
+  @@map("market_data_snapshots")
+}
+
+// ==================== STAGE 4: EMAIL DRAFTS ====================
+model EmailDraft {
+  id                  String   @id @default(cuid())
+  planId              String?  @map("plan_id")
+  insightId           String?  @map("insight_id")
+
+  toEmail             String   @map("to_email")
+  toName              String?  @map("to_name")
+  fromEmail           String   @map("from_email")
+  fromName            String?  @map("from_name")
+  subject             String
+  body                String
+
+  status              String   @default("draft") // draft | sent | scheduled | cancelled
+  scheduledAt         DateTime? @map("scheduled_at")
+  sentAt              DateTime? @map("sent_at")
+  generatedBy         String   @map("generated_by") // ai | manual
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("email_drafts")
 }
 
 // ==================== TAX TABLES ====================
