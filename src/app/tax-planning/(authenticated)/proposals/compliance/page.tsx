@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth, useToast } from '@/lib/tax-planning/auth-context';
 import type { Proposal, ProposalStatus } from '@/lib/proposal-engine/types';
-import { ProposalStatusBadge } from '@/components/proposal-engine/ProposalStatusBadge';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -17,7 +16,19 @@ type ComplianceFilter = 'ALL' | 'COMPLETE' | 'PARTIAL' | 'MISSING';
 // Constants
 // ---------------------------------------------------------------------------
 
-const COMPLIANCE_FILTERS: { value: ComplianceFilter; label: string }[] = [
+const STATUS_COLORS: Record<ProposalStatus, string> = {
+  DRAFT: 'bg-limestone-100 text-charcoal-700',
+  READY: 'bg-brand-100 text-brand-700',
+  REVIEW: 'bg-info-100 text-info-700',
+  APPROVED: 'bg-brand-100 text-brand-700',
+  SENT: 'bg-warning-100 text-warning-700',
+  VIEWED: 'bg-purple-100 text-purple-700',
+  ACCEPTED: 'bg-success-100 text-success-700',
+  DECLINED: 'bg-critical-100 text-critical-700',
+  EXPIRED: 'bg-limestone-100 text-charcoal-500',
+};
+
+const COMPLIANCE_FILTERS: Array<{ value: ComplianceFilter; label: string }> = [
   { value: 'ALL', label: 'All Proposals' },
   { value: 'COMPLETE', label: 'Complete' },
   { value: 'PARTIAL', label: 'Partial' },
@@ -32,8 +43,54 @@ const formatDate = (iso?: string | null) => {
 };
 
 // ---------------------------------------------------------------------------
-// Skeleton
+// Helpers
 // ---------------------------------------------------------------------------
+
+function hasIps(p: Proposal): boolean {
+  return !!p.riskProfile;
+}
+
+function hasRegBI(p: Proposal): boolean {
+  return p.status === 'SENT' || p.status === 'VIEWED' || p.status === 'ACCEPTED';
+}
+
+function getComplianceStatus(p: Proposal): ComplianceFilter {
+  const ips = hasIps(p);
+  const regbi = hasRegBI(p);
+  if (ips && regbi) return 'COMPLETE';
+  if (ips || regbi) return 'PARTIAL';
+  return 'MISSING';
+}
+
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
+
+function StatusBadge({ status }: { status: ProposalStatus }) {
+  return (
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[status] || 'bg-limestone-100 text-charcoal-700'}`}>
+      {status.replace(/_/g, ' ')}
+    </span>
+  );
+}
+
+function ComplianceIndicator({ generated, label }: { generated: boolean; label: string }) {
+  return generated ? (
+    <span className="inline-flex items-center gap-1">
+      <svg className="h-4 w-4 text-success-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span className="text-xs font-medium text-success-700">Generated</span>
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1">
+      <svg className="h-4 w-4 text-warning-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      </svg>
+      <span className="text-xs font-medium text-warning-700">Missing</span>
+    </span>
+  );
+}
 
 function TableSkeleton() {
   return (
@@ -52,32 +109,10 @@ function TableSkeleton() {
 }
 
 // ---------------------------------------------------------------------------
-// Compliance Status Indicator
+// Compliance Archive Page
 // ---------------------------------------------------------------------------
 
-function ComplianceIndicator({ generated }: { generated: boolean }) {
-  return generated ? (
-    <span className="inline-flex items-center gap-1">
-      <svg className="h-4 w-4 text-success-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span className="text-xs font-medium text-success-700">Generated</span>
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-1">
-      <svg className="h-4 w-4 text-warning-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-      </svg>
-      <span className="text-xs font-medium text-warning-700">Missing</span>
-    </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Main Page
-// ---------------------------------------------------------------------------
-
-export default function ComplianceDashboardPage() {
+export default function ComplianceArchivePage() {
   const { token } = useAuth();
   const { addToast } = useToast();
   const router = useRouter();
@@ -112,17 +147,11 @@ export default function ComplianceDashboardPage() {
   useEffect(() => { fetchProposals(); }, [fetchProposals]);
 
   // Filtering
-  const getComplianceStatus = (p: Proposal): ComplianceFilter => {
-    if (p.ipsGenerated && p.regBIGenerated) return 'COMPLETE';
-    if (p.ipsGenerated || p.regBIGenerated) return 'PARTIAL';
-    return 'MISSING';
-  };
-
   const filtered = proposals.filter((p) => {
     if (filter !== 'ALL' && getComplianceStatus(p) !== filter) return false;
     if (search) {
       const q = search.toLowerCase();
-      if (!p.clientName.toLowerCase().includes(q) && !p.proposalType.toLowerCase().includes(q)) return false;
+      if (!p.clientName.toLowerCase().includes(q) && !(p.title ?? '').toLowerCase().includes(q)) return false;
     }
     return true;
   });
@@ -131,16 +160,16 @@ export default function ComplianceDashboardPage() {
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   // Stats
-  const statsComplete = proposals.filter((p) => p.ipsGenerated && p.regBIGenerated).length;
-  const statsPartial = proposals.filter((p) => (p.ipsGenerated || p.regBIGenerated) && !(p.ipsGenerated && p.regBIGenerated)).length;
-  const statsMissing = proposals.filter((p) => !p.ipsGenerated && !p.regBIGenerated).length;
+  const statsComplete = proposals.filter((p) => getComplianceStatus(p) === 'COMPLETE').length;
+  const statsPartial = proposals.filter((p) => getComplianceStatus(p) === 'PARTIAL').length;
+  const statsMissing = proposals.filter((p) => getComplianceStatus(p) === 'MISSING').length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Compliance Dashboard</h1>
+          <h1 className="text-2xl font-bold text-charcoal-900">Compliance Archive</h1>
           <p className="mt-1 text-sm text-charcoal-500">
             Monitor IPS and Reg BI document status across all proposals.
           </p>
@@ -154,6 +183,17 @@ export default function ComplianceDashboardPage() {
           </svg>
           Back to Proposals
         </Link>
+      </div>
+
+      {/* Info banner */}
+      <div className="rounded-lg border border-info-200 bg-info-50 px-4 py-3 flex items-start gap-3">
+        <svg className="h-5 w-5 text-info-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+        </svg>
+        <div>
+          <p className="text-sm font-medium text-info-700">Compliance Requirement</p>
+          <p className="text-xs text-info-600 mt-0.5">All proposals with &quot;Sent&quot; status must have corresponding compliance documents on file. Documents are automatically locked after proposal delivery.</p>
+        </div>
       </div>
 
       {/* Summary Stats */}
@@ -217,7 +257,7 @@ export default function ComplianceDashboardPage() {
             placeholder="Search by client name..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="w-full border border-limestone-300 rounded-lg pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-brand-400 focus:border-brand-400"
+            className="w-full border border-limestone-300 rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
           />
         </div>
       </div>
@@ -229,14 +269,12 @@ export default function ComplianceDashboardPage() {
         ) : error ? (
           <div className="p-8 text-center">
             <p className="text-sm text-critical-700">{error}</p>
-            <button type="button" onClick={fetchProposals} className="mt-3 text-sm font-medium text-brand-700 hover:text-brand-600">
-              Try again
-            </button>
+            <button type="button" onClick={fetchProposals} className="mt-3 text-sm font-medium text-brand-700 hover:text-brand-600">Try again</button>
           </div>
         ) : paginated.length === 0 ? (
           <div className="p-12 text-center">
             <svg className="mx-auto h-12 w-12 text-charcoal-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-6-2.247V6.75A2.25 2.25 0 0112 4.5c.621 0 1.192.254 1.6.664l.3.3a2.25 2.25 0 003.182 0l.3-.3A2.25 2.25 0 0119.5 4.5v.006c0 .345-.08.68-.23.978l-.498.996M3.53 14.28l4.97 4.97 4.97-4.97" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
             <p className="text-sm font-medium text-charcoal-700">No proposals match the current filter.</p>
           </div>
@@ -246,43 +284,53 @@ export default function ComplianceDashboardPage() {
               <table className="min-w-full divide-y divide-limestone-200">
                 <thead className="bg-limestone-50">
                   <tr>
-                    {['Client', 'Proposal Type', 'Status', 'IPS Generated', 'Reg BI Generated', 'Last Updated', 'Actions'].map((h) => (
+                    {['Client', 'Document Type', 'Proposal', 'Generated Date', 'Status (Locked/Draft)', 'Actions'].map((h) => (
                       <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-charcoal-500">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-limestone-100">
                   {paginated.map((p) => (
-                    <tr key={p.proposalId} className="transition-colors hover:bg-limestone-50">
-                      <td className="px-4 py-3 text-sm font-medium text-charcoal-900 whitespace-nowrap">
-                        <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-brand-700">
-                          {p.clientName}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-charcoal-700 whitespace-nowrap">
-                        {p.proposalType.replace(/_/g, ' ')}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <ProposalStatusBadge status={p.status} />
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <ComplianceIndicator generated={p.ipsGenerated} />
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <ComplianceIndicator generated={p.regBIGenerated} />
-                      </td>
-                      <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">
-                        {formatDate(p.updatedAt)}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <Link
-                          href={`/tax-planning/proposals/${p.proposalId}`}
-                          className="text-sm font-medium text-brand-700 hover:text-brand-600"
-                        >
-                          View
-                        </Link>
-                      </td>
-                    </tr>
+                    <React.Fragment key={p.proposalId}>
+                      {/* IPS row */}
+                      <tr className="transition-colors hover:bg-limestone-50">
+                        <td className="px-4 py-3 text-sm font-medium text-charcoal-900 whitespace-nowrap">
+                          <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-brand-700">{p.clientName}</Link>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-info-100 text-info-700">IPS</span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-charcoal-700 whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
+                        <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{hasIps(p) ? formatDate(p.updatedAt) : '--'}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <ComplianceIndicator generated={hasIps(p)} label="IPS" />
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-brand-700 hover:text-brand-600">View</Link>
+                            <button type="button" onClick={() => addToast('Downloading IPS...', 'info')} className="text-sm text-charcoal-500 hover:text-charcoal-700">Download</button>
+                          </div>
+                        </td>
+                      </tr>
+                      {/* Reg BI row */}
+                      <tr className="transition-colors hover:bg-limestone-50 bg-limestone-50/30">
+                        <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{p.clientName}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-warning-100 text-warning-700">Reg BI</span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-charcoal-700 whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
+                        <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{hasRegBI(p) ? formatDate(p.sentAt) : '--'}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <ComplianceIndicator generated={hasRegBI(p)} label="Reg BI" />
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-brand-700 hover:text-brand-600">View</Link>
+                            <button type="button" onClick={() => addToast('Downloading Reg BI doc...', 'info')} className="text-sm text-charcoal-500 hover:text-charcoal-700">Download</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </React.Fragment>
                   ))}
                 </tbody>
               </table>
@@ -297,7 +345,7 @@ export default function ComplianceDashboardPage() {
                 <button
                   type="button"
                   disabled={page <= 1}
-                  onClick={() => setPage((p) => p - 1)}
+                  onClick={() => setPage((prev) => prev - 1)}
                   className="rounded-md border border-limestone-300 px-3 py-1.5 text-sm font-medium text-charcoal-700 disabled:opacity-40 hover:bg-limestone-50"
                 >
                   Previous
@@ -306,7 +354,7 @@ export default function ComplianceDashboardPage() {
                 <button
                   type="button"
                   disabled={page >= totalPages}
-                  onClick={() => setPage((p) => p + 1)}
+                  onClick={() => setPage((prev) => prev + 1)}
                   className="rounded-md border border-limestone-300 px-3 py-1.5 text-sm font-medium text-charcoal-700 disabled:opacity-40 hover:bg-limestone-50"
                 >
                   Next

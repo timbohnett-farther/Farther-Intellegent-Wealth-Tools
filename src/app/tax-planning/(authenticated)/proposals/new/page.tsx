@@ -1,151 +1,173 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth, useToast } from '@/lib/tax-planning/auth-context';
 import type {
-  Proposal,
-  CreateProposalRequest,
-  StatementScanResult,
   Holding,
+  AssetClass,
+  BroadAssetClass,
+  RiskLabel,
   FartherRiskProfile,
   InvestmentModel,
-  ProposalSection,
-  StressTestResult,
+  StressScenario,
   FeeAnalysis,
   TaxTransitionAnalysis,
   PortfolioAnalytics,
-  CurrentPortfolio,
+  QualityFlag,
+  StressTestResult,
   QuestionnaireResponse,
 } from '@/lib/proposal-engine/types';
-import { WizardProgress } from '@/components/proposal-engine/WizardProgress';
-import { ContextForm } from '@/components/proposal-engine/ContextForm';
-import { StatementUploader } from '@/components/proposal-engine/StatementUploader';
-import { HoldingsReviewTable } from '@/components/proposal-engine/HoldingsReviewTable';
-import { RiskScoreGauge } from '@/components/proposal-engine/RiskScoreGauge';
-import { AllocationBar } from '@/components/proposal-engine/AllocationBar';
-import { PortfolioSummary } from '@/components/proposal-engine/PortfolioSummary';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-interface WizardState {
-  step: number;
-  completedSteps: number[];
-  proposalId: string | null;
-  context: Omit<CreateProposalRequest, 'clientId'> | null;
-  scanResults: StatementScanResult[];
-  holdings: Holding[];
-  currentPortfolio: CurrentPortfolio | null;
-  riskProfile: FartherRiskProfile | null;
-  selectedModel: InvestmentModel | null;
-  analytics: { current: PortfolioAnalytics | null; proposed: PortfolioAnalytics | null };
-  taxTransition: TaxTransitionAnalysis | null;
-  feeAnalysis: FeeAnalysis | null;
-  stressTests: StressTestResult[];
-  sections: ProposalSection[];
-  complianceChecks: { ips: boolean; regBI: boolean };
+type WizardStep = 1 | 2 | 3 | 4 | 5 | 6;
+type CaptureTab = 'ocr' | 'custodian' | 'manual';
+type TemplateStyle = 'standard' | 'premium' | 'minimalist';
+
+interface ProposalContext {
+  proposalType: string;
+  occasion: string;
+  clientName: string;
+  householdId: string;
+  estimatedAssets: string;
+  notes: string;
+}
+
+interface ProposalSection {
+  id: string;
+  label: string;
+  enabled: boolean;
+  order: number;
+}
+
+interface RiskQuestion {
+  id: string;
+  text: string;
+  options: Array<{ label: string; score: number }>;
 }
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-const STEP_LABELS = [
-  'Client & Context',
-  'Portfolio Capture',
-  'Risk Assessment',
-  'Proposed Portfolio',
-  'Analysis',
-  'Generate',
+const WIZARD_STEPS = [
+  { num: 1, label: 'Context' },
+  { num: 2, label: 'Portfolio' },
+  { num: 3, label: 'Risk' },
+  { num: 4, label: 'Model' },
+  { num: 5, label: 'Analysis' },
+  { num: 6, label: 'Generate' },
+];
+
+const PROPOSAL_TYPES = [
+  { value: 'new_client', label: 'New Client', desc: 'First-time portfolio proposal' },
+  { value: 'rebalance', label: 'Rebalance', desc: 'Rebalance existing portfolio' },
+  { value: 'rollover', label: 'Rollover', desc: '401k/IRA rollover proposal' },
+  { value: 'transfer', label: 'Transfer', desc: 'Account transfer proposal' },
+];
+
+const RISK_QUESTIONS: RiskQuestion[] = [
+  { id: 'q1', text: 'How would you react if your portfolio dropped 20% in one month?', options: [
+    { label: 'Sell everything immediately', score: 10 }, { label: 'Sell some holdings', score: 30 },
+    { label: 'Hold steady and wait', score: 60 }, { label: 'Buy more at lower prices', score: 90 },
+  ]},
+  { id: 'q2', text: 'What is your primary investment goal?', options: [
+    { label: 'Preserve capital', score: 15 }, { label: 'Generate income', score: 35 },
+    { label: 'Balanced growth and income', score: 55 }, { label: 'Maximize long-term growth', score: 85 },
+  ]},
+  { id: 'q3', text: 'How long until you need to access these funds?', options: [
+    { label: 'Less than 2 years', score: 10 }, { label: '2-5 years', score: 30 },
+    { label: '5-10 years', score: 60 }, { label: '10+ years', score: 90 },
+  ]},
+  { id: 'q4', text: 'What percentage of your total net worth does this portfolio represent?', options: [
+    { label: 'More than 75%', score: 15 }, { label: '50-75%', score: 35 },
+    { label: '25-50%', score: 60 }, { label: 'Less than 25%', score: 85 },
+  ]},
+  { id: 'q5', text: 'How stable is your current income?', options: [
+    { label: 'Very unstable / retired', score: 15 }, { label: 'Somewhat variable', score: 35 },
+    { label: 'Stable with some variability', score: 60 }, { label: 'Very stable with growth potential', score: 85 },
+  ]},
+  { id: 'q6', text: 'How much investment experience do you have?', options: [
+    { label: 'None', score: 10 }, { label: 'Some - basic accounts', score: 30 },
+    { label: 'Moderate - diversified portfolio', score: 60 }, { label: 'Extensive - active investor', score: 85 },
+  ]},
+  { id: 'q7', text: 'Which best describes your feelings about investment risk?', options: [
+    { label: 'I avoid risk entirely', score: 10 }, { label: 'I prefer minimal risk', score: 30 },
+    { label: 'I accept moderate risk for better returns', score: 60 }, { label: 'I embrace risk for maximum returns', score: 90 },
+  ]},
+  { id: 'q8', text: 'In a diversified portfolio, what is the maximum annual loss you could tolerate?', options: [
+    { label: '0-5% loss', score: 15 }, { label: '5-15% loss', score: 35 },
+    { label: '15-25% loss', score: 60 }, { label: '25%+ loss is acceptable', score: 85 },
+  ]},
 ];
 
 const DEFAULT_SECTIONS: ProposalSection[] = [
-  { key: 'cover', label: 'Cover Page', included: true, required: true, order: 1 },
-  { key: 'executive_summary', label: 'Executive Summary', included: true, required: true, order: 2 },
-  { key: 'client_profile', label: 'Client Profile', included: true, required: false, order: 3 },
-  { key: 'current_portfolio', label: 'Current Portfolio', included: true, required: true, order: 4 },
-  { key: 'risk_assessment', label: 'Risk Assessment', included: true, required: true, order: 5 },
-  { key: 'proposed_portfolio', label: 'Proposed Portfolio', included: true, required: true, order: 6 },
-  { key: 'comparison', label: 'Side-by-Side Comparison', included: true, required: false, order: 7 },
-  { key: 'stress_tests', label: 'Stress Tests', included: true, required: false, order: 8 },
-  { key: 'fee_analysis', label: 'Fee Analysis', included: true, required: false, order: 9 },
-  { key: 'tax_transition', label: 'Tax Transition Plan', included: true, required: false, order: 10 },
-  { key: 'ips', label: 'Investment Policy Statement', included: true, required: false, order: 11 },
-  { key: 'reg_bi', label: 'Reg BI Disclosure', included: true, required: false, order: 12 },
-  { key: 'appendix', label: 'Appendix', included: false, required: false, order: 13 },
+  { id: 'cover', label: 'Cover Page', enabled: true, order: 0 },
+  { id: 'executive', label: 'Executive Summary', enabled: true, order: 1 },
+  { id: 'current', label: 'Current Portfolio Analysis', enabled: true, order: 2 },
+  { id: 'risk', label: 'Risk Profile', enabled: true, order: 3 },
+  { id: 'proposed', label: 'Proposed Portfolio', enabled: true, order: 4 },
+  { id: 'comparison', label: 'Side-by-Side Comparison', enabled: true, order: 5 },
+  { id: 'fees', label: 'Fee Analysis', enabled: true, order: 6 },
+  { id: 'tax', label: 'Tax Transition Plan', enabled: true, order: 7 },
+  { id: 'stress', label: 'Stress Testing', enabled: true, order: 8 },
+  { id: 'ips', label: 'Investment Policy Statement', enabled: false, order: 9 },
+  { id: 'disclosures', label: 'Disclosures', enabled: true, order: 10 },
 ];
 
-const RISK_QUESTIONS = [
-  {
-    id: 'q1',
-    text: 'If your portfolio dropped 20% in one month, what would you do?',
-    options: [
-      { label: 'Sell everything', score: 10 },
-      { label: 'Sell some holdings', score: 30 },
-      { label: 'Hold and wait', score: 60 },
-      { label: 'Buy more', score: 90 },
-    ],
-  },
-  {
-    id: 'q2',
-    text: 'What is your primary investment goal?',
-    options: [
-      { label: 'Preserve capital', score: 15 },
-      { label: 'Generate income', score: 35 },
-      { label: 'Balanced growth and income', score: 55 },
-      { label: 'Aggressive growth', score: 85 },
-    ],
-  },
-  {
-    id: 'q3',
-    text: 'How long do you plan to hold these investments?',
-    options: [
-      { label: 'Less than 3 years', score: 15 },
-      { label: '3 to 5 years', score: 35 },
-      { label: '5 to 10 years', score: 60 },
-      { label: 'More than 10 years', score: 85 },
-    ],
-  },
-  {
-    id: 'q4',
-    text: 'How would you describe your investment knowledge?',
-    options: [
-      { label: 'Beginner', score: 20 },
-      { label: 'Intermediate', score: 45 },
-      { label: 'Advanced', score: 70 },
-      { label: 'Expert', score: 90 },
-    ],
-  },
-  {
-    id: 'q5',
-    text: 'What percentage of your total net worth will this portfolio represent?',
-    options: [
-      { label: 'More than 75%', score: 20 },
-      { label: '50% to 75%', score: 40 },
-      { label: '25% to 50%', score: 65 },
-      { label: 'Less than 25%', score: 85 },
-    ],
-  },
+const STRESS_SCENARIOS: Array<{ id: StressScenario; name: string }> = [
+  { id: '2008_FINANCIAL_CRISIS', name: '2008 Financial Crisis' },
+  { id: 'COVID_2020', name: 'COVID-19 Crash' },
+  { id: '2022_RATE_SHOCK', name: '2022 Rate Shock' },
+  { id: '2000_DOTCOM', name: 'Dot-Com Bust' },
+  { id: 'RECESSION_MILD', name: 'Mild Recession' },
+  { id: 'EQUITY_BEAR_50', name: '50% Equity Bear' },
 ];
 
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-const fmtPct = (v: number) => `${(v * 100).toFixed(1)}%`;
+const fmtPct = (n: number) => (n * 100).toFixed(1) + '%';
+
+function riskLabelFromScore(score: number): RiskLabel {
+  if (score <= 20) return 'CONSERVATIVE';
+  if (score <= 40) return 'MODERATELY_CONSERVATIVE';
+  if (score <= 60) return 'MODERATE';
+  if (score <= 80) return 'MODERATELY_AGGRESSIVE';
+  return 'AGGRESSIVE';
+}
 
 // ---------------------------------------------------------------------------
-// Skeleton
+// WizardProgress Component
 // ---------------------------------------------------------------------------
 
-function StepSkeleton() {
+function WizardProgress({ currentStep }: { currentStep: WizardStep }) {
   return (
-    <div className="space-y-6 animate-pulse">
-      <div className="h-6 w-48 rounded bg-limestone-200" />
-      <div className="h-4 w-96 rounded bg-limestone-200" />
-      <div className="space-y-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-12 rounded-lg bg-limestone-100" />
+    <div className="mb-8">
+      <div className="flex items-center justify-between">
+        {WIZARD_STEPS.map((step, idx) => (
+          <React.Fragment key={step.num}>
+            {idx > 0 && (
+              <div className={`flex-1 h-0.5 mx-2 ${step.num <= currentStep ? 'bg-brand-700' : 'bg-limestone-200'}`} />
+            )}
+            <div className="flex flex-col items-center gap-1.5">
+              <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
+                step.num < currentStep ? 'bg-brand-700 text-white' :
+                step.num === currentStep ? 'bg-brand-700 text-white ring-4 ring-brand-100' :
+                'bg-limestone-100 text-charcoal-500'
+              }`}>
+                {step.num < currentStep ? (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                ) : step.num}
+              </div>
+              <span className={`text-xs font-medium hidden sm:block ${step.num <= currentStep ? 'text-brand-700' : 'text-charcoal-500'}`}>
+                {step.label}
+              </span>
+            </div>
+          </React.Fragment>
         ))}
       </div>
     </div>
@@ -153,1087 +175,1064 @@ function StepSkeleton() {
 }
 
 // ---------------------------------------------------------------------------
-// Step 4: Model Library
+// Main Wizard Component
 // ---------------------------------------------------------------------------
 
-interface ModelCardProps {
-  model: InvestmentModel;
-  isSelected: boolean;
-  onSelect: () => void;
-}
-
-function ModelCard({ model, isSelected, onSelect }: ModelCardProps) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`w-full rounded-lg border-2 p-5 text-left transition-all ${
-        isSelected
-          ? 'border-brand-700 bg-brand-50 shadow-sm shadow-brand-700/10'
-          : 'border-limestone-200 bg-white hover:border-limestone-300 hover:shadow-sm'
-      }`}
-    >
-      <div className="flex items-start justify-between">
-        <div>
-          <h4 className={`text-sm font-semibold ${isSelected ? 'text-brand-700' : 'text-charcoal-900'}`}>
-            {model.name}
-          </h4>
-          <p className="mt-0.5 text-xs text-charcoal-500">{model.category} -- {model.vehicleType ?? 'Mixed'}</p>
-        </div>
-        <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-          isSelected ? 'border-brand-700 bg-brand-700' : 'border-limestone-300'
-        }`}>
-          {isSelected && (
-            <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-        </div>
-      </div>
-      <div className="mt-3 grid grid-cols-3 gap-3 text-center">
-        <div>
-          <p className="text-[10px] font-medium uppercase tracking-wide text-charcoal-400">Risk Score</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-charcoal-900">{model.riskScore}</p>
-        </div>
-        <div>
-          <p className="text-[10px] font-medium uppercase tracking-wide text-charcoal-400">Target Return</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-charcoal-900">{fmtPct(model.targetReturn ?? 0)}</p>
-        </div>
-        <div>
-          <p className="text-[10px] font-medium uppercase tracking-wide text-charcoal-400">Expense Ratio</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-charcoal-900">{fmtPct(model.expenseRatio ?? 0)}</p>
-        </div>
-      </div>
-      <div className="mt-3">
-        <AllocationBar
-          equity={(model.allocation ?? []).filter(a => a.assetClass.startsWith('EQUITY')).reduce((s, a) => s + (a.targetPct ?? 0), 0)}
-          fixedIncome={(model.allocation ?? []).filter(a => a.assetClass.startsWith('FIXED_INCOME')).reduce((s, a) => s + (a.targetPct ?? 0), 0)}
-          alternatives={(model.allocation ?? []).filter(a => ['REAL_ESTATE', 'COMMODITIES', 'GOLD', 'ALTERNATIVE_PE', 'ALTERNATIVE_HEDGE', 'ALTERNATIVE_PRIVATE_CREDIT'].includes(a.assetClass)).reduce((s, a) => s + (a.targetPct ?? 0), 0)}
-          cash={(model.allocation ?? []).filter(a => a.assetClass === 'CASH_EQUIVALENT').reduce((s, a) => s + (a.targetPct ?? 0), 0)}
-          height={20}
-        />
-      </div>
-    </button>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Main Wizard Page
-// ---------------------------------------------------------------------------
-
-export default function NewProposalWizardPage() {
+export default function CreateProposalWizardPage() {
   const { token } = useAuth();
   const { addToast } = useToast();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const templateId = searchParams.get('template');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [models, setModels] = useState<InvestmentModel[]>([]);
-  const [modelsLoading, setModelsLoading] = useState(false);
-
-  const [wizard, setWizard] = useState<WizardState>({
-    step: 1,
-    completedSteps: [],
-    proposalId: null,
-    context: null,
-    scanResults: [],
-    holdings: [],
-    currentPortfolio: null,
-    riskProfile: null,
-    selectedModel: null,
-    analytics: { current: null, proposed: null },
-    taxTransition: null,
-    feeAnalysis: null,
-    stressTests: [],
-    sections: DEFAULT_SECTIONS,
-    complianceChecks: { ips: false, regBI: false },
-  });
-
-  // Risk questionnaire state
-  const [riskAnswers, setRiskAnswers] = useState<Record<string, { answer: string; score: number }>>({});
-
-  // -- Template loading --
-  useEffect(() => {
-    if (!templateId || !token) return;
-    setLoading(true);
-    fetch(`/api/v1/proposals/templates/${templateId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load template');
-        return res.json();
-      })
-      .then((template) => {
-        setWizard((prev) => ({
-          ...prev,
-          sections: template.sections ?? prev.sections,
-        }));
-      })
-      .catch(() => addToast('Could not load template', 'error'))
-      .finally(() => setLoading(false));
-  }, [templateId, token, addToast]);
-
-  // -- Models loading --
-  useEffect(() => {
-    if (wizard.step !== 4 || models.length > 0 || !token) return;
-    setModelsLoading(true);
-    fetch('/api/v1/models', { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch models');
-        return res.json();
-      })
-      .then((data: InvestmentModel[]) => setModels(data))
-      .catch(() => addToast('Could not load model library', 'error'))
-      .finally(() => setModelsLoading(false));
-  }, [wizard.step, models.length, token, addToast]);
-
-  // -- Navigation --
-
-  const goToStep = useCallback((step: number) => {
-    setWizard((prev) => ({ ...prev, step }));
-    setError(null);
-  }, []);
-
-  const completeStep = useCallback((step: number) => {
-    setWizard((prev) => ({
-      ...prev,
-      completedSteps: prev.completedSteps.includes(step)
-        ? prev.completedSteps
-        : [...prev.completedSteps, step],
-      step: Math.min(step + 1, 6),
-    }));
-    setError(null);
-  }, []);
-
-  const goBack = useCallback(() => {
-    setWizard((prev) => ({ ...prev, step: Math.max(prev.step - 1, 1) }));
-    setError(null);
-  }, []);
+  // -- Wizard navigation --
+  const [step, setStep] = useState<WizardStep>(1);
 
   // -- Step 1: Context --
+  const [ctx, setCtx] = useState<ProposalContext>({
+    proposalType: '', occasion: '', clientName: '',
+    householdId: '', estimatedAssets: '', notes: '',
+  });
 
-  const handleContextSubmit = useCallback(
-    async (data: Omit<CreateProposalRequest, 'clientId'>) => {
-      if (!token) return;
-      setSaving(true);
-      setError(null);
-      try {
-        const res = await fetch('/api/v1/proposals', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error('Failed to create proposal');
-        const proposal: Proposal = await res.json();
-        setWizard((prev) => ({
-          ...prev,
-          proposalId: proposal.proposalId,
-          context: data,
-        }));
-        completeStep(1);
-        addToast('Proposal created', 'success');
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Failed to save context';
-        setError(msg);
-        addToast(msg, 'error');
-      } finally {
-        setSaving(false);
-      }
-    },
-    [token, addToast, completeStep],
-  );
+  // -- Step 2: Portfolio capture --
+  const [captureTab, setCaptureTab] = useState<CaptureTab>('ocr');
+  const [scanFile, setScanFile] = useState<File | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const [holdings, setHoldings] = useState<Holding[]>([]);
+  const [manualTicker, setManualTicker] = useState('');
+  const [manualShares, setManualShares] = useState('');
 
-  // -- Step 2: Portfolio Capture --
+  // -- Step 3: Risk --
+  const [riskAnswers, setRiskAnswers] = useState<Record<string, number>>({});
+  const [riskProfile, setRiskProfile] = useState<FartherRiskProfile | null>(null);
 
-  const handleScanComplete = useCallback(
-    async (results: StatementScanResult[]) => {
-      const allHoldings = results.flatMap((r) => r.holdings);
-      setWizard((prev) => ({
-        ...prev,
-        scanResults: results,
-        holdings: allHoldings,
-      }));
-    },
-    [],
-  );
-
-  const handleHoldingEdit = useCallback((index: number, updates: Partial<Holding>) => {
-    setWizard((prev) => {
-      const newHoldings = [...prev.holdings];
-      newHoldings[index] = { ...newHoldings[index], ...updates };
-      return { ...prev, holdings: newHoldings };
-    });
-  }, []);
-
-  const handleHoldingRemove = useCallback((index: number) => {
-    setWizard((prev) => ({
-      ...prev,
-      holdings: prev.holdings.filter((_, i) => i !== index),
-    }));
-  }, []);
-
-  const handleHoldingAdd = useCallback(() => {
-    setWizard((prev) => ({
-      ...prev,
-      holdings: [
-        ...prev.holdings,
-        {
-          ticker: '',
-          cusip: null,
-          description: '',
-          assetClass: 'OTHER',
-          quantity: 0,
-          price: 0 as any,
-          marketValue: 0 as any,
-          costBasis: null,
-          unrealizedGain: null,
-          gainPct: null,
-          holdingPeriod: null,
-          expenseRatio: null,
-          dividendYield: null,
-          accountType: 'TAXABLE',
-          accountName: 'New Account',
-        },
-      ],
-    }));
-  }, []);
-
-  const handlePortfolioConfirm = useCallback(async () => {
-    if (!token || !wizard.proposalId) return;
-    if (wizard.holdings.length === 0) {
-      setError('Add at least one holding to continue');
-      return;
-    }
-    setSaving(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wizardStep: 2, holdings: wizard.holdings }),
-      });
-      if (!res.ok) throw new Error('Failed to save portfolio');
-      completeStep(2);
-      addToast('Portfolio saved', 'success');
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to save portfolio';
-      setError(msg);
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, wizard.holdings, addToast, completeStep]);
-
-  // -- Step 3: Risk Assessment --
-
-  const handleRiskAnswer = useCallback((questionId: string, answer: string, score: number) => {
-    setRiskAnswers((prev) => ({ ...prev, [questionId]: { answer, score } }));
-  }, []);
-
-  const handleRiskSubmit = useCallback(async () => {
-    if (!token || !wizard.proposalId) return;
-    const answeredCount = Object.keys(riskAnswers).length;
-    if (answeredCount < RISK_QUESTIONS.length) {
-      setError(`Please answer all ${RISK_QUESTIONS.length} questions (${answeredCount} answered)`);
-      return;
-    }
-    setSaving(true);
-    setError(null);
-    try {
-      const responses: QuestionnaireResponse[] = RISK_QUESTIONS.map((q) => ({
-        questionId: q.id,
-        questionText: q.text,
-        answer: riskAnswers[q.id].answer,
-        score: riskAnswers[q.id].score,
-      }));
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}/risk`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ proposalId: wizard.proposalId, responses }),
-      });
-      if (!res.ok) throw new Error('Failed to save risk profile');
-      const profile: FartherRiskProfile = await res.json();
-      setWizard((prev) => ({ ...prev, riskProfile: profile }));
-      completeStep(3);
-      addToast('Risk profile saved', 'success');
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to submit risk assessment';
-      setError(msg);
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, riskAnswers, addToast, completeStep]);
-
-  // -- Step 4: Model Selection --
-
-  const handleModelSelect = useCallback((model: InvestmentModel) => {
-    setWizard((prev) => ({ ...prev, selectedModel: model }));
-  }, []);
-
-  const handleModelConfirm = useCallback(async () => {
-    if (!token || !wizard.proposalId || !wizard.selectedModel) return;
-    setSaving(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wizardStep: 4, proposedModelId: wizard.selectedModel.modelId }),
-      });
-      if (!res.ok) throw new Error('Failed to save model selection');
-      completeStep(4);
-      addToast('Model selected', 'success');
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to save model';
-      setError(msg);
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, wizard.selectedModel, addToast, completeStep]);
+  // -- Step 4: Model selection --
+  const [models, setModels] = useState<InvestmentModel[]>([]);
+  const [selectedModel, setSelectedModel] = useState<InvestmentModel | null>(null);
+  const [loadingModels, setLoadingModels] = useState(false);
+  const [modelSearch, setModelSearch] = useState('');
 
   // -- Step 5: Analysis --
+  const [analytics, setAnalytics] = useState<PortfolioAnalytics | null>(null);
+  const [stressResults, setStressResults] = useState<StressTestResult[]>([]);
+  const [feeAnalysis, setFeeAnalysis] = useState<FeeAnalysis | null>(null);
+  const [taxTransition, setTaxTransition] = useState<TaxTransitionAnalysis | null>(null);
+  const [loadingAnalysis, setLoadingAnalysis] = useState(false);
 
-  const handleRunAnalysis = useCallback(async () => {
-    if (!token || !wizard.proposalId) return;
-    setSaving(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}/analyze`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Failed to run analysis');
-      const data = await res.json();
-      setWizard((prev) => ({
-        ...prev,
-        analytics: data.analytics ?? prev.analytics,
-        taxTransition: data.taxTransition ?? prev.taxTransition,
-        feeAnalysis: data.feeAnalysis ?? prev.feeAnalysis,
-        stressTests: data.stressTests ?? prev.stressTests,
-      }));
-      completeStep(5);
-      addToast('Analysis complete', 'success');
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to run analysis';
-      setError(msg);
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, addToast, completeStep]);
+  // -- Step 6: Generate --
+  const [templateStyle, setTemplateStyle] = useState<TemplateStyle>('standard');
+  const [sections, setSections] = useState<ProposalSection[]>(DEFAULT_SECTIONS);
+  const [generating, setGenerating] = useState(false);
+  const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  // -- Step 6: Output --
-
-  const handleSectionToggle = useCallback((key: string) => {
-    setWizard((prev) => ({
-      ...prev,
-      sections: prev.sections.map((s) =>
-        s.key === key && !s.required ? { ...s, included: !s.included } : s,
-      ),
-    }));
-  }, []);
-
-  const handleGenerateCompliance = useCallback(async (type: 'ips' | 'regBI') => {
-    if (!token || !wizard.proposalId) return;
-    setSaving(true);
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}/compliance/${type}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`Failed to generate ${type.toUpperCase()}`);
-      setWizard((prev) => ({
-        ...prev,
-        complianceChecks: { ...prev.complianceChecks, [type]: true },
-      }));
-      addToast(`${type === 'ips' ? 'IPS' : 'Reg BI'} generated`, 'success');
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Compliance generation failed';
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, addToast]);
-
-  const handleSendProposal = useCallback(async () => {
-    if (!token || !wizard.proposalId) return;
-    setSaving(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}/send`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sections: wizard.sections }),
-      });
-      if (!res.ok) throw new Error('Failed to send proposal');
-      addToast('Proposal sent successfully', 'success');
-      router.push(`/tax-planning/proposals/${wizard.proposalId}`);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to send proposal';
-      setError(msg);
-      addToast(msg, 'error');
-    } finally {
-      setSaving(false);
-    }
-  }, [token, wizard.proposalId, wizard.sections, addToast, router]);
-
-  const handleDownloadProposal = useCallback(async () => {
-    if (!token || !wizard.proposalId) return;
-    try {
-      const res = await fetch(`/api/v1/proposals/${wizard.proposalId}/download`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Failed to download');
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `proposal-${wizard.proposalId}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
-      addToast('Proposal downloaded', 'success');
-    } catch (err) {
-      addToast('Failed to download proposal', 'error');
-    }
-  }, [token, wizard.proposalId, addToast]);
-
-  // -- Computed risk score --
-  const computedRiskScore = Object.values(riskAnswers).length > 0
-    ? Math.round(Object.values(riskAnswers).reduce((sum, a) => sum + a.score, 0) / Object.values(riskAnswers).length)
+  const totalValue = holdings.reduce((s, h) => s + (h.marketValue as number), 0);
+  const riskScore = Object.keys(riskAnswers).length > 0
+    ? Math.round(Object.values(riskAnswers).reduce((s, v) => s + v, 0) / Object.values(riskAnswers).length)
     : 0;
 
-  const getRiskLabel = (score: number): string => {
-    if (score <= 20) return 'Conservative';
-    if (score <= 40) return 'Moderately Conservative';
-    if (score <= 60) return 'Moderate';
-    if (score <= 80) return 'Moderately Aggressive';
-    return 'Aggressive';
+  // -----------------------------------------------------------------------
+  // Handlers
+  // -----------------------------------------------------------------------
+
+  const authHeader = token ? 'Bearer ' + token : '';
+
+  const handleScan = useCallback(async () => {
+    if (!scanFile || !token) return;
+    setScanning(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', scanFile);
+      const res = await fetch('/api/v1/scanner/scan', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token },
+        body: formData,
+      });
+      if (!res.ok) throw new Error('Scan failed');
+      const data = await res.json();
+      const scanned: Holding[] = data.holdings || [];
+      setHoldings((prev) => [...prev, ...scanned]);
+      addToast('Extracted ' + scanned.length + ' holdings', 'success');
+    } catch (err) {
+      addToast(err instanceof Error ? err.message : 'Scan failed', 'error');
+    } finally {
+      setScanning(false);
+    }
+  }, [scanFile, token, addToast]);
+
+  const addManualHolding = useCallback(() => {
+    if (!manualTicker || !manualShares) {
+      addToast('Enter ticker and shares', 'warning');
+      return;
+    }
+    const newHolding: Holding = {
+      ticker: manualTicker.toUpperCase(),
+      cusip: null,
+      description: manualTicker.toUpperCase(),
+      assetClass: 'OTHER',
+      quantity: parseFloat(manualShares),
+      shares: parseFloat(manualShares),
+      price: 0 as unknown as Holding['price'],
+      marketValue: 0 as unknown as Holding['marketValue'],
+      costBasis: null,
+      unrealizedGain: null,
+      gainPct: null,
+      holdingPeriod: null,
+      expenseRatio: null,
+      dividendYield: null,
+      accountType: 'TAXABLE',
+      accountName: 'Manual Entry',
+    };
+    setHoldings((prev) => [...prev, newHolding]);
+    setManualTicker('');
+    setManualShares('');
+    addToast('Added ' + newHolding.ticker, 'success');
+  }, [manualTicker, manualShares, addToast]);
+
+  const removeHolding = useCallback((idx: number) => {
+    setHoldings((prev) => prev.filter((_, i) => i !== idx));
+  }, []);
+
+  const fetchModels = useCallback(async () => {
+    if (!token) return;
+    setLoadingModels(true);
+    try {
+      const res = await fetch('/api/v1/models', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (!res.ok) throw new Error('Failed to fetch models');
+      const data = await res.json();
+      setModels(Array.isArray(data) ? data : []);
+    } catch {
+      addToast('Failed to load investment models', 'error');
+    } finally {
+      setLoadingModels(false);
+    }
+  }, [token, addToast]);
+
+  useEffect(() => {
+    if (step === 4 && models.length === 0) fetchModels();
+  }, [step, models.length, fetchModels]);
+
+  const runAnalysis = useCallback(async () => {
+    if (!token || !selectedModel) return;
+    setLoadingAnalysis(true);
+    try {
+      const body = {
+        currentHoldings: holdings,
+        proposedModelId: selectedModel.modelId,
+        riskScore,
+      };
+      const hdrs = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token };
+      const [analyticsRes, stressRes, feeRes, taxRes] = await Promise.all([
+        fetch('/api/v1/proposals/analytics', { method: 'POST', headers: hdrs, body: JSON.stringify(body) }),
+        fetch('/api/v1/proposals/stress-test', { method: 'POST', headers: hdrs, body: JSON.stringify(body) }),
+        fetch('/api/v1/proposals/fee-analysis', { method: 'POST', headers: hdrs, body: JSON.stringify(body) }),
+        fetch('/api/v1/proposals/tax-transition', { method: 'POST', headers: hdrs, body: JSON.stringify(body) }),
+      ]);
+      if (analyticsRes.ok) setAnalytics(await analyticsRes.json());
+      if (stressRes.ok) setStressResults(await stressRes.json());
+      if (feeRes.ok) setFeeAnalysis(await feeRes.json());
+      if (taxRes.ok) setTaxTransition(await taxRes.json());
+      addToast('Analysis complete', 'success');
+    } catch {
+      addToast('Analysis failed', 'error');
+    } finally {
+      setLoadingAnalysis(false);
+    }
+  }, [token, selectedModel, holdings, riskScore, addToast]);
+
+  useEffect(() => {
+    if (step === 5 && !analytics && selectedModel) runAnalysis();
+  }, [step, analytics, selectedModel, runAnalysis]);
+
+  const handleGenerate = useCallback(async () => {
+    if (!token) return;
+    setGenerating(true);
+    try {
+      const body = {
+        clientName: ctx.clientName,
+        householdId: ctx.householdId,
+        proposalType: ctx.proposalType,
+        occasion: ctx.occasion,
+        notes: ctx.notes,
+        currentHoldings: holdings,
+        riskProfile,
+        proposedModelId: selectedModel?.modelId,
+        templateStyle,
+        sections: sections.filter((s) => s.enabled).map((s) => s.id),
+      };
+      const res = await fetch('/api/v1/proposals/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error('Generation failed');
+      const data = await res.json();
+      setGeneratedUrl(data.pdfUrl || null);
+      addToast('Proposal generated successfully!', 'success');
+    } catch (err) {
+      addToast(err instanceof Error ? err.message : 'Generation failed', 'error');
+    } finally {
+      setGenerating(false);
+    }
+  }, [token, ctx, holdings, riskProfile, selectedModel, templateStyle, sections, addToast]);
+
+  const handleSaveAsDraft = useCallback(async () => {
+    if (!token) return;
+    setSaving(true);
+    try {
+      const body = {
+        clientName: ctx.clientName,
+        householdId: ctx.householdId,
+        proposalType: ctx.proposalType,
+        status: 'DRAFT',
+        currentHoldings: holdings,
+        riskProfile,
+        proposedModelId: selectedModel?.modelId,
+      };
+      const res = await fetch('/api/v1/proposals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error('Failed to save draft');
+      const data = await res.json();
+      addToast('Draft saved', 'success');
+      router.push('/tax-planning/proposals/' + data.proposalId);
+    } catch (err) {
+      addToast(err instanceof Error ? err.message : 'Save failed', 'error');
+    } finally {
+      setSaving(false);
+    }
+  }, [token, ctx, holdings, riskProfile, selectedModel, addToast, router]);
+
+  const canProceed = (): boolean => {
+    switch (step) {
+      case 1: return !!ctx.clientName && !!ctx.proposalType;
+      case 2: return holdings.length > 0;
+      case 3: return Object.keys(riskAnswers).length >= RISK_QUESTIONS.length;
+      case 4: return !!selectedModel;
+      case 5: return !!analytics;
+      case 6: return true;
+      default: return false;
+    }
   };
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+  const goNext = () => { if (step < 6 && canProceed()) setStep((s) => (s + 1) as WizardStep); };
+  const goBack = () => { if (step > 1) setStep((s) => (s - 1) as WizardStep); };
 
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-5xl space-y-8">
-        <div className="h-8 w-64 rounded bg-limestone-200 animate-pulse" />
-        <StepSkeleton />
-      </div>
-    );
-  }
+  const toggleSection = (id: string) => {
+    setSections((prev) => prev.map((s) => s.id === id ? { ...s, enabled: !s.enabled } : s));
+  };
+
+  const filteredModels = models.filter((m) => {
+    if (!modelSearch) return true;
+    const q = modelSearch.toLowerCase();
+    return m.name.toLowerCase().includes(q) || (m.description || '').toLowerCase().includes(q);
+  });
+
+  // -----------------------------------------------------------------------
+  // Render
+  // -----------------------------------------------------------------------
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
+    <div className="mx-auto max-w-5xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">New Proposal</h1>
-          <p className="mt-1 text-sm text-charcoal-500">
-            Step {wizard.step} of 6 -- {STEP_LABELS[wizard.step - 1]}
-          </p>
+          <h1 className="text-2xl font-bold text-charcoal-900">Create Proposal</h1>
+          <p className="mt-1 text-sm text-charcoal-500">Build a comprehensive investment proposal in 6 steps.</p>
         </div>
-        <Link
-          href="/tax-planning/proposals"
-          className="text-sm font-medium text-charcoal-500 hover:text-charcoal-700 transition-colors"
-        >
-          Cancel
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleSaveAsDraft}
+            disabled={saving || !ctx.clientName}
+            className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2.5 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 disabled:opacity-50"
+          >
+            {saving ? 'Saving...' : 'Save Draft'}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push('/tax-planning/proposals')}
+            className="text-sm font-medium text-charcoal-500 hover:text-charcoal-700"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
 
-      {/* Wizard Progress */}
-      <div className="rounded-lg border border-limestone-200 bg-white px-6 py-4 shadow-sm">
-        <WizardProgress
-          currentStep={wizard.step}
-          completedSteps={wizard.completedSteps}
-          onStepClick={goToStep}
-        />
-      </div>
+      <WizardProgress currentStep={step} />
 
-      {/* Error banner */}
-      {error && (
-        <div className="rounded-lg border border-critical-200 bg-critical-50 px-4 py-3">
-          <p className="text-sm font-medium text-critical-700">{error}</p>
+      {/* ================================================================= */}
+      {/* Step 1: Context                                                    */}
+      {/* ================================================================= */}
+      {step === 1 && (
+        <div className="space-y-6">
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Type</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {PROPOSAL_TYPES.map((pt) => (
+                <button
+                  key={pt.value}
+                  type="button"
+                  onClick={() => setCtx((c) => ({ ...c, proposalType: pt.value }))}
+                  className={`rounded-lg border p-4 text-left transition-all ${
+                    ctx.proposalType === pt.value
+                      ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
+                      : 'border-limestone-200 hover:border-brand-300'
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-charcoal-900">{pt.label}</p>
+                  <p className="text-xs text-charcoal-500 mt-0.5">{pt.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Client Information</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-charcoal-700 mb-1">Client Name *</label>
+                <input
+                  type="text"
+                  value={ctx.clientName}
+                  onChange={(e) => setCtx((c) => ({ ...c, clientName: e.target.value }))}
+                  placeholder="John & Jane Smith"
+                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-charcoal-700 mb-1">Household ID</label>
+                <input
+                  type="text"
+                  value={ctx.householdId}
+                  onChange={(e) => setCtx((c) => ({ ...c, householdId: e.target.value }))}
+                  placeholder="HH-12345"
+                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-charcoal-700 mb-1">Estimated Assets</label>
+                <input
+                  type="text"
+                  value={ctx.estimatedAssets}
+                  onChange={(e) => setCtx((c) => ({ ...c, estimatedAssets: e.target.value }))}
+                  placeholder="$1,500,000"
+                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-charcoal-700 mb-1">Occasion</label>
+                <select
+                  value={ctx.occasion}
+                  onChange={(e) => setCtx((c) => ({ ...c, occasion: e.target.value }))}
+                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                >
+                  <option value="">Select occasion...</option>
+                  <option value="INITIAL_MEETING">Initial Meeting</option>
+                  <option value="ANNUAL_REVIEW">Annual Review</option>
+                  <option value="LIFE_EVENT">Life Event</option>
+                  <option value="CLIENT_REQUEST">Client Request</option>
+                  <option value="PROACTIVE_OUTREACH">Proactive Outreach</option>
+                  <option value="MARKET_CONDITIONS">Market Conditions</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-charcoal-700 mb-1">Notes</label>
+              <textarea
+                value={ctx.notes}
+                onChange={(e) => setCtx((c) => ({ ...c, notes: e.target.value }))}
+                rows={3}
+                placeholder="Additional context about this proposal..."
+                className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Step Content */}
-      <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-        {/* ---- Step 1: Context ---- */}
-        {wizard.step === 1 && (
-          <div>
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-6">Client & Context</h2>
-            <ContextForm
-              initialData={wizard.context ? {
-                clientName: wizard.context.clientName,
-                proposalType: wizard.context.proposalType,
-                occasion: wizard.context.occasion,
-                assetsInScope: wizard.context.assetsInScope,
-                relationshipTier: wizard.context.relationshipTier,
-                notes: wizard.context.notes,
-              } : undefined}
-              onSubmit={handleContextSubmit}
-            />
-            {saving && (
-              <div className="mt-4 flex items-center gap-2 text-sm text-charcoal-500">
-                <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-                Creating proposal...
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ---- Step 2: Portfolio Capture ---- */}
-        {wizard.step === 2 && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-lg font-semibold text-charcoal-900 mb-2">Portfolio Capture</h2>
-              <p className="text-sm text-charcoal-500">Upload brokerage statements or enter holdings manually.</p>
+      {/* ================================================================= */}
+      {/* Step 2: Portfolio Capture                                          */}
+      {/* ================================================================= */}
+      {step === 2 && (
+        <div className="space-y-6">
+          <div className="rounded-lg border border-limestone-200 bg-white shadow-sm">
+            <div className="flex border-b border-limestone-200">
+              {([['ocr', 'Scan Statement'], ['custodian', 'Custodian Feed'], ['manual', 'Manual Entry']] as const).map(([tab, label]) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setCaptureTab(tab)}
+                  className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    captureTab === tab
+                      ? 'border-brand-700 text-brand-700'
+                      : 'border-transparent text-charcoal-500 hover:text-charcoal-700'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
 
-            <StatementUploader
-              onScanComplete={handleScanComplete}
-              existingScans={wizard.scanResults}
-            />
-
-            {wizard.holdings.length > 0 && (
-              <HoldingsReviewTable
-                holdings={wizard.holdings}
-                onEdit={handleHoldingEdit}
-                onRemove={handleHoldingRemove}
-                onAdd={handleHoldingAdd}
-              />
-            )}
-
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-limestone-100">
-              <button
-                type="button"
-                onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-charcoal-600 hover:bg-limestone-50 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </button>
-              <button
-                type="button"
-                onClick={handlePortfolioConfirm}
-                disabled={saving || wizard.holdings.length === 0}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {saving ? 'Saving...' : 'Next'}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ---- Step 3: Risk Assessment ---- */}
-        {wizard.step === 3 && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-lg font-semibold text-charcoal-900 mb-2">Risk Assessment</h2>
-              <p className="text-sm text-charcoal-500">Complete the questionnaire to determine the client's risk profile.</p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {/* Questionnaire */}
-              <div className="lg:col-span-2 space-y-6">
-                {RISK_QUESTIONS.map((q, qi) => (
-                  <div key={q.id} className="rounded-lg border border-limestone-200 bg-white p-5">
-                    <p className="text-sm font-medium text-charcoal-900 mb-3">
-                      {qi + 1}. {q.text}
+            <div className="p-6">
+              {/* OCR Tab */}
+              {captureTab === 'ocr' && (
+                <div>
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const file = e.dataTransfer.files[0];
+                      if (file) setScanFile(file);
+                    }}
+                    className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-limestone-300 bg-limestone-50 p-10 cursor-pointer hover:border-brand-400 hover:bg-brand-50/20 transition-colors"
+                  >
+                    <svg className="h-10 w-10 text-charcoal-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                    </svg>
+                    <p className="text-sm font-medium text-charcoal-700">
+                      {scanFile ? scanFile.name : 'Drop a brokerage statement here or click to browse'}
                     </p>
-                    <div className="space-y-2">
-                      {q.options.map((opt) => {
-                        const isSelected = riskAnswers[q.id]?.answer === opt.label;
-                        return (
-                          <label
-                            key={opt.label}
-                            className={`flex items-center gap-3 rounded-lg border px-4 py-3 cursor-pointer transition-all ${
-                              isSelected
-                                ? 'border-brand-700 bg-brand-50'
-                                : 'border-limestone-200 hover:border-limestone-300 hover:bg-limestone-50'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name={q.id}
-                              checked={isSelected}
-                              onChange={() => handleRiskAnswer(q.id, opt.label, opt.score)}
-                              className="sr-only"
-                            />
-                            <div className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${
-                              isSelected ? 'border-brand-700 bg-brand-700' : 'border-limestone-300'
-                            }`}>
-                              {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
-                            </div>
-                            <span className={`text-sm ${isSelected ? 'text-brand-700 font-medium' : 'text-charcoal-700'}`}>
-                              {opt.label}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Risk Profile Preview */}
-              <div className="space-y-4">
-                <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm sticky top-4">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Risk Profile Preview</h3>
-                  <div className="flex justify-center mb-4">
-                    <RiskScoreGauge
-                      score={computedRiskScore}
-                      label={getRiskLabel(computedRiskScore)}
-                      size="lg"
+                    <p className="text-xs text-charcoal-500 mt-1">PDF, PNG, or JPG up to 10MB</p>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.png,.jpg,.jpeg"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setScanFile(file);
+                      }}
                     />
                   </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-charcoal-500">Questions Answered</span>
-                      <span className="font-medium text-charcoal-900 tabular-nums">
-                        {Object.keys(riskAnswers).length}/{RISK_QUESTIONS.length}
-                      </span>
+                  {scanFile && (
+                    <div className="mt-4 flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={handleScan}
+                        disabled={scanning}
+                        className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+                      >
+                        {scanning ? (
+                          <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> Scanning...</>
+                        ) : 'Scan Statement'}
+                      </button>
+                      <button type="button" onClick={() => setScanFile(null)} className="text-sm text-charcoal-500 hover:text-charcoal-700">Clear</button>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-charcoal-500">Behavioral Score</span>
-                      <span className="font-medium text-charcoal-900 tabular-nums">{computedRiskScore}</span>
+                  )}
+                </div>
+              )}
+
+              {/* Custodian Tab */}
+              {captureTab === 'custodian' && (
+                <div className="text-center py-10">
+                  <svg className="mx-auto h-12 w-12 text-charcoal-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.556a4.5 4.5 0 00-6.364-6.364L4.5 8.87" />
+                  </svg>
+                  <p className="text-sm font-medium text-charcoal-700">Custodian integration coming soon</p>
+                  <p className="text-xs text-charcoal-500 mt-1">Schwab, Fidelity, and Pershing feeds will be available.</p>
+                </div>
+              )}
+
+              {/* Manual Tab */}
+              {captureTab === 'manual' && (
+                <div>
+                  <div className="flex items-end gap-3 mb-4">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-charcoal-700 mb-1">Ticker</label>
+                      <input
+                        type="text"
+                        value={manualTicker}
+                        onChange={(e) => setManualTicker(e.target.value)}
+                        placeholder="VTI"
+                        className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-charcoal-700 mb-1">Shares</label>
+                      <input
+                        type="number"
+                        value={manualShares}
+                        onChange={(e) => setManualShares(e.target.value)}
+                        placeholder="100"
+                        className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addManualHolding}
+                      className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Holdings table */}
+          {holdings.length > 0 && (
+            <div className="rounded-lg border border-limestone-200 bg-white shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-limestone-200">
+                <h3 className="text-sm font-semibold text-charcoal-900">
+                  Current Holdings ({holdings.length})
+                </h3>
+                <span className="text-sm font-medium text-charcoal-700 tabular-nums">{fmt.format(totalValue / 100)}</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-limestone-200">
+                  <thead className="bg-limestone-50">
+                    <tr>
+                      {['Ticker', 'Description', 'Asset Class', 'Qty', 'Market Value', ''].map((h) => (
+                        <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-charcoal-500">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-limestone-100">
+                    {holdings.map((h, idx) => (
+                      <tr key={idx} className="hover:bg-limestone-50">
+                        <td className="px-4 py-2 text-sm font-medium text-charcoal-900">{h.ticker || '--'}</td>
+                        <td className="px-4 py-2 text-sm text-charcoal-700 max-w-[180px] truncate">{h.description}</td>
+                        <td className="px-4 py-2 text-xs text-charcoal-500">{h.assetClass.replace(/_/g, ' ')}</td>
+                        <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{h.quantity.toLocaleString()}</td>
+                        <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{fmt.format((h.marketValue as number) / 100)}</td>
+                        <td className="px-4 py-2">
+                          <button type="button" onClick={() => removeHolding(idx)} className="text-xs text-critical-600 hover:text-critical-700">Remove</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ================================================================= */}
+      {/* Step 3: Risk Assessment                                            */}
+      {/* ================================================================= */}
+      {step === 3 && (
+        <div className="space-y-6">
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-charcoal-900">Risk Assessment Questionnaire</h2>
+              <div className="text-right">
+                <p className="text-xs text-charcoal-500">Progress</p>
+                <p className="text-sm font-bold text-charcoal-900">
+                  {Object.keys(riskAnswers).length} / {RISK_QUESTIONS.length}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {RISK_QUESTIONS.map((q, qIdx) => (
+                <div key={q.id} className="border-b border-limestone-100 pb-5 last:border-0">
+                  <p className="text-sm font-medium text-charcoal-900 mb-3">
+                    <span className="text-brand-700 mr-2">{qIdx + 1}.</span>
+                    {q.text}
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {q.options.map((opt) => (
+                      <button
+                        key={opt.label}
+                        type="button"
+                        onClick={() => setRiskAnswers((prev) => ({ ...prev, [q.id]: opt.score }))}
+                        className={`rounded-md border p-3 text-left text-sm transition-all ${
+                          riskAnswers[q.id] === opt.score
+                            ? 'border-brand-700 bg-brand-50 text-brand-700 font-medium'
+                            : 'border-limestone-200 text-charcoal-700 hover:border-brand-300'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Risk Score Summary */}
+          {Object.keys(riskAnswers).length >= RISK_QUESTIONS.length && (
+            <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Risk Profile Summary</h3>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50">
+                    <span className="text-2xl font-bold text-brand-700">{riskScore}</span>
+                  </div>
+                  <p className="text-xs text-charcoal-500 mt-2">Behavioral Score</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-charcoal-900 mt-4">
+                    {riskLabelFromScore(riskScore).replace(/_/g, ' ')}
+                  </p>
+                  <p className="text-xs text-charcoal-500 mt-1">Risk Label</p>
+                </div>
+                <div className="text-center">
+                  <div className="mt-4">
+                    <div className="h-2 w-full rounded-full bg-limestone-200">
+                      <div className="h-2 rounded-full bg-brand-700 transition-all" style={{ width: riskScore + '%' }} />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-charcoal-400 mt-1">
+                      <span>Conservative</span>
+                      <span>Aggressive</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          )}
+        </div>
+      )}
 
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-limestone-100">
-              <button
-                type="button"
-                onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-charcoal-600 hover:bg-limestone-50 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+      {/* ================================================================= */}
+      {/* Step 4: Model Selection                                            */}
+      {/* ================================================================= */}
+      {step === 4 && (
+        <div className="space-y-6">
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-charcoal-900">Select Investment Model</h2>
+              <div className="relative w-64">
+                <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
-                Back
-              </button>
-              <button
-                type="button"
-                onClick={handleRiskSubmit}
-                disabled={saving || Object.keys(riskAnswers).length < RISK_QUESTIONS.length}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {saving ? 'Saving...' : 'Next'}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ---- Step 4: Proposed Portfolio ---- */}
-        {wizard.step === 4 && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-lg font-semibold text-charcoal-900 mb-2">Proposed Portfolio</h2>
-              <p className="text-sm text-charcoal-500">Select a model portfolio for the client.</p>
+                <input
+                  type="text"
+                  placeholder="Search models..."
+                  value={modelSearch}
+                  onChange={(e) => setModelSearch(e.target.value)}
+                  className="w-full border border-limestone-300 rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                />
+              </div>
             </div>
 
-            {modelsLoading ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {loadingModels ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-48 rounded-lg border border-limestone-200 bg-limestone-50 animate-pulse" />
+                  <div key={i} className="rounded-lg border border-limestone-200 p-5 animate-pulse">
+                    <div className="h-5 w-36 rounded bg-limestone-200 mb-2" />
+                    <div className="h-3 w-24 rounded bg-limestone-200 mb-3" />
+                    <div className="h-12 rounded bg-limestone-200" />
+                  </div>
                 ))}
               </div>
-            ) : models.length === 0 ? (
-              <div className="rounded-lg border border-limestone-200 bg-white p-12 text-center">
-                <svg className="mx-auto h-12 w-12 text-charcoal-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                <p className="text-sm font-medium text-charcoal-700">No models available.</p>
-                <p className="mt-1 text-sm text-charcoal-500">Contact your investment team to add model portfolios.</p>
+            ) : filteredModels.length === 0 ? (
+              <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-8 text-center">
+                <p className="text-sm text-charcoal-500">No models found</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {models.map((model) => (
-                  <ModelCard
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredModels.map((model) => (
+                  <button
                     key={model.modelId}
-                    model={model}
-                    isSelected={wizard.selectedModel?.modelId === model.modelId}
-                    onSelect={() => handleModelSelect(model)}
-                  />
+                    type="button"
+                    onClick={() => setSelectedModel(model)}
+                    className={`rounded-lg border p-5 text-left transition-all ${
+                      selectedModel?.modelId === model.modelId
+                        ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
+                        : 'border-limestone-200 hover:border-brand-300 shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-sm font-semibold text-charcoal-900">{model.name}</p>
+                      {model.riskLabel && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-info-100 text-info-700">
+                          {model.riskLabel.replace(/_/g, ' ')}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-charcoal-500 line-clamp-2 mb-3">{model.description}</p>
+                    {model.targetAllocation && (
+                      <div className="flex h-2 w-full overflow-hidden rounded-full mb-2">
+                        <div className="bg-brand-700" style={{ width: model.targetAllocation.equity + '%' }} />
+                        <div className="bg-info-500" style={{ width: model.targetAllocation.fixedIncome + '%' }} />
+                        <div className="bg-warning-500" style={{ width: model.targetAllocation.alternatives + '%' }} />
+                        <div className="bg-limestone-300" style={{ width: model.targetAllocation.cash + '%' }} />
+                      </div>
+                    )}
+                    <div className="flex gap-4 text-xs text-charcoal-500">
+                      <span>Risk: {model.riskScore}</span>
+                      {model.weightedExpenseRatio != null && <span>ER: {fmtPct(model.weightedExpenseRatio)}</span>}
+                      {model.targetReturn != null && <span>Ret: {fmtPct(model.targetReturn)}</span>}
+                    </div>
+                  </button>
                 ))}
               </div>
             )}
+          </div>
 
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-limestone-100">
-              <button
-                type="button"
-                onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-charcoal-600 hover:bg-limestone-50 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </button>
-              <button
-                type="button"
-                onClick={handleModelConfirm}
-                disabled={saving || !wizard.selectedModel}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {saving ? 'Saving...' : 'Next'}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+          {/* Selected model detail */}
+          {selectedModel && (
+            <div className="rounded-lg border border-brand-200 bg-brand-50 p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-charcoal-900 mb-2">Selected: {selectedModel.name}</h3>
+              <p className="text-xs text-charcoal-500 mb-4">{selectedModel.description}</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-xs text-charcoal-500">Risk Score</p>
+                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.riskScore}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-charcoal-500">Expense Ratio</p>
+                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.weightedExpenseRatio != null ? fmtPct(selectedModel.weightedExpenseRatio) : '--'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-charcoal-500">Category</p>
+                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.category}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-charcoal-500">Tax Efficiency</p>
+                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.taxEfficiency || '--'}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ================================================================= */}
+      {/* Step 5: Analysis & Review                                          */}
+      {/* ================================================================= */}
+      {step === 5 && (
+        <div className="space-y-6">
+          {loadingAnalysis ? (
+            <div className="rounded-lg border border-limestone-200 bg-white p-12 text-center">
+              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-brand-700 border-t-transparent mb-4" />
+              <p className="text-sm font-medium text-charcoal-700">Running portfolio analysis...</p>
+              <p className="text-xs text-charcoal-500 mt-1">Analyzing risk, fees, tax impact, and stress scenarios</p>
+            </div>
+          ) : (
+            <>
+              {/* Portfolio Analytics */}
+              {analytics && (
+                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Portfolio Comparison</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>
+                      <p className="text-xs text-charcoal-500">Current Value</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{fmt.format(totalValue / 100)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Holdings Count</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{holdings.length}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Risk Score Match</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{riskScore} / {selectedModel?.riskScore || '--'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Sharpe Ratio</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{analytics.sharpeRatio?.toFixed(2) ?? '--'}</p>
+                    </div>
+                  </div>
+                  {analytics.maxDrawdown != null && (
+                    <div className="mt-4 border-t border-limestone-200 pt-4">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-charcoal-500 mb-2">Risk Metrics</h4>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-xs text-charcoal-500">Max Drawdown</p>
+                          <p className="text-sm font-bold text-critical-700">{fmtPct(analytics.maxDrawdown)}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-charcoal-500">Std. Deviation</p>
+                          <p className="text-sm font-bold text-charcoal-900">{fmtPct(analytics.standardDeviation)}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-charcoal-500">Sortino Ratio</p>
+                          <p className="text-sm font-bold text-charcoal-900">{analytics.sortinoRatio?.toFixed(2) ?? '--'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-charcoal-500">VaR (95%)</p>
+                          <p className="text-sm font-bold text-critical-700">{fmtPct(analytics.valueAtRisk95)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Stress Test Results */}
+              {stressResults.length > 0 && (
+                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Stress Test Results</h3>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-limestone-200">
+                      <thead className="bg-limestone-50">
+                        <tr>
+                          {['Scenario', 'Portfolio Return', 'Benchmark Return', 'Max Drawdown'].map((h) => (
+                            <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-charcoal-500">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-limestone-100">
+                        {stressResults.map((sr) => (
+                          <tr key={sr.scenario} className="hover:bg-limestone-50">
+                            <td className="px-4 py-2 text-sm font-medium text-charcoal-900">
+                              {sr.scenarioLabel || STRESS_SCENARIOS.find((s) => s.id === sr.scenario)?.name || sr.scenario}
+                            </td>
+                            <td className="px-4 py-2 text-sm text-critical-700 tabular-nums">{fmtPct(sr.portfolioReturn)}</td>
+                            <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{fmtPct(sr.benchmarkReturn)}</td>
+                            <td className="px-4 py-2">
+                              <span className="text-xs font-medium text-critical-700">
+                                {fmtPct(sr.maxDrawdown)}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Fee Analysis */}
+              {feeAnalysis && (
+                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Fee Comparison</h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="rounded-lg bg-limestone-50 p-4 text-center">
+                      <p className="text-xs text-charcoal-500">Current Fees</p>
+                      <p className="text-lg font-bold text-charcoal-900 tabular-nums">{fmt.format((feeAnalysis.current.totalDollars as number) / 100)}</p>
+                      <p className="text-xs text-charcoal-500">/year</p>
+                    </div>
+                    <div className="rounded-lg bg-brand-50 p-4 text-center">
+                      <p className="text-xs text-charcoal-500">Proposed Fees</p>
+                      <p className="text-lg font-bold text-brand-700 tabular-nums">{fmt.format((feeAnalysis.proposed.totalDollars as number) / 100)}</p>
+                      <p className="text-xs text-charcoal-500">/year</p>
+                    </div>
+                    <div className="rounded-lg bg-success-50 p-4 text-center">
+                      <p className="text-xs text-charcoal-500">Annual Savings</p>
+                      <p className="text-lg font-bold text-success-700 tabular-nums">{fmt.format((feeAnalysis.annualSavings as number) / 100)}</p>
+                      <p className="text-xs text-charcoal-500">/year</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tax Transition */}
+              {taxTransition && (
+                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Tax Transition Summary</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>
+                      <p className="text-xs text-charcoal-500">Unrealized Gains</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{taxTransition.totalUnrealizedGain != null ? fmt.format((taxTransition.totalUnrealizedGain as number) / 100) : '--'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Unrealized Losses</p>
+                      <p className="text-sm font-bold text-success-700 tabular-nums">{taxTransition.totalUnrealizedLoss != null ? fmt.format((taxTransition.totalUnrealizedLoss as number) / 100) : '--'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Strategies Evaluated</p>
+                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{taxTransition.strategies?.length || 0}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-charcoal-500">Recommended</p>
+                      <p className="text-sm font-bold text-charcoal-900">{taxTransition.recommendedStrategy || '--'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Re-run button */}
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => { setAnalytics(null); setStressResults([]); setFeeAnalysis(null); setTaxTransition(null); runAnalysis(); }}
+                  className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                  </svg>
+                  Re-run Analysis
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ================================================================= */}
+      {/* Step 6: Generate & Deliver                                         */}
+      {/* ================================================================= */}
+      {step === 6 && (
+        <div className="space-y-6">
+          {/* Template Style */}
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Template</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {([
+                { id: 'standard' as const, label: 'Standard', desc: 'Clean and professional layout' },
+                { id: 'premium' as const, label: 'Premium', desc: 'Enhanced visuals and charts' },
+                { id: 'minimalist' as const, label: 'Minimalist', desc: 'Focused, data-driven design' },
+              ]).map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setTemplateStyle(t.id)}
+                  className={`rounded-lg border p-4 text-left transition-all ${
+                    templateStyle === t.id
+                      ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
+                      : 'border-limestone-200 hover:border-brand-300'
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-charcoal-900">{t.label}</p>
+                  <p className="text-xs text-charcoal-500 mt-0.5">{t.desc}</p>
+                </button>
+              ))}
             </div>
           </div>
-        )}
 
-        {/* ---- Step 5: Analysis ---- */}
-        {wizard.step === 5 && (
-          <div className="space-y-8">
-            <div className="flex items-start justify-between">
+          {/* Section Builder */}
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Sections</h2>
+            <div className="space-y-2">
+              {sections
+                .sort((a, b) => a.order - b.order)
+                .map((section) => (
+                  <div
+                    key={section.id}
+                    className={`flex items-center justify-between rounded-md border p-3 transition-colors ${
+                      section.enabled ? 'border-brand-200 bg-brand-50/30' : 'border-limestone-200 bg-limestone-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-mono text-charcoal-400 w-5 text-right">{section.order + 1}</span>
+                      <span className={`text-sm font-medium ${section.enabled ? 'text-charcoal-900' : 'text-charcoal-400'}`}>
+                        {section.label}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleSection(section.id)}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                        section.enabled ? 'bg-brand-700' : 'bg-limestone-300'
+                      }`}
+                    >
+                      <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                        section.enabled ? 'translate-x-4' : 'translate-x-1'
+                      }`} />
+                    </button>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* Summary */}
+          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Summary</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
               <div>
-                <h2 className="text-lg font-semibold text-charcoal-900 mb-2">Analysis</h2>
-                <p className="text-sm text-charcoal-500">
-                  Run the analytics engine to generate comparisons, stress tests, fee analysis, and tax transition plans.
-                </p>
+                <p className="text-xs text-charcoal-500">Client</p>
+                <p className="text-sm font-bold text-charcoal-900">{ctx.clientName || '--'}</p>
               </div>
+              <div>
+                <p className="text-xs text-charcoal-500">Type</p>
+                <p className="text-sm font-bold text-charcoal-900">{PROPOSAL_TYPES.find((p) => p.value === ctx.proposalType)?.label || '--'}</p>
+              </div>
+              <div>
+                <p className="text-xs text-charcoal-500">Holdings</p>
+                <p className="text-sm font-bold text-charcoal-900 tabular-nums">{holdings.length}</p>
+              </div>
+              <div>
+                <p className="text-xs text-charcoal-500">Model</p>
+                <p className="text-sm font-bold text-charcoal-900">{selectedModel?.name || '--'}</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
-                onClick={handleRunAnalysis}
-                disabled={saving}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 transition-colors"
+                onClick={handleGenerate}
+                disabled={generating}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-6 py-3 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
               >
-                {saving ? (
-                  <>
-                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Running...
-                  </>
+                {generating ? (
+                  <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> Generating...</>
                 ) : (
                   <>
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                     </svg>
-                    Run Analysis
+                    Generate Proposal PDF
                   </>
                 )}
               </button>
-            </div>
-
-            {/* Analysis Results Panels */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              {/* Side-by-Side Comparison */}
-              <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-                <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Portfolio Comparison</h3>
-                {wizard.analytics.current && wizard.analytics.proposed ? (
-                  <div className="space-y-3">
-                    {[
-                      { label: 'Sharpe Ratio', current: wizard.analytics.current.sharpeRatio.toFixed(2), proposed: wizard.analytics.proposed.sharpeRatio.toFixed(2) },
-                      { label: 'Max Drawdown', current: fmtPct(wizard.analytics.current.maxDrawdown), proposed: fmtPct(wizard.analytics.proposed.maxDrawdown) },
-                      { label: 'Std Deviation', current: fmtPct(wizard.analytics.current.standardDeviation), proposed: fmtPct(wizard.analytics.proposed.standardDeviation) },
-                      { label: 'Dividend Yield', current: fmtPct(wizard.analytics.current.dividendYield), proposed: fmtPct(wizard.analytics.proposed.dividendYield) },
-                    ].map((row) => (
-                      <div key={row.label} className="flex items-center justify-between py-2 border-b border-limestone-100 last:border-0">
-                        <span className="text-xs text-charcoal-500">{row.label}</span>
-                        <div className="flex items-center gap-6">
-                          <span className="text-xs font-medium text-charcoal-600 tabular-nums">{row.current}</span>
-                          <span className="text-xs text-charcoal-300">vs</span>
-                          <span className="text-xs font-semibold text-brand-700 tabular-nums">{row.proposed}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="py-8 text-center">
-                    <p className="text-sm text-charcoal-400">Run analysis to see comparison</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Stress Tests */}
-              <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-                <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Stress Tests</h3>
-                {wizard.stressTests.length > 0 ? (
-                  <div className="space-y-2">
-                    {wizard.stressTests.map((test) => (
-                      <div key={test.scenario} className="flex items-center justify-between py-2 border-b border-limestone-100 last:border-0">
-                        <span className="text-xs text-charcoal-700">{test.scenarioLabel}</span>
-                        <div className="flex items-center gap-4">
-                          <span className={`text-xs font-medium tabular-nums ${test.portfolioReturn < 0 ? 'text-critical-700' : 'text-success-700'}`}>
-                            {fmtPct(test.portfolioReturn)}
-                          </span>
-                          <span className="text-[10px] text-charcoal-400">
-                            {test.recoveryMonths}mo recovery
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="py-8 text-center">
-                    <p className="text-sm text-charcoal-400">Run analysis to see stress tests</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Fee Analysis */}
-              <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-                <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Fee Comparison</h3>
-                {wizard.feeAnalysis ? (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="rounded-lg bg-limestone-50 p-3 text-center">
-                        <p className="text-[10px] font-medium uppercase tracking-wide text-charcoal-400">Current</p>
-                        <p className="mt-1 text-lg font-bold tabular-nums text-charcoal-700">{fmtPct(wizard.feeAnalysis.current.totalRate)}</p>
-                      </div>
-                      <div className="rounded-lg bg-brand-50 p-3 text-center">
-                        <p className="text-[10px] font-medium uppercase tracking-wide text-brand-600">Proposed</p>
-                        <p className="mt-1 text-lg font-bold tabular-nums text-brand-700">{fmtPct(wizard.feeAnalysis.proposed.totalRate)}</p>
-                      </div>
-                    </div>
-                    <div className="rounded-lg border border-success-200 bg-success-50 px-4 py-3 text-center">
-                      <p className="text-xs text-success-600">Estimated Annual Savings</p>
-                      <p className="text-lg font-bold text-success-700 tabular-nums">{fmt.format((wizard.feeAnalysis.annualSavings as number) / 100)}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="py-8 text-center">
-                    <p className="text-sm text-charcoal-400">Run analysis to see fee comparison</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Tax Transition */}
-              <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-                <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Tax Transition</h3>
-                {wizard.taxTransition ? (
-                  <div className="space-y-3">
-                    <div className="rounded-lg bg-limestone-50 p-3">
-                      <p className="text-xs text-charcoal-500">Recommended Strategy</p>
-                      <p className="mt-0.5 text-sm font-semibold text-charcoal-900">
-                        {wizard.taxTransition.recommendedStrategy.replace(/_/g, ' ')}
-                      </p>
-                      <p className="mt-1 text-xs text-charcoal-500">{wizard.taxTransition.recommendationRationale}</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 text-center">
-                      <div>
-                        <p className="text-[10px] font-medium uppercase text-charcoal-400">Unrealized Gains</p>
-                        <p className="mt-0.5 text-sm font-bold text-success-700 tabular-nums">
-                          {fmt.format((wizard.taxTransition.totalUnrealizedGain as number) / 100)}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-medium uppercase text-charcoal-400">Unrealized Losses</p>
-                        <p className="mt-0.5 text-sm font-bold text-critical-700 tabular-nums">
-                          {fmt.format((wizard.taxTransition.totalUnrealizedLoss as number) / 100)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="py-8 text-center">
-                    <p className="text-sm text-charcoal-400">Run analysis to see tax transition</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-limestone-100">
-              <button
-                type="button"
-                onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-charcoal-600 hover:bg-limestone-50 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </button>
-              <button
-                type="button"
-                onClick={() => completeStep(5)}
-                disabled={!wizard.completedSteps.includes(5)}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Next
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ---- Step 6: Output ---- */}
-        {wizard.step === 6 && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-lg font-semibold text-charcoal-900 mb-2">Generate & Send</h2>
-              <p className="text-sm text-charcoal-500">
-                Configure sections, run compliance checks, and deliver the proposal.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {/* Sections Builder */}
-              <div className="lg:col-span-2 space-y-4">
-                <h3 className="text-sm font-semibold text-charcoal-900">Proposal Sections</h3>
-                <div className="space-y-2">
-                  {wizard.sections.map((section) => (
-                    <div
-                      key={section.key}
-                      className={`flex items-center justify-between rounded-lg border px-4 py-3 transition-colors ${
-                        section.included
-                          ? 'border-limestone-200 bg-white'
-                          : 'border-limestone-100 bg-limestone-50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={() => handleSectionToggle(section.key)}
-                          disabled={section.required}
-                          className={`flex h-5 w-5 items-center justify-center rounded border-2 transition-colors ${
-                            section.included
-                              ? 'border-brand-700 bg-brand-700'
-                              : 'border-limestone-300 bg-white'
-                          } ${section.required ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
-                        >
-                          {section.included && (
-                            <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </button>
-                        <span className={`text-sm ${section.included ? 'text-charcoal-900 font-medium' : 'text-charcoal-400'}`}>
-                          {section.label}
-                        </span>
-                        {section.required && (
-                          <span className="rounded bg-limestone-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-charcoal-400">
-                            Required
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-xs text-charcoal-300 tabular-nums">#{section.order}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Compliance & Actions */}
-              <div className="space-y-4">
-                {/* Compliance Checks */}
-                <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Compliance</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-charcoal-700">IPS Document</span>
-                      {wizard.complianceChecks.ips ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-medium text-success-700">
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          Generated
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleGenerateCompliance('ips')}
-                          disabled={saving}
-                          className="text-xs font-medium text-brand-700 hover:text-brand-600"
-                        >
-                          Generate
-                        </button>
-                      )}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-charcoal-700">Reg BI Disclosure</span>
-                      {wizard.complianceChecks.regBI ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-medium text-success-700">
-                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          Generated
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleGenerateCompliance('regBI')}
-                          disabled={saving}
-                          className="text-xs font-medium text-brand-700 hover:text-brand-600"
-                        >
-                          Generate
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm space-y-3">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Deliver</h3>
-                  <button
-                    type="button"
-                    onClick={handleDownloadProposal}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-limestone-300 bg-white px-4 py-2.5 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors"
+              {generatedUrl && (
+                <>
+                  <a
+                    href={generatedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-limestone-300 px-4 py-3 text-sm font-medium text-charcoal-700 hover:bg-limestone-50"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
                     Download PDF
-                  </button>
+                  </a>
                   <button
                     type="button"
-                    onClick={handleSendProposal}
-                    disabled={saving}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 disabled:opacity-50 transition-colors"
+                    onClick={() => addToast('Sending proposal to client...', 'info')}
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-success-700 px-4 py-3 text-sm font-medium text-white hover:bg-success-600"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                     </svg>
-                    {saving ? 'Sending...' : 'Send to Client'}
+                    Send to Client
                   </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-limestone-100">
-              <button
-                type="button"
-                onClick={goBack}
-                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-charcoal-600 hover:bg-limestone-50 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Back
-              </button>
+                </>
+              )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ================================================================= */}
+      {/* Bottom Navigation                                                  */}
+      {/* ================================================================= */}
+      <div className="mt-8 flex items-center justify-between border-t border-limestone-200 pt-6">
+        <button
+          type="button"
+          onClick={goBack}
+          disabled={step === 1}
+          className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2.5 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 disabled:opacity-50"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+          Back
+        </button>
+        <div className="text-xs text-charcoal-500">
+          Step {step} of {WIZARD_STEPS.length}
+        </div>
+        {step < 6 ? (
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={!canProceed()}
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+          >
+            Next
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSaveAsDraft}
+            disabled={saving}
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+          >
+            {saving ? 'Saving...' : 'Finish & Save'}
+          </button>
         )}
       </div>
     </div>
