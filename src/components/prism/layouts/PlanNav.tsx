@@ -27,6 +27,7 @@ const PLAN_TABS = [
   { label: 'Estate', segment: '/estate' },
   { label: 'Business', segment: '/business' },
   { label: 'Equity Comp', segment: '/equity-comp' },
+  { label: 'Alternatives', segment: '/alternatives' },
   { label: 'Charitable', segment: '/charitable' },
   { label: 'Reports', segment: '/reports' },
   { label: 'Scenarios', segment: '/scenarios' },

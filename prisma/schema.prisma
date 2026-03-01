@@ -221,6 +221,16 @@ model Plan {
   beneficiaryDesignations BeneficiaryDesignation[]
   scenarios             Scenario[]
   planResults           PlanResult[]
+  trusts                Trust[]
+  equityGrants          EquityGrant[]
+  charitableStrategies  CharitableStrategy[]
+  giftRecords           GiftRecord[]
+  estateRoles           EstateRole[]
+  vaultDocuments        VaultDocument[]
+  clientPortalSessions  ClientPortalSession[]
+  lifeEvents            LifeEvent[]
+  planBuilderSessions   PlanBuilderSession[]
+  generatedReports      GeneratedReport[]
 
   @@index([status])
   @@map("plans")
@@ -740,6 +750,341 @@ model PlanResult {
   scenario                    Scenario? @relation(fields: [scenarioId], references: [id])
 
   @@map("plan_results")
+}
+
+// ==================== TRUSTS ====================
+model Trust {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  name                  String
+  trustType             String   @map("trust_type")
+  status                String   @default("in_drafting")
+  dateExecuted          DateTime? @map("date_executed")
+  jurisdiction          String?
+  grantorClientId       String?  @map("grantor_client_id")
+  trusteeName           String?  @map("trustee_name")
+  successorTrusteeName  String?  @map("successor_trustee_name")
+
+  // Beneficiaries stored as JSON array
+  beneficiaries         String?  // JSON: [{name, relationship, pctInterest, vestingAge}]
+
+  // Assets
+  linkedAccountIds      String?  @map("linked_account_ids") // JSON array
+  trustValue            Float?   @map("trust_value")
+
+  // Irrevocable trust fields
+  isGrantorTrust        Boolean  @default(false) @map("is_grantor_trust")
+  includedInEstate      Boolean  @default(false) @map("included_in_estate")
+
+  // GRAT fields
+  gratTerm              Int?     @map("grat_term")
+  gratInitialTransfer   Float?   @map("grat_initial_transfer")
+  grat7520Rate          Float?   @map("grat_7520_rate")
+  gratAnnuityPayment    Float?   @map("grat_annuity_payment")
+  gratRemainderInterest Float?   @map("grat_remainder_interest")
+  gratExpectedGrowth    Float?   @map("grat_expected_growth")
+
+  // CRT/CRAT fields
+  charitableBeneficiary String?  @map("charitable_beneficiary")
+  payoutRate            Float?   @map("payout_rate")
+  termType              String?  @map("term_type") // fixed_years | lifetime | joint_lifetime
+  termYears             Int?     @map("term_years")
+  currentDeduction      Float?   @map("current_deduction")
+  annualDistribution    Float?   @map("annual_distribution")
+  remainderBeneficiary  String?  @map("remainder_beneficiary")
+
+  // CLAT/CLUT fields
+  leadBeneficiary       String?  @map("lead_beneficiary")
+  leadPeriod            Int?     @map("lead_period")
+  annuityPct            Float?   @map("annuity_pct")
+  projectedRemainder    Float?   @map("projected_remainder")
+
+  // ILIT fields
+  linkedPolicyIds       String?  @map("linked_policy_ids") // JSON array
+  crummeyNotices        Int?     @map("crummey_notices")
+  totalDeathBenefit     Float?   @map("total_death_benefit")
+  purposeNote           String?  @map("purpose_note")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("trusts")
+}
+
+// ==================== EQUITY COMPENSATION ====================
+model EquityGrant {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  clientId              String   @map("client_id")
+
+  grantType             String   @map("grant_type") // rsu | nqso | iso | espp
+  tickerSymbol          String   @map("ticker_symbol")
+  companyName           String   @map("company_name")
+  grantDate             DateTime @map("grant_date")
+  sharesGranted         Int      @map("shares_granted")
+  grantPrice            Float    @map("grant_price")
+  currentFMV            Float    @map("current_fmv")
+
+  // Vesting
+  vestingSchedule       String?  @map("vesting_schedule") // JSON: [{vestDate, shares, pctVested}]
+  sharesVested          Int      @default(0) @map("shares_vested")
+  sharesExercised       Int      @default(0) @map("shares_exercised")
+  sharesSold            Int      @default(0) @map("shares_sold")
+  sharesHeld            Int      @default(0) @map("shares_held")
+
+  // Options specific
+  exercisePrice         Float?   @map("exercise_price")
+  expirationDate        DateTime? @map("expiration_date")
+  spread                Float?
+  intrinsicValue        Float?   @map("intrinsic_value")
+
+  // ISO specific
+  isoAmtPreference      Float?   @map("iso_amt_preference")
+  qualifyingDisposition Boolean  @default(false) @map("qualifying_disposition")
+
+  // ESPP specific
+  offeringPeriodStart   DateTime? @map("offering_period_start")
+  offeringPeriodEnd     DateTime? @map("offering_period_end")
+  purchasePrice         Float?   @map("purchase_price")
+  fmvAtPurchase         Float?   @map("fmv_at_purchase")
+
+  // Computed
+  currentValue          Float?   @map("current_value")
+  costBasis             Float?   @map("cost_basis")
+  unrealizedGain        Float?   @map("unrealized_gain")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("equity_grants")
+}
+
+// ==================== CHARITABLE PLANNING ====================
+model CharitableStrategy {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  strategyType          String   @map("strategy_type") // daf | qcd | crt | clt | foundation | direct
+  name                  String
+
+  // DAF fields
+  dafInstitution        String?  @map("daf_institution")
+  dafBalance            Float?   @map("daf_balance")
+  dafAnnualGrants       Float?   @map("daf_annual_grants")
+  dafFundingMethod      String?  @map("daf_funding_method") // cash | appreciated_stock | bunching
+
+  // QCD fields
+  qcdAmount             Float?   @map("qcd_amount")
+  qcdFromAccountId      String?  @map("qcd_from_account_id")
+  qcdCharityName        String?  @map("qcd_charity_name")
+
+  // CRT/CLT fields
+  trustId               String?  @map("trust_id")
+
+  // General
+  annualAmount          Float?   @map("annual_amount")
+  charityName           String?  @map("charity_name")
+  deductionValue        Float?   @map("deduction_value")
+  taxSavings            Float?   @map("tax_savings")
+
+  notes                 String?
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("charitable_strategies")
+}
+
+// ==================== GIFTING RECORDS ====================
+model GiftRecord {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  recipientName         String   @map("recipient_name")
+  relationship          String?
+  giftYear              Int      @map("gift_year")
+  giftAmount            Float    @map("gift_amount")
+  giftType              String   @map("gift_type") // annual_exclusion | lifetime_exemption | 529_superfunding | direct_tuition | direct_medical | appreciated_asset
+  usesGiftSplit         Boolean  @default(false) @map("uses_gift_split")
+  form709Required       Boolean  @default(false) @map("form_709_required")
+
+  // Appreciated asset gifts
+  assetDescription      String?  @map("asset_description")
+  assetFMV              Float?   @map("asset_fmv")
+  assetCostBasis        Float?   @map("asset_cost_basis")
+  cgTaxAvoided          Float?   @map("cg_tax_avoided")
+
+  notes                 String?
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("gift_records")
+}
+
+// ==================== ESTATE KEY ROLES ====================
+model EstateRole {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  roleType              String   @map("role_type") // executor | successor_executor | trustee | successor_trustee | guardian | poa_agent
+  personName            String   @map("person_name")
+  relationship          String?
+  phone                 String?
+  email                 String?
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("estate_roles")
+}
+
+// ==================== DOCUMENT VAULT ====================
+model VaultDocument {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  fileName              String   @map("file_name")
+  fileType              String   @map("file_type")
+  fileSize              Int      @map("file_size")
+  folder                String   @default("general")
+  description           String?
+  uploadedBy            String   @map("uploaded_by") // advisor | client
+  uploadedByName        String?  @map("uploaded_by_name")
+
+  // Storage
+  storagePath           String   @map("storage_path")
+  encryptionKey         String?  @map("encryption_key")
+
+  // Visibility
+  visibleToClient       Boolean  @default(false) @map("visible_to_client")
+  expiresAt             DateTime? @map("expires_at")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  auditLog              VaultAuditLog[]
+
+  @@map("vault_documents")
+}
+
+model VaultAuditLog {
+  id                    String   @id @default(cuid())
+  documentId            String   @map("document_id")
+  action                String   // viewed | downloaded | uploaded | deleted
+  actorType             String   @map("actor_type") // advisor | client
+  actorName             String?  @map("actor_name")
+  ipAddress             String?  @map("ip_address")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  document              VaultDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("vault_audit_logs")
+}
+
+// ==================== CLIENT PORTAL ====================
+model ClientPortalSession {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  clientEmail           String   @map("client_email")
+  token                 String   @unique
+  expiresAt             DateTime @map("expires_at")
+  lastAccessedAt        DateTime? @map("last_accessed_at")
+  isActive              Boolean  @default(true) @map("is_active")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("client_portal_sessions")
+}
+
+model LifeEvent {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  eventType             String   @map("event_type") // marriage | new_child | job_change | home_purchase | inheritance | divorce | death_in_family
+  eventDate             DateTime @map("event_date")
+  description           String?
+  data                  String?  // JSON with event-specific data
+  status                String   @default("pending_review") // pending_review | approved | applied | dismissed
+  submittedBy           String   @map("submitted_by") // client | advisor
+  reviewedBy            String?  @map("reviewed_by")
+  reviewedAt            DateTime? @map("reviewed_at")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("life_events")
+}
+
+// ==================== AI PLAN BUILDER ====================
+model PlanBuilderSession {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+  advisorId             String   @map("advisor_id")
+
+  status                String   @default("in_progress") // in_progress | completed | paused
+  completionScore       Float    @default(0) @map("completion_score")
+  sectionsComplete      String?  @map("sections_complete") // JSON
+  conversationHistory   String?  @map("conversation_history") // JSON
+  extractedData         String?  @map("extracted_data") // JSON
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("plan_builder_sessions")
+}
+
+// ==================== REPORT GENERATION ====================
+model GeneratedReport {
+  id                    String   @id @default(cuid())
+  planId                String   @map("plan_id")
+
+  reportType            String   @map("report_type") // comprehensive | annual_review | tax_strategy | ss_analysis | estate_summary | ips
+  title                 String
+  sections              String?  // JSON array of included sections
+  outputFormat          String   @default("pdf") @map("output_format")
+
+  // Branding
+  logoUrl               String?  @map("logo_url")
+  primaryColor          String?  @map("primary_color")
+  advisorSignature      String?  @map("advisor_signature")
+  includeDisclosures    Boolean  @default(true) @map("include_disclosures")
+
+  // Delivery
+  deliveryMethod        String   @default("download") @map("delivery_method") // download | email_client | portal_upload
+  deliveredTo           String?  @map("delivered_to")
+  deliveredAt           DateTime? @map("delivered_at")
+
+  // Storage
+  storagePath           String?  @map("storage_path")
+  fileSize              Int?     @map("file_size")
+
+  generatedBy           String   @map("generated_by")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("generated_reports")
 }
 
 // ==================== TAX TABLES ====================

@@ -664,3 +664,254 @@ export interface PlanResultData {
   rothConversionOpportunities: RothConversionResult[];
   cashFlows: AnnualCashFlow[];
 }
+
+// ==================== ESTATE PLANNING ====================
+
+export interface EstateCalcInput {
+  grossEstate: number;
+  adjustedTaxableGifts: number;
+  maritalDeduction: number;
+  charitableDeduction: number;
+  debts: number;
+  expenses: number;
+  stateEstateTaxApplicable: boolean;
+  state: string;
+  lifeInsuranceProceedsIncluded: boolean;
+  year: number;
+  exemptionAmount: number;
+  topRate: number;
+  portabilityElected: boolean;
+  predeceasedSpouseUnusedExemption: number;
+}
+
+export interface EstateCalcResult {
+  grossEstate: number;
+  maritalDeduction: number;
+  charitableDeduction: number;
+  debtsAndExpenses: number;
+  adjustedGrossEstate: number;
+  adjustedTaxableGifts: number;
+  tentativeTaxBase: number;
+  tentativeTax: number;
+  applicableCredit: number;
+  giftTaxesPaid: number;
+  netEstateTax: number;
+  stateEstateTax: number;
+  totalTransferTax: number;
+  netToHeirs: number;
+  effectiveRate: number;
+}
+
+export interface GRATResult {
+  initialTransfer: number;
+  annuityPayment: number;
+  term: number;
+  rate7520: number;
+  annuityFactor: number;
+  retainedInterest: number;
+  remainderInterest: number;
+  giftTaxableAmount: number;
+  projectedEndValue: number;
+  projectedTransferToRemaindermen: number;
+  wealthTransferred: number;
+  estateTaxSavings: number;
+}
+
+export interface CRTResult {
+  fmv: number;
+  payoutRate: number;
+  termYears: number;
+  rate7520: number;
+  type: 'crut' | 'crat';
+  annuityOrUnitrust: number;
+  presentValueOfIncome: number;
+  remainderInterest: number;
+  charitableDeduction: number;
+  deductionPct: number;
+}
+
+export interface CLATResult {
+  annuityAmount: number;
+  termYears: number;
+  rate7520: number;
+  presentValueOfAnnuity: number;
+  giftTaxableRemainder: number;
+  projectedEndValue: number;
+  projectedRemainderToFamily: number;
+  transferTaxSavings: number;
+}
+
+export interface EstateScenarioComparison {
+  noPlanning: EstateCalcResult;
+  maritalDeduction: EstateCalcResult;
+  creditShelter: EstateCalcResult & { creditShelterAmount: number; maritalAmount: number };
+  charitableTrust: EstateCalcResult & { charitableDeductionUsed: number };
+  ilit: EstateCalcResult & { insuranceRemovedFromEstate: number };
+  summary: {
+    scenario: string;
+    netToHeirs: number;
+    totalTax: number;
+    taxSavingsVsNoPlan: number;
+  }[];
+}
+
+// ==================== BUSINESS VALUATION ====================
+
+export interface BusinessValuationInput {
+  grossRevenue: number;
+  cogs: number;
+  operatingExpenses: number;
+  ownerSalary: number;
+  marketRateReplacement: number;
+  personalExpensesInBusiness: number;
+  businessDebt: number;
+  ownershipPct: number;
+  ebitdaMultiple: number;
+  revenueMultiple: number;
+  dcfProjections: number[];
+  terminalGrowthRate: number;
+  discountRate: number;
+  weights: { income: number; market: number; dcf: number };
+}
+
+export interface BusinessValuationResult {
+  rawEBITDA: number;
+  normalizedEBITDA: number;
+  incomeApproachValue: number;
+  marketApproachValue: number;
+  dcfValue: number;
+  blendedEnterpriseValue: number;
+  equityValue100: number;
+  clientEquityInterest: number;
+}
+
+export interface BusinessSaleInput {
+  grossSalePrice: number;
+  ownershipPct: number;
+  entityType: string;
+  basis: number;
+  saleYear: number;
+  otherIncomeInSaleYear: number;
+  filingStatus: string;
+  saleStructure: 'asset_sale' | 'stock_sale';
+  stateCapGainsRate: number;
+  transactionCostPct: number;
+  debtPayoff: number;
+  installmentElected: boolean;
+  installmentTermYears: number;
+  installmentRate: number;
+}
+
+export interface BusinessSaleResult {
+  grossProceeds: number;
+  basis: number;
+  totalGain: number;
+  federalCGTax: number;
+  niitOnSale: number;
+  stateTax: number;
+  transactionCosts: number;
+  debtPayoff: number;
+  netProceeds: number;
+  effectiveTaxRate: number;
+  installmentSchedule?: Array<{
+    year: number;
+    payment: number;
+    principalPortion: number;
+    interestPortion: number;
+    gainRecognized: number;
+    taxDue: number;
+  }>;
+}
+
+// ==================== EQUITY COMPENSATION ====================
+
+export interface RSUVestTaxResult {
+  sharesVesting: number;
+  fmvPerShare: number;
+  ordinaryIncome: number;
+  federalWithholding: number;
+  ficaWithholding: number;
+  stateWithholding: number;
+  netSharesDelivered: number;
+  netCashValue: number;
+}
+
+export interface NQSOExerciseResult {
+  sharesExercised: number;
+  exercisePrice: number;
+  currentFMV: number;
+  spreadPerShare: number;
+  grossOrdinaryIncome: number;
+  federalTax: number;
+  ficaTax: number;
+  stateTax: number;
+  netAfterTax: number;
+}
+
+export interface ISOExerciseResult {
+  sharesExercised: number;
+  exercisePrice: number;
+  currentFMV: number;
+  spreadPerShare: number;
+  amtPreferenceItem: number;
+  estimatedAMT: number;
+  qualifyingDispositionDate: Date;
+  qualifyingTreatment: { totalGain: number; allLTCG: boolean; tax: number };
+  disqualifyingTreatment: { ordinaryPortion: number; ltcgPortion: number; tax: number };
+}
+
+export interface ESPPTaxResult {
+  purchasePrice: number;
+  fmvAtPurchase: number;
+  fmvAtSale: number;
+  sharesAcquired: number;
+  totalCost: number;
+  qualifyingDisposition: {
+    ordinaryIncome: number;
+    ltcg: number;
+    totalTax: number;
+  };
+  disqualifyingDisposition: {
+    ordinaryIncome: number;
+    stcgOrLtcg: number;
+    totalTax: number;
+  };
+}
+
+export interface ConcentratedPositionAnalysis {
+  currentValue: number;
+  pctOfPortfolio: number;
+  unrealizedGain: number;
+  if50Drop: number;
+  if75Drop: number;
+  outrightSaleTax: number;
+  outrightSaleNetProceeds: number;
+}
+
+// ==================== CHARITABLE PLANNING ====================
+
+export interface DAFFundingComparison {
+  cashGiftDeduction: number;
+  cashGiftNetCost: number;
+  stockGiftDeduction: number;
+  stockGiftCGTaxAvoided: number;
+  stockGiftNetCost: number;
+  taxSavingsOfStock: number;
+}
+
+export interface BunchingResult {
+  annualCharitableBudget: number;
+  standardDeduction: number;
+  optimalBunchingInterval: number;
+  annualTaxSavings: number;
+  bunchedDeduction: number;
+  withoutBunchingAnnualBenefit: number;
+  withBunchingAnnualBenefit: number;
+}
+
+export interface QCDComparison {
+  amount: number;
+  cashGift: { agiImpact: number; ssTaxImpact: number; irmaaImpact: number; netTaxCost: number };
+  qcd: { agiReduction: number; ssTaxSavings: number; irmaaSavings: number; netTaxCost: number };
+  netSavingsOfQCD: number;
+}

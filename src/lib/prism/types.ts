@@ -75,8 +75,40 @@ export type GoalType =
 
 export type InsuranceType = 'life_term' | 'life_whole' | 'life_universal' | 'life_vul' | 'life_iul' | 'disability' | 'ltc' | 'umbrella' | 'property' | 'annuity_income';
 
-export type EstateDocType = 'will' | 'revocable_trust' | 'irrevocable_trust' | 'pour_over_will' | 'durable_poa' | 'healthcare_proxy' | 'living_will' | 'guardianship' | 'premarital_agreement' | 'buy_sell_agreement';
+export type EstateDocType = 'will' | 'revocable_trust' | 'irrevocable_trust' | 'pour_over_will' | 'durable_poa' | 'healthcare_proxy' | 'living_will' | 'guardianship' | 'premarital_agreement' | 'buy_sell_agreement' | 'hipaa_authorization' | 'partnership_agreement';
 export type EstateDocStatus = 'in_place' | 'needs_update' | 'not_in_place' | 'unknown';
+
+// Stage 3 types
+export type TrustType =
+  | 'revocable_living' | 'ilit' | 'slat' | 'grat' | 'qprt'
+  | 'crut' | 'crat' | 'clat' | 'clut'
+  | 'dynasty' | 'special_needs' | 'spendthrift'
+  | 'qdot' | 'marital_qtip' | 'credit_shelter'
+  | 'standalone_retirement' | 'blind' | 'foreign' | 'other';
+
+export type TrustStatus = 'in_drafting' | 'executed' | 'funded' | 'partially_funded';
+
+export type EquityGrantType = 'rsu' | 'nqso' | 'iso' | 'espp';
+
+export type BusinessEntityType = 'sole_prop' | 's_corp' | 'c_corp' | 'llc_disregarded' | 'llc_partnership' | 'partnership' | 'lp' | 'llp';
+
+export type CharitableStrategyType = 'daf' | 'qcd' | 'crt' | 'clt' | 'foundation' | 'direct';
+
+export type GiftType = 'annual_exclusion' | 'lifetime_exemption' | '529_superfunding' | 'direct_tuition' | 'direct_medical' | 'appreciated_asset';
+
+export type EstateRoleType = 'executor' | 'successor_executor' | 'trustee' | 'successor_trustee' | 'guardian' | 'poa_agent';
+
+export type LifeEventType = 'marriage' | 'new_child' | 'job_change' | 'home_purchase' | 'inheritance' | 'divorce' | 'death_in_family';
+
+export type ReportType = 'comprehensive' | 'annual_review' | 'tax_strategy' | 'ss_analysis' | 'estate_summary' | 'ips';
+
+export type AlternativeAssetClass = 'pe_buyout' | 'venture' | 'growth' | 'real_assets' | 'infrastructure' | 'private_credit' | 'hedge_fund' | 'commodities';
+
+export type ExitType = 'sale_third_party' | 'sale_co_owner' | 'family_transfer' | 'esop' | 'ipo' | 'liquidation';
+
+export type BuySellType = 'cross_purchase' | 'entity_redemption' | 'hybrid' | 'one_way';
+
+export type ValuationMethod = 'multiple_of_ebitda' | 'revenue_multiple' | 'dcf' | 'book_value' | 'appraised' | 'custom';
 
 export type DependentRelationship = 'child' | 'grandchild' | 'parent' | 'sibling' | 'other';
 
@@ -224,6 +256,71 @@ export const FILING_STATUS_LABELS: Record<FilingStatus, string> = {
   mfs: 'Married Filing Separately',
   hoh: 'Head of Household',
   qw: 'Qualifying Widow(er)',
+};
+
+export const TRUST_TYPE_LABELS: Record<TrustType, string> = {
+  revocable_living: 'Revocable Living Trust',
+  ilit: 'Irrevocable Life Insurance Trust (ILIT)',
+  slat: 'Spousal Lifetime Access Trust (SLAT)',
+  grat: 'Grantor Retained Annuity Trust (GRAT)',
+  qprt: 'Qualified Personal Residence Trust (QPRT)',
+  crut: 'Charitable Remainder Unitrust (CRUT)',
+  crat: 'Charitable Remainder Annuity Trust (CRAT)',
+  clat: 'Charitable Lead Annuity Trust (CLAT)',
+  clut: 'Charitable Lead Unitrust (CLUT)',
+  dynasty: 'Dynasty Trust',
+  special_needs: 'Special Needs Trust',
+  spendthrift: 'Spendthrift Trust',
+  qdot: 'Qualified Domestic Trust (QDOT)',
+  marital_qtip: 'Marital QTIP Trust',
+  credit_shelter: 'Credit Shelter (Bypass) Trust',
+  standalone_retirement: 'Standalone Retirement Trust',
+  blind: 'Blind Trust',
+  foreign: 'Foreign Trust',
+  other: 'Other',
+};
+
+export const ESTATE_DOC_TYPE_LABELS: Record<string, string> = {
+  will: 'Last Will and Testament',
+  revocable_trust: 'Revocable Living Trust',
+  irrevocable_trust: 'Irrevocable Trust',
+  pour_over_will: 'Pour-Over Will',
+  durable_poa: 'Durable Power of Attorney (Financial)',
+  healthcare_proxy: 'Healthcare Proxy / HCPOA',
+  living_will: 'Living Will / Advance Directive',
+  guardianship: 'Guardianship Designation',
+  premarital_agreement: 'Premarital / Postnuptial Agreement',
+  buy_sell_agreement: 'Buy-Sell Agreement',
+  hipaa_authorization: 'HIPAA Authorization',
+  partnership_agreement: 'Partnership / Operating Agreement',
+};
+
+export const EQUITY_GRANT_TYPE_LABELS: Record<EquityGrantType, string> = {
+  rsu: 'Restricted Stock Units (RSU)',
+  nqso: 'Non-Qualified Stock Options (NQSO)',
+  iso: 'Incentive Stock Options (ISO)',
+  espp: 'Employee Stock Purchase Plan (ESPP)',
+};
+
+export const BUSINESS_ENTITY_LABELS: Record<BusinessEntityType, string> = {
+  sole_prop: 'Sole Proprietorship',
+  s_corp: 'S Corporation',
+  c_corp: 'C Corporation',
+  llc_disregarded: 'LLC (Disregarded Entity)',
+  llc_partnership: 'LLC (Partnership)',
+  partnership: 'Partnership',
+  lp: 'Limited Partnership',
+  llp: 'Limited Liability Partnership',
+};
+
+export const LIFE_EVENT_LABELS: Record<LifeEventType, string> = {
+  marriage: 'Got Married',
+  new_child: 'Had a Child',
+  job_change: 'Changed Jobs',
+  home_purchase: 'Bought a Home',
+  inheritance: 'Received an Inheritance',
+  divorce: 'Divorce',
+  death_in_family: 'Death in Family',
 };
 
 export const US_STATES = [

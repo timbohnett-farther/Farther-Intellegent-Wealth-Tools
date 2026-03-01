@@ -1,5 +1,5 @@
 // ==================== CALC ENGINE PUBLIC API ====================
-// Stage 2 — Farther Prism Financial Planning Calculation Engine
+// Stages 2 & 3 — Farther Prism Financial Planning Calculation Engine
 
 // Types
 export type {
@@ -123,3 +123,60 @@ export {
   getContributionLimits,
   getSSWageBase,
 } from './utils/tax-table-loader';
+
+// Stage 3 — Estate planning
+export {
+  calculateFullEstateTax,
+  calculateGRATRemainder,
+  calculateCRTDeduction,
+  calculateCLATRemainder,
+  compareEstateScenarios,
+} from './estate/estate-planning-calc';
+export type {
+  EstateCalcInput,
+  EstateCalcResult,
+  GRATResult,
+  CRTResult,
+  CLATResult,
+  EstateScenarioComparison,
+} from './estate/estate-planning-calc';
+
+// Stage 3 — Business valuation
+export {
+  calculateBusinessValuation,
+  calculateBusinessSaleTax,
+} from './business/business-valuation';
+export type {
+  BusinessValuationInput,
+  BusinessValuationResult,
+  BusinessSaleInput,
+  BusinessSaleResult,
+} from './business/business-valuation';
+
+// Stage 3 — Equity compensation
+export {
+  calculateRSUVestTax,
+  calculateNQSOExercise,
+  calculateISOExercise,
+  calculateESPPTax,
+  analyzeConcentratedPosition,
+} from './equity-comp/equity-comp-calc';
+export type {
+  RSUVestTaxResult,
+  NQSOExerciseResult,
+  ISOExerciseResult,
+  ESPPTaxResult,
+  ConcentratedPositionAnalysis,
+} from './equity-comp/equity-comp-calc';
+
+// Stage 3 — Charitable planning
+export {
+  compareDAFFunding,
+  optimizeBunching,
+  compareQCDvsCash,
+} from './charitable/charitable-calc';
+export type {
+  DAFFundingComparison,
+  BunchingResult,
+  QCDComparison,
+} from './charitable/charitable-calc';
