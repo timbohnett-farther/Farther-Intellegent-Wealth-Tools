@@ -47,9 +47,9 @@ export function SliderInput({
       {(label || displayValue) && (
         <div className="mb-2 flex items-center justify-between">
           {label && (
-            <span className="text-sm font-medium text-gray-700">{label}</span>
+            <span className="text-sm font-medium text-charcoal-700">{label}</span>
           )}
-          <span className="text-sm font-semibold tabular-nums text-brand-500">
+          <span className="text-sm font-semibold tabular-nums text-brand-700">
             {displayValue}
           </span>
         </div>
@@ -64,7 +64,7 @@ export function SliderInput({
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className="slider-input w-full cursor-pointer"
         style={{
-          background: `linear-gradient(to right, #2563EB 0%, #2563EB ${fillPercent}%, #E5E7EB ${fillPercent}%, #E5E7EB 100%)`,
+          background: `linear-gradient(to right, #3B5A69 0%, #3B5A69 ${fillPercent}%, #E4DDD4 ${fillPercent}%, #E4DDD4 100%)`,
           height: '6px',
           borderRadius: '9999px',
           WebkitAppearance: 'none',
@@ -79,8 +79,8 @@ export function SliderInput({
       />
 
       <div className="mt-1 flex items-center justify-between">
-        <span className="text-xs text-gray-400">{minLabel}</span>
-        <span className="text-xs text-gray-400">{maxLabel}</span>
+        <span className="text-xs text-charcoal-300">{minLabel}</span>
+        <span className="text-xs text-charcoal-300">{maxLabel}</span>
       </div>
 
       {/* Inline styles for the slider thumb across browsers */}
@@ -91,7 +91,7 @@ export function SliderInput({
           width: 18px;
           height: 18px;
           border-radius: 50%;
-          background: #2563eb;
+          background: #3B5A69;
           border: 2px solid white;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
           cursor: pointer;
@@ -100,7 +100,7 @@ export function SliderInput({
           width: 18px;
           height: 18px;
           border-radius: 50%;
-          background: #2563eb;
+          background: #3B5A69;
           border: 2px solid white;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
           cursor: pointer;

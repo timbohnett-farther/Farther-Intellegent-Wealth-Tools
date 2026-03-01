@@ -4,13 +4,12 @@ import React from 'react';
 import clsx from 'clsx';
 
 type BadgeVariant =
-  | 'default'
+  | 'neutral'
   | 'success'
   | 'warning'
-  | 'danger'
+  | 'critical'
   | 'info'
-  | 'purple'
-  | 'outline';
+  | 'brand';
 
 export interface BadgeProps {
   /** Visual style variant */
@@ -22,24 +21,23 @@ export interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: 'bg-gray-100 text-gray-700',
-  success: 'bg-emerald-50 text-[#10B981]',
-  warning: 'bg-amber-50 text-[#F59E0B]',
-  danger: 'bg-red-50 text-[#EF4444]',
-  info: 'bg-brand-50 text-brand-500',
-  purple: 'bg-purple-50 text-purple-600',
-  outline: 'bg-transparent text-gray-600 ring-1 ring-inset ring-gray-300',
+  neutral: 'bg-charcoal-50 text-charcoal-700',
+  success: 'bg-success-100 text-success-700',
+  warning: 'bg-warning-100 text-warning-700',
+  critical: 'bg-critical-100 text-critical-700',
+  info: 'bg-info-100 text-info-700',
+  brand: 'bg-brand-100 text-brand-700',
 };
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'default',
+  variant = 'neutral',
   children,
   className,
 }) => {
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+        'inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide',
         variantStyles[variant],
         className,
       )}

@@ -137,16 +137,16 @@ export default function ReviewQueuePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/admin/update-engine" className="text-gray-400 hover:text-gray-600">
+          <Link href="/admin/update-engine" className="text-charcoal-300 hover:text-charcoal-500">
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Human Review Queue</h2>
-            <p className="text-sm text-gray-500">Review and approve tax table changes that require human verification</p>
+            <h2 className="text-lg font-bold text-charcoal-900">Human Review Queue</h2>
+            <p className="text-sm text-charcoal-500">Review and approve tax table changes that require human verification</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">{statusCounts.pending} pending</span>
+          <span className="text-sm text-charcoal-500">{statusCounts.pending} pending</span>
         </div>
       </div>
 
@@ -165,7 +165,7 @@ export default function ReviewQueuePage() {
             className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
               filter === f.key
                 ? 'bg-brand-50 text-brand-700'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                : 'text-charcoal-500 hover:text-charcoal-700 hover:bg-limestone-100'
             }`}
           >
             {f.label} ({statusCounts[f.key]})
@@ -178,141 +178,141 @@ export default function ReviewQueuePage() {
         {filteredItems.map((item) => {
           const isExpanded = expandedId === item.id;
           return (
-            <div key={item.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div key={item.id} className="bg-white rounded-xl border border-limestone-200 shadow-sm overflow-hidden">
               {/* Header row */}
               <div
-                className="px-5 py-4 cursor-pointer hover:bg-gray-50/50 transition-colors"
+                className="px-5 py-4 cursor-pointer hover:bg-limestone-50/50 transition-colors"
                 onClick={() => setExpandedId(isExpanded ? null : item.id)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                      item.severity === 'critical' ? 'bg-red-500' :
+                      item.severity === 'critical' ? 'bg-critical-500' :
                       item.severity === 'high' ? 'bg-orange-500' :
-                      item.severity === 'medium' ? 'bg-amber-500' :
-                      'bg-blue-500'
+                      item.severity === 'medium' ? 'bg-warning-500' :
+                      'bg-brand-700'
                     }`} />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-gray-900">{item.title}</span>
+                        <span className="text-sm font-bold text-charcoal-900">{item.title}</span>
                         {item.billNumber && (
-                          <span className="text-xs text-gray-400">{item.billNumber}</span>
+                          <span className="text-xs text-charcoal-300">{item.billNumber}</span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500 mt-0.5">{item.source} · Detected {item.detectedAt}</p>
+                      <p className="text-xs text-charcoal-500 mt-0.5">{item.source} · Detected {item.detectedAt}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                      item.type === 'law_change' ? 'bg-red-50 text-red-700' :
-                      item.type === 'pending_legislation' ? 'bg-amber-50 text-amber-700' :
-                      'bg-blue-50 text-blue-700'
+                      item.type === 'law_change' ? 'bg-critical-50 text-critical-700' :
+                      item.type === 'pending_legislation' ? 'bg-warning-50 text-warning-700' :
+                      'bg-brand-50 text-brand-700'
                     }`}>
                       {item.type === 'law_change' ? 'Law Change' :
                        item.type === 'pending_legislation' ? 'Pending Legislation' :
                        'New Provision'}
                     </span>
                     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-                      item.status === 'pending' ? 'bg-amber-50 text-amber-700' :
-                      item.status === 'approved' ? 'bg-green-50 text-green-700' :
-                      item.status === 'rejected' ? 'bg-red-50 text-red-700' :
-                      'bg-indigo-50 text-indigo-700'
+                      item.status === 'pending' ? 'bg-warning-50 text-warning-700' :
+                      item.status === 'approved' ? 'bg-success-50 text-success-700' :
+                      item.status === 'rejected' ? 'bg-critical-50 text-critical-700' :
+                      'bg-brand-50 text-brand-700'
                     }`}>
                       {item.status === 'pending' && <><Clock size={10} /> Pending</>}
                       {item.status === 'approved' && <><CheckCircle2 size={10} /> Approved</>}
                       {item.status === 'rejected' && <><XCircle size={10} /> Rejected</>}
                       {item.status === 'scenario_created' && <><Eye size={10} /> Scenario</>}
                     </span>
-                    {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+                    {isExpanded ? <ChevronUp size={16} className="text-charcoal-300" /> : <ChevronDown size={16} className="text-charcoal-300" />}
                   </div>
                 </div>
               </div>
 
               {/* Expanded detail */}
               {isExpanded && (
-                <div className="border-t border-gray-100">
+                <div className="border-t border-limestone-100">
                   <div className="px-5 py-4 space-y-4">
                     {/* Impact strip */}
                     <div className="grid grid-cols-4 gap-4">
-                      <div className="p-3 rounded-lg bg-gray-50">
-                        <p className="text-xs text-gray-500 mb-0.5">Affected Clients</p>
-                        <p className="text-lg font-bold text-gray-900">{item.affectedClients.toLocaleString()}</p>
+                      <div className="p-3 rounded-lg bg-limestone-50">
+                        <p className="text-xs text-charcoal-500 mb-0.5">Affected Clients</p>
+                        <p className="text-lg font-bold text-charcoal-900">{item.affectedClients.toLocaleString()}</p>
                       </div>
-                      <div className="p-3 rounded-lg bg-gray-50">
-                        <p className="text-xs text-gray-500 mb-0.5">Affected Tables</p>
-                        <p className="text-sm font-medium text-gray-900">{item.affectedTables.join(', ')}</p>
+                      <div className="p-3 rounded-lg bg-limestone-50">
+                        <p className="text-xs text-charcoal-500 mb-0.5">Affected Tables</p>
+                        <p className="text-sm font-medium text-charcoal-900">{item.affectedTables.join(', ')}</p>
                       </div>
-                      <div className="p-3 rounded-lg bg-gray-50">
-                        <p className="text-xs text-gray-500 mb-0.5">Effective Date</p>
-                        <p className="text-sm font-medium text-gray-900">{item.effectiveDate ?? 'TBD'}</p>
+                      <div className="p-3 rounded-lg bg-limestone-50">
+                        <p className="text-xs text-charcoal-500 mb-0.5">Effective Date</p>
+                        <p className="text-sm font-medium text-charcoal-900">{item.effectiveDate ?? 'TBD'}</p>
                       </div>
-                      <div className="p-3 rounded-lg bg-gray-50">
-                        <p className="text-xs text-gray-500 mb-0.5">Severity</p>
+                      <div className="p-3 rounded-lg bg-limestone-50">
+                        <p className="text-xs text-charcoal-500 mb-0.5">Severity</p>
                         <p className={`text-sm font-bold ${
-                          item.severity === 'critical' ? 'text-red-600' :
+                          item.severity === 'critical' ? 'text-critical-500' :
                           item.severity === 'high' ? 'text-orange-600' :
-                          item.severity === 'medium' ? 'text-amber-600' :
-                          'text-blue-600'
+                          item.severity === 'medium' ? 'text-warning-500' :
+                          'text-brand-700'
                         }`}>{item.severity.charAt(0).toUpperCase() + item.severity.slice(1)}</p>
                       </div>
                     </div>
 
                     {/* AI Analysis */}
-                    <div className="p-4 rounded-lg bg-indigo-50/50 border border-indigo-100">
-                      <p className="text-xs font-semibold text-indigo-700 mb-1.5 flex items-center gap-1">
+                    <div className="p-4 rounded-lg bg-brand-50/50 border border-brand-100">
+                      <p className="text-xs font-semibold text-brand-700 mb-1.5 flex items-center gap-1">
                         <Pause size={10} /> AI ANALYSIS
                       </p>
-                      <p className="text-sm text-gray-700 leading-relaxed">{item.aiAnalysis}</p>
+                      <p className="text-sm text-charcoal-700 leading-relaxed">{item.aiAnalysis}</p>
                     </div>
 
                     {/* Table comparison */}
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 rounded-lg border border-gray-200">
-                        <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Current Table</p>
-                        <pre className="text-xs text-gray-700 font-mono whitespace-pre-wrap leading-relaxed">{item.currentTable}</pre>
+                      <div className="p-4 rounded-lg border border-limestone-200">
+                        <p className="text-xs font-semibold text-charcoal-500 uppercase mb-2">Current Table</p>
+                        <pre className="text-xs text-charcoal-700 font-mono whitespace-pre-wrap leading-relaxed">{item.currentTable}</pre>
                       </div>
-                      <div className="p-4 rounded-lg border border-green-200 bg-green-50/30">
-                        <p className="text-xs font-semibold text-green-700 uppercase mb-2">Proposed Change</p>
-                        <pre className="text-xs text-gray-700 font-mono whitespace-pre-wrap leading-relaxed">{item.proposedTable}</pre>
+                      <div className="p-4 rounded-lg border border-success-100 bg-success-50/30">
+                        <p className="text-xs font-semibold text-success-700 uppercase mb-2">Proposed Change</p>
+                        <pre className="text-xs text-charcoal-700 font-mono whitespace-pre-wrap leading-relaxed">{item.proposedTable}</pre>
                       </div>
                     </div>
 
                     {/* Estimated impact */}
-                    <div className="p-3 rounded-lg bg-amber-50/50 border border-amber-100">
-                      <p className="text-xs font-semibold text-amber-700 mb-1">ESTIMATED IMPACT</p>
-                      <p className="text-sm text-gray-700">{item.estimatedImpact}</p>
+                    <div className="p-3 rounded-lg bg-warning-50/50 border border-warning-100">
+                      <p className="text-xs font-semibold text-warning-700 mb-1">ESTIMATED IMPACT</p>
+                      <p className="text-sm text-charcoal-700">{item.estimatedImpact}</p>
                     </div>
 
                     {/* Action buttons */}
                     {item.status === 'pending' && (
-                      <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
-                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors">
+                      <div className="flex items-center gap-3 pt-2 border-t border-limestone-100">
+                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-success-500 rounded-lg hover:bg-success-700 transition-colors">
                           <CheckCircle2 size={14} /> Approve &amp; Publish
                         </button>
-                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-brand-700 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors">
                           <Eye size={14} /> Create Scenario Only
                         </button>
-                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-critical-700 bg-critical-50 rounded-lg hover:bg-critical-100 transition-colors">
                           <XCircle size={14} /> Reject
                         </button>
                         <div className="flex-1" />
                         <div className="text-right">
-                          <label className="text-xs text-gray-500 block mb-1">Reviewer Notes</label>
+                          <label className="text-xs text-charcoal-500 block mb-1">Reviewer Notes</label>
                           <input
                             type="text"
                             placeholder="Add notes..."
-                            className="w-64 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                            className="w-64 px-3 py-1.5 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                           />
                         </div>
                       </div>
                     )}
 
                     {item.status !== 'pending' && (
-                      <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                      <div className="flex items-center gap-2 pt-2 border-t border-limestone-100">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg ${
-                          item.status === 'approved' ? 'bg-green-50 text-green-700' :
-                          item.status === 'rejected' ? 'bg-red-50 text-red-700' :
-                          'bg-indigo-50 text-indigo-700'
+                          item.status === 'approved' ? 'bg-success-50 text-success-700' :
+                          item.status === 'rejected' ? 'bg-critical-50 text-critical-700' :
+                          'bg-brand-50 text-brand-700'
                         }`}>
                           {item.status === 'approved' && <><CheckCircle2 size={14} /> Published to production tables</>}
                           {item.status === 'rejected' && <><XCircle size={14} /> Rejected — monitoring continues</>}
@@ -329,7 +329,7 @@ export default function ReviewQueuePage() {
       </div>
 
       {filteredItems.length === 0 && (
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-charcoal-300">
           <FileText size={32} className="mx-auto mb-2 opacity-50" />
           <p className="text-sm">No items matching this filter</p>
         </div>

@@ -39,20 +39,20 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
   const basePath = `/prism/plans/${planId}`;
 
   return (
-    <div className="bg-white border-b border-gray-200 sticky top-14 z-20">
+    <div className="bg-white border-b-2 border-limestone-200 sticky top-16 z-20">
       {/* Plan header */}
-      <div className="px-6 pt-3 pb-2 flex items-center gap-2 text-sm">
-        <Link href="/prism/clients" className="text-gray-500 hover:text-brand-500">
+      <div className="px-7 pt-3 pb-2 flex items-center gap-2 text-sm">
+        <Link href="/prism/clients" className="text-charcoal-500 hover:text-brand-700 transition-colors">
           Clients
         </Link>
-        <span className="text-gray-300">/</span>
-        <span className="font-semibold text-gray-900">{clientName}</span>
-        <span className="text-gray-300">—</span>
-        <span className="text-gray-600">{planName}</span>
+        <span className="text-charcoal-300">/</span>
+        <span className="font-semibold text-charcoal-900">{clientName}</span>
+        <span className="text-charcoal-300">&mdash;</span>
+        <span className="text-charcoal-500">{planName}</span>
       </div>
 
       {/* Tab navigation */}
-      <div className="px-6 overflow-x-auto scrollbar-none">
+      <div className="px-7 overflow-x-auto scrollbar-none">
         <nav className="flex gap-0 min-w-max">
           {PLAN_TABS.map((tab) => {
             const href = basePath + tab.segment;
@@ -65,10 +65,10 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
                 key={tab.segment}
                 href={href}
                 className={clsx(
-                  'px-3 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap',
+                  'px-5 py-3.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
                   isActive
-                    ? 'border-brand-500 text-brand-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-brand-700 text-brand-700 font-bold'
+                    : 'border-transparent text-charcoal-500 hover:text-charcoal-900 hover:border-limestone-300'
                 )}
               >
                 {tab.label}

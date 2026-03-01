@@ -170,10 +170,10 @@ const triggerLabel: Record<string, string> = {
 };
 
 const triggerColor: Record<string, string> = {
-  quarterly: 'bg-indigo-100 text-indigo-700',
-  monthly_afr: 'bg-blue-100 text-blue-700',
-  daily_congress: 'bg-gray-100 text-gray-700',
-  annual_tables: 'bg-amber-100 text-amber-700',
+  quarterly: 'bg-brand-100 text-brand-700',
+  monthly_afr: 'bg-brand-100 text-brand-700',
+  daily_congress: 'bg-limestone-100 text-charcoal-700',
+  annual_tables: 'bg-warning-100 text-warning-700',
 };
 
 // ---------------------------------------------------------------------------
@@ -189,21 +189,21 @@ export default function UpdateEnginePage() {
       {/* KPI strip */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { label: 'Sources Monitored', value: '57', sub: '6 federal · 51 state', icon: Globe, color: 'text-indigo-600' },
-          { label: 'Tables Current', value: `${TABLE_VERSIONS.length}`, sub: 'All validated', icon: Database, color: 'text-green-600' },
-          { label: 'Pending Review', value: `${PENDING_REVIEW.length}`, sub: `${PENDING_REVIEW.filter(p => p.severity === 'medium').length} medium priority`, icon: AlertTriangle, color: PENDING_REVIEW.length > 0 ? 'text-amber-600' : 'text-gray-400' },
-          { label: 'Last Run', value: '4m 32s', sub: 'Mar 1, 2026 3:00 AM', icon: Clock, color: 'text-blue-600' },
-          { label: 'Plans Recalculated', value: '284', sub: 'Q1 2026 run', icon: Activity, color: 'text-teal-600' },
+          { label: 'Sources Monitored', value: '57', sub: '6 federal · 51 state', icon: Globe, color: 'text-brand-700' },
+          { label: 'Tables Current', value: `${TABLE_VERSIONS.length}`, sub: 'All validated', icon: Database, color: 'text-success-500' },
+          { label: 'Pending Review', value: `${PENDING_REVIEW.length}`, sub: `${PENDING_REVIEW.filter(p => p.severity === 'medium').length} medium priority`, icon: AlertTriangle, color: PENDING_REVIEW.length > 0 ? 'text-warning-500' : 'text-charcoal-300' },
+          { label: 'Last Run', value: '4m 32s', sub: 'Mar 1, 2026 3:00 AM', icon: Clock, color: 'text-brand-700' },
+          { label: 'Plans Recalculated', value: '284', sub: 'Q1 2026 run', icon: Activity, color: 'text-brand-700' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+            <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-gray-500">{kpi.label}</p>
+                <p className="text-xs font-medium text-charcoal-500">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
-              <p className="text-xl font-bold text-gray-900">{kpi.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{kpi.sub}</p>
+              <p className="text-xl font-bold text-charcoal-900">{kpi.value}</p>
+              <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
             </div>
           );
         })}
@@ -212,31 +212,31 @@ export default function UpdateEnginePage() {
       {/* Pending review + Schedule */}
       <div className="grid grid-cols-2 gap-6">
         {/* Pending review */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-900">Human Review Queue</h3>
+            <h3 className="text-sm font-semibold text-charcoal-900">Human Review Queue</h3>
             <Link href="/admin/update-engine/review-queue" className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1">
               View All <ChevronRight size={12} />
             </Link>
           </div>
           {PENDING_REVIEW.length === 0 ? (
-            <p className="text-sm text-gray-400 py-4 text-center">No items pending review</p>
+            <p className="text-sm text-charcoal-300 py-4 text-center">No items pending review</p>
           ) : (
             <div className="space-y-3">
               {PENDING_REVIEW.map((item) => (
-                <div key={item.id} className="p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+                <div key={item.id} className="p-3 rounded-lg border border-limestone-100 hover:border-limestone-200 transition-colors">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900">{item.title}</span>
+                    <span className="text-sm font-medium text-charcoal-900">{item.title}</span>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      item.severity === 'high' ? 'bg-red-100 text-red-700' :
-                      item.severity === 'medium' ? 'bg-amber-100 text-amber-700' :
-                      'bg-blue-100 text-blue-700'
+                      item.severity === 'high' ? 'bg-critical-100 text-critical-700' :
+                      item.severity === 'medium' ? 'bg-warning-100 text-warning-700' :
+                      'bg-brand-100 text-brand-700'
                     }`}>{item.severity}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-1.5">{item.summary}</p>
+                  <p className="text-xs text-charcoal-500 mb-1.5">{item.summary}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-400">{item.source} · {item.detectedAt}</span>
-                    <span className="text-xs text-gray-500">{item.affectedClients.toLocaleString()} clients</span>
+                    <span className="text-xs text-charcoal-300">{item.source} · {item.detectedAt}</span>
+                    <span className="text-xs text-charcoal-500">{item.affectedClients.toLocaleString()} clients</span>
                   </div>
                 </div>
               ))}
@@ -245,9 +245,9 @@ export default function UpdateEnginePage() {
         </div>
 
         {/* Schedule */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-900">Update Schedule</h3>
+            <h3 className="text-sm font-semibold text-charcoal-900">Update Schedule</h3>
             <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
               <Play size={12} /> Run Now
             </button>
@@ -256,15 +256,15 @@ export default function UpdateEnginePage() {
             {SCHEDULE.map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.name} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
-                  <Icon size={16} className="text-gray-400 flex-shrink-0" />
+                <div key={s.name} className="flex items-center gap-3 p-3 rounded-lg bg-limestone-50">
+                  <Icon size={16} className="text-charcoal-300 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{s.name}</p>
-                    <p className="text-xs text-gray-500">{s.cron}</p>
+                    <p className="text-sm font-medium text-charcoal-900">{s.name}</p>
+                    <p className="text-xs text-charcoal-500">{s.cron}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-medium text-gray-600">Next run</p>
-                    <p className="text-xs text-gray-400">{s.nextRun}</p>
+                    <p className="text-xs font-medium text-charcoal-500">Next run</p>
+                    <p className="text-xs text-charcoal-300">{s.nextRun}</p>
                   </div>
                 </div>
               );
@@ -274,24 +274,24 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Source status */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Data Source Status</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Data Source Status</h3>
         <div className="grid grid-cols-4 gap-3">
           {SOURCE_STATUS.map((src) => (
             <div key={src.name} className={`flex items-center gap-2 p-2.5 rounded-lg border ${
-              src.status === 'ok' ? 'border-green-200 bg-green-50/30' : 'border-red-200 bg-red-50/30'
+              src.status === 'ok' ? 'border-success-100 bg-success-50/30' : 'border-critical-100 bg-critical-50/30'
             }`}>
               {src.status === 'ok' ? (
-                <CheckCircle2 size={14} className="text-green-500 flex-shrink-0" />
+                <CheckCircle2 size={14} className="text-success-500 flex-shrink-0" />
               ) : (
-                <AlertTriangle size={14} className="text-red-500 flex-shrink-0" />
+                <AlertTriangle size={14} className="text-critical-500 flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-gray-900 truncate">{src.name}</p>
-                <p className="text-[10px] text-gray-500">{src.lastCheck}</p>
+                <p className="text-xs font-medium text-charcoal-900 truncate">{src.name}</p>
+                <p className="text-[10px] text-charcoal-500">{src.lastCheck}</p>
               </div>
               {src.changesLastMonth > 0 && (
-                <span className="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded-full">
+                <span className="text-[10px] font-medium text-brand-700 bg-brand-50 px-1.5 py-0.5 rounded-full">
                   {src.changesLastMonth}
                 </span>
               )}
@@ -301,30 +301,30 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Tax table versions */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900">Current Tax Table Versions</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="px-5 py-4 border-b border-limestone-100">
+          <h3 className="text-sm font-semibold text-charcoal-900">Current Tax Table Versions</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Table Type</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Tax Year</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Version</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Last Updated</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Source</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Table Type</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Tax Year</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Version</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Last Updated</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Source</th>
             </tr>
           </thead>
           <tbody>
             {TABLE_VERSIONS.map((tv) => (
-              <tr key={tv.type} className="border-b border-gray-50 hover:bg-gray-50/50">
-                <td className="px-5 py-3 font-medium text-gray-900">{tv.type}</td>
-                <td className="px-5 py-3 text-gray-600">{tv.taxYear}</td>
+              <tr key={tv.type} className="border-b border-limestone-50 hover:bg-limestone-50/50">
+                <td className="px-5 py-3 font-medium text-charcoal-900">{tv.type}</td>
+                <td className="px-5 py-3 text-charcoal-500">{tv.taxYear}</td>
                 <td className="px-5 py-3">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">{tv.version}</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 text-success-700">{tv.version}</span>
                 </td>
-                <td className="px-5 py-3 text-gray-600">{tv.lastUpdated}</td>
-                <td className="px-5 py-3 text-gray-500 text-xs">{tv.source}</td>
+                <td className="px-5 py-3 text-charcoal-500">{tv.lastUpdated}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-xs">{tv.source}</td>
               </tr>
             ))}
           </tbody>
@@ -332,39 +332,39 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Run history */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-900">Run History</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-charcoal-900">Run History</h3>
           <button onClick={() => setShowAllRuns(!showAllRuns)} className="text-xs font-medium text-brand-600 hover:text-brand-700">
             {showAllRuns ? 'Show Less' : 'Show All'}
           </button>
         </div>
-        <div className="divide-y divide-gray-50">
+        <div className="divide-y divide-limestone-50">
           {displayedRuns.map((run) => (
             <div key={run.runId} className="px-5 py-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-gray-900">{run.runId}</span>
+                  <span className="text-sm font-bold text-charcoal-900">{run.runId}</span>
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${triggerColor[run.trigger]}`}>
                     {triggerLabel[run.trigger]}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 text-success-700">
                     <CheckCircle2 size={10} /> Completed
                   </span>
                 </div>
-                <span className="text-xs text-gray-400">{run.runDate} · {run.duration}</span>
+                <span className="text-xs text-charcoal-300">{run.runDate} · {run.duration}</span>
               </div>
-              <p className="text-sm text-gray-600 mb-2">{run.summary}</p>
-              <div className="flex items-center gap-4 text-xs text-gray-400">
+              <p className="text-sm text-charcoal-500 mb-2">{run.summary}</p>
+              <div className="flex items-center gap-4 text-xs text-charcoal-300">
                 <span>{run.sourcesChecked} sources checked</span>
                 <span>{run.changesDetected} changes detected</span>
                 <span>{run.tablesUpdated} tables updated</span>
                 <span>{run.plansRecalculated} plans recalculated</span>
                 {run.humanReviewItems > 0 && (
-                  <span className="text-amber-600">{run.humanReviewItems} pending review</span>
+                  <span className="text-warning-500">{run.humanReviewItems} pending review</span>
                 )}
                 {run.errors > 0 && (
-                  <span className="text-red-600">{run.errors} errors</span>
+                  <span className="text-critical-500">{run.errors} errors</span>
                 )}
               </div>
             </div>

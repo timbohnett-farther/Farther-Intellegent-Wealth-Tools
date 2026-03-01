@@ -87,34 +87,34 @@ function TaxTooltip({
   );
 
   return (
-    <div className="rounded-md border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1.5 font-semibold text-gray-900">Year {label}</p>
+    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-charcoal-900">Year {label}</p>
       <table className="w-full">
         <tbody>
           {barEntries.map((entry) => (
             <tr key={entry.name}>
-              <td className="pr-3 flex items-center gap-1.5 text-gray-600">
+              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </td>
-              <td className="text-right tabular-nums font-medium text-gray-900">
+              <td className="text-right tabular-nums font-medium text-charcoal-900">
                 {formatCurrency(entry.value)}
               </td>
             </tr>
           ))}
           {rateEntries.map((entry) => (
             <tr key={entry.name}>
-              <td className="pr-3 flex items-center gap-1.5 text-gray-600">
+              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </td>
-              <td className="text-right tabular-nums font-medium text-gray-900">
+              <td className="text-right tabular-nums font-medium text-charcoal-900">
                 {formatPercent(entry.value)}
               </td>
             </tr>
@@ -143,12 +143,12 @@ export function TaxProjectionChart({
     <div className={className}>
       <ResponsiveContainer width="100%" height={420}>
         <ComposedChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
 
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: '#6B7280' }}
-            axisLine={{ stroke: '#E5E7EB' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            axisLine={{ stroke: '#E4DDD4' }}
             tickLine={false}
           />
 
@@ -156,7 +156,7 @@ export function TaxProjectionChart({
           <YAxis
             yAxisId="dollars"
             tickFormatter={formatCompactAxis}
-            tick={{ fontSize: 11, fill: '#6B7280' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
             axisLine={false}
             tickLine={false}
             width={65}
@@ -167,7 +167,7 @@ export function TaxProjectionChart({
             yAxisId="rate"
             orientation="right"
             tickFormatter={(v: number) => `${v}%`}
-            tick={{ fontSize: 11, fill: '#6B7280' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
             axisLine={false}
             tickLine={false}
             domain={[0, 'auto']}
@@ -189,7 +189,7 @@ export function TaxProjectionChart({
             dataKey="federalTax"
             name="Federal Tax"
             stackId="tax"
-            fill="#2563EB"
+            fill="#3B5A69"
             maxBarSize={24}
           />
           <Bar
@@ -197,7 +197,7 @@ export function TaxProjectionChart({
             dataKey="stateTax"
             name="State Tax"
             stackId="tax"
-            fill="#7C3AED"
+            fill="#7B68EE"
             maxBarSize={24}
           />
           <Bar
@@ -205,7 +205,7 @@ export function TaxProjectionChart({
             dataKey="seTax"
             name="SE Tax"
             stackId="tax"
-            fill="#0D9488"
+            fill="#6189A0"
             maxBarSize={24}
           />
           <Bar
@@ -213,8 +213,8 @@ export function TaxProjectionChart({
             dataKey="niit"
             name="NIIT"
             stackId="tax"
-            fill="#F59E0B"
-            radius={[2, 2, 0, 0]}
+            fill="#E8A838"
+            radius={[4, 4, 0, 0]}
             maxBarSize={24}
           />
 
@@ -224,9 +224,9 @@ export function TaxProjectionChart({
             type="monotone"
             dataKey="effectiveFedRate"
             name="Effective Rate"
-            stroke="#EF4444"
+            stroke="#E07B54"
             strokeWidth={2}
-            dot={{ r: 2, fill: '#EF4444' }}
+            dot={{ r: 2, fill: '#E07B54' }}
             activeDot={{ r: 4 }}
           />
 
@@ -237,7 +237,7 @@ export function TaxProjectionChart({
               type="monotone"
               dataKey="marginalRate"
               name="Marginal Rate"
-              stroke="#9CA3AF"
+              stroke="#9E9E9E"
               strokeWidth={1.5}
               strokeDasharray="4 3"
               dot={false}

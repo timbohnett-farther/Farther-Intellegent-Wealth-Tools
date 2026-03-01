@@ -13,16 +13,16 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-medium text-gray-600">Progress</span>
-        <span className="text-xs font-semibold text-gray-800">{pct}%</span>
+        <span className="text-xs font-medium text-charcoal-500">Progress</span>
+        <span className="text-xs font-semibold text-charcoal-900">{pct}%</span>
       </div>
-      <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+      <div className="h-2 w-full bg-limestone-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-gradient-to-r from-brand-500 to-brand-700 rounded-full transition-all duration-500 ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="text-[11px] text-gray-400 mt-1">
+      <p className="text-[11px] text-charcoal-300 mt-1">
         {current} of {total} questions answered
       </p>
     </div>

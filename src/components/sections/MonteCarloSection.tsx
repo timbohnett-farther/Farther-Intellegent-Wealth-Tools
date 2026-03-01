@@ -30,37 +30,37 @@ export default function MonteCarloSection({ data }: Props) {
       {/* Probability Dashboard */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Margin Call Probability</p>
+          <p className="text-xs text-charcoal-500">Margin Call Probability</p>
           <p className={`text-2xl font-bold ${data.probabilityOfMarginCall < 5 ? 'text-safe' : data.probabilityOfMarginCall < 15 ? 'text-warning' : 'text-danger'}`}>
             {formatPercentValue(data.probabilityOfMarginCall, 1)}
           </p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Portfolio Grows</p>
+          <p className="text-xs text-charcoal-500">Portfolio Grows</p>
           <p className="text-2xl font-bold text-safe">{formatPercentValue(data.probabilityPortfolioGrows, 1)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Median Terminal Portfolio</p>
-          <p className="text-2xl font-bold text-blue-700">{formatCurrency(data.medianTerminalPortfolio)}</p>
+          <p className="text-xs text-charcoal-500">Median Terminal Portfolio</p>
+          <p className="text-2xl font-bold text-brand-700">{formatCurrency(data.medianTerminalPortfolio)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Median Net Wealth</p>
-          <p className="text-2xl font-bold text-green-700">{formatCurrency(data.medianNetWealth)}</p>
+          <p className="text-xs text-charcoal-500">Median Net Wealth</p>
+          <p className="text-2xl font-bold text-success-700">{formatCurrency(data.medianNetWealth)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">5th Percentile (Worst)</p>
-          <p className="text-2xl font-bold text-amber-600">{formatCurrency(data.percentiles.p5)}</p>
+          <p className="text-xs text-charcoal-500">5th Percentile (Worst)</p>
+          <p className="text-2xl font-bold text-warning-500">{formatCurrency(data.percentiles.p5)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">95th Percentile (Best)</p>
-          <p className="text-2xl font-bold text-blue-600">{formatCurrency(data.percentiles.p95)}</p>
+          <p className="text-xs text-charcoal-500">95th Percentile (Best)</p>
+          <p className="text-2xl font-bold text-brand-700">{formatCurrency(data.percentiles.p95)}</p>
         </div>
       </div>
 
       {/* Fan Chart */}
       <div className="card p-4">
         <h3 className="font-semibold text-sm mb-1">Portfolio Value Projection (5,000 Simulations)</h3>
-        <p className="text-xs text-gray-500 mb-3">Shaded bands show 5th-95th and 25th-75th percentile ranges</p>
+        <p className="text-xs text-charcoal-500 mb-3">Shaded bands show 5th-95th and 25th-75th percentile ranges</p>
         <ResponsiveContainer width="100%" height={350}>
           <AreaChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -78,30 +78,30 @@ export default function MonteCarloSection({ data }: Props) {
               labelFormatter={(l) => `Month ${l}`}
             />
             {/* P5-P95 band */}
-            <Area type="monotone" dataKey="p95" stackId="1" stroke="none" fill="#DBEAFE" fillOpacity={0.5} name="95th %ile" />
+            <Area type="monotone" dataKey="p95" stackId="1" stroke="none" fill="#E0EAED" fillOpacity={0.5} name="95th %ile" />
             <Area type="monotone" dataKey="p5" stackId="2" stroke="none" fill="white" fillOpacity={1} name="5th %ile" />
             {/* P25-P75 band */}
-            <Area type="monotone" dataKey="p75" stackId="3" stroke="none" fill="#93C5FD" fillOpacity={0.4} name="75th %ile" />
+            <Area type="monotone" dataKey="p75" stackId="3" stroke="none" fill="#A3BFC9" fillOpacity={0.4} name="75th %ile" />
             <Area type="monotone" dataKey="p25" stackId="4" stroke="none" fill="white" fillOpacity={1} name="25th %ile" />
             {/* Median line */}
-            <Area type="monotone" dataKey="p50" stroke="#3B82F6" strokeWidth={2.5} fill="none" name="Median" />
+            <Area type="monotone" dataKey="p50" stroke="#3B5A69" strokeWidth={2.5} fill="none" name="Median" />
             {/* Margin call line */}
-            <Area type="monotone" dataKey="marginCallLine" stroke="#EF4444" strokeWidth={2} strokeDasharray="6 4" fill="#FEE2E2" fillOpacity={0.3} name="Margin Call Zone" />
+            <Area type="monotone" dataKey="marginCallLine" stroke="#EF4444" strokeWidth={2} strokeDasharray="6 4" fill="#F8D7DA" fillOpacity={0.3} name="Margin Call Zone" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       {/* Percentile Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
           <h3 className="font-semibold text-sm">Terminal Portfolio Distribution</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b">
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Percentile</th>
-                <th className="text-right px-4 py-2 font-medium text-gray-600">Terminal Portfolio</th>
+              <tr className="bg-limestone-50 border-b">
+                <th className="text-left px-4 py-2 font-medium text-charcoal-500">Percentile</th>
+                <th className="text-right px-4 py-2 font-medium text-charcoal-500">Terminal Portfolio</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +112,7 @@ export default function MonteCarloSection({ data }: Props) {
                 ['75th', data.percentiles.p75],
                 ['95th (Best Reasonable)', data.percentiles.p95],
               ].map(([label, value], i) => (
-                <tr key={i} className="border-t border-gray-100">
+                <tr key={i} className="border-t border-limestone-100">
                   <td className="px-4 py-2 font-medium">{label as string}</td>
                   <td className="px-4 py-2 text-right font-medium">{formatCurrency(value as number)}</td>
                 </tr>
@@ -123,7 +123,7 @@ export default function MonteCarloSection({ data }: Props) {
       </div>
 
       {data.averageTimeToMC > 0 && (
-        <div className="card p-3 bg-amber-50 border-amber-200 text-sm text-amber-800">
+        <div className="card p-3 bg-warning-50 border-warning-200 text-sm text-warning-700">
           When margin calls did occur, they happened on average at month {Math.round(data.averageTimeToMC)} ({(data.averageTimeToMC / 12).toFixed(1)} years).
         </div>
       )}

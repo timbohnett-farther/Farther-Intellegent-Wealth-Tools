@@ -27,22 +27,22 @@ export default function QuestionCard({
       {/* Question header */}
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
-          <span className="inline-block px-2 py-0.5 rounded-md bg-blue-50 text-[11px] font-semibold text-blue-600 uppercase tracking-wide">
+          <span className="inline-block px-2 py-0.5 rounded-md bg-brand-50 text-[11px] font-semibold text-brand-700 uppercase tracking-wide">
             {categoryLabel}
           </span>
           {axisLabel && (
-            <span className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-[10px] font-medium text-gray-500">
+            <span className="inline-block px-2 py-0.5 rounded-md bg-limestone-100 text-[10px] font-medium text-charcoal-500">
               {axisLabel}
             </span>
           )}
         </div>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-charcoal-300">
           {questionNumber} of {totalQuestions}
         </span>
       </div>
 
       {/* Question text */}
-      <h3 className="text-lg font-semibold text-gray-900 mt-3 mb-6 leading-relaxed">
+      <h3 className="text-lg font-semibold text-charcoal-900 mt-3 mb-6 leading-relaxed">
         {question.questionText}
       </h3>
 
@@ -57,16 +57,16 @@ export default function QuestionCard({
               onClick={() => onSelect(option.value)}
               className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all duration-150 ${
                 isSelected
-                  ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-200'
-                  : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                  ? 'border-brand-700 bg-brand-50 ring-1 shadow-focus'
+                  : 'border-limestone-200 bg-white hover:border-limestone-300 hover:bg-limestone-50'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                     isSelected
-                      ? 'border-blue-500 bg-blue-500'
-                      : 'border-gray-300'
+                      ? 'border-brand-700 bg-brand-700'
+                      : 'border-limestone-300'
                   }`}
                 >
                   {isSelected && (
@@ -75,7 +75,7 @@ export default function QuestionCard({
                 </div>
                 <span
                   className={`text-sm ${
-                    isSelected ? 'text-blue-900 font-medium' : 'text-gray-700'
+                    isSelected ? 'text-brand-900 font-medium' : 'text-charcoal-700'
                   }`}
                 >
                   {option.label}

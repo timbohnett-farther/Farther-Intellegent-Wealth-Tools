@@ -24,53 +24,53 @@ export default function StressTestSection({ data }: Props) {
       {/* Margin Safety Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Initial Margin</p>
+          <p className="text-xs text-charcoal-500">Initial Margin</p>
           <p className="text-lg font-bold">{formatPercent(data.initialMarginPct)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Maintenance Margin</p>
+          <p className="text-xs text-charcoal-500">Maintenance Margin</p>
           <p className="text-lg font-bold">{formatPercent(data.maintenanceMarginPct)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Max Decline to MC</p>
+          <p className="text-xs text-charcoal-500">Max Decline to MC</p>
           <p className={`text-lg font-bold ${data.declineToMarginCall > 0.5 ? 'text-safe' : data.declineToMarginCall > 0.3 ? 'text-warning' : 'text-danger'}`}>
             {formatPercent(data.declineToMarginCall)}
           </p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">MC Trigger Value</p>
+          <p className="text-xs text-charcoal-500">MC Trigger Value</p>
           <p className="text-lg font-bold text-danger">{formatCurrency(data.marginCallPortfolioValue)}</p>
         </div>
       </div>
 
       {/* Stress Test Scenarios Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
           <h3 className="font-semibold text-sm">Market Decline Stress Test</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b">
-                <th className="text-left px-3 py-2 font-medium text-gray-600">Decline</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Portfolio Value</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Box Obligation</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Equity</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Equity %</th>
-                <th className="text-center px-3 py-2 font-medium text-gray-600">Status</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Excess Equity</th>
+              <tr className="bg-limestone-50 border-b">
+                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Decline</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Portfolio Value</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Box Obligation</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Equity</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Equity %</th>
+                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Status</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Excess Equity</th>
               </tr>
             </thead>
             <tbody>
               {data.scenarios.map((s, i) => {
                 const statusConfig = {
                   safe: { icon: '\u2705', label: 'SAFE', bg: '' },
-                  warning: { icon: '\u26A0\uFE0F', label: 'WARNING', bg: 'bg-amber-50' },
-                  margin_call: { icon: '\uD83D\uDD34', label: 'MARGIN CALL', bg: 'bg-red-50' },
+                  warning: { icon: '\u26A0\uFE0F', label: 'WARNING', bg: 'bg-warning-50' },
+                  margin_call: { icon: '\uD83D\uDD34', label: 'MARGIN CALL', bg: 'bg-critical-50' },
                 };
                 const sc = statusConfig[s.status];
                 return (
-                  <tr key={i} className={`border-t border-gray-100 ${sc.bg}`}>
+                  <tr key={i} className={`border-t border-limestone-100 ${sc.bg}`}>
                     <td className="px-3 py-2 font-medium">-{formatPercentValue(s.decline * 100, 0)}</td>
                     <td className="px-3 py-2 text-right">{formatCurrency(s.portfolioValue)}</td>
                     <td className="px-3 py-2 text-right">{formatCurrency(s.boxObligation)}</td>
@@ -90,22 +90,22 @@ export default function StressTestSection({ data }: Props) {
 
       {/* Historical Drawdown Overlay */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
           <h3 className="font-semibold text-sm">Historical Drawdown Overlay</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b">
-                <th className="text-left px-3 py-2 font-medium text-gray-600">Event</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Decline</th>
-                <th className="text-center px-3 py-2 font-medium text-gray-600">Duration</th>
-                <th className="text-center px-3 py-2 font-medium text-gray-600">Margin Call?</th>
+              <tr className="bg-limestone-50 border-b">
+                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Event</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Decline</th>
+                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Duration</th>
+                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Margin Call?</th>
               </tr>
             </thead>
             <tbody>
               {data.historicalEvents.map((e, i) => (
-                <tr key={i} className={`border-t border-gray-100 ${e.wouldTrigger ? 'bg-red-50' : ''}`}>
+                <tr key={i} className={`border-t border-limestone-100 ${e.wouldTrigger ? 'bg-critical-50' : ''}`}>
                   <td className="px-3 py-2 font-medium">{e.name}</td>
                   <td className="px-3 py-2 text-right">-{formatPercentValue(e.decline * 100, 1)}</td>
                   <td className="px-3 py-2 text-center">{e.duration}</td>

@@ -126,12 +126,12 @@ export function EstateDocumentForm({
           {...register('notes')}
           rows={3}
           placeholder="Additional notes..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+          className="w-full rounded-lg border border-limestone-300 bg-white px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
         />
       </FormField>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-5">
+      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 pt-5">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
             Cancel

@@ -79,20 +79,20 @@ function CashFlowTooltip({
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-md border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1.5 font-semibold text-gray-900">{label}</p>
+    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-charcoal-900">{label}</p>
       <table className="w-full">
         <tbody>
           {payload.map((entry) => (
             <tr key={entry.name}>
-              <td className="pr-3 flex items-center gap-1.5 text-gray-600">
+              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </td>
-              <td className="text-right tabular-nums font-medium text-gray-900">
+              <td className="text-right tabular-nums font-medium text-charcoal-900">
                 {formatCurrency(entry.value)}
               </td>
             </tr>
@@ -139,8 +139,8 @@ export function CashFlowBarChart({
           onClick={() => setByAge(false)}
           className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
             !byAge
-              ? 'bg-brand-500 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-brand-700 text-white'
+              : 'bg-limestone-100 text-charcoal-500 hover:bg-limestone-200'
           }`}
         >
           Show by Year
@@ -150,8 +150,8 @@ export function CashFlowBarChart({
           onClick={() => setByAge(true)}
           className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
             byAge
-              ? 'bg-brand-500 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-brand-700 text-white'
+              : 'bg-limestone-100 text-charcoal-500 hover:bg-limestone-200'
           }`}
         >
           Show by Age
@@ -160,25 +160,25 @@ export function CashFlowBarChart({
 
       <ResponsiveContainer width="100%" height={420}>
         <ComposedChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
 
           <XAxis
             dataKey={xDataKey}
-            tick={{ fontSize: 11, fill: '#6B7280' }}
-            axisLine={{ stroke: '#E5E7EB' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            axisLine={{ stroke: '#E4DDD4' }}
             tickLine={false}
             label={{
               value: xLabel,
               position: 'insideBottom',
               offset: -2,
               fontSize: 11,
-              fill: '#9CA3AF',
+              fill: '#6B6B6B',
             }}
           />
 
           <YAxis
             tickFormatter={formatCompactAxis}
-            tick={{ fontSize: 11, fill: '#6B7280' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
             axisLine={false}
             tickLine={false}
             width={65}
@@ -199,7 +199,7 @@ export function CashFlowBarChart({
               dataKey="salaryIncome"
               name="Salary"
               stackId="income"
-              fill="#2563EB"
+              fill="#3B5A69"
               radius={[0, 0, 0, 0]}
               maxBarSize={24}
             />
@@ -209,7 +209,7 @@ export function CashFlowBarChart({
               dataKey="socialSecurityClientGross"
               name="Social Security"
               stackId="income"
-              fill="#3B82F6"
+              fill="#6189A0"
               maxBarSize={24}
             />
           )}
@@ -218,7 +218,7 @@ export function CashFlowBarChart({
               dataKey="pensionIncome"
               name="Pension"
               stackId="income"
-              fill="#60A5FA"
+              fill="#A3BFC9"
               maxBarSize={24}
             />
           )}
@@ -227,7 +227,7 @@ export function CashFlowBarChart({
               dataKey="rmdIncome"
               name="RMD"
               stackId="income"
-              fill="#93C5FD"
+              fill="#C4D8DF"
               maxBarSize={24}
             />
           )}
@@ -236,7 +236,7 @@ export function CashFlowBarChart({
               dataKey="investmentIncome"
               name="Investment"
               stackId="income"
-              fill="#BFDBFE"
+              fill="#DDE8EC"
               maxBarSize={24}
             />
           )}
@@ -251,8 +251,8 @@ export function CashFlowBarChart({
                 dataKey="totalGrossIncome"
                 name="Total Income"
                 stackId="income"
-                fill="#2563EB"
-                radius={[2, 2, 0, 0]}
+                fill="#3B5A69"
+                radius={[4, 4, 0, 0]}
                 maxBarSize={24}
               />
             )}
@@ -262,7 +262,7 @@ export function CashFlowBarChart({
             dataKey="totalExpenses"
             name="Expenses"
             stackId="outflow"
-            fill="#F59E0B"
+            fill="#E8A838"
             maxBarSize={24}
           />
 
@@ -271,8 +271,8 @@ export function CashFlowBarChart({
             dataKey="totalTax"
             name="Taxes"
             stackId="outflow"
-            fill="#EF4444"
-            radius={[2, 2, 0, 0]}
+            fill="#E07B54"
+            radius={[4, 4, 0, 0]}
             maxBarSize={24}
           />
 
@@ -281,9 +281,9 @@ export function CashFlowBarChart({
             type="monotone"
             dataKey="netCashFlow"
             name="Net Cash Flow"
-            stroke="#10B981"
+            stroke="#2E8B57"
             strokeWidth={2}
-            dot={{ r: 2, fill: '#10B981' }}
+            dot={{ r: 2, fill: '#2E8B57' }}
             activeDot={{ r: 4 }}
           />
         </ComposedChart>

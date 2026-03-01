@@ -66,7 +66,7 @@ const LIFE_EVENTS: LifeEventType[] = [
     label: 'We had a child',
     description: 'Plan for education, update beneficiaries, and consider life insurance needs.',
     icon: Baby,
-    color: 'text-blue-500 bg-blue-50',
+    color: 'text-brand-700 bg-brand-50',
     fields: [
       { name: 'childName', label: 'Child\'s Name', type: 'text', required: true },
       { name: 'dateOfBirth', label: 'Date of Birth', type: 'date', required: true },
@@ -80,7 +80,7 @@ const LIFE_EVENTS: LifeEventType[] = [
     label: 'I changed jobs',
     description: 'Review 401(k) rollover options, new benefits, and income changes.',
     icon: Briefcase,
-    color: 'text-amber-500 bg-amber-50',
+    color: 'text-warning-500 bg-warning-50',
     fields: [
       { name: 'newEmployer', label: 'New Employer', type: 'text', required: true },
       { name: 'startDate', label: 'Start Date', type: 'date', required: true },
@@ -96,7 +96,7 @@ const LIFE_EVENTS: LifeEventType[] = [
     label: 'We bought a home',
     description: 'Update net worth, review mortgage strategy, and property insurance.',
     icon: Home,
-    color: 'text-green-500 bg-green-50',
+    color: 'text-success-500 bg-success-50',
     fields: [
       { name: 'propertyAddress', label: 'Property Address', type: 'text', required: true },
       { name: 'purchaseDate', label: 'Purchase Date', type: 'date', required: true },
@@ -113,7 +113,7 @@ const LIFE_EVENTS: LifeEventType[] = [
     label: 'I received an inheritance',
     description: 'Plan how to allocate inherited assets, understand tax implications.',
     icon: Gift,
-    color: 'text-purple-500 bg-purple-50',
+    color: 'text-brand-700 bg-brand-50',
     fields: [
       { name: 'source', label: 'Inherited From', type: 'text', required: true },
       { name: 'dateReceived', label: 'Date Received', type: 'date', required: true },
@@ -149,13 +149,13 @@ const INITIAL_SUBMITTED: SubmittedEvent[] = [
 function statusConfig(status: string) {
   switch (status) {
     case 'pending_review':
-      return { label: 'Pending Review', icon: Clock, className: 'bg-yellow-50 text-yellow-700' };
+      return { label: 'Pending Review', icon: Clock, className: 'bg-warning-50 text-warning-700' };
     case 'approved':
-      return { label: 'Approved', icon: Check, className: 'bg-green-50 text-green-700' };
+      return { label: 'Approved', icon: Check, className: 'bg-success-50 text-success-700' };
     case 'applied':
       return { label: 'Applied to Plan', icon: Check, className: 'bg-brand-50 text-brand-600' };
     default:
-      return { label: status, icon: AlertCircle, className: 'bg-gray-100 text-gray-600' };
+      return { label: status, icon: AlertCircle, className: 'bg-limestone-100 text-charcoal-500' };
   }
 }
 
@@ -181,21 +181,21 @@ function EventWizard({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto py-8">
       <div className="bg-white rounded-modal shadow-xl w-full max-w-lg mx-4">
         {/* Header */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-200">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-limestone-200">
           <div
             className={`w-10 h-10 rounded-lg flex items-center justify-center ${event.color}`}
           >
             <Icon size={20} />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-charcoal-900">
               {event.label}
             </h3>
-            <p className="text-xs text-gray-500">{event.description}</p>
+            <p className="text-xs text-charcoal-500">{event.description}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-gray-100 text-gray-400"
+            className="p-1 rounded hover:bg-limestone-100 text-charcoal-300"
           >
             <X size={20} />
           </button>
@@ -205,10 +205,10 @@ function EventWizard({
         <form onSubmit={handleSubmit} className="px-6 py-4 space-y-4">
           {event.fields.map((field) => (
             <div key={field.name}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-charcoal-700 mb-1">
                 {field.label}
                 {field.required && (
-                  <span className="text-red-500 ml-0.5">*</span>
+                  <span className="text-critical-500 ml-0.5">*</span>
                 )}
               </label>
 
@@ -220,7 +220,7 @@ function EventWizard({
                   }
                   rows={3}
                   placeholder={field.placeholder}
-                  className="w-full border border-gray-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
               ) : field.type === 'select' ? (
                 <select
@@ -229,7 +229,7 @@ function EventWizard({
                     setFormData({ ...formData, [field.name]: e.target.value })
                   }
                   required={field.required}
-                  className="w-full border border-gray-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
                   <option value="">Select...</option>
                   {field.options?.map((opt) => (
@@ -247,18 +247,18 @@ function EventWizard({
                   }
                   required={field.required}
                   placeholder={field.placeholder}
-                  className="w-full border border-gray-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
               )}
             </div>
           ))}
 
           {/* Submit */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+          <div className="flex justify-end gap-3 pt-4 border-t border-limestone-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-charcoal-700 bg-white border border-limestone-300 rounded-lg hover:bg-limestone-50"
             >
               Cancel
             </button>
@@ -302,8 +302,8 @@ export default function ClientLifeEventsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Life Events</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-charcoal-900">Life Events</h1>
+        <p className="text-sm text-charcoal-500 mt-1">
           Had a big life change? Let your advisor know so they can update your
           financial plan accordingly.
         </p>
@@ -317,7 +317,7 @@ export default function ClientLifeEventsPage() {
             <button
               key={event.key}
               onClick={() => setSelectedEvent(event)}
-              className="bg-white rounded-card border border-gray-200 p-5 text-left hover:border-brand-300 hover:shadow-sm transition-all group"
+              className="bg-white rounded-card border border-limestone-200 p-5 text-left hover:border-brand-300 hover:shadow-sm transition-all group"
             >
               <div className="flex items-start gap-3">
                 <div
@@ -326,16 +326,16 @@ export default function ClientLifeEventsPage() {
                   <Icon size={24} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand-600 transition-colors">
+                  <h3 className="text-sm font-semibold text-charcoal-900 group-hover:text-brand-600 transition-colors">
                     {event.label}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  <p className="text-xs text-charcoal-500 mt-1 leading-relaxed">
                     {event.description}
                   </p>
                 </div>
                 <ChevronRight
                   size={16}
-                  className="text-gray-300 group-hover:text-brand-400 mt-1 flex-shrink-0"
+                  className="text-charcoal-300 group-hover:text-brand-400 mt-1 flex-shrink-0"
                 />
               </div>
             </button>
@@ -346,11 +346,11 @@ export default function ClientLifeEventsPage() {
       {/* ── Submitted Events ── */}
       {submitted.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <h2 className="text-lg font-semibold text-charcoal-900 mb-4">
             Submitted Events
           </h2>
-          <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
-            <div className="divide-y divide-gray-100">
+          <div className="bg-white rounded-card border border-limestone-200 overflow-hidden">
+            <div className="divide-y divide-limestone-100">
               {submitted.map((event) => {
                 const config = statusConfig(event.status);
                 const StatusIcon = config.icon;
@@ -367,16 +367,16 @@ export default function ClientLifeEventsPage() {
                     <div className="flex items-center gap-3">
                       <div
                         className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                          eventDef?.color || 'bg-gray-100 text-gray-500'
+                          eventDef?.color || 'bg-limestone-100 text-charcoal-500'
                         }`}
                       >
                         <EventIcon size={18} />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-charcoal-900">
                           {event.eventLabel}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-charcoal-500">
                           Event date:{' '}
                           {new Date(event.eventDate).toLocaleDateString(
                             'en-US',

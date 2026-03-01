@@ -139,26 +139,26 @@ export default function BoxSpreadCalculatorPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-limestone-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 no-print">
+      <header className="bg-white border-b border-limestone-200 sticky top-0 z-50 no-print">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-charcoal-300 hover:text-charcoal-500 transition-colors"
               aria-label="Back to tools"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Box Spread Lending Calculator</h1>
-              <p className="text-xs text-gray-500">Portfolio-Based Liquidity Planning</p>
+              <h1 className="text-lg font-bold text-charcoal-900">Box Spread Lending Calculator</h1>
+              <p className="text-xs text-charcoal-500">Portfolio-Based Liquidity Planning</p>
             </div>
           </div>
           <button
             onClick={handleExportPDF}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-lg hover:bg-brand-600 transition-colors"
           >
             Export PDF
           </button>
@@ -175,7 +175,7 @@ export default function BoxSpreadCalculatorPage() {
         <main className="flex-1 p-4 min-w-0">
           {/* Tabs */}
           <div className="mb-4 no-print overflow-x-auto">
-            <div className="flex gap-1 border-b border-gray-200 min-w-max">
+            <div className="flex gap-1 border-b border-limestone-200 min-w-max">
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -194,14 +194,14 @@ export default function BoxSpreadCalculatorPage() {
 
           {/* Derived Rates Banner */}
           <div className="mb-4 card p-3">
-            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500">
-              <span>LTV: <strong className="text-gray-800">{((inputs.loan.loanAmount / inputs.loan.portfolioValue) * 100).toFixed(1)}%</strong></span>
-              <span>All-In Rate: <strong className="text-blue-700">{((inputs.loan.boxRate + inputs.loan.managerFee) * 100).toFixed(2)}%</strong></span>
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-charcoal-500">
+              <span>LTV: <strong className="text-charcoal-900">{((inputs.loan.loanAmount / inputs.loan.portfolioValue) * 100).toFixed(1)}%</strong></span>
+              <span>All-In Rate: <strong className="text-brand-700">{((inputs.loan.boxRate + inputs.loan.managerFee) * 100).toFixed(2)}%</strong></span>
               <span>Fed LTCG: <strong>{(inputs.tax.ltcgRate * 100).toFixed(0)}%</strong></span>
               <span>Fed STCG: <strong>{(inputs.tax.stcgRate * 100).toFixed(0)}%</strong></span>
               <span>NIIT: <strong>{(inputs.tax.niitRate * 100).toFixed(1)}%</strong></span>
               <span>State CG: <strong>{(inputs.tax.stateCGRate * 100).toFixed(1)}%</strong></span>
-              <span>Blended 1256: <strong className="text-green-700">{(inputs.tax.blended1256Rate * 100).toFixed(1)}%</strong></span>
+              <span>Blended 1256: <strong className="text-success-700">{(inputs.tax.blended1256Rate * 100).toFixed(1)}%</strong></span>
             </div>
           </div>
 
@@ -219,7 +219,7 @@ export default function BoxSpreadCalculatorPage() {
           </div>
 
           {/* Disclosures */}
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg text-[10px] text-gray-400 space-y-1 leading-relaxed">
+          <div className="mt-8 p-4 bg-limestone-100 rounded-lg text-[10px] text-charcoal-300 space-y-1 leading-relaxed">
             <p>This tool is for educational and illustrative purposes only and does not constitute investment, tax, or legal advice.</p>
             <p>Box spread lending involves risk, including the possibility of margin calls if portfolio values decline significantly.</p>
             <p>Past market performance is not indicative of future results. Monte Carlo simulations are hypothetical and based on assumptions that may not reflect actual market conditions.</p>

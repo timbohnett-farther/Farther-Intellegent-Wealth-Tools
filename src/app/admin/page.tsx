@@ -82,10 +82,10 @@ const MONTHLY_ACTIVITY = [
 ];
 
 const WEALTH_TIER_DIST = [
-  { name: 'Mass Affluent', value: 95, color: '#6366f1' },
-  { name: 'HNW', value: 128, color: '#10b981' },
-  { name: 'UHNW', value: 48, color: '#f59e0b' },
-  { name: 'Ultra UHNW', value: 13, color: '#ef4444' },
+  { name: 'Mass Affluent', value: 95, color: '#3B5A69' },
+  { name: 'HNW', value: 128, color: '#2E8B57' },
+  { name: 'UHNW', value: 48, color: '#D4860B' },
+  { name: 'Ultra UHNW', value: 13, color: '#C0392B' },
 ];
 
 const INTEGRATION_STATUS = [
@@ -116,21 +116,21 @@ export default function AdminOverviewPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-indigo-600' },
-          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-blue-600' },
-          { label: 'Firm AUM', value: fmtCompact(FIRM_STATS.totalAUM), sub: 'Across all plans', icon: DollarSign, color: 'text-green-600' },
-          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-teal-600' },
-          { label: 'Open Alerts', value: `${FIRM_STATS.criticalAlerts + FIRM_STATS.warningAlerts}`, sub: `${FIRM_STATS.criticalAlerts} critical`, icon: AlertTriangle, color: 'text-red-600' },
+          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-brand-700' },
+          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-brand-700' },
+          { label: 'Firm AUM', value: fmtCompact(FIRM_STATS.totalAUM), sub: 'Across all plans', icon: DollarSign, color: 'text-success-500' },
+          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-brand-700' },
+          { label: 'Open Alerts', value: `${FIRM_STATS.criticalAlerts + FIRM_STATS.warningAlerts}`, sub: `${FIRM_STATS.criticalAlerts} critical`, icon: AlertTriangle, color: 'text-critical-500' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+            <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-gray-500">{kpi.label}</p>
+                <p className="text-xs font-medium text-charcoal-500">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
-              <p className="text-xl font-bold text-gray-900">{kpi.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{kpi.sub}</p>
+              <p className="text-xl font-bold text-charcoal-900">{kpi.value}</p>
+              <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
             </div>
           );
         })}
@@ -138,37 +138,37 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Monthly activity */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4">Monthly Activity</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Monthly Activity</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={MONTHLY_ACTIVITY}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="plans" fill="#6366f1" name="Plans Created" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="reports" fill="#10b981" name="Reports Generated" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="meetings" fill="#f59e0b" name="Client Meetings" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="plans" fill="#3B5A69" name="Plans Created" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="reports" fill="#2E8B57" name="Reports Generated" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="meetings" fill="#D4860B" name="Client Meetings" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Success rate distribution */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4">Plan Success Rate Distribution</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Plan Success Rate Distribution</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={SUCCESS_DISTRIBUTION}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
                 <XAxis dataKey="range" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Bar dataKey="count" name="Plans" radius={[3, 3, 0, 0]}>
                   {SUCCESS_DISTRIBUTION.map((entry, i) => (
-                    <Cell key={i} fill={i < 2 ? '#ef4444' : i < 3 ? '#f59e0b' : '#10b981'} />
+                    <Cell key={i} fill={i < 2 ? '#C0392B' : i < 3 ? '#D4860B' : '#2E8B57'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -179,30 +179,30 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Top advisors */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 col-span-2">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Advisor Performance</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 col-span-2">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Advisor Performance</h3>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 text-left">
-                <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Advisor</th>
-                <th className="pb-2 text-xs font-medium text-gray-500 uppercase text-right">Clients</th>
-                <th className="pb-2 text-xs font-medium text-gray-500 uppercase text-right">Plans</th>
-                <th className="pb-2 text-xs font-medium text-gray-500 uppercase text-right">Avg Success</th>
-                <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Last Active</th>
+              <tr className="border-b border-limestone-100 text-left">
+                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Advisor</th>
+                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Clients</th>
+                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Plans</th>
+                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Avg Success</th>
+                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Last Active</th>
               </tr>
             </thead>
             <tbody>
               {ADVISOR_PERFORMANCE.map((a) => (
-                <tr key={a.name} className="border-b border-gray-50">
-                  <td className="py-2.5 font-medium text-gray-900">{a.name}</td>
-                  <td className="py-2.5 text-gray-600 text-right">{a.clients}</td>
-                  <td className="py-2.5 text-gray-600 text-right">{a.plans}</td>
+                <tr key={a.name} className="border-b border-limestone-50">
+                  <td className="py-2.5 font-medium text-charcoal-900">{a.name}</td>
+                  <td className="py-2.5 text-charcoal-500 text-right">{a.clients}</td>
+                  <td className="py-2.5 text-charcoal-500 text-right">{a.plans}</td>
                   <td className="py-2.5 text-right">
-                    <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-green-600' : a.avgSuccess >= 70 ? 'text-amber-600' : 'text-red-600'}`}>
+                    <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-success-500' : a.avgSuccess >= 70 ? 'text-warning-500' : 'text-critical-500'}`}>
                       {a.avgSuccess}%
                     </span>
                   </td>
-                  <td className="py-2.5 text-gray-500">{a.lastLogin}</td>
+                  <td className="py-2.5 text-charcoal-500">{a.lastLogin}</td>
                 </tr>
               ))}
             </tbody>
@@ -210,8 +210,8 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Client distribution */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Clients by Wealth Tier</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Clients by Wealth Tier</h3>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -229,7 +229,7 @@ export default function AdminOverviewPage() {
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
                 </span>
-                <span className="font-medium text-gray-700">{d.value}</span>
+                <span className="font-medium text-charcoal-700">{d.value}</span>
               </div>
             ))}
           </div>
@@ -237,9 +237,9 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Integration status */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-gray-900">Integration Status</h3>
+          <h3 className="text-sm font-semibold text-charcoal-900">Integration Status</h3>
           <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
             <RefreshCw size={12} /> Sync All
           </button>
@@ -247,21 +247,21 @@ export default function AdminOverviewPage() {
         <div className="grid grid-cols-3 gap-3">
           {INTEGRATION_STATUS.map((int) => (
             <div key={int.name} className={`flex items-center gap-3 p-3 rounded-lg border ${
-              int.status === 'connected' ? 'border-green-200 bg-green-50/30' : 'border-red-200 bg-red-50/30'
+              int.status === 'connected' ? 'border-success-100 bg-success-50/30' : 'border-critical-100 bg-critical-50/30'
             }`}>
               {int.status === 'connected' ? (
-                <Wifi size={16} className="text-green-600 flex-shrink-0" />
+                <Wifi size={16} className="text-success-500 flex-shrink-0" />
               ) : (
-                <WifiOff size={16} className="text-red-600 flex-shrink-0" />
+                <WifiOff size={16} className="text-critical-500 flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{int.name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-sm font-medium text-charcoal-900 truncate">{int.name}</p>
+                <p className="text-xs text-charcoal-500">
                   {int.lastSync}{int.accounts ? ` · ${int.accounts.toLocaleString()} accounts` : ''}
                 </p>
               </div>
               <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                int.status === 'connected' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                int.status === 'connected' ? 'bg-success-100 text-success-700' : 'bg-critical-100 text-critical-700'
               }`}>
                 {int.status === 'connected' ? 'Connected' : 'Error'}
               </span>
@@ -271,8 +271,8 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Plans needing review */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
         <div className="space-y-2">
           {[
             { client: 'Robert Johnson', advisor: 'James Wilson', lastReview: '14 months ago', successRate: 64, reason: 'Success rate below 70%' },
@@ -281,17 +281,17 @@ export default function AdminOverviewPage() {
             { client: 'Susan Miller', advisor: 'Michael Torres', lastReview: '15 months ago', successRate: 75, reason: 'Annual review overdue' },
             { client: 'Thomas Brown', advisor: 'Sarah Chen', lastReview: '12 months ago', successRate: 71, reason: 'Account balance drop >10%' },
           ].map((p) => (
-            <div key={p.client} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+            <div key={p.client} className="flex items-center justify-between py-2 border-b border-limestone-50 last:border-0">
               <div className="flex items-center gap-3">
-                <AlertTriangle size={14} className={p.successRate < 70 ? 'text-red-500' : 'text-amber-500'} />
+                <AlertTriangle size={14} className={p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'} />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{p.client}</p>
-                  <p className="text-xs text-gray-500">{p.advisor} · Last review: {p.lastReview}</p>
+                  <p className="text-sm font-medium text-charcoal-900">{p.client}</p>
+                  <p className="text-xs text-charcoal-500">{p.advisor} · Last review: {p.lastReview}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500">{p.reason}</span>
-                <span className={`text-sm font-bold ${p.successRate < 70 ? 'text-red-600' : 'text-amber-600'}`}>{p.successRate}%</span>
+                <span className="text-xs text-charcoal-500">{p.reason}</span>
+                <span className={`text-sm font-bold ${p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'}`}>{p.successRate}%</span>
               </div>
             </div>
           ))}

@@ -22,21 +22,21 @@ export function FormField({
 }: FormFieldProps) {
   return (
     <div className={clsx('flex flex-col gap-1.5', className)}>
-      <label className="text-sm font-medium text-gray-700">
+      <label className="text-sm font-medium text-charcoal-700">
         {label}
-        {required && <span className="ml-0.5 text-red-500">*</span>}
+        {required && <span className="ml-0.5 text-critical-500">*</span>}
       </label>
 
       {children}
 
       {error && (
-        <p className="text-xs text-red-600" role="alert">
+        <p className="text-xs text-critical-500" role="alert">
           {error}
         </p>
       )}
 
       {!error && helperText && (
-        <p className="text-xs text-gray-500">{helperText}</p>
+        <p className="text-xs text-charcoal-500">{helperText}</p>
       )}
     </div>
   );

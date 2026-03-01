@@ -78,13 +78,13 @@ interface PlanResultData {
 // ---------------------------------------------------------------------------
 
 const FEDERAL_BRACKETS = [
-  { rate: 10, floor: 0, ceiling: 23_850, color: '#E5E7EB' },       // gray-200
+  { rate: 10, floor: 0, ceiling: 23_850, color: '#E4DDD4' },       // gray-200
   { rate: 12, floor: 23_850, ceiling: 96_950, color: '#DBEAFE' },   // blue-100
   { rate: 22, floor: 96_950, ceiling: 206_700, color: '#BFDBFE' },  // blue-200
   { rate: 24, floor: 206_700, ceiling: 394_600, color: '#93C5FD' }, // blue-300
   { rate: 32, floor: 394_600, ceiling: 501_050, color: '#60A5FA' }, // blue-400
-  { rate: 35, floor: 501_050, ceiling: 751_600, color: '#3B82F6' }, // blue-500
-  { rate: 37, floor: 751_600, ceiling: 1_200_000, color: '#EF4444' }, // red-500
+  { rate: 35, floor: 501_050, ceiling: 751_600, color: '#3B5A69' }, // blue-500
+  { rate: 37, floor: 751_600, ceiling: 1_200_000, color: '#C0392B' }, // red-500
 ];
 
 const STANDARD_DEDUCTION_MFJ = 30_000;
@@ -241,13 +241,13 @@ interface SSTooltipProps {
 function SSTooltip({ active, payload, label }: SSTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-md border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1 font-semibold text-gray-900">Year {label}</p>
+    <div className="rounded-md border border-limestone-200 bg-white px-3 py-2 text-xs shadow-lg">
+      <p className="mb-1 font-semibold text-charcoal-900">Year {label}</p>
       {payload.map((entry) => (
         <div key={entry.name} className="flex items-center gap-1.5">
           <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
-          <span className="text-gray-600">{entry.name}:</span>
-          <span className="font-medium tabular-nums text-gray-900">{fmt$(entry.value)}</span>
+          <span className="text-charcoal-500">{entry.name}:</span>
+          <span className="font-medium tabular-nums text-charcoal-900">{fmt$(entry.value)}</span>
         </div>
       ))}
     </div>
@@ -358,16 +358,16 @@ export default function TaxPage() {
     return (
       <div>
         <PlanNav planId={planId} clientName="Sarah & Michael Chen" planName="Comprehensive Financial Plan" />
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-limestone-50">
           <div className="max-w-content mx-auto px-6 py-6">
             <div className="flex items-center gap-2 mb-6">
               <Calculator size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-gray-900">Tax Center</h1>
+              <h1 className="text-xl font-bold text-charcoal-900">Tax Center</h1>
             </div>
             <div className="flex items-center justify-center py-32">
               <div className="flex flex-col items-center gap-3">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand-500" />
-                <p className="text-sm text-gray-500">Loading tax analysis...</p>
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-limestone-200 border-t-brand-500" />
+                <p className="text-sm text-charcoal-500">Loading tax analysis...</p>
               </div>
             </div>
           </div>
@@ -380,19 +380,19 @@ export default function TaxPage() {
     return (
       <div>
         <PlanNav planId={planId} clientName="Sarah & Michael Chen" planName="Comprehensive Financial Plan" />
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-limestone-50">
           <div className="max-w-content mx-auto px-6 py-6">
             <div className="flex items-center gap-2 mb-6">
               <Calculator size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-gray-900">Tax Center</h1>
+              <h1 className="text-xl font-bold text-charcoal-900">Tax Center</h1>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+            <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-8">
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-4">
                   <AlertTriangle size={24} className="text-orange-400" />
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-1">No results yet</h3>
-                <p className="text-sm text-gray-500 max-w-sm">
+                <h3 className="text-sm font-semibold text-charcoal-900 mb-1">No results yet</h3>
+                <p className="text-sm text-charcoal-500 max-w-sm">
                   Run the plan calculation first to generate tax analysis data.
                 </p>
               </div>
@@ -414,16 +414,16 @@ export default function TaxPage() {
     <div>
       <PlanNav planId={planId} clientName="Sarah & Michael Chen" planName="Comprehensive Financial Plan" />
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-limestone-50">
         <div className="max-w-content mx-auto px-6 py-6">
           {/* Module header */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Calculator size={20} className="text-brand-500" />
-                <h1 className="text-xl font-bold text-gray-900">Tax Center</h1>
+                <h1 className="text-xl font-bold text-charcoal-900">Tax Center</h1>
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-charcoal-500">
                 Analyze federal and state tax obligations, Roth conversions, and tax-efficient withdrawal strategies.
               </p>
             </div>
@@ -434,47 +434,47 @@ export default function TaxPage() {
           ================================================================ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {/* Card 1: Estimated Federal Tax */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-limestone-200 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <div className="h-8 w-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                  <DollarSign size={16} className="text-blue-600" />
+                <div className="h-8 w-8 rounded-lg bg-brand-50 flex items-center justify-center">
+                  <DollarSign size={16} className="text-brand-700" />
                 </div>
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Est. Federal Tax</span>
+                <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Est. Federal Tax</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900 tabular-nums">
+              <p className="text-2xl font-bold text-charcoal-900 tabular-nums">
                 {currentYear ? fmt$(currentYear.federalTax) : '--'}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-charcoal-500 mt-1">
                 Effective rate: {currentYear ? fmtPct(currentYear.effectiveFedRate * 100) : '--'}
               </p>
             </div>
 
             {/* Card 2: Estimated State Tax */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-limestone-200 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-8 w-8 rounded-lg bg-emerald-50 flex items-center justify-center">
                   <DollarSign size={16} className="text-emerald-600" />
                 </div>
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Est. State Tax</span>
+                <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Est. State Tax</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900 tabular-nums">
+              <p className="text-2xl font-bold text-charcoal-900 tabular-nums">
                 {currentYear ? fmt$(currentYear.stateTax) : '--'}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-charcoal-500 mt-1">
                 Total tax: {currentYear ? fmt$(currentYear.totalTax) : '--'}
               </p>
             </div>
 
             {/* Card 3: Marginal Federal Rate */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-limestone-200 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                  <Percent size={16} className="text-amber-600" />
+                <div className="h-8 w-8 rounded-lg bg-warning-50 flex items-center justify-center">
+                  <Percent size={16} className="text-warning-500" />
                 </div>
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Marginal Rate</span>
+                <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Marginal Rate</span>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-2xl font-bold text-gray-900 tabular-nums">
+                <p className="text-2xl font-bold text-charcoal-900 tabular-nums">
                   {fmtPct(currentBracket.rate)}
                 </p>
                 <span
@@ -482,23 +482,23 @@ export default function TaxPage() {
                   style={{ backgroundColor: currentBracket.color }}
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-charcoal-500 mt-1">
                 Federal bracket
               </p>
             </div>
 
             {/* Card 4: Bracket Headroom */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-limestone-200 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <div className="h-8 w-8 rounded-lg bg-purple-50 flex items-center justify-center">
-                  <ArrowUpRight size={16} className="text-purple-600" />
+                <div className="h-8 w-8 rounded-lg bg-brand-50 flex items-center justify-center">
+                  <ArrowUpRight size={16} className="text-brand-700" />
                 </div>
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Bracket Headroom</span>
+                <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Bracket Headroom</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900 tabular-nums">
+              <p className="text-2xl font-bold text-charcoal-900 tabular-nums">
                 {fmt$(headroom)}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-charcoal-500 mt-1">
                 to next bracket ({fmtPct(nextBracketRate)})
               </p>
             </div>
@@ -507,16 +507,16 @@ export default function TaxPage() {
           {/* ================================================================
               ROW 2: Tax Bracket Visualizer
           ================================================================ */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-            <h2 className="text-sm font-semibold text-gray-900 mb-1">Tax Bracket Visualizer</h2>
-            <p className="text-xs text-gray-500 mb-4">Income layered through 2025 federal brackets (MFJ)</p>
+          <div className="bg-white rounded-xl border border-limestone-200 p-6 mb-6">
+            <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Tax Bracket Visualizer</h2>
+            <p className="text-xs text-charcoal-500 mb-4">Income layered through 2025 federal brackets (MFJ)</p>
 
             <div className="relative">
               {/* Bar */}
-              <div className="flex h-12 rounded-lg overflow-hidden border border-gray-200">
+              <div className="flex h-12 rounded-lg overflow-hidden border border-limestone-200">
                 {/* Standard Deduction segment */}
                 <div
-                  className="relative flex items-center justify-center text-[10px] font-medium text-gray-700 bg-green-100 border-r border-white/60"
+                  className="relative flex items-center justify-center text-[10px] font-medium text-charcoal-700 bg-success-100 border-r border-white/60"
                   style={{ width: `${(STANDARD_DEDUCTION_MFJ / visualizerMax) * 100}%` }}
                   title={`Standard Deduction: ${fmt$(STANDARD_DEDUCTION_MFJ)}`}
                 >
@@ -553,15 +553,15 @@ export default function TaxPage() {
                       />
                       {/* Unfilled portion */}
                       <div
-                        className="absolute inset-y-0 right-0 bg-gray-50"
+                        className="absolute inset-y-0 right-0 bg-limestone-50"
                         style={{ width: `${100 - fillPct}%`, opacity: 0.5 }}
                       />
                       {/* Label */}
                       {widthPct > 4 && (
-                        <div className="relative z-10 flex flex-col items-center justify-center h-full text-[10px] font-medium text-gray-700">
+                        <div className="relative z-10 flex flex-col items-center justify-center h-full text-[10px] font-medium text-charcoal-700">
                           <span>{bracket.rate}%</span>
                           {incomeInBracket > 0 && widthPct > 6 && (
-                            <span className="text-[9px] text-gray-500">{fmt$(incomeInBracket)}</span>
+                            <span className="text-[9px] text-charcoal-500">{fmt$(incomeInBracket)}</span>
                           )}
                         </div>
                       )}
@@ -573,12 +573,12 @@ export default function TaxPage() {
               {/* Income marker line */}
               {currentTaxableIncome > 0 && (
                 <div
-                  className="absolute top-0 bottom-0 w-0.5 bg-red-500 z-20"
+                  className="absolute top-0 bottom-0 w-0.5 bg-critical-500 z-20"
                   style={{
                     left: `${((currentTaxableIncome + STANDARD_DEDUCTION_MFJ) / visualizerMax) * 100}%`,
                   }}
                 >
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-red-500 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-critical-500 px-1.5 py-0.5 text-[10px] font-medium text-white">
                     {fmt$(currentTaxableIncome)} taxable
                   </div>
                 </div>
@@ -588,18 +588,18 @@ export default function TaxPage() {
             {/* Legend */}
             <div className="flex flex-wrap gap-3 mt-4">
               <div className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-2.5 rounded-sm bg-green-100 border border-green-200" />
-                <span className="text-[10px] text-gray-500">Std Deduction</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-sm bg-success-100 border border-success-100" />
+                <span className="text-[10px] text-charcoal-500">Std Deduction</span>
               </div>
               {FEDERAL_BRACKETS.map((b) => (
                 <div key={b.rate} className="flex items-center gap-1.5">
                   <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: b.color }} />
-                  <span className="text-[10px] text-gray-500">{b.rate}%</span>
+                  <span className="text-[10px] text-charcoal-500">{b.rate}%</span>
                 </div>
               ))}
               <div className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-0.5 bg-red-500" />
-                <span className="text-[10px] text-gray-500">Your income</span>
+                <span className="inline-block h-2.5 w-0.5 bg-critical-500" />
+                <span className="text-[10px] text-charcoal-500">Your income</span>
               </div>
             </div>
           </div>
@@ -607,11 +607,11 @@ export default function TaxPage() {
           {/* ================================================================
               ROW 3: Roth Conversion Opportunity Panel
           ================================================================ */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+          <div className="bg-white rounded-xl border border-limestone-200 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-sm font-semibold text-gray-900 mb-1">Roth Conversion Opportunities</h2>
-                <p className="text-xs text-gray-500">10-year Roth conversion analysis by year</p>
+                <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Roth Conversion Opportunities</h2>
+                <p className="text-xs text-charcoal-500">10-year Roth conversion analysis by year</p>
               </div>
               <button
                 type="button"
@@ -637,16 +637,16 @@ export default function TaxPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="py-2 pr-4 text-left font-semibold text-gray-600">Year</th>
-                      <th className="py-2 pr-4 text-left font-semibold text-gray-600">Age</th>
-                      <th className="py-2 pr-4 text-left font-semibold text-gray-600">Bracket</th>
-                      <th className="py-2 pr-4 text-right font-semibold text-gray-600">Headroom</th>
-                      <th className="py-2 pr-4 text-right font-semibold text-gray-600">Rec. Amount</th>
-                      <th className="py-2 pr-4 text-right font-semibold text-gray-600">Tax Cost</th>
-                      <th className="py-2 pr-4 text-right font-semibold text-gray-600">IRMAA Impact</th>
-                      <th className="py-2 pr-4 text-right font-semibold text-gray-600">Net Benefit</th>
-                      <th className="py-2 text-center font-semibold text-gray-600">Rec.</th>
+                    <tr className="border-b border-limestone-200">
+                      <th className="py-2 pr-4 text-left font-semibold text-charcoal-500">Year</th>
+                      <th className="py-2 pr-4 text-left font-semibold text-charcoal-500">Age</th>
+                      <th className="py-2 pr-4 text-left font-semibold text-charcoal-500">Bracket</th>
+                      <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Headroom</th>
+                      <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Rec. Amount</th>
+                      <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Tax Cost</th>
+                      <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">IRMAA Impact</th>
+                      <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Net Benefit</th>
+                      <th className="py-2 text-center font-semibold text-charcoal-500">Rec.</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -658,22 +658,22 @@ export default function TaxPage() {
                       const topHeadroom = opp.bracketHeadroom?.[0]?.headroom ?? 0;
 
                       return (
-                        <tr key={year} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                          <td className="py-2 pr-4 text-gray-900 tabular-nums">{year}</td>
-                          <td className="py-2 pr-4 text-gray-700 tabular-nums">{age}</td>
-                          <td className="py-2 pr-4 text-gray-700">{fmtPct(marginalRate)}</td>
-                          <td className="py-2 pr-4 text-right text-gray-700 tabular-nums">{fmt$(topHeadroom)}</td>
-                          <td className="py-2 pr-4 text-right text-gray-900 font-medium tabular-nums">{fmt$(opp.recommendedConversionAmount)}</td>
-                          <td className="py-2 pr-4 text-right text-gray-700 tabular-nums">{fmt$(opp.taxOnConversion)}</td>
-                          <td className="py-2 pr-4 text-right text-gray-700 tabular-nums">{fmt$(opp.irmaaImpact)}</td>
-                          <td className={`py-2 pr-4 text-right font-medium tabular-nums ${opp.netBenefit >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                        <tr key={year} className={idx % 2 === 0 ? 'bg-white' : 'bg-limestone-50'}>
+                          <td className="py-2 pr-4 text-charcoal-900 tabular-nums">{year}</td>
+                          <td className="py-2 pr-4 text-charcoal-700 tabular-nums">{age}</td>
+                          <td className="py-2 pr-4 text-charcoal-700">{fmtPct(marginalRate)}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-700 tabular-nums">{fmt$(topHeadroom)}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-900 font-medium tabular-nums">{fmt$(opp.recommendedConversionAmount)}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-700 tabular-nums">{fmt$(opp.taxOnConversion)}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-700 tabular-nums">{fmt$(opp.irmaaImpact)}</td>
+                          <td className={`py-2 pr-4 text-right font-medium tabular-nums ${opp.netBenefit >= 0 ? 'text-emerald-600' : 'text-critical-500'}`}>
                             {fmt$(opp.netBenefit)}
                           </td>
                           <td className="py-2 text-center">
                             {opp.worthConverting ? (
                               <ThumbsUp size={14} className="text-emerald-500 inline-block" />
                             ) : (
-                              <ThumbsDown size={14} className="text-red-400 inline-block" />
+                              <ThumbsDown size={14} className="text-critical-500 inline-block" />
                             )}
                           </td>
                         </tr>
@@ -684,8 +684,8 @@ export default function TaxPage() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <Calculator size={20} className="text-gray-300 mb-2" />
-                <p className="text-xs text-gray-500">Click &quot;Run Roth Analysis&quot; to generate conversion recommendations.</p>
+                <Calculator size={20} className="text-charcoal-300 mb-2" />
+                <p className="text-xs text-charcoal-500">Click &quot;Run Roth Analysis&quot; to generate conversion recommendations.</p>
               </div>
             )}
           </div>
@@ -693,23 +693,23 @@ export default function TaxPage() {
           {/* ================================================================
               ROW 4: Social Security Taxation Chart
           ================================================================ */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-            <h2 className="text-sm font-semibold text-gray-900 mb-1">Social Security Taxation</h2>
-            <p className="text-xs text-gray-500 mb-4">Provisional income relative to SS taxation thresholds (MFJ)</p>
+          <div className="bg-white rounded-xl border border-limestone-200 p-6 mb-6">
+            <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Social Security Taxation</h2>
+            <p className="text-xs text-charcoal-500 mb-4">Provisional income relative to SS taxation thresholds (MFJ)</p>
 
             {ssChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={340}>
                 <AreaChart data={ssChartData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#F5F1EC" />
                   <XAxis
                     dataKey="year"
-                    tick={{ fontSize: 11, fill: '#6B7280' }}
-                    axisLine={{ stroke: '#E5E7EB' }}
+                    tick={{ fontSize: 11, fill: '#7A7265' }}
+                    axisLine={{ stroke: '#E4DDD4' }}
                     tickLine={false}
                   />
                   <YAxis
                     tickFormatter={fmtCompactAxis}
-                    tick={{ fontSize: 11, fill: '#6B7280' }}
+                    tick={{ fontSize: 11, fill: '#7A7265' }}
                     axisLine={false}
                     tickLine={false}
                     width={65}
@@ -753,37 +753,37 @@ export default function TaxPage() {
                   {/* Threshold reference lines (MFJ) */}
                   <ReferenceLine
                     y={32_000}
-                    stroke="#10B981"
+                    stroke="#2E8B57"
                     strokeDasharray="6 3"
-                    label={{ value: '$32K (MFJ lower)', position: 'right', fontSize: 10, fill: '#6B7280' }}
+                    label={{ value: '$32K (MFJ lower)', position: 'right', fontSize: 10, fill: '#7A7265' }}
                   />
                   <ReferenceLine
                     y={44_000}
-                    stroke="#F59E0B"
+                    stroke="#D4860B"
                     strokeDasharray="6 3"
-                    label={{ value: '$44K (MFJ upper)', position: 'right', fontSize: 10, fill: '#6B7280' }}
+                    label={{ value: '$44K (MFJ upper)', position: 'right', fontSize: 10, fill: '#7A7265' }}
                   />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center py-16">
-                <p className="text-xs text-gray-400">No cash flow data available for chart</p>
+                <p className="text-xs text-charcoal-300">No cash flow data available for chart</p>
               </div>
             )}
 
             {/* Legend */}
             <div className="flex flex-wrap gap-4 mt-3">
               <div className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-5 rounded-sm bg-green-200" />
-                <span className="text-[10px] text-gray-500">0% SS Taxable</span>
+                <span className="inline-block h-2.5 w-5 rounded-sm bg-success-200" />
+                <span className="text-[10px] text-charcoal-500">0% SS Taxable</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-5 rounded-sm bg-yellow-100" />
-                <span className="text-[10px] text-gray-500">50% SS Taxable</span>
+                <span className="inline-block h-2.5 w-5 rounded-sm bg-warning-100" />
+                <span className="text-[10px] text-charcoal-500">50% SS Taxable</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-5 rounded-sm bg-red-100" />
-                <span className="text-[10px] text-gray-500">85% SS Taxable</span>
+                <span className="inline-block h-2.5 w-5 rounded-sm bg-critical-100" />
+                <span className="text-[10px] text-charcoal-500">85% SS Taxable</span>
               </div>
             </div>
           </div>
@@ -791,56 +791,56 @@ export default function TaxPage() {
           {/* ================================================================
               ROW 5: IRMAA Warning Panel
           ================================================================ */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+          <div className="bg-white rounded-xl border border-limestone-200 p-6 mb-6">
             <div className="flex items-center gap-2 mb-1">
-              <AlertTriangle size={16} className="text-amber-500" />
-              <h2 className="text-sm font-semibold text-gray-900">IRMAA Threshold Analysis</h2>
+              <AlertTriangle size={16} className="text-warning-500" />
+              <h2 className="text-sm font-semibold text-charcoal-900">IRMAA Threshold Analysis</h2>
             </div>
-            <p className="text-xs text-gray-500 mb-4">Years where MAGI approaches Medicare IRMAA surcharge thresholds</p>
+            <p className="text-xs text-charcoal-500 mb-4">Years where MAGI approaches Medicare IRMAA surcharge thresholds</p>
 
             {irmaaRows.length > 0 ? (
               <>
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="py-2 pr-4 text-left font-semibold text-gray-600">Year</th>
-                        <th className="py-2 pr-4 text-left font-semibold text-gray-600">Age</th>
-                        <th className="py-2 pr-4 text-right font-semibold text-gray-600">MAGI</th>
-                        <th className="py-2 pr-4 text-right font-semibold text-gray-600">Nearest Threshold</th>
-                        <th className="py-2 pr-4 text-right font-semibold text-gray-600">Distance</th>
-                        <th className="py-2 pr-4 text-right font-semibold text-gray-600">IRMAA Surcharge</th>
-                        <th className="py-2 text-center font-semibold text-gray-600">Status</th>
+                      <tr className="border-b border-limestone-200">
+                        <th className="py-2 pr-4 text-left font-semibold text-charcoal-500">Year</th>
+                        <th className="py-2 pr-4 text-left font-semibold text-charcoal-500">Age</th>
+                        <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">MAGI</th>
+                        <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Nearest Threshold</th>
+                        <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">Distance</th>
+                        <th className="py-2 pr-4 text-right font-semibold text-charcoal-500">IRMAA Surcharge</th>
+                        <th className="py-2 text-center font-semibold text-charcoal-500">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {irmaaRows.map((row, idx) => (
                         <tr
                           key={row.year}
-                          className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} ${row.danger ? 'ring-1 ring-inset ring-amber-200 bg-amber-50' : ''}`}
+                          className={`${idx % 2 === 0 ? 'bg-white' : 'bg-limestone-50'} ${row.danger ? 'ring-1 ring-inset ring-warning-100 bg-warning-50' : ''}`}
                         >
-                          <td className="py-2 pr-4 text-gray-900 tabular-nums">{row.year}</td>
-                          <td className="py-2 pr-4 text-gray-700 tabular-nums">{row.age}</td>
-                          <td className="py-2 pr-4 text-right text-gray-900 font-medium tabular-nums">{fmt$(row.magi)}</td>
-                          <td className="py-2 pr-4 text-right text-gray-700 tabular-nums">{fmt$(row.nearestThreshold)}</td>
-                          <td className={`py-2 pr-4 text-right font-medium tabular-nums ${row.distance > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                          <td className="py-2 pr-4 text-charcoal-900 tabular-nums">{row.year}</td>
+                          <td className="py-2 pr-4 text-charcoal-700 tabular-nums">{row.age}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-900 font-medium tabular-nums">{fmt$(row.magi)}</td>
+                          <td className="py-2 pr-4 text-right text-charcoal-700 tabular-nums">{fmt$(row.nearestThreshold)}</td>
+                          <td className={`py-2 pr-4 text-right font-medium tabular-nums ${row.distance > 0 ? 'text-emerald-600' : 'text-critical-500'}`}>
                             {row.distance > 0 ? '+' : ''}{fmt$(row.distance)}
                           </td>
-                          <td className="py-2 pr-4 text-right text-gray-700 tabular-nums">
+                          <td className="py-2 pr-4 text-right text-charcoal-700 tabular-nums">
                             {row.surcharge > 0 ? `$${row.surcharge.toFixed(1)}/mo` : '--'}
                           </td>
                           <td className="py-2 text-center">
                             {row.danger ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-warning-100 px-2 py-0.5 text-[10px] font-medium text-warning-700">
                                 <AlertTriangle size={10} />
                                 Danger Zone
                               </span>
                             ) : row.distance < 0 ? (
-                              <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700">
+                              <span className="inline-flex items-center rounded-full bg-critical-100 px-2 py-0.5 text-[10px] font-medium text-critical-700">
                                 Over Threshold
                               </span>
                             ) : (
-                              <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">
+                              <span className="inline-flex items-center rounded-full bg-success-100 px-2 py-0.5 text-[10px] font-medium text-success-700">
                                 Clear
                               </span>
                             )}
@@ -850,8 +850,8 @@ export default function TaxPage() {
                     </tbody>
                   </table>
                 </div>
-                <div className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3">
-                  <p className="text-xs text-amber-800">
+                <div className="mt-4 rounded-lg bg-warning-50 border border-warning-100 px-4 py-3">
+                  <p className="text-xs text-warning-700">
                     <strong>Recommended actions for danger-zone years:</strong> Consider deferring income, maximizing pre-tax contributions,
                     or timing Roth conversions to stay below IRMAA thresholds. A $1 over the threshold triggers the full surcharge for the year.
                   </p>
@@ -859,7 +859,7 @@ export default function TaxPage() {
               </>
             ) : (
               <div className="flex items-center justify-center py-12">
-                <p className="text-xs text-gray-400">No data available</p>
+                <p className="text-xs text-charcoal-300">No data available</p>
               </div>
             )}
           </div>
@@ -867,16 +867,16 @@ export default function TaxPage() {
           {/* ================================================================
               ROW 6: Multi-Year Tax Projection Table
           ================================================================ */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+          <div className="bg-white rounded-xl border border-limestone-200 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-sm font-semibold text-gray-900 mb-1">Multi-Year Tax Projection</h2>
-                <p className="text-xs text-gray-500">Comprehensive year-by-year tax breakdown</p>
+                <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Multi-Year Tax Projection</h2>
+                <p className="text-xs text-charcoal-500">Comprehensive year-by-year tax breakdown</p>
               </div>
               <button
                 type="button"
                 onClick={() => exportCsv(cashFlows, data.annualMarginalRate ?? [])}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-charcoal-700 bg-limestone-100 rounded-lg hover:bg-limestone-200 transition-colors"
               >
                 <Download size={14} />
                 Export CSV
@@ -887,17 +887,17 @@ export default function TaxPage() {
               <div className="overflow-x-auto max-h-[500px] overflow-y-auto relative">
                 <table className="w-full text-xs">
                   <thead className="sticky top-0 z-10 bg-white">
-                    <tr className="border-b-2 border-gray-200">
-                      <th className="py-2 pr-3 text-left font-semibold text-gray-600 bg-white">Year</th>
-                      <th className="py-2 pr-3 text-left font-semibold text-gray-600 bg-white">Age</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">AGI</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">Taxable Income</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">Fed Tax</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">State Tax</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">Eff Rate</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">Marginal</th>
-                      <th className="py-2 pr-3 text-right font-semibold text-gray-600 bg-white">RMD</th>
-                      <th className="py-2 text-right font-semibold text-gray-600 bg-white">SS Taxable</th>
+                    <tr className="border-b-2 border-limestone-200">
+                      <th className="py-2 pr-3 text-left font-semibold text-charcoal-500 bg-white">Year</th>
+                      <th className="py-2 pr-3 text-left font-semibold text-charcoal-500 bg-white">Age</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">AGI</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">Taxable Income</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">Fed Tax</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">State Tax</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">Eff Rate</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">Marginal</th>
+                      <th className="py-2 pr-3 text-right font-semibold text-charcoal-500 bg-white">RMD</th>
+                      <th className="py-2 text-right font-semibold text-charcoal-500 bg-white">SS Taxable</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -908,18 +908,18 @@ export default function TaxPage() {
                       return (
                         <tr
                           key={cf.year}
-                          className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                          className={idx % 2 === 0 ? 'bg-white' : 'bg-limestone-50'}
                         >
-                          <td className="py-2 pr-3 text-gray-900 font-medium tabular-nums">{cf.year}</td>
-                          <td className="py-2 pr-3 text-gray-700 tabular-nums">{cf.clientAge}</td>
-                          <td className="py-2 pr-3 text-right text-gray-900 tabular-nums">{fmt$(cf.agi)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{fmt$(taxable)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-900 font-medium tabular-nums">{fmt$(cf.federalTax)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{fmt$(cf.stateTax)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{fmtPct(cf.effectiveFedRate * 100)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{fmtPct(marginal * 100)}</td>
-                          <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{fmt$(cf.rmdIncome)}</td>
-                          <td className="py-2 text-right text-gray-700 tabular-nums">{fmt$(cf.socialSecurityTaxable)}</td>
+                          <td className="py-2 pr-3 text-charcoal-900 font-medium tabular-nums">{cf.year}</td>
+                          <td className="py-2 pr-3 text-charcoal-700 tabular-nums">{cf.clientAge}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-900 tabular-nums">{fmt$(cf.agi)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-700 tabular-nums">{fmt$(taxable)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-900 font-medium tabular-nums">{fmt$(cf.federalTax)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-700 tabular-nums">{fmt$(cf.stateTax)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-700 tabular-nums">{fmtPct(cf.effectiveFedRate * 100)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-700 tabular-nums">{fmtPct(marginal * 100)}</td>
+                          <td className="py-2 pr-3 text-right text-charcoal-700 tabular-nums">{fmt$(cf.rmdIncome)}</td>
+                          <td className="py-2 text-right text-charcoal-700 tabular-nums">{fmt$(cf.socialSecurityTaxable)}</td>
                         </tr>
                       );
                     })}
@@ -928,7 +928,7 @@ export default function TaxPage() {
               </div>
             ) : (
               <div className="flex items-center justify-center py-12">
-                <p className="text-xs text-gray-400">No projection data available</p>
+                <p className="text-xs text-charcoal-300">No projection data available</p>
               </div>
             )}
           </div>

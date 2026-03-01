@@ -383,7 +383,7 @@ export default function SocialSecurityPage() {
           <div className="flex items-center justify-center py-32">
             <div className="flex flex-col items-center gap-3">
               <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-gray-500">Loading Social Security analysis...</p>
+              <p className="text-sm text-charcoal-500">Loading Social Security analysis...</p>
             </div>
           </div>
         </div>
@@ -396,7 +396,7 @@ export default function SocialSecurityPage() {
   const compactFormatter = (value: number) => formatCurrencyShort(value);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-limestone-50 min-h-screen">
       <PlanNav
         planId={planId}
         clientName="Sarah & Michael Chen"
@@ -409,34 +409,34 @@ export default function SocialSecurityPage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Shield size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-gray-900">Social Security</h1>
+              <h1 className="text-xl font-bold text-charcoal-900">Social Security</h1>
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-charcoal-500">
               Optimize Social Security claiming strategies for maximum lifetime benefits.
             </p>
           </div>
         </div>
 
         {/* Input controls bar */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
           <div className="flex flex-wrap items-end gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-charcoal-500 mb-1">
                 Primary Insurance Amount (PIA)
               </label>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-400">$</span>
+                <span className="text-sm text-charcoal-300">$</span>
                 <input
                   type="number"
                   value={pia}
                   onChange={(e) => setPia(Number(e.target.value) || 0)}
-                  className="w-24 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
                 />
-                <span className="text-xs text-gray-400">/mo</span>
+                <span className="text-xs text-charcoal-300">/mo</span>
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-charcoal-500 mb-1">
                 Full Retirement Age
               </label>
               <input
@@ -446,11 +446,11 @@ export default function SocialSecurityPage() {
                 min={65}
                 max={67}
                 step={1}
-                className="w-16 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-charcoal-500 mb-1">
                 COLA Assumption
               </label>
               <div className="flex items-center gap-1">
@@ -461,31 +461,31 @@ export default function SocialSecurityPage() {
                   step={0.1}
                   min={0}
                   max={10}
-                  className="w-16 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
                 />
-                <span className="text-xs text-gray-400">%</span>
+                <span className="text-xs text-charcoal-300">%</span>
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-charcoal-500 mb-1">
                 Other Income (MAGI)
               </label>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-400">$</span>
+                <span className="text-sm text-charcoal-300">$</span>
                 <input
                   type="number"
                   value={otherIncome}
                   onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
-                  className="w-28 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-28 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
                 />
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <label className="block text-xs font-medium text-gray-500">Co-Client</label>
+              <label className="block text-xs font-medium text-charcoal-500">Co-Client</label>
               <button
                 onClick={() => setHasCoClient(!hasCoClient)}
                 className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                  hasCoClient ? 'bg-brand-500' : 'bg-gray-200'
+                  hasCoClient ? 'bg-brand-500' : 'bg-limestone-200'
                 }`}
               >
                 <span
@@ -497,18 +497,18 @@ export default function SocialSecurityPage() {
             </div>
             {hasCoClient && (
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-charcoal-500 mb-1">
                   Co-Client PIA
                 </label>
                 <div className="flex items-center gap-1">
-                  <span className="text-sm text-gray-400">$</span>
+                  <span className="text-sm text-charcoal-300">$</span>
                   <input
                     type="number"
                     value={coClientPIA}
                     onChange={(e) => setCoClientPIA(Number(e.target.value) || 0)}
-                    className="w-24 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                    className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
                   />
-                  <span className="text-xs text-gray-400">/mo</span>
+                  <span className="text-xs text-charcoal-300">/mo</span>
                 </div>
               </div>
             )}
@@ -519,7 +519,7 @@ export default function SocialSecurityPage() {
             ROW 1: Claiming Strategy Comparison
             ================================================================ */}
         <div>
-          <h2 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-charcoal-700 mb-3 flex items-center gap-2">
             <DollarSign size={16} className="text-brand-500" />
             Claiming Strategy Comparison
           </h2>
@@ -531,50 +531,50 @@ export default function SocialSecurityPage() {
                   key={s.claimAge}
                   className={`bg-white rounded-xl shadow-sm p-5 relative ${
                     isOptimal
-                      ? 'border-2 border-blue-400 ring-1 ring-blue-100'
-                      : 'border border-gray-200'
+                      ? 'border-2 border-brand-300 ring-1 ring-brand-100'
+                      : 'border border-limestone-200'
                   }`}
                 >
                   {isOptimal && (
-                    <span className="absolute -top-2.5 left-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+                    <span className="absolute -top-2.5 left-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-brand-100 text-brand-700">
                       Recommended
                     </span>
                   )}
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">{s.label}</h3>
+                  <h3 className="text-sm font-semibold text-charcoal-900 mb-3">{s.label}</h3>
 
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs text-gray-500">Monthly Benefit</p>
-                      <p className="text-2xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                      <p className="text-xs text-charcoal-500">Monthly Benefit</p>
+                      <p className="text-2xl font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                         {formatCurrency(s.monthlyBenefit)}
-                        <span className="text-sm font-normal text-gray-400">/mo</span>
+                        <span className="text-sm font-normal text-charcoal-300">/mo</span>
                       </p>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs text-gray-500">Annual Benefit</p>
-                        <p className="text-sm font-semibold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                        <p className="text-xs text-charcoal-500">Annual Benefit</p>
+                        <p className="text-sm font-semibold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                           {formatCurrency(s.annualBenefit)}
-                          <span className="text-xs font-normal text-gray-400">/yr</span>
+                          <span className="text-xs font-normal text-charcoal-300">/yr</span>
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-gray-500">Adjustment</p>
-                        <p className="text-sm font-semibold text-gray-900">
+                        <p className="text-xs text-charcoal-500">Adjustment</p>
+                        <p className="text-sm font-semibold text-charcoal-900">
                           {s.adjustmentLabel}
                         </p>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-gray-100">
-                      <p className="text-xs text-gray-500">Lifetime Total (to age 90)</p>
-                      <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    <div className="pt-2 border-t border-limestone-100">
+                      <p className="text-xs text-charcoal-500">Lifetime Total (to age 90)</p>
+                      <p className="text-lg font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                         {formatCurrencyCompact(s.lifetimeToAge90)}
                       </p>
                     </div>
 
-                    <p className="text-[11px] text-gray-400 leading-tight">
+                    <p className="text-[11px] text-charcoal-300 leading-tight">
                       {s.note}
                     </p>
                   </div>
@@ -587,14 +587,14 @@ export default function SocialSecurityPage() {
         {/* ================================================================
             ROW 2: Break-Even Chart
             ================================================================ */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-charcoal-900 flex items-center gap-2">
                 <TrendingUp size={16} className="text-brand-500" />
                 Break-Even Analysis
               </h2>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-charcoal-500 mt-0.5">
                 Cumulative lifetime Social Security income by claiming age
               </p>
             </div>
@@ -606,19 +606,19 @@ export default function SocialSecurityPage() {
                 data={breakEvenData}
                 margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#F5F1EC" />
                 <XAxis
                   dataKey="age"
-                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tick={{ fontSize: 11, fill: '#A09888' }}
                   tickLine={false}
-                  axisLine={{ stroke: '#E5E7EB' }}
-                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#9CA3AF' }}
+                  axisLine={{ stroke: '#E4DDD4' }}
+                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#A09888' }}
                 />
                 <YAxis
                   tickFormatter={compactFormatter}
-                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tick={{ fontSize: 11, fill: '#A09888' }}
                   tickLine={false}
-                  axisLine={{ stroke: '#E5E7EB' }}
+                  axisLine={{ stroke: '#E4DDD4' }}
                   width={65}
                 />
                 <Tooltip
@@ -627,7 +627,7 @@ export default function SocialSecurityPage() {
                   contentStyle={{
                     fontSize: 12,
                     borderRadius: 8,
-                    border: '1px solid #E5E7EB',
+                    border: '1px solid #E4DDD4',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   }}
                 />
@@ -641,7 +641,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="claim62"
                   name="Claim at 62"
-                  stroke="#EF4444"
+                  stroke="#C0392B"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -650,7 +650,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="claim67"
                   name={`Claim at ${fra}`}
-                  stroke="#F59E0B"
+                  stroke="#D4860B"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -659,7 +659,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="claim70"
                   name="Claim at 70"
-                  stroke="#10B981"
+                  stroke="#2E8B57"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -668,28 +668,28 @@ export default function SocialSecurityPage() {
                 {breakEvenAge67vs62 && (
                   <ReferenceLine
                     x={breakEvenAge67vs62}
-                    stroke="#F59E0B"
+                    stroke="#D4860B"
                     strokeDasharray="4 4"
                     strokeWidth={1}
                     label={{
                       value: `BE: ${breakEvenAge67vs62}`,
                       position: 'top',
                       fontSize: 10,
-                      fill: '#F59E0B',
+                      fill: '#D4860B',
                     }}
                   />
                 )}
                 {breakEvenAge70vs62 && (
                   <ReferenceLine
                     x={breakEvenAge70vs62}
-                    stroke="#10B981"
+                    stroke="#2E8B57"
                     strokeDasharray="4 4"
                     strokeWidth={1}
                     label={{
                       value: `BE: ${breakEvenAge70vs62}`,
                       position: 'top',
                       fontSize: 10,
-                      fill: '#10B981',
+                      fill: '#2E8B57',
                     }}
                   />
                 )}
@@ -700,27 +700,27 @@ export default function SocialSecurityPage() {
           {/* Break-even annotation text */}
           <div className="mt-3 flex flex-wrap gap-4">
             {breakEvenAge67vs62 && (
-              <p className="text-xs text-gray-500">
-                <span className="inline-block w-3 h-0.5 bg-amber-500 mr-1 align-middle" />
-                FRA surpasses 62 at age <span className="font-semibold text-gray-700">{breakEvenAge67vs62}</span>
+              <p className="text-xs text-charcoal-500">
+                <span className="inline-block w-3 h-0.5 bg-warning-500 mr-1 align-middle" />
+                FRA surpasses 62 at age <span className="font-semibold text-charcoal-700">{breakEvenAge67vs62}</span>
               </p>
             )}
             {breakEvenAge70vs62 && (
-              <p className="text-xs text-gray-500">
-                <span className="inline-block w-3 h-0.5 bg-green-500 mr-1 align-middle" />
-                Age 70 surpasses 62 at age <span className="font-semibold text-gray-700">{breakEvenAge70vs62}</span>
+              <p className="text-xs text-charcoal-500">
+                <span className="inline-block w-3 h-0.5 bg-success-500 mr-1 align-middle" />
+                Age 70 surpasses 62 at age <span className="font-semibold text-charcoal-700">{breakEvenAge70vs62}</span>
               </p>
             )}
             {breakEvenAge70vs67 && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-charcoal-500">
                 <span className="inline-block w-3 h-0.5 bg-emerald-600 mr-1 align-middle" />
-                Age 70 surpasses FRA at age <span className="font-semibold text-gray-700">{breakEvenAge70vs67}</span>
+                Age 70 surpasses FRA at age <span className="font-semibold text-charcoal-700">{breakEvenAge70vs67}</span>
               </p>
             )}
           </div>
           {breakEvenAge70vs62 && (
-            <div className="mt-2 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
-              <p className="text-xs text-blue-700">
+            <div className="mt-2 bg-brand-50 border border-brand-100 rounded-lg px-3 py-2">
+              <p className="text-xs text-brand-700">
                 <AlertCircle size={12} className="inline mr-1 -mt-0.5" />
                 If you live past age <span className="font-semibold">{breakEvenAge70vs62}</span>, waiting to 70 pays off compared to claiming at 62.
               </p>
@@ -731,8 +731,8 @@ export default function SocialSecurityPage() {
         {/* ================================================================
             ROW 3: Spousal Strategy Panel
             ================================================================ */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-4">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h2 className="text-sm font-semibold text-charcoal-900 flex items-center gap-2 mb-4">
             <Users size={16} className="text-brand-500" />
             Spousal Strategy
           </h2>
@@ -740,43 +740,43 @@ export default function SocialSecurityPage() {
           {hasCoClient && spousalData ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Client Benefit at FRA</p>
-                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                <div className="bg-limestone-50 rounded-lg p-4">
+                  <p className="text-xs text-charcoal-500 mb-1">Client Benefit at FRA</p>
+                  <p className="text-lg font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                     {formatCurrency(spousalData.clientBenefitFRA)}/mo
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Co-Client Benefit at FRA</p>
-                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                <div className="bg-limestone-50 rounded-lg p-4">
+                  <p className="text-xs text-charcoal-500 mb-1">Co-Client Benefit at FRA</p>
+                  <p className="text-lg font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                     {formatCurrency(spousalData.coClientBenefitFRA)}/mo
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Spousal Benefit (50% of higher)</p>
-                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                <div className="bg-limestone-50 rounded-lg p-4">
+                  <p className="text-xs text-charcoal-500 mb-1">Spousal Benefit (50% of higher)</p>
+                  <p className="text-lg font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                     {formatCurrency(spousalData.spousalBenefit)}/mo
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Survivor Benefit (100% of higher)</p>
-                  <p className="text-lg font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                <div className="bg-limestone-50 rounded-lg p-4">
+                  <p className="text-xs text-charcoal-500 mb-1">Survivor Benefit (100% of higher)</p>
+                  <p className="text-lg font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                     {formatCurrency(spousalData.survivorBenefit)}/mo
                   </p>
                 </div>
               </div>
 
-              <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
-                <p className="text-xs font-semibold text-blue-800 mb-1">Recommended Coordinated Strategy</p>
-                <p className="text-xs text-blue-700 leading-relaxed">
+              <div className="bg-brand-50 border border-brand-100 rounded-lg px-4 py-3">
+                <p className="text-xs font-semibold text-brand-800 mb-1">Recommended Coordinated Strategy</p>
+                <p className="text-xs text-brand-700 leading-relaxed">
                   {spousalData.strategy}
                 </p>
               </div>
             </div>
           ) : (
             <div className="flex items-center gap-3 py-8 justify-center">
-              <AlertCircle size={18} className="text-gray-400" />
-              <p className="text-sm text-gray-500">
+              <AlertCircle size={18} className="text-charcoal-300" />
+              <p className="text-sm text-charcoal-500">
                 Spousal analysis requires co-client information. Enable the co-client toggle above to see coordinated strategies.
               </p>
             </div>
@@ -786,13 +786,13 @@ export default function SocialSecurityPage() {
         {/* ================================================================
             ROW 4: SS Taxation Impact
             ================================================================ */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
           <div className="mb-4">
-            <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-charcoal-900 flex items-center gap-2">
               <DollarSign size={16} className="text-brand-500" />
               Social Security Taxation Impact
             </h2>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-charcoal-500 mt-0.5">
               Provisional income by claim age relative to SS taxation thresholds
             </p>
           </div>
@@ -805,27 +805,27 @@ export default function SocialSecurityPage() {
               >
                 <defs>
                   <linearGradient id="zone0Gradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10B981" stopOpacity={0.15} />
-                    <stop offset="100%" stopColor="#10B981" stopOpacity={0.05} />
+                    <stop offset="0%" stopColor="#2E8B57" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#2E8B57" stopOpacity={0.05} />
                   </linearGradient>
                   <linearGradient id="zone50Gradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.15} />
-                    <stop offset="100%" stopColor="#F59E0B" stopOpacity={0.05} />
+                    <stop offset="0%" stopColor="#D4860B" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#D4860B" stopOpacity={0.05} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#F5F1EC" />
                 <XAxis
                   dataKey="age"
-                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tick={{ fontSize: 11, fill: '#A09888' }}
                   tickLine={false}
-                  axisLine={{ stroke: '#E5E7EB' }}
-                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#9CA3AF' }}
+                  axisLine={{ stroke: '#E4DDD4' }}
+                  label={{ value: 'Age', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#A09888' }}
                 />
                 <YAxis
                   tickFormatter={compactFormatter}
-                  tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                  tick={{ fontSize: 11, fill: '#A09888' }}
                   tickLine={false}
-                  axisLine={{ stroke: '#E5E7EB' }}
+                  axisLine={{ stroke: '#E4DDD4' }}
                   width={65}
                 />
                 <Tooltip
@@ -834,7 +834,7 @@ export default function SocialSecurityPage() {
                   contentStyle={{
                     fontSize: 12,
                     borderRadius: 8,
-                    border: '1px solid #E5E7EB',
+                    border: '1px solid #E4DDD4',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   }}
                 />
@@ -848,26 +848,26 @@ export default function SocialSecurityPage() {
                 {/* Threshold reference lines */}
                 <ReferenceLine
                   y={SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower}
-                  stroke="#10B981"
+                  stroke="#2E8B57"
                   strokeDasharray="6 3"
                   strokeWidth={1}
                   label={{
                     value: '0% taxable threshold',
                     position: 'insideTopRight',
                     fontSize: 10,
-                    fill: '#10B981',
+                    fill: '#2E8B57',
                   }}
                 />
                 <ReferenceLine
                   y={SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper}
-                  stroke="#F59E0B"
+                  stroke="#D4860B"
                   strokeDasharray="6 3"
                   strokeWidth={1}
                   label={{
                     value: '50% taxable threshold',
                     position: 'insideTopRight',
                     fontSize: 10,
-                    fill: '#F59E0B',
+                    fill: '#D4860B',
                   }}
                 />
 
@@ -894,7 +894,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="provisionalIncome62"
                   name="Prov. Income (Claim 62)"
-                  stroke="#EF4444"
+                  stroke="#C0392B"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -903,7 +903,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="provisionalIncome67"
                   name={`Prov. Income (Claim ${fra})`}
-                  stroke="#F59E0B"
+                  stroke="#D4860B"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -912,7 +912,7 @@ export default function SocialSecurityPage() {
                   type="monotone"
                   dataKey="provisionalIncome70"
                   name="Prov. Income (Claim 70)"
-                  stroke="#10B981"
+                  stroke="#2E8B57"
                   strokeWidth={2}
                   dot={false}
                   activeDot={{ r: 4 }}
@@ -922,21 +922,21 @@ export default function SocialSecurityPage() {
           </div>
 
           <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
-            <div className="bg-green-50 rounded-lg px-3 py-2">
-              <p className="font-semibold text-green-800">0% Taxable Zone</p>
-              <p className="text-green-700">
+            <div className="bg-success-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-success-700">0% Taxable Zone</p>
+              <p className="text-success-700">
                 Provisional income below {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower)}
               </p>
             </div>
-            <div className="bg-amber-50 rounded-lg px-3 py-2">
-              <p className="font-semibold text-amber-800">Up to 50% Taxable</p>
-              <p className="text-amber-700">
+            <div className="bg-warning-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-warning-700">Up to 50% Taxable</p>
+              <p className="text-warning-700">
                 {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].lower)} &ndash; {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper)}
               </p>
             </div>
-            <div className="bg-red-50 rounded-lg px-3 py-2">
-              <p className="font-semibold text-red-800">Up to 85% Taxable</p>
-              <p className="text-red-700">
+            <div className="bg-critical-50 rounded-lg px-3 py-2">
+              <p className="font-semibold text-critical-700">Up to 85% Taxable</p>
+              <p className="text-critical-700">
                 Above {formatCurrency(SS_TAX_THRESHOLDS[hasCoClient ? 'mfj' : 'single'].upper)}
               </p>
             </div>
@@ -946,13 +946,13 @@ export default function SocialSecurityPage() {
         {/* ================================================================
             ROW 5: COLA Sensitivity Analysis
             ================================================================ */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
           <div className="mb-4">
-            <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-charcoal-900 flex items-center gap-2">
               <Clock size={16} className="text-brand-500" />
               COLA Sensitivity Analysis
             </h2>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-charcoal-500 mt-0.5">
               Projected monthly benefit 10 years after claiming, under different COLA assumptions
             </p>
           </div>
@@ -960,17 +960,17 @@ export default function SocialSecurityPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <tr className="border-b border-limestone-200">
+                  <th className="text-left py-2.5 px-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">
                     COLA Rate
                   </th>
-                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">
                     At 62
                   </th>
-                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">
                     At FRA ({fra})
                   </th>
-                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="text-right py-2.5 px-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">
                     At 70
                   </th>
                 </tr>
@@ -979,20 +979,20 @@ export default function SocialSecurityPage() {
                 {colaSensitivity.map((row, i) => (
                   <tr
                     key={row.rate}
-                    className={`border-b border-gray-50 ${
-                      i % 2 === 0 ? 'bg-gray-50/50' : 'bg-white'
+                    className={`border-b border-limestone-50 ${
+                      i % 2 === 0 ? 'bg-limestone-50/50' : 'bg-white'
                     }`}
                   >
-                    <td className="py-2.5 px-3 font-medium text-gray-700" style={{ fontFeatureSettings: '"tnum"' }}>
+                    <td className="py-2.5 px-3 font-medium text-charcoal-700" style={{ fontFeatureSettings: '"tnum"' }}>
                       {row.rate}
                     </td>
-                    <td className="py-2.5 px-3 text-right text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    <td className="py-2.5 px-3 text-right text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                       {formatCurrency(row.at62)}/mo
                     </td>
-                    <td className="py-2.5 px-3 text-right text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    <td className="py-2.5 px-3 text-right text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                       {formatCurrency(row.atFRA)}/mo
                     </td>
-                    <td className="py-2.5 px-3 text-right font-semibold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                    <td className="py-2.5 px-3 text-right font-semibold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
                       {formatCurrency(row.at70)}/mo
                     </td>
                   </tr>
@@ -1001,7 +1001,7 @@ export default function SocialSecurityPage() {
             </table>
           </div>
 
-          <p className="mt-3 text-[11px] text-gray-400">
+          <p className="mt-3 text-[11px] text-charcoal-300">
             Values represent the projected monthly benefit amount 10 years after the respective claim age,
             adjusted for the specified annual COLA rate. Based on a PIA of {formatCurrency(pia)}/mo.
           </p>

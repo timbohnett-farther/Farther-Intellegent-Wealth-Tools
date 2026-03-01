@@ -47,13 +47,13 @@ export default function TaxTablesPage() {
       {/* Year selector + actions */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-700">Tax Year:</span>
+          <span className="text-sm font-medium text-charcoal-700">Tax Year:</span>
           {TAX_YEARS.map((y) => (
             <button
               key={y}
               onClick={() => setSelectedYear(y)}
               className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-                selectedYear === y ? 'bg-brand-500 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                selectedYear === y ? 'bg-brand-500 text-white' : 'bg-white text-charcoal-500 border border-limestone-200 hover:bg-limestone-50'
               }`}
             >
               {y}
@@ -61,7 +61,7 @@ export default function TaxTablesPage() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-200 hover:bg-gray-50">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-charcoal-700 bg-white rounded-lg border border-limestone-200 hover:bg-limestone-50">
             <Upload size={14} /> Import CSV
           </button>
           <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600">
@@ -71,7 +71,7 @@ export default function TaxTablesPage() {
       </div>
 
       {/* Validation banner */}
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-800">
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-success-50 border border-success-100 text-sm text-success-700">
         <CheckCircle2 size={16} /> All {selectedYear} tax tables validated and published. {TAX_TABLES.length} tables loaded.
       </div>
 
@@ -80,44 +80,44 @@ export default function TaxTablesPage() {
         {TAX_TABLES.map((table) => {
           const isExpanded = expandedTable === table.type;
           return (
-            <div key={table.type} className="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div key={table.type} className="bg-white rounded-xl border border-limestone-200 shadow-sm">
               <button
                 onClick={() => setExpandedTable(isExpanded ? null : table.type)}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
                 <div className="flex items-center gap-3">
-                  <FileSpreadsheet size={16} className="text-gray-400" />
+                  <FileSpreadsheet size={16} className="text-charcoal-300" />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">{table.label}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm font-semibold text-charcoal-900">{table.label}</p>
+                    <p className="text-xs text-charcoal-500">
                       Filing statuses: {table.filingStatuses.join(', ')} &middot; Updated: {table.lastUpdated}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-green-50 text-green-700">
+                  <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-success-50 text-success-700">
                     <CheckCircle2 size={10} /> {table.status}
                   </span>
-                  {isExpanded ? <ChevronDown size={16} className="text-gray-400" /> : <ChevronRight size={16} className="text-gray-400" />}
+                  {isExpanded ? <ChevronDown size={16} className="text-charcoal-300" /> : <ChevronRight size={16} className="text-charcoal-300" />}
                 </div>
               </button>
 
               {isExpanded && table.type === 'ordinary_income' && (
-                <div className="px-5 pb-4 border-t border-gray-100 pt-3">
+                <div className="px-5 pb-4 border-t border-limestone-100 pt-3">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-100 text-left">
-                        <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Bracket</th>
-                        <th className="pb-2 text-xs font-medium text-gray-500 uppercase">MFJ</th>
-                        <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Single</th>
+                      <tr className="border-b border-limestone-100 text-left">
+                        <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Bracket</th>
+                        <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">MFJ</th>
+                        <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Single</th>
                       </tr>
                     </thead>
                     <tbody>
                       {SAMPLE_BRACKETS.map((b) => (
-                        <tr key={b.bracket} className="border-b border-gray-50">
-                          <td className="py-2 font-medium text-gray-900">{b.bracket}</td>
-                          <td className="py-2 text-gray-600">{b.mfj}</td>
-                          <td className="py-2 text-gray-600">{b.single}</td>
+                        <tr key={b.bracket} className="border-b border-limestone-50">
+                          <td className="py-2 font-medium text-charcoal-900">{b.bracket}</td>
+                          <td className="py-2 text-charcoal-500">{b.mfj}</td>
+                          <td className="py-2 text-charcoal-500">{b.single}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -126,8 +126,8 @@ export default function TaxTablesPage() {
               )}
 
               {isExpanded && table.type !== 'ordinary_income' && (
-                <div className="px-5 pb-4 border-t border-gray-100 pt-3">
-                  <p className="text-sm text-gray-500">Detailed bracket data for {table.label} ({selectedYear}). Click edit to modify values.</p>
+                <div className="px-5 pb-4 border-t border-limestone-100 pt-3">
+                  <p className="text-sm text-charcoal-500">Detailed bracket data for {table.label} ({selectedYear}). Click edit to modify values.</p>
                   <button className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
                     Edit Table Values
                   </button>
@@ -139,8 +139,8 @@ export default function TaxTablesPage() {
       </div>
 
       {/* Update workflow */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Annual Tax Table Update Workflow</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Annual Tax Table Update Workflow</h3>
         <div className="space-y-2">
           {[
             { step: '1', label: 'Import new IRS brackets (CSV or manual entry)', status: 'complete' },
@@ -151,11 +151,11 @@ export default function TaxTablesPage() {
           ].map((s) => (
             <div key={s.step} className="flex items-center gap-3 py-2">
               {s.status === 'complete' ? (
-                <CheckCircle2 size={18} className="text-green-500 flex-shrink-0" />
+                <CheckCircle2 size={18} className="text-success-500 flex-shrink-0" />
               ) : (
-                <div className="w-[18px] h-[18px] rounded-full border-2 border-gray-300 flex-shrink-0" />
+                <div className="w-[18px] h-[18px] rounded-full border-2 border-limestone-300 flex-shrink-0" />
               )}
-              <span className={`text-sm ${s.status === 'complete' ? 'text-gray-600' : 'text-gray-900 font-medium'}`}>
+              <span className={`text-sm ${s.status === 'complete' ? 'text-charcoal-500' : 'text-charcoal-900 font-medium'}`}>
                 Step {s.step}: {s.label}
               </span>
             </div>

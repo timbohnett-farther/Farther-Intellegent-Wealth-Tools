@@ -27,7 +27,7 @@ const ADVISORS = [
 ];
 
 const ROLE_LABELS: Record<string, string> = { admin: 'Admin', advisor: 'Advisor', associate: 'Associate', read_only: 'Read Only' };
-const ROLE_COLORS: Record<string, string> = { admin: 'bg-purple-50 text-purple-700', advisor: 'bg-blue-50 text-blue-700', associate: 'bg-teal-50 text-teal-700', read_only: 'bg-gray-100 text-gray-600' };
+const ROLE_COLORS: Record<string, string> = { admin: 'bg-brand-50 text-brand-700', advisor: 'bg-brand-50 text-brand-700', associate: 'bg-brand-50 text-brand-700', read_only: 'bg-limestone-100 text-charcoal-500' };
 
 export default function AdvisorsPage() {
   const [search, setSearch] = useState('');
@@ -37,35 +37,35 @@ export default function AdvisorsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300" />
+          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-brand-500 text-white rounded-lg hover:bg-brand-600">
           <Plus size={14} /> Add Advisor
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Advisor</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Role</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Clients</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Plans</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Avg Success</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">MFA</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Last Active</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Advisor</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Role</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Clients</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Plans</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Avg Success</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">MFA</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Status</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Last Active</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((a) => (
-              <tr key={a.id} className={`border-b border-gray-50 hover:bg-gray-50/50 ${!a.isActive ? 'opacity-50' : ''}`}>
+              <tr key={a.id} className={`border-b border-limestone-50 hover:bg-limestone-50/50 ${!a.isActive ? 'opacity-50' : ''}`}>
                 <td className="px-5 py-3">
                   <div>
-                    <p className="font-medium text-gray-900">{a.name}</p>
-                    <p className="text-xs text-gray-500">{a.email} {a.crd ? `· CRD: ${a.crd}` : ''}</p>
+                    <p className="font-medium text-charcoal-900">{a.name}</p>
+                    <p className="text-xs text-charcoal-500">{a.email} {a.crd ? `· CRD: ${a.crd}` : ''}</p>
                   </div>
                 </td>
                 <td className="px-5 py-3">
@@ -73,22 +73,22 @@ export default function AdvisorsPage() {
                     {ROLE_LABELS[a.role]}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-gray-600 text-right">{a.clients}</td>
-                <td className="px-5 py-3 text-gray-600 text-right">{a.plans}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{a.clients}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{a.plans}</td>
                 <td className="px-5 py-3 text-right">
                   {a.avgSuccess > 0 ? (
-                    <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-green-600' : a.avgSuccess >= 70 ? 'text-amber-600' : 'text-red-600'}`}>{a.avgSuccess}%</span>
-                  ) : <span className="text-gray-400">—</span>}
+                    <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-success-500' : a.avgSuccess >= 70 ? 'text-warning-500' : 'text-critical-500'}`}>{a.avgSuccess}%</span>
+                  ) : <span className="text-charcoal-300">—</span>}
                 </td>
                 <td className="px-5 py-3">
-                  {a.mfaEnabled ? <CheckCircle2 size={16} className="text-green-500" /> : <XCircle size={16} className="text-red-400" />}
+                  {a.mfaEnabled ? <CheckCircle2 size={16} className="text-success-500" /> : <XCircle size={16} className="text-critical-500" />}
                 </td>
                 <td className="px-5 py-3">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${a.isActive ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${a.isActive ? 'bg-success-50 text-success-700' : 'bg-limestone-100 text-charcoal-500'}`}>
                     {a.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-gray-500">{a.lastLogin}</td>
+                <td className="px-5 py-3 text-charcoal-500">{a.lastLogin}</td>
               </tr>
             ))}
           </tbody>
@@ -97,11 +97,11 @@ export default function AdvisorsPage() {
 
       {/* MFA enforcement */}
       {ADVISORS.some((a) => a.isActive && !a.mfaEnabled) && (
-        <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
-          <Shield size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-warning-50 border border-warning-100">
+          <Shield size={20} className="text-warning-500 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-amber-800">MFA Not Enforced for All Advisors</p>
-            <p className="text-sm text-amber-700 mt-1">
+            <p className="text-sm font-semibold text-warning-700">MFA Not Enforced for All Advisors</p>
+            <p className="text-sm text-warning-700 mt-1">
               {ADVISORS.filter((a) => a.isActive && !a.mfaEnabled).length} active advisor(s) do not have MFA enabled.
               Enable firm-wide MFA enforcement to meet compliance requirements.
             </p>

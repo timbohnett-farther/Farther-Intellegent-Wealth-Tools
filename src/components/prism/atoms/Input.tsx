@@ -36,7 +36,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-charcoal-700"
           >
             {label}
           </label>
@@ -51,21 +51,21 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           disabled={disabled}
           className={clsx(
-            'h-9 w-full rounded-lg border bg-white px-3 text-sm text-gray-900',
-            'placeholder:text-gray-400',
+            'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900',
+            'placeholder:text-charcoal-300',
             'transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500',
-            'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400',
+            'focus:outline-none focus:border-brand-700 focus:shadow-focus',
+            'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
             error
-              ? 'border-[#EF4444] focus:ring-[#EF4444] focus:border-[#EF4444]'
-              : 'border-gray-300',
+              ? 'border-critical-500 focus:border-critical-500'
+              : 'border-limestone-200',
             className,
           )}
           {...props}
         />
 
         {error && (
-          <p className="text-xs text-[#EF4444]">{error}</p>
+          <p className="text-xs text-critical-500">{error}</p>
         )}
       </div>
     );

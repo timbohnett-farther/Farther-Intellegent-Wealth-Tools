@@ -175,14 +175,14 @@ export default function EstatePage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <ScrollText size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-gray-900">Estate Planning</h1>
+              <h1 className="text-xl font-bold text-charcoal-900">Estate Planning</h1>
             </div>
-            <p className="text-sm text-gray-500">Review estate documents, beneficiary designations, and projected estate taxes.</p>
+            <p className="text-sm text-charcoal-500">Review estate documents, beneficiary designations, and projected estate taxes.</p>
           </div>
         </div>
 
         {/* Tab bar */}
-        <div className="flex gap-1 border-b border-gray-200 mb-6 overflow-x-auto">
+        <div className="flex gap-1 border-b border-limestone-200 mb-6 overflow-x-auto">
           {TABS.map((t) => {
             const Icon = t.icon;
             const active = activeTab === t.key;
@@ -191,7 +191,7 @@ export default function EstatePage() {
                 key={t.key}
                 onClick={() => setActiveTab(t.key)}
                 className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
-                  active ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'
+                  active ? 'border-brand-500 text-brand-600' : 'border-transparent text-charcoal-500 hover:text-charcoal-700'
                 }`}
               >
                 <Icon size={15} />
@@ -232,17 +232,17 @@ function OverviewTab() {
           { label: 'Projected Tax (Sunset)', value: fmt$(ESTATE_TAX_SUNSET), sub: 'If exemption drops to $7M' },
           { label: 'Readiness Score', value: `${completedCount}/${totalCount}`, sub: `${Math.round((completedCount / totalCount) * 100)}% complete` },
         ].map((kpi) => (
-          <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-            <p className="text-xs font-medium text-gray-500 mb-1">{kpi.label}</p>
-            <p className="text-lg font-bold text-gray-900">{kpi.value}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{kpi.sub}</p>
+          <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
+            <p className="text-xs font-medium text-charcoal-500 mb-1">{kpi.label}</p>
+            <p className="text-lg font-bold text-charcoal-900">{kpi.value}</p>
+            <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Estate Tax Timeline Chart */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Estate Tax Projection vs Exemption</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Estate Tax Projection vs Exemption</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={TAX_TIMELINE}>
@@ -261,32 +261,32 @@ function OverviewTab() {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Readiness checklist */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Estate Readiness Checklist</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Estate Readiness Checklist</h3>
           <ul className="space-y-2">
             {READINESS_CHECKLIST.map((c) => (
               <li key={c.item} className="flex items-center gap-2 text-sm">
                 {c.done ? (
-                  <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
+                  <CheckCircle2 size={16} className="text-success-500 flex-shrink-0" />
                 ) : (
-                  <AlertTriangle size={16} className="text-amber-500 flex-shrink-0" />
+                  <AlertTriangle size={16} className="text-warning-500 flex-shrink-0" />
                 )}
-                <span className={c.done ? 'text-gray-600' : 'text-gray-900 font-medium'}>{c.item}</span>
+                <span className={c.done ? 'text-charcoal-500' : 'text-charcoal-900 font-medium'}>{c.item}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Opportunities */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">Planning Opportunities</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Planning Opportunities</h3>
           <div className="space-y-3">
             {OPPORTUNITIES.map((o) => (
-              <div key={o.title} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
-                <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${o.impact === 'high' ? 'bg-red-400' : 'bg-amber-400'}`} />
+              <div key={o.title} className="flex items-start gap-3 p-3 rounded-lg bg-limestone-50">
+                <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${o.impact === 'high' ? 'bg-critical-500' : 'bg-warning-500'}`} />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{o.title}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{o.description}</p>
+                  <p className="text-sm font-medium text-charcoal-900">{o.title}</p>
+                  <p className="text-xs text-charcoal-500 mt-0.5">{o.description}</p>
                 </div>
               </div>
             ))}
@@ -304,40 +304,40 @@ function OverviewTab() {
 function DocumentsTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900">Estate Documents</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-limestone-100">
+          <h3 className="text-sm font-semibold text-charcoal-900">Estate Documents</h3>
           <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">
             <Plus size={14} /> Add Document
           </button>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Document</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Type</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Last Updated</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Document</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Type</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Last Updated</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Status</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Actions</th>
             </tr>
           </thead>
           <tbody>
             {ESTATE_DOCS.map((doc) => (
-              <tr key={doc.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                <td className="px-5 py-3 font-medium text-gray-900">{doc.name}</td>
-                <td className="px-5 py-3 text-gray-600">{doc.type}</td>
-                <td className="px-5 py-3 text-gray-600">{doc.lastUpdated}</td>
+              <tr key={doc.id} className="border-b border-limestone-50 hover:bg-limestone-50/50">
+                <td className="px-5 py-3 font-medium text-charcoal-900">{doc.name}</td>
+                <td className="px-5 py-3 text-charcoal-500">{doc.type}</td>
+                <td className="px-5 py-3 text-charcoal-500">{doc.lastUpdated}</td>
                 <td className="px-5 py-3">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                    doc.status === 'current' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+                    doc.status === 'current' ? 'bg-success-50 text-success-700' : 'bg-warning-50 text-warning-700'
                   }`}>
                     {doc.status === 'current' ? 'Current' : 'Needs Review'}
                   </span>
                 </td>
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2">
-                    <button className="text-gray-400 hover:text-gray-600"><Edit3 size={14} /></button>
-                    <button className="text-gray-400 hover:text-red-500"><Trash2 size={14} /></button>
+                    <button className="text-charcoal-300 hover:text-charcoal-500"><Edit3 size={14} /></button>
+                    <button className="text-charcoal-300 hover:text-critical-500"><Trash2 size={14} /></button>
                   </div>
                 </td>
               </tr>
@@ -347,22 +347,22 @@ function DocumentsTab() {
       </div>
 
       {/* Key roles */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Key Roles & Designations</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Key Roles & Designations</h3>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Role</th>
-              <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Primary</th>
-              <th className="pb-2 text-xs font-medium text-gray-500 uppercase">Alternate</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Role</th>
+              <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Primary</th>
+              <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Alternate</th>
             </tr>
           </thead>
           <tbody>
             {KEY_ROLES.map((r) => (
-              <tr key={r.role} className="border-b border-gray-50">
-                <td className="py-2.5 font-medium text-gray-900">{r.role}</td>
-                <td className="py-2.5 text-gray-600">{r.primary}</td>
-                <td className="py-2.5 text-gray-600">{r.alternate}</td>
+              <tr key={r.role} className="border-b border-limestone-50">
+                <td className="py-2.5 font-medium text-charcoal-900">{r.role}</td>
+                <td className="py-2.5 text-charcoal-500">{r.primary}</td>
+                <td className="py-2.5 text-charcoal-500">{r.alternate}</td>
               </tr>
             ))}
           </tbody>
@@ -391,40 +391,40 @@ function GiftingTab() {
           { label: 'Lifetime Exemption Used', value: fmt$(lifetimeExemptionUsed), sub: `of ${fmt$(lifetimeExemptionTotal)}` },
           { label: 'Remaining Exemption', value: fmt$(lifetimeExemptionTotal - lifetimeExemptionUsed), sub: fmtPct(((lifetimeExemptionTotal - lifetimeExemptionUsed) / lifetimeExemptionTotal) * 100) + ' remaining' },
         ].map((kpi) => (
-          <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-            <p className="text-xs font-medium text-gray-500 mb-1">{kpi.label}</p>
-            <p className="text-lg font-bold text-gray-900">{kpi.value}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{kpi.sub}</p>
+          <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
+            <p className="text-xs font-medium text-charcoal-500 mb-1">{kpi.label}</p>
+            <p className="text-lg font-bold text-charcoal-900">{kpi.value}</p>
+            <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Gift history table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900">Gift History</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-limestone-100">
+          <h3 className="text-sm font-semibold text-charcoal-900">Gift History</h3>
           <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">
             <Plus size={14} /> Record Gift
           </button>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Year</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Annual Gifts</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">529 Superfunding</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Charitable</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase text-right">Lifetime Exemption Used</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Year</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Annual Gifts</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">529 Superfunding</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Charitable</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Lifetime Exemption Used</th>
             </tr>
           </thead>
           <tbody>
             {GIFT_HISTORY.map((g) => (
-              <tr key={g.year} className="border-b border-gray-50">
-                <td className="px-5 py-3 font-medium text-gray-900">{g.year}</td>
-                <td className="px-5 py-3 text-gray-600 text-right">{fmt$(g.annual)}</td>
-                <td className="px-5 py-3 text-gray-600 text-right">{g.total529 > 0 ? fmt$(g.total529) : '—'}</td>
-                <td className="px-5 py-3 text-gray-600 text-right">{fmt$(g.charitableGiving)}</td>
-                <td className="px-5 py-3 text-gray-600 text-right">{g.lifetimeUsed > 0 ? fmt$(g.lifetimeUsed) : '—'}</td>
+              <tr key={g.year} className="border-b border-limestone-50">
+                <td className="px-5 py-3 font-medium text-charcoal-900">{g.year}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{fmt$(g.annual)}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{g.total529 > 0 ? fmt$(g.total529) : '—'}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{fmt$(g.charitableGiving)}</td>
+                <td className="px-5 py-3 text-charcoal-500 text-right">{g.lifetimeUsed > 0 ? fmt$(g.lifetimeUsed) : '—'}</td>
               </tr>
             ))}
           </tbody>
@@ -432,8 +432,8 @@ function GiftingTab() {
       </div>
 
       {/* Gifting strategies */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Strategic Gifting Opportunities</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Strategic Gifting Opportunities</h3>
         <div className="grid grid-cols-2 gap-4">
           {[
             { title: 'Maximize Annual Exclusion', desc: 'Gift $18K per person to children and grandchildren. For 4 recipients = $144K/year removed from estate.', savings: '$57,600 estate tax saved/year' },
@@ -441,10 +441,10 @@ function GiftingTab() {
             { title: 'GRAT Series', desc: 'Use 2-year rolling GRATs to transfer growth above 7520 rate (currently 5.4%).', savings: 'Potentially $500K+ transferred tax-free' },
             { title: 'Lock in Exemption Pre-Sunset', desc: 'Use remaining exemption before potential 2026 drop to $7M.', savings: '$2.6M+ additional exemption utilized' },
           ].map((s) => (
-            <div key={s.title} className="p-4 rounded-lg border border-gray-100">
-              <p className="text-sm font-medium text-gray-900">{s.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{s.desc}</p>
-              <p className="text-xs font-medium text-green-600 mt-2">{s.savings}</p>
+            <div key={s.title} className="p-4 rounded-lg border border-limestone-100">
+              <p className="text-sm font-medium text-charcoal-900">{s.title}</p>
+              <p className="text-xs text-charcoal-500 mt-1">{s.desc}</p>
+              <p className="text-xs font-medium text-success-500 mt-2">{s.savings}</p>
             </div>
           ))}
         </div>
@@ -461,7 +461,7 @@ function TrustsTab() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-900">Trust Structures</h3>
+        <h3 className="text-sm font-semibold text-charcoal-900">Trust Structures</h3>
         <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700">
           <Plus size={14} /> Add Trust
         </button>
@@ -469,24 +469,24 @@ function TrustsTab() {
 
       <div className="grid gap-4">
         {TRUSTS.map((trust) => (
-          <div key={trust.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div key={trust.id} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <Shield size={16} className="text-indigo-500" />
-                  <h4 className="text-sm font-semibold text-gray-900">{trust.name}</h4>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                  <Shield size={16} className="text-brand-500" />
+                  <h4 className="text-sm font-semibold text-charcoal-900">{trust.name}</h4>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 text-success-700">
                     {trust.status}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">{trust.type}</p>
+                <p className="text-xs text-charcoal-500 mt-1">{trust.type}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-bold text-gray-900">{fmt$(trust.funded)}</p>
-                <p className="text-xs text-gray-500">Funded Amount</p>
+                <p className="text-sm font-bold text-charcoal-900">{fmt$(trust.funded)}</p>
+                <p className="text-xs text-charcoal-500">Funded Amount</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
+            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-limestone-100 text-xs text-charcoal-500">
               <span>Grantor: {trust.grantor}</span>
               <span className="flex items-center gap-1 text-brand-600 hover:text-brand-700 cursor-pointer">
                 View Details <ChevronRight size={12} />
@@ -497,21 +497,21 @@ function TrustsTab() {
       </div>
 
       {/* GRAT analysis */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">GRAT Analysis</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">GRAT Analysis</h3>
         <div className="grid grid-cols-3 gap-4 mb-4">
           {[
             { label: 'Initial Transfer', value: fmt$(2_000_000) },
             { label: '7520 Rate', value: '5.40%' },
             { label: 'Projected Remainder to Heirs', value: fmt$(412_000) },
           ].map((k) => (
-            <div key={k.label} className="p-3 rounded-lg bg-gray-50">
-              <p className="text-xs text-gray-500">{k.label}</p>
-              <p className="text-sm font-bold text-gray-900 mt-0.5">{k.value}</p>
+            <div key={k.label} className="p-3 rounded-lg bg-limestone-50">
+              <p className="text-xs text-charcoal-500">{k.label}</p>
+              <p className="text-sm font-bold text-charcoal-900 mt-0.5">{k.value}</p>
             </div>
           ))}
         </div>
-        <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-50 text-sm text-blue-800">
+        <div className="flex items-start gap-2 p-3 rounded-lg bg-brand-50 text-sm text-brand-700">
           <Info size={16} className="flex-shrink-0 mt-0.5" />
           <p>A 2-year GRAT with an 8% expected return would transfer approximately $412,000 tax-free to beneficiaries — the growth above the 5.40% 7520 rate.</p>
         </div>
@@ -538,15 +538,15 @@ function EstateTaxTab() {
   return (
     <div className="space-y-6">
       {/* Tax worksheet */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Federal Estate Tax Worksheet</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Federal Estate Tax Worksheet</h3>
         <div className="space-y-2">
           {worksheetItems.map((item, i) => {
             const isTotal = item.label === 'Taxable Estate' || item.label === 'Federal Estate Tax';
             return (
-              <div key={i} className={`flex items-center justify-between py-2 ${isTotal ? 'border-t border-gray-200 font-semibold' : ''}`}>
-                <span className={`text-sm ${isTotal ? 'text-gray-900' : 'text-gray-600'}`}>{item.label}</span>
-                <span className={`text-sm ${item.value < 0 ? 'text-red-600' : isTotal ? 'text-gray-900' : 'text-gray-700'}`}>
+              <div key={i} className={`flex items-center justify-between py-2 ${isTotal ? 'border-t border-limestone-200 font-semibold' : ''}`}>
+                <span className={`text-sm ${isTotal ? 'text-charcoal-900' : 'text-charcoal-500'}`}>{item.label}</span>
+                <span className={`text-sm ${item.value < 0 ? 'text-critical-500' : isTotal ? 'text-charcoal-900' : 'text-charcoal-700'}`}>
                   {item.value < 0 ? `(${fmt$(Math.abs(item.value))})` : fmt$(item.value)}
                 </span>
               </div>
@@ -556,8 +556,8 @@ function EstateTaxTab() {
       </div>
 
       {/* Scenario comparison */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Scenario Comparison (Post-Sunset)</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Scenario Comparison (Post-Sunset)</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={SCENARIO_COMPARISON}>
@@ -575,11 +575,11 @@ function EstateTaxTab() {
       </div>
 
       {/* Sunset alert */}
-      <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
-        <AlertTriangle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
+      <div className="flex items-start gap-3 p-4 rounded-xl bg-warning-50 border border-warning-200">
+        <AlertTriangle size={20} className="text-warning-500 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-semibold text-amber-800">Exemption Sunset Alert</p>
-          <p className="text-sm text-amber-700 mt-1">
+          <p className="text-sm font-semibold text-warning-700">Exemption Sunset Alert</p>
+          <p className="text-sm text-warning-700 mt-1">
             The current $13.6M exemption is scheduled to sunset at the end of 2025, reverting to approximately $7M per person.
             Without action, the Chen estate could face approximately {fmt$(ESTATE_TAX_SUNSET)} in estate taxes. Consider accelerated
             gifting and trust strategies to lock in the higher exemption.
@@ -597,33 +597,33 @@ function EstateTaxTab() {
 function BeneficiariesTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900">Beneficiary Designations</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="px-5 py-4 border-b border-limestone-100">
+          <h3 className="text-sm font-semibold text-charcoal-900">Beneficiary Designations</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Beneficiary</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Relationship</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Linked Accounts / Trusts</th>
-              <th className="px-5 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+            <tr className="border-b border-limestone-100 text-left">
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Beneficiary</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Relationship</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Linked Accounts / Trusts</th>
+              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Status</th>
             </tr>
           </thead>
           <tbody>
             {BENEFICIARIES.map((b) => (
-              <tr key={b.name} className="border-b border-gray-50 hover:bg-gray-50/50">
-                <td className="px-5 py-3 font-medium text-gray-900">{b.name}</td>
-                <td className="px-5 py-3 text-gray-600">{b.relationship}</td>
+              <tr key={b.name} className="border-b border-limestone-50 hover:bg-limestone-50/50">
+                <td className="px-5 py-3 font-medium text-charcoal-900">{b.name}</td>
+                <td className="px-5 py-3 text-charcoal-500">{b.relationship}</td>
                 <td className="px-5 py-3">
                   <div className="flex flex-wrap gap-1">
                     {b.accounts.map((a) => (
-                      <span key={a} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-700">{a}</span>
+                      <span key={a} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-limestone-100 text-charcoal-700">{a}</span>
                     ))}
                   </div>
                 </td>
                 <td className="px-5 py-3">
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700">
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-success-700">
                     <CheckCircle2 size={13} /> Complete
                   </span>
                 </td>
@@ -634,8 +634,8 @@ function BeneficiariesTab() {
       </div>
 
       {/* Issues */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Beneficiary Review Items</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Beneficiary Review Items</h3>
         <div className="space-y-2">
           {[
             { issue: 'Confirm contingent beneficiaries on 401(k) accounts', severity: 'info' as const },
@@ -643,7 +643,7 @@ function BeneficiariesTab() {
             { issue: 'Verify ILIT is designated as owner/beneficiary of life insurance policy', severity: 'warn' as const },
           ].map((item, i) => (
             <div key={i} className={`flex items-center gap-2 p-3 rounded-lg text-sm ${
-              item.severity === 'warn' ? 'bg-amber-50 text-amber-800' : 'bg-blue-50 text-blue-800'
+              item.severity === 'warn' ? 'bg-warning-50 text-warning-700' : 'bg-brand-50 text-brand-700'
             }`}>
               {item.severity === 'warn' ? <AlertTriangle size={15} /> : <Info size={15} />}
               {item.issue}
@@ -674,39 +674,39 @@ function DiagramTab() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h3 className="text-sm font-semibold text-gray-900 mb-6 text-center">Estate Flow Diagram</h3>
+      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-6">
+        <h3 className="text-sm font-semibold text-charcoal-900 mb-6 text-center">Estate Flow Diagram</h3>
 
         {/* Level 1: Clients */}
         <div className="flex justify-center mb-8">
-          <div className="px-6 py-3 rounded-xl bg-indigo-100 border-2 border-indigo-300 text-center">
-            <p className="text-sm font-bold text-indigo-900">{nodes.clients.label}</p>
-            <p className="text-xs text-indigo-700">{nodes.clients.value}</p>
+          <div className="px-6 py-3 rounded-xl bg-brand-100 border-2 border-brand-200 text-center">
+            <p className="text-sm font-bold text-brand-700">{nodes.clients.label}</p>
+            <p className="text-xs text-brand-700">{nodes.clients.value}</p>
           </div>
         </div>
 
         {/* Connector lines */}
         <div className="flex justify-center mb-2">
-          <div className="w-px h-6 bg-gray-300" />
+          <div className="w-px h-6 bg-limestone-200" />
         </div>
         <div className="flex justify-center mb-2">
-          <div className="w-3/4 h-px bg-gray-300 relative">
-            <div className="absolute left-0 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute left-1/4 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute left-1/2 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute left-3/4 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute right-0 top-0 w-px h-4 bg-gray-300" />
+          <div className="w-3/4 h-px bg-limestone-200 relative">
+            <div className="absolute left-0 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute left-1/4 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute left-1/2 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute left-3/4 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute right-0 top-0 w-px h-4 bg-limestone-200" />
           </div>
         </div>
 
         {/* Level 2: Vehicles */}
         <div className="grid grid-cols-5 gap-3 mb-8">
           {[
-            { ...nodes.revTrust, color: 'bg-blue-50 border-blue-200 text-blue-900' },
-            { ...nodes.ilit, color: 'bg-purple-50 border-purple-200 text-purple-900' },
-            { ...nodes.eduTrust, color: 'bg-teal-50 border-teal-200 text-teal-900' },
+            { ...nodes.revTrust, color: 'bg-brand-50 border-brand-200 text-brand-700' },
+            { ...nodes.ilit, color: 'bg-brand-50 border-brand-200 text-brand-700' },
+            { ...nodes.eduTrust, color: 'bg-brand-50 border-brand-200 text-brand-700' },
             { ...nodes.retirement, color: 'bg-orange-50 border-orange-200 text-orange-900' },
-            { ...nodes.taxable, color: 'bg-gray-50 border-gray-200 text-gray-900' },
+            { ...nodes.taxable, color: 'bg-limestone-50 border-limestone-200 text-charcoal-900' },
           ].map((n) => (
             <div key={n.label} className={`px-3 py-2.5 rounded-lg border text-center ${n.color}`}>
               <p className="text-xs font-semibold">{n.label}</p>
@@ -717,24 +717,24 @@ function DiagramTab() {
 
         {/* Connector lines */}
         <div className="flex justify-center mb-2">
-          <div className="w-1/2 h-px bg-gray-300 relative">
-            <div className="absolute left-0 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute left-1/2 top-0 w-px h-4 bg-gray-300" />
-            <div className="absolute right-0 top-0 w-px h-4 bg-gray-300" />
+          <div className="w-1/2 h-px bg-limestone-200 relative">
+            <div className="absolute left-0 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute left-1/2 top-0 w-px h-4 bg-limestone-200" />
+            <div className="absolute right-0 top-0 w-px h-4 bg-limestone-200" />
           </div>
         </div>
 
         {/* Level 3: Beneficiaries */}
         <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
           {[nodes.emily, nodes.james, nodes.charity].map((n) => (
-            <div key={n.label} className="px-3 py-2.5 rounded-lg border border-green-200 bg-green-50 text-center">
-              <p className="text-xs font-semibold text-green-900">{n.label}</p>
+            <div key={n.label} className="px-3 py-2.5 rounded-lg border border-success-200 bg-success-50 text-center">
+              <p className="text-xs font-semibold text-success-900">{n.label}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 text-xs text-gray-500">
+      <div className="flex items-start gap-2 p-3 rounded-lg bg-limestone-50 text-xs text-charcoal-500">
         <Info size={14} className="flex-shrink-0 mt-0.5" />
         <p>This diagram shows the current estate structure. Arrows indicate asset flow at death or upon trust termination. Review beneficiary designations annually for accuracy.</p>
       </div>

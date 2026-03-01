@@ -36,15 +36,15 @@ export const Toggle: React.FC<ToggleProps> = ({
         className={clsx(
           'peer relative h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent',
           'transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2',
+          'focus-visible:outline-none focus-visible:shadow-focus',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          'data-[state=checked]:bg-brand-500',
-          'data-[state=unchecked]:bg-gray-200',
+          'data-[state=checked]:bg-brand-700',
+          'data-[state=unchecked]:bg-limestone-300',
         )}
       >
         <SwitchPrimitive.Thumb
           className={clsx(
-            'pointer-events-none block h-4 w-4 rounded-full bg-white shadow-sm',
+            'pointer-events-none block h-4 w-4 rounded-full bg-white shadow',
             'transition-transform',
             'data-[state=checked]:translate-x-4',
             'data-[state=unchecked]:translate-x-0',
@@ -56,7 +56,7 @@ export const Toggle: React.FC<ToggleProps> = ({
         <label
           htmlFor={toggleId}
           className={clsx(
-            'text-sm text-gray-700 select-none',
+            'text-sm text-charcoal-700 select-none',
             disabled && 'cursor-not-allowed opacity-50',
           )}
         >

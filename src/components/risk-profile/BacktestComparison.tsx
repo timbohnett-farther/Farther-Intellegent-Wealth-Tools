@@ -16,8 +16,8 @@ interface BacktestComparisonProps {
 }
 
 const ALLOC_COLORS: Record<keyof ModelAllocation, { color: string; label: string }> = {
-  usEquity: { color: '#3B82F6', label: 'US Equity' },
-  intlEquity: { color: '#6366F1', label: "Int'l Equity" },
+  usEquity: { color: '#3B5A69', label: 'US Equity' },
+  intlEquity: { color: '#4D6E7E', label: "Int'l Equity" },
   emEquity: { color: '#8B5CF6', label: 'EM Equity' },
   govBonds: { color: '#10B981', label: 'Gov Bonds' },
   corpBonds: { color: '#14B8A6', label: 'Corp Bonds' },
@@ -51,7 +51,7 @@ function AllocationBar({ allocation }: { allocation: ModelAllocation }) {
         {entries.map(([key, value]) => (
           <div key={key} className="flex items-center gap-1">
             <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: ALLOC_COLORS[key].color }} />
-            <span className="text-[10px] text-gray-500">{ALLOC_COLORS[key].label} {value}%</span>
+            <span className="text-[10px] text-charcoal-500">{ALLOC_COLORS[key].label} {value}%</span>
           </div>
         ))}
       </div>
@@ -62,8 +62,8 @@ function AllocationBar({ allocation }: { allocation: ModelAllocation }) {
 function MetricCard({ label, value, suffix, highlight }: { label: string; value: string; suffix?: string; highlight?: boolean }) {
   return (
     <div className="text-center">
-      <p className="text-[10px] text-gray-500 mb-0.5">{label}</p>
-      <p className={`text-sm font-bold ${highlight ? 'text-blue-700' : 'text-gray-800'}`}>
+      <p className="text-[10px] text-charcoal-500 mb-0.5">{label}</p>
+      <p className={`text-sm font-bold ${highlight ? 'text-brand-700' : 'text-charcoal-900'}`}>
         {value}{suffix}
       </p>
     </div>
@@ -84,12 +84,12 @@ function ColumnCard({
   const m = backtest.metrics;
 
   return (
-    <div className={`card p-5 ${isRecommended ? 'ring-2 ring-blue-400 border-blue-200' : ''}`}>
+    <div className={`card p-5 ${isRecommended ? 'ring-2 shadow-focus border-brand-200' : ''}`}>
       {isRecommended && (
-        <div className="text-[10px] font-semibold text-blue-600 uppercase tracking-wider mb-2">Recommended</div>
+        <div className="text-[10px] font-semibold text-brand-700 uppercase tracking-wider mb-2">Recommended</div>
       )}
-      <h5 className="text-sm font-semibold text-gray-900 mb-1">{label}</h5>
-      <p className="text-xs text-gray-500 mb-4">
+      <h5 className="text-sm font-semibold text-charcoal-900 mb-1">{label}</h5>
+      <p className="text-xs text-charcoal-500 mb-4">
         Band {portfolio.band} — {RISK_BAND_LABELS[portfolio.band]}
       </p>
 
@@ -97,7 +97,7 @@ function ColumnCard({
       <AllocationBar allocation={portfolio.allocation} />
 
       {/* Key metrics */}
-      <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-gray-100">
+      <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-limestone-100">
         <MetricCard label="Expected Return" value={portfolio.expectedReturn.toFixed(1)} suffix="%" highlight />
         <MetricCard label="Volatility" value={portfolio.expectedVolatility.toFixed(1)} suffix="%" />
         <MetricCard label="Max Drawdown" value={portfolio.maxDrawdown.toFixed(0)} suffix="%" />
@@ -110,13 +110,13 @@ function ColumnCard({
       </div>
 
       {/* Crash scenarios */}
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Crash Scenarios</p>
+      <div className="mt-4 pt-4 border-t border-limestone-100">
+        <p className="text-[10px] font-semibold text-charcoal-500 uppercase tracking-wider mb-2">Crash Scenarios</p>
         <div className="space-y-1.5">
           {backtest.crashScenarios.map((crash, i) => (
             <div key={i} className="flex items-center justify-between text-xs">
-              <span className="text-gray-600">{crash.name}</span>
-              <span className="font-semibold text-red-600">{crash.loss.toFixed(0)}%</span>
+              <span className="text-charcoal-500">{crash.name}</span>
+              <span className="font-semibold text-critical-500">{crash.loss.toFixed(0)}%</span>
             </div>
           ))}
         </div>
@@ -134,19 +134,19 @@ function ReturnChart({ backtests }: { backtests: BacktestResult[] }) {
   const minR = Math.min(...allReturns, -5);
   const range = maxR - minR;
 
-  const colors = ['#10B981', '#3B82F6', '#F59E0B'];
+  const colors = ['#10B981', '#3B5A69', '#F59E0B'];
   const labels = ['-1 Band', 'Recommended', '+1 Band'];
 
   const chartWidth = Math.max(years.length * 22, 600);
 
   return (
     <div className="card p-5">
-      <h5 className="text-sm font-semibold text-gray-700 mb-1">Historical Annual Returns (1994–2025)</h5>
+      <h5 className="text-sm font-semibold text-charcoal-700 mb-1">Historical Annual Returns (1994–2025)</h5>
       <div className="flex items-center gap-4 mb-3">
         {backtests.map((_, i) => (
           <div key={i} className="flex items-center gap-1.5">
             <div className="w-3 h-1 rounded-full" style={{ backgroundColor: colors[i] }} />
-            <span className="text-[10px] text-gray-500">{labels[i]}</span>
+            <span className="text-[10px] text-charcoal-500">{labels[i]}</span>
           </div>
         ))}
       </div>
@@ -189,7 +189,7 @@ function ReturnChart({ backtests }: { backtests: BacktestResult[] }) {
             if (year % 5 !== 0) return null;
             const x = i * (chartWidth / (years.length - 1));
             return (
-              <text key={year} x={x} y="198" textAnchor="middle" className="fill-gray-400" fontSize="9">
+              <text key={year} x={x} y="198" textAnchor="middle" className="fill-charcoal-300" fontSize="9">
                 {year}
               </text>
             );
@@ -210,10 +210,10 @@ export default function BacktestComparison({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-semibold text-gray-700">Portfolio Comparison — Move Risk ±1 Band</h4>
+        <h4 className="text-sm font-semibold text-charcoal-700">Portfolio Comparison — Move Risk ±1 Band</h4>
         <button
           onClick={() => setShowChart(!showChart)}
-          className="text-xs text-blue-600 hover:text-blue-700"
+          className="text-xs text-brand-700 hover:text-brand-700"
         >
           {showChart ? 'Hide Chart' : 'Show Chart'}
         </button>
@@ -248,7 +248,7 @@ export default function BacktestComparison({
         />
       )}
 
-      <p className="text-[10px] text-gray-400">
+      <p className="text-[10px] text-charcoal-300">
         Historical performance is based on index proxies and does not represent actual portfolio returns.
         Past performance does not guarantee future results.
       </p>

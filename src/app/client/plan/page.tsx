@@ -73,7 +73,7 @@ function statusBadge(status: string) {
     case 'At Risk':
       return 'bg-goal-at-risk/10 text-goal-at-risk';
     default:
-      return 'bg-gray-100 text-gray-600';
+      return 'bg-limestone-100 text-charcoal-500';
   }
 }
 
@@ -97,7 +97,7 @@ function ProjectionChart({ data }: { data: typeof RETIREMENT_PROJECTION }) {
                   Retire
                 </span>
               )}
-              <span className="text-[9px] text-gray-400 font-medium">
+              <span className="text-[9px] text-charcoal-300 font-medium">
                 {formatCurrency(point.portfolio)}
               </span>
               <div
@@ -106,7 +106,7 @@ function ProjectionChart({ data }: { data: typeof RETIREMENT_PROJECTION }) {
                 }`}
                 style={{ height: `${Math.max(height, 4)}%` }}
               />
-              <span className="text-[10px] text-gray-500">{point.age}</span>
+              <span className="text-[10px] text-charcoal-500">{point.age}</span>
             </div>
           );
         })}
@@ -120,7 +120,7 @@ export default function ClientPlanPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">My Plan</h1>
+        <h1 className="text-2xl font-bold text-charcoal-900">My Plan</h1>
         <span
           className={`text-xs font-medium px-3 py-1 rounded-full ${statusBadge(PLAN_OVERVIEW.planStatus)}`}
         >
@@ -130,55 +130,55 @@ export default function ClientPlanPage() {
 
       {/* ── Plan Overview Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-card border border-gray-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <div className="bg-white rounded-card border border-limestone-200 p-5">
+          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
             <Target size={16} />
             Success Rate
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-2xl font-bold text-charcoal-900">
             {PLAN_OVERVIEW.successRate}%
           </p>
         </div>
-        <div className="bg-white rounded-card border border-gray-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <div className="bg-white rounded-card border border-limestone-200 p-5">
+          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
             <CalendarDays size={16} />
             Years to Retirement
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-2xl font-bold text-charcoal-900">
             {PLAN_OVERVIEW.yearsToRetirement}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-charcoal-500 mt-0.5">
             Age {PLAN_OVERVIEW.currentAge} to {PLAN_OVERVIEW.retirementAge}
           </p>
         </div>
-        <div className="bg-white rounded-card border border-gray-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <div className="bg-white rounded-card border border-limestone-200 p-5">
+          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
             <DollarSign size={16} />
             Retirement Income
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-2xl font-bold text-charcoal-900">
             {formatCurrency(PLAN_OVERVIEW.estimatedAnnualRetirementIncome)}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">per year (projected)</p>
+          <p className="text-xs text-charcoal-500 mt-0.5">per year (projected)</p>
         </div>
-        <div className="bg-white rounded-card border border-gray-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+        <div className="bg-white rounded-card border border-limestone-200 p-5">
+          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
             <ShieldCheck size={16} />
             Social Security
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-2xl font-bold text-charcoal-900">
             {formatCurrency(PLAN_OVERVIEW.estimatedSocialSecurity)}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">estimated annual</p>
+          <p className="text-xs text-charcoal-500 mt-0.5">estimated annual</p>
         </div>
       </div>
 
       {/* ── Retirement Projection Chart ── */}
-      <div className="bg-white rounded-card border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">
+      <div className="bg-white rounded-card border border-limestone-200 p-6">
+        <h2 className="text-lg font-semibold text-charcoal-900 mb-1">
           Retirement Projection
         </h2>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-charcoal-500 mb-6">
           Projected portfolio value from now through age 90
         </p>
         <ProjectionChart data={RETIREMENT_PROJECTION} />
@@ -186,7 +186,7 @@ export default function ClientPlanPage() {
 
       {/* ── Goals ── */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-charcoal-900 mb-4">
           Goal Progress
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -204,10 +204,10 @@ export default function ClientPlanPage() {
             return (
               <div
                 key={i}
-                className="bg-white rounded-card border border-gray-200 p-5"
+                className="bg-white rounded-card border border-limestone-200 p-5"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-900">
+                  <h3 className="text-sm font-semibold text-charcoal-900">
                     {goal.name}
                   </h3>
                   <span
@@ -216,13 +216,13 @@ export default function ClientPlanPage() {
                     {goal.status}
                   </span>
                 </div>
-                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-limestone-100 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${barColor}`}
                     style={{ width: `${Math.min(pct, 100)}%` }}
                   />
                 </div>
-                <div className="flex justify-between mt-2 text-xs text-gray-500">
+                <div className="flex justify-between mt-2 text-xs text-charcoal-500">
                   <span>{formatCurrency(goal.current)}</span>
                   <span>{formatCurrency(goal.target)}</span>
                 </div>
@@ -233,31 +233,31 @@ export default function ClientPlanPage() {
       </div>
 
       {/* ── Tax Summary (Simplified) ── */}
-      <div className="bg-white rounded-card border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-card border border-limestone-200 p-6">
+        <h2 className="text-lg font-semibold text-charcoal-900 mb-4">
           Tax Summary
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-charcoal-500">
               Estimated Federal Tax (2025)
             </p>
-            <p className="text-xl font-bold text-gray-900 mt-1">
+            <p className="text-xl font-bold text-charcoal-900 mt-1">
               {formatCurrency(TAX_SUMMARY.estimatedFederalTax)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Estimated State Tax</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">
+            <p className="text-sm text-charcoal-500">Estimated State Tax</p>
+            <p className="text-xl font-bold text-charcoal-900 mt-1">
               {formatCurrency(TAX_SUMMARY.estimatedStateTax)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Effective Tax Rate</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">
+            <p className="text-sm text-charcoal-500">Effective Tax Rate</p>
+            <p className="text-xl font-bold text-charcoal-900 mt-1">
               {TAX_SUMMARY.effectiveRate}%
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-charcoal-300 mt-0.5">
               Marginal bracket: {TAX_SUMMARY.marginalBracket}%
             </p>
           </div>
@@ -267,10 +267,10 @@ export default function ClientPlanPage() {
           <div className="flex items-start gap-3">
             <TrendingUp size={20} className="text-brand-500 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-charcoal-900">
                 Roth Conversion Opportunity
               </p>
-              <p className="text-sm text-gray-600 mt-0.5">
+              <p className="text-sm text-charcoal-500 mt-0.5">
                 Converting {formatCurrency(TAX_SUMMARY.rothConversionOpportunity)}{' '}
                 this year could save an estimated{' '}
                 {formatCurrency(TAX_SUMMARY.estimatedTaxSavings)} in future

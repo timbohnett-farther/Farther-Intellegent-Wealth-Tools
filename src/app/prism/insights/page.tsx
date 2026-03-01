@@ -69,19 +69,19 @@ const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
 };
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  tax: 'bg-blue-50 text-blue-700 border-blue-200',
-  retirement: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-  estate: 'bg-purple-50 text-purple-700 border-purple-200',
+  tax: 'bg-brand-50 text-brand-700 border-brand-200',
+  retirement: 'bg-brand-50 text-brand-700 border-brand-200',
+  estate: 'bg-brand-50 text-brand-700 border-brand-200',
   insurance: 'bg-pink-50 text-pink-700 border-pink-200',
-  investments: 'bg-teal-50 text-teal-700 border-teal-200',
+  investments: 'bg-brand-50 text-brand-700 border-brand-200',
   cash_flow: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   goals: 'bg-orange-50 text-orange-700 border-orange-200',
 };
 
 const SEVERITY_STYLES: Record<Severity, string> = {
-  critical: 'bg-red-100 text-red-800 border-red-300',
-  warning: 'bg-amber-100 text-amber-800 border-amber-300',
-  info: 'bg-blue-100 text-blue-800 border-blue-300',
+  critical: 'bg-critical-100 text-critical-700 border-critical-300',
+  warning: 'bg-warning-100 text-warning-700 border-warning-300',
+  info: 'bg-brand-100 text-brand-700 border-brand-300',
 };
 
 // ---------------------------------------------------------------------------
@@ -244,15 +244,15 @@ export default function InsightsPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Lightbulb size={20} className="text-brand-500" />
-            <h1 className="text-xl font-bold text-gray-900">AI Insights</h1>
+            <h1 className="text-xl font-bold text-charcoal-900">AI Insights</h1>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-brand-50 text-brand-700">
               <Zap size={11} /> AI-Powered
             </span>
           </div>
-          <p className="text-sm text-gray-500">Proactive action items and planning recommendations across your practice.</p>
+          <p className="text-sm text-charcoal-500">Proactive action items and planning recommendations across your practice.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-lg border border-gray-200 hover:bg-gray-50">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-charcoal-700 bg-white rounded-lg border border-limestone-200 hover:bg-limestone-50">
             <Download size={14} /> Export
           </button>
           <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600">
@@ -264,13 +264,13 @@ export default function InsightsPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Critical', count: criticalCount, color: 'text-red-600', bg: 'bg-red-50 border-red-200' },
-          { label: 'Warning', count: warningCount, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200' },
-          { label: 'Informational', count: infoCount, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
-          { label: 'Total Impact', count: null, value: fmt$(totalImpact), color: 'text-green-600', bg: 'bg-green-50 border-green-200' },
+          { label: 'Critical', count: criticalCount, color: 'text-critical-500', bg: 'bg-critical-50 border-critical-100' },
+          { label: 'Warning', count: warningCount, color: 'text-warning-500', bg: 'bg-warning-50 border-warning-100' },
+          { label: 'Informational', count: infoCount, color: 'text-brand-700', bg: 'bg-brand-50 border-brand-200' },
+          { label: 'Total Impact', count: null, value: fmt$(totalImpact), color: 'text-success-500', bg: 'bg-success-50 border-success-100' },
         ].map((card) => (
           <div key={card.label} className={`rounded-xl border p-4 ${card.bg}`}>
-            <p className="text-xs font-medium text-gray-500 mb-1">{card.label}</p>
+            <p className="text-xs font-medium text-charcoal-500 mb-1">{card.label}</p>
             <p className={`text-2xl font-bold ${card.color}`}>{card.value ?? card.count}</p>
           </div>
         ))}
@@ -279,17 +279,17 @@ export default function InsightsPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 mb-6">
         <div className="relative flex-1 max-w-xs">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300" />
           <input
             type="text"
             placeholder="Search by client or insight..."
-            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <select
-          className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
         >
@@ -299,7 +299,7 @@ export default function InsightsPage() {
           ))}
         </select>
         <select
-          className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           value={severityFilter}
           onChange={(e) => setSeverityFilter(e.target.value as Severity | 'all')}
         >
@@ -308,7 +308,7 @@ export default function InsightsPage() {
           <option value="warning">Warning</option>
           <option value="info">Info</option>
         </select>
-        <span className="text-sm text-gray-500">{filteredInsights.length} insights</span>
+        <span className="text-sm text-charcoal-500">{filteredInsights.length} insights</span>
       </div>
 
       {/* Insight cards (3-column masonry grid) */}
@@ -316,7 +316,7 @@ export default function InsightsPage() {
         {filteredInsights.map((insight) => {
           const isExpanded = expandedId === insight.id;
           return (
-            <div key={insight.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col">
+            <div key={insight.id} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4 flex flex-col">
               {/* Header */}
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -333,21 +333,21 @@ export default function InsightsPage() {
               </div>
 
               {/* Title */}
-              <h3 className="text-sm font-semibold text-gray-900 mb-1">{insight.title}</h3>
-              <p className="text-xs text-gray-500 mb-2">{insight.clientName} &middot; Age {insight.clientAge} &middot; {insight.wealthTier}</p>
+              <h3 className="text-sm font-semibold text-charcoal-900 mb-1">{insight.title}</h3>
+              <p className="text-xs text-charcoal-500 mb-2">{insight.clientName} &middot; Age {insight.clientAge} &middot; {insight.wealthTier}</p>
 
               {/* Summary */}
-              <p className="text-sm text-gray-600 mb-3 flex-1">{insight.summary}</p>
+              <p className="text-sm text-charcoal-500 mb-3 flex-1">{insight.summary}</p>
 
               {/* Expanded detail */}
               {isExpanded && (
-                <div className="mb-3 p-3 rounded-lg bg-gray-50 text-sm text-gray-700 border border-gray-100">
+                <div className="mb-3 p-3 rounded-lg bg-limestone-50 text-sm text-charcoal-700 border border-limestone-100">
                   {insight.detail}
                 </div>
               )}
 
               {/* Impact */}
-              <div className="flex items-center gap-1 mb-3 text-xs font-medium text-green-700">
+              <div className="flex items-center gap-1 mb-3 text-xs font-medium text-success-700">
                 <TrendingUp size={12} />
                 <span>
                   {insight.estimatedImpact.amount > 0 ? fmt$(insight.estimatedImpact.amount) : 'Risk reduction'} &middot; {insight.estimatedImpact.timeframe}
@@ -355,19 +355,19 @@ export default function InsightsPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+              <div className="flex items-center gap-2 pt-3 border-t border-limestone-100">
                 <button className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-brand-500 text-white rounded-lg hover:bg-brand-600">
                   <ChevronRight size={12} /> Take Action
                 </button>
                 <button
                   onClick={() => setExpandedId(isExpanded ? null : insight.id)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-charcoal-500 bg-limestone-100 rounded-lg hover:bg-limestone-200"
                 >
                   <Eye size={12} /> {isExpanded ? 'Less' : 'Details'}
                 </button>
                 <button
                   onClick={() => setDismissedIds((prev) => new Set([...prev, insight.id]))}
-                  className="ml-auto text-gray-400 hover:text-gray-600"
+                  className="ml-auto text-charcoal-300 hover:text-charcoal-500"
                 >
                   <X size={14} />
                 </button>
@@ -379,9 +379,9 @@ export default function InsightsPage() {
 
       {filteredInsights.length === 0 && (
         <div className="text-center py-16">
-          <CheckCircle2 size={32} className="mx-auto text-green-400 mb-3" />
-          <h3 className="text-sm font-semibold text-gray-700">All caught up</h3>
-          <p className="text-sm text-gray-500 mt-1">No insights match your current filters.</p>
+          <CheckCircle2 size={32} className="mx-auto text-success-500 mb-3" />
+          <h3 className="text-sm font-semibold text-charcoal-700">All caught up</h3>
+          <p className="text-sm text-charcoal-500 mt-1">No insights match your current filters.</p>
         </div>
       )}
     </div>

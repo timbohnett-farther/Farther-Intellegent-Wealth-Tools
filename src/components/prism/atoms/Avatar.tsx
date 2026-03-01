@@ -47,7 +47,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       />
       <AvatarPrimitive.Fallback
         delayMs={src ? 300 : 0}
-        className="flex h-full w-full items-center justify-center bg-brand-100 font-medium text-brand-600"
+        className="flex h-full w-full items-center justify-center bg-brand-100 font-medium text-brand-700"
       >
         {initials || alt?.charAt(0)?.toUpperCase() || '?'}
       </AvatarPrimitive.Fallback>

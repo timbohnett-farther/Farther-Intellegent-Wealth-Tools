@@ -13,7 +13,7 @@ interface Props {
 
 export default function CashFlowSection({ data }: Props) {
   const comparisonData = [
-    { name: 'Box Spread', payment: data.monthlyPaymentComparison.box, fill: '#3B82F6' },
+    { name: 'Box Spread', payment: data.monthlyPaymentComparison.box, fill: '#3B5A69' },
     { name: 'Margin', payment: data.monthlyPaymentComparison.margin, fill: '#6B7280' },
     { name: 'SBLOC', payment: data.monthlyPaymentComparison.sbloc, fill: '#F97316' },
     { name: 'HELOC', payment: data.monthlyPaymentComparison.heloc, fill: '#8B5CF6' },
@@ -41,39 +41,39 @@ export default function CashFlowSection({ data }: Props) {
 
       {/* Cash Flow Savings Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="card p-4 text-center bg-gradient-to-b from-green-50 to-white">
-          <p className="text-xs text-gray-500 mb-1">Monthly Cash Flow Freed</p>
-          <p className="text-2xl font-bold text-green-700">{formatCurrency(data.monthlyPaymentComparison.monthlySavings)}</p>
-          <p className="text-xs text-gray-400 mt-1">vs. margin loan monthly payments</p>
+        <div className="card p-4 text-center bg-gradient-to-b from-success-50 to-white">
+          <p className="text-xs text-charcoal-500 mb-1">Monthly Cash Flow Freed</p>
+          <p className="text-2xl font-bold text-success-700">{formatCurrency(data.monthlyPaymentComparison.monthlySavings)}</p>
+          <p className="text-xs text-charcoal-300 mt-1">vs. margin loan monthly payments</p>
         </div>
-        <div className="card p-4 text-center bg-gradient-to-b from-blue-50 to-white">
-          <p className="text-xs text-gray-500 mb-1">Reinvestment Value of Savings</p>
-          <p className="text-2xl font-bold text-blue-700">{formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)}</p>
-          <p className="text-xs text-gray-400 mt-1">FV if monthly savings reinvested</p>
+        <div className="card p-4 text-center bg-gradient-to-b from-brand-50 to-white">
+          <p className="text-xs text-charcoal-500 mb-1">Reinvestment Value of Savings</p>
+          <p className="text-2xl font-bold text-brand-700">{formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)}</p>
+          <p className="text-xs text-charcoal-300 mt-1">FV if monthly savings reinvested</p>
         </div>
       </div>
 
       {/* Box Spread Cash Flow Timeline */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
           <h3 className="font-semibold text-sm">Box Spread Cash Flow Timeline</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 border-b">
-                <th className="text-left px-3 py-2 font-medium text-gray-600">Date</th>
-                <th className="text-left px-3 py-2 font-medium text-gray-600">Description</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Cash Flow</th>
-                <th className="text-right px-3 py-2 font-medium text-gray-600">Running Balance</th>
+              <tr className="bg-limestone-50 border-b">
+                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Date</th>
+                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Description</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Cash Flow</th>
+                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Running Balance</th>
               </tr>
             </thead>
             <tbody>
               {data.boxSpread.map((row, i) => (
-                <tr key={i} className={`border-t border-gray-100 ${row.cashFlow < 0 ? 'bg-red-50' : row.cashFlow > 0 ? 'bg-green-50' : ''}`}>
+                <tr key={i} className={`border-t border-limestone-100 ${row.cashFlow < 0 ? 'bg-critical-50' : row.cashFlow > 0 ? 'bg-success-50' : ''}`}>
                   <td className="px-3 py-2 font-medium">{row.date}</td>
-                  <td className="px-3 py-2 text-gray-600">{row.description}</td>
-                  <td className={`px-3 py-2 text-right font-medium ${row.cashFlow > 0 ? 'text-green-600' : row.cashFlow < 0 ? 'text-red-600' : ''}`}>
+                  <td className="px-3 py-2 text-charcoal-500">{row.description}</td>
+                  <td className={`px-3 py-2 text-right font-medium ${row.cashFlow > 0 ? 'text-success-500' : row.cashFlow < 0 ? 'text-critical-500' : ''}`}>
                     {row.cashFlow !== 0 ? formatCurrency(row.cashFlow) : '--'}
                   </td>
                   <td className="px-3 py-2 text-right">{formatCurrency(row.runningBalance)}</td>
@@ -85,8 +85,8 @@ export default function CashFlowSection({ data }: Props) {
       </div>
 
       {/* Key Insight */}
-      <div className="card p-4 bg-blue-50 border-blue-200">
-        <p className="text-sm text-blue-800">
+      <div className="card p-4 bg-brand-50 border-brand-200">
+        <p className="text-sm text-brand-700">
           <span className="font-semibold">Key Insight:</span> Box spread borrowers pay $0/month during the loan term,
           freeing up {formatCurrency(data.monthlyPaymentComparison.monthlySavings)}/month compared to a margin loan.
           If reinvested, these savings could grow to {formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)} by maturity.

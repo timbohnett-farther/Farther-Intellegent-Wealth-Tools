@@ -35,11 +35,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onCheckedChange={onCheckedChange}
         disabled={disabled}
         className={clsx(
-          'peer h-4 w-4 shrink-0 rounded border border-gray-300 bg-white',
+          'peer h-4 w-4 shrink-0 rounded border border-limestone-300 bg-white',
           'transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2',
+          'focus-visible:outline-none focus-visible:shadow-focus',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          'data-[state=checked]:border-brand-500 data-[state=checked]:bg-brand-500',
+          'data-[state=checked]:border-brand-700 data-[state=checked]:bg-brand-700',
         )}
       >
         <CheckboxPrimitive.Indicator className="flex items-center justify-center">
@@ -51,7 +51,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <label
           htmlFor={checkboxId}
           className={clsx(
-            'text-sm text-gray-700 select-none',
+            'text-sm text-charcoal-700 select-none',
             disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
           )}
         >

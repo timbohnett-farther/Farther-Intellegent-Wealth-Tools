@@ -55,7 +55,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-charcoal-700"
           >
             {label}
           </label>
@@ -70,14 +70,14 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             onChange={onChange}
             disabled={disabled}
             className={clsx(
-              'h-9 w-full appearance-none rounded-lg border bg-white pl-3 pr-9 text-sm text-gray-900',
+              'h-9 w-full appearance-none rounded-lg border-[1.5px] bg-white pl-3 pr-9 text-sm text-charcoal-900',
               'transition-colors',
-              'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500',
-              'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400',
+              'focus:outline-none focus:border-brand-700 focus:shadow-focus',
+              'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
               error
-                ? 'border-[#EF4444] focus:ring-[#EF4444] focus:border-[#EF4444]'
-                : 'border-gray-300',
-              !value && placeholder ? 'text-gray-400' : '',
+                ? 'border-critical-500 focus:border-critical-500'
+                : 'border-limestone-200',
+              !value && placeholder ? 'text-charcoal-300' : '',
               className,
             )}
           >
@@ -94,13 +94,13 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           </select>
 
           <ChevronDown
-            className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+            className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-300"
             aria-hidden="true"
           />
         </div>
 
         {error && (
-          <p className="text-xs text-[#EF4444]">{error}</p>
+          <p className="text-xs text-critical-500">{error}</p>
         )}
       </div>
     );

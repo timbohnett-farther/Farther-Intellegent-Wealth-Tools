@@ -84,7 +84,7 @@ function DeltaIndicator({
   const diff = current - baseline;
   if (diff === 0) {
     return (
-      <span className="inline-flex items-center gap-0.5 text-[10px] text-gray-400">
+      <span className="inline-flex items-center gap-0.5 text-[10px] text-charcoal-300">
         <Minus className="h-3 w-3" /> --
       </span>
     );
@@ -97,7 +97,7 @@ function DeltaIndicator({
     <span
       className={clsx(
         'inline-flex items-center gap-0.5 text-[10px] font-medium',
-        isBetter ? 'text-emerald-600' : 'text-[#EF4444]',
+        isBetter ? 'text-success-500' : 'text-critical-500',
       )}
     >
       {isPositive ? (
@@ -123,29 +123,29 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
   return (
     <div
       className={clsx(
-        'rounded-card border border-gray-200 bg-white shadow-sm overflow-hidden',
+        'rounded-card border border-limestone-200 bg-white shadow-sm overflow-hidden',
         className,
       )}
     >
       {/* Header row – scenario names */}
       <div
-        className="grid border-b border-gray-200 bg-gray-50"
+        className="grid border-b border-limestone-200 bg-limestone-50"
         style={{ gridTemplateColumns: `180px repeat(${colCount}, 1fr)` }}
       >
-        <div className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <div className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-charcoal-500">
           Metric
         </div>
         {scenarios.map((s, i) => (
           <div
             key={s.name}
             className={clsx(
-              'px-4 py-3 text-center text-sm font-semibold text-gray-900',
+              'px-4 py-3 text-center text-sm font-semibold text-charcoal-900',
               i === 0 && 'bg-brand-50/50',
             )}
           >
             {s.name}
             {i === 0 && (
-              <span className="ml-1.5 text-[10px] font-normal text-gray-400">
+              <span className="ml-1.5 text-[10px] font-normal text-charcoal-300">
                 (base)
               </span>
             )}
@@ -157,11 +157,11 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
       {METRICS.map((metric) => (
         <div
           key={metric.key}
-          className="grid border-b border-gray-100 last:border-b-0"
+          className="grid border-b border-limestone-100 last:border-b-0"
           style={{ gridTemplateColumns: `180px repeat(${colCount}, 1fr)` }}
         >
           {/* Label */}
-          <div className="flex items-center px-4 py-3 text-xs font-medium text-gray-600">
+          <div className="flex items-center px-4 py-3 text-xs font-medium text-charcoal-500">
             {metric.label}
           </div>
 
@@ -178,7 +178,7 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
                   isBase && 'bg-brand-50/30',
                 )}
               >
-                <span className="text-sm font-bold tabular-nums text-gray-900">
+                <span className="text-sm font-bold tabular-nums text-charcoal-900">
                   {metric.format(val)}
                 </span>
                 {!isBase && (

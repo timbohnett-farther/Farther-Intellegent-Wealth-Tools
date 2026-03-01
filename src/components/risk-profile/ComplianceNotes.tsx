@@ -11,36 +11,36 @@ export default function ComplianceNotes({ profile }: ComplianceNotesProps) {
   return (
     <div className="card p-6">
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold text-gray-700">Compliance Documentation</h4>
+        <h4 className="text-sm font-semibold text-charcoal-700">Compliance Documentation</h4>
         <button
           onClick={() => {
             navigator.clipboard.writeText(profile.complianceNotes);
           }}
-          className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1"
+          className="text-xs text-brand-700 hover:text-brand-700 flex items-center gap-1"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
       </div>
 
-      <div className="p-4 bg-gray-50 rounded-lg text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">
+      <div className="p-4 bg-limestone-50 rounded-lg text-xs text-charcoal-700 leading-relaxed whitespace-pre-wrap font-mono">
         {profile.complianceNotes}
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-[10px] text-gray-400">
+      <div className="mt-3 flex items-center justify-between text-[10px] text-charcoal-300">
         <span>Generated {profile.completedAt}</span>
         <span>{profile.questionCount} questions answered</span>
       </div>
 
       {/* Regulatory tags */}
       <div className="mt-3 flex items-center gap-2">
-        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-green-100 text-green-700">FINRA 2111</span>
-        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-700">Reg BI</span>
-        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-100 text-purple-700">CFA Framework</span>
+        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-success-100 text-success-700">FINRA 2111</span>
+        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-brand-100 text-brand-700">Reg BI</span>
+        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-brand-100 text-brand-700">CFA Framework</span>
       </div>
 
       {/* Disclosures */}
-      <div className="mt-4 p-3 bg-gray-100 rounded-lg text-[10px] text-gray-400 space-y-1 leading-relaxed">
+      <div className="mt-4 p-3 bg-limestone-100 rounded-lg text-[10px] text-charcoal-300 space-y-1 leading-relaxed">
         <p>This risk profile assessment satisfies FINRA Rule 2111 suitability data collection requirements and SEC Regulation Best Interest care obligation documentation.</p>
         <p>Risk tolerance was assessed using psychometric questions. Risk capacity was computed from financial data and questionnaire responses. Both willingness and ability dimensions are evaluated per CFA Institute Investment Risk Profiling framework.</p>
         <p>Model portfolios use index proxies and historical data. Past performance does not guarantee future results. Backtested results are hypothetical and subject to model limitations.</p>

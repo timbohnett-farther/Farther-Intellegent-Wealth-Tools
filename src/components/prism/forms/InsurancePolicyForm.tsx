@@ -232,8 +232,8 @@ export function InsurancePolicyForm({
 
       {/* ── Disability-Specific Fields ── */}
       {isDisabilityPolicy(policyType) && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-4">
-          <h4 className="text-sm font-medium text-gray-700">Disability Details</h4>
+        <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
+          <h4 className="text-sm font-medium text-charcoal-700">Disability Details</h4>
 
           <Controller
             control={control}
@@ -290,8 +290,8 @@ export function InsurancePolicyForm({
 
       {/* ── LTC-Specific Fields ── */}
       {isLtcPolicy(policyType) && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-4">
-          <h4 className="text-sm font-medium text-gray-700">Long-Term Care Details</h4>
+        <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
+          <h4 className="text-sm font-medium text-charcoal-700">Long-Term Care Details</h4>
 
           <FormField label="Daily Benefit" error={errors.ltcDailyBenefit?.message}>
             <Controller
@@ -328,12 +328,12 @@ export function InsurancePolicyForm({
           {...register('notes')}
           rows={3}
           placeholder="Additional notes..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+          className="w-full rounded-lg border border-limestone-300 bg-white px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
         />
       </FormField>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-5">
+      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 pt-5">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
             Cancel

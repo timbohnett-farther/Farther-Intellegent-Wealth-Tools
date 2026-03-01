@@ -10,19 +10,19 @@ interface Props {
 
 export default function ExecutiveSummarySection({ data }: Props) {
   const levelColors = {
-    strongly_favorable: 'bg-green-50 border-green-500 text-green-800',
-    favorable: 'bg-blue-50 border-blue-500 text-blue-800',
-    neutral: 'bg-amber-50 border-amber-500 text-amber-800',
-    caution: 'bg-red-50 border-red-500 text-red-800',
+    strongly_favorable: 'bg-success-50 border-success-500 text-success-700',
+    favorable: 'bg-brand-50 border-brand-700 text-brand-700',
+    neutral: 'bg-warning-50 border-warning-500 text-warning-700',
+    caution: 'bg-critical-50 border-critical-500 text-critical-700',
   };
 
   const scoreColor = data.overallScore >= 80
-    ? 'text-green-600'
+    ? 'text-success-500'
     : data.overallScore >= 60
-    ? 'text-blue-600'
+    ? 'text-brand-700'
     : data.overallScore >= 40
-    ? 'text-amber-600'
-    : 'text-red-600';
+    ? 'text-warning-500'
+    : 'text-critical-500';
 
   const getAssessment = (metric: string, value: number) => {
     switch (metric) {
@@ -35,10 +35,10 @@ export default function ExecutiveSummarySection({ data }: Props) {
 
   const getIcon = (assessment: string) => {
     switch (assessment) {
-      case 'Favorable': return <span className="text-green-500">&#x2705;</span>;
-      case 'Marginal': return <span className="text-amber-500">&#x26A0;&#xFE0F;</span>;
-      case 'Unfavorable': return <span className="text-red-500">&#x1F534;</span>;
-      default: return <span className="text-gray-400">&#x2139;&#xFE0F;</span>;
+      case 'Favorable': return <span className="text-success-500">&#x2705;</span>;
+      case 'Marginal': return <span className="text-warning-500">&#x26A0;&#xFE0F;</span>;
+      case 'Unfavorable': return <span className="text-critical-500">&#x1F534;</span>;
+      default: return <span className="text-charcoal-300">&#x2139;&#xFE0F;</span>;
     }
   };
 
@@ -101,19 +101,19 @@ export default function ExecutiveSummarySection({ data }: Props) {
       {/* Key Metrics Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Annual Savings</p>
+          <p className="text-xs text-charcoal-500">Annual Savings</p>
           <p className="text-xl font-bold text-savings">{formatCurrency(data.annualInterestSavings)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">After-Tax Rate</p>
+          <p className="text-xs text-charcoal-500">After-Tax Rate</p>
           <p className="text-xl font-bold text-box-spread">{formatPercentValue(data.afterTaxCost * 100)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">Margin Safety</p>
+          <p className="text-xs text-charcoal-500">Margin Safety</p>
           <p className="text-xl font-bold text-safe">{formatPercentValue(data.marginSafetyDecline)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-gray-500">MC Probability</p>
+          <p className="text-xs text-charcoal-500">MC Probability</p>
           <p className={`text-xl font-bold ${data.mcProbability < 5 ? 'text-safe' : data.mcProbability < 15 ? 'text-warning' : 'text-danger'}`}>
             {formatPercentValue(data.mcProbability)}
           </p>
@@ -122,23 +122,23 @@ export default function ExecutiveSummarySection({ data }: Props) {
 
       {/* Decision Matrix Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-200">
+        <div className="px-4 py-3 border-b border-limestone-200">
           <h3 className="font-semibold text-sm">Decision Matrix</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Decision Factor</th>
-                <th className="text-left px-4 py-2 font-medium text-gray-600">Metric</th>
-                <th className="text-center px-4 py-2 font-medium text-gray-600">Assessment</th>
+              <tr className="bg-limestone-50">
+                <th className="text-left px-4 py-2 font-medium text-charcoal-500">Decision Factor</th>
+                <th className="text-left px-4 py-2 font-medium text-charcoal-500">Metric</th>
+                <th className="text-center px-4 py-2 font-medium text-charcoal-500">Assessment</th>
               </tr>
             </thead>
             <tbody>
               {metrics.map((m, i) => (
-                <tr key={i} className="border-t border-gray-100">
+                <tr key={i} className="border-t border-limestone-100">
                   <td className="px-4 py-2 font-medium">{m.factor}</td>
-                  <td className="px-4 py-2 text-gray-600">{m.value}</td>
+                  <td className="px-4 py-2 text-charcoal-500">{m.value}</td>
                   <td className="px-4 py-2 text-center">
                     <span className="inline-flex items-center gap-1">
                       {getIcon(m.assessment)} {m.assessment}

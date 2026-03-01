@@ -30,9 +30,10 @@ const SIZE_CONFIG = {
 
 /** Return a color based on the 0-100 value. */
 function getColor(value: number): string {
-  if (value >= 75) return '#10B981'; // green
-  if (value >= 50) return '#F59E0B'; // yellow / amber
-  return '#EF4444'; // red
+  if (value >= 85) return '#2E8B57'; // success-500
+  if (value >= 70) return '#E8A838'; // warning-500
+  if (value >= 50) return '#C0392B'; // critical-500
+  return '#9B1B1B'; // critical-700
 }
 
 // ---------------------------------------------------------------------------
@@ -86,7 +87,7 @@ export function ProbabilityGauge({
         <path
           d={bgPath}
           fill="none"
-          stroke="#E5E7EB"
+          stroke="#E4DDD4"
           strokeWidth={cfg.strokeWidth}
           strokeLinecap="round"
         />
@@ -120,7 +121,7 @@ export function ProbabilityGauge({
 
       {label && (
         <span
-          className="text-gray-500 font-medium -mt-1"
+          className="text-charcoal-500 font-medium -mt-1"
           style={{ fontSize: cfg.labelSize }}
         >
           {label}

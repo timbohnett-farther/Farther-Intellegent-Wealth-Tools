@@ -34,10 +34,10 @@ export function ProgressBar({
       {(label || showPercentage) && (
         <div className="mb-1.5 flex items-center justify-between">
           {label && (
-            <span className="text-sm font-medium text-gray-700">{label}</span>
+            <span className="text-sm font-medium text-charcoal-700">{label}</span>
           )}
           {showPercentage && (
-            <span className="text-xs tabular-nums text-gray-500">
+            <span className="text-xs tabular-nums text-charcoal-500">
               {Math.round(clamped)}%
             </span>
           )}
@@ -46,7 +46,7 @@ export function ProgressBar({
 
       <div
         className={clsx(
-          'w-full overflow-hidden rounded-full bg-gray-200',
+          'w-full overflow-hidden rounded-full bg-limestone-200',
           sizeStyles[size],
         )}
         role="progressbar"
@@ -58,7 +58,7 @@ export function ProgressBar({
         <div
           className={clsx(
             'h-full rounded-full transition-all duration-300 ease-out',
-            !color && 'bg-brand-500',
+            !color && 'bg-brand-700',
           )}
           style={{
             width: `${clamped}%`,

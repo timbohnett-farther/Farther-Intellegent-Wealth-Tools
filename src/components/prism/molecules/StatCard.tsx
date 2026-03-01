@@ -16,15 +16,15 @@ export interface StatCardProps {
 const trendConfig = {
   up: {
     icon: TrendingUp,
-    colorClass: 'text-green-600',
+    colorClass: 'text-success-500',
   },
   down: {
     icon: TrendingDown,
-    colorClass: 'text-red-600',
+    colorClass: 'text-critical-500',
   },
   neutral: {
     icon: Minus,
-    colorClass: 'text-gray-500',
+    colorClass: 'text-charcoal-500',
   },
 } as const;
 
@@ -42,16 +42,16 @@ export function StatCard({
   return (
     <div
       className={clsx(
-        'rounded-card border border-gray-200 bg-white p-4 shadow-sm',
+        'rounded-card border border-limestone-200 bg-white p-4 shadow-sm',
         className,
       )}
     >
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+      <p className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
         {label}
       </p>
 
       <p
-        className={clsx('mt-1 text-2xl font-bold tabular-nums', color || 'text-gray-900')}
+        className={clsx('mt-1 text-2xl font-bold tabular-nums', color || 'text-charcoal-900')}
       >
         {value}
       </p>

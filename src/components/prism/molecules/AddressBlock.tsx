@@ -20,9 +20,9 @@ export interface AddressBlockProps {
 }
 
 const inputBaseClass =
-  'w-full rounded-input border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100';
+  'w-full rounded-input border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 outline-none transition-colors placeholder:text-charcoal-300 focus:border-brand-700 focus:ring-2 focus:ring-brand-100';
 
-const labelClass = 'mb-1 block text-sm font-medium text-gray-700';
+const labelClass = 'mb-1 block text-sm font-medium text-charcoal-700';
 
 export function AddressBlock({
   value,
@@ -41,7 +41,7 @@ export function AddressBlock({
       {/* Address Line 1 */}
       <div>
         <label className={labelClass}>
-          Address Line 1<span className="ml-0.5 text-red-500">*</span>
+          Address Line 1<span className="ml-0.5 text-critical-500">*</span>
         </label>
         <input
           type="text"
@@ -71,7 +71,7 @@ export function AddressBlock({
         {/* City */}
         <div className="col-span-3">
           <label className={labelClass}>
-            City<span className="ml-0.5 text-red-500">*</span>
+            City<span className="ml-0.5 text-critical-500">*</span>
           </label>
           <input
             type="text"
@@ -86,7 +86,7 @@ export function AddressBlock({
         {/* State */}
         <div className="col-span-2">
           <label className={labelClass}>
-            State<span className="ml-0.5 text-red-500">*</span>
+            State<span className="ml-0.5 text-critical-500">*</span>
           </label>
           <select
             value={value.state}
@@ -106,7 +106,7 @@ export function AddressBlock({
         {/* ZIP */}
         <div className="col-span-1">
           <label className={labelClass}>
-            ZIP<span className="ml-0.5 text-red-500">*</span>
+            ZIP<span className="ml-0.5 text-critical-500">*</span>
           </label>
           <input
             type="text"

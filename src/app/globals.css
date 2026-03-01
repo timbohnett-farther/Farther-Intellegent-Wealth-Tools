@@ -2,10 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── CSS CUSTOM PROPERTIES ─────────────────────────────────────────── */
 :root {
+  /* Canvas & Cards */
+  --color-canvas:         #F8F4F0;
+  --color-card:           #FFFFFF;
+  --color-card-alt:       #F0EBE3;
+  --color-border:         #E4DDD4;
+  --color-border-strong:  #D4CCC2;
+
+  /* Text */
+  --color-text-primary:   #333333;
+  --color-text-secondary: #4A4A4A;
+  --color-text-tertiary:  #6B6B6B;
+  --color-text-muted:     #9E9E9E;
+  --color-text-inverse:   #FFFFFF;
+
+  /* Brand */
+  --color-brand:          #3B5A69;
+  --color-brand-dark:     #1E3642;
+  --color-brand-hover:    #4D6E7E;
+  --color-brand-active:   #2B4A58;
+  --color-brand-subtle:   #E0EAED;
+  --color-brand-tint:     #F0F5F7;
+
+  /* Semantic */
+  --color-success:        #2E8B57;
+  --color-warning:        #D4860B;
+  --color-critical:       #C0392B;
+  --color-info:           #2980B9;
+
+  /* Legacy tool variables */
   --safe: #22C55E;
-  --warning: #F59E0B;
-  --danger: #EF4444;
+  --warning: #D4860B;
+  --danger: #C0392B;
   --box-spread: #3B82F6;
   --margin-loan: #6B7280;
   --sbloc: #F97316;
@@ -13,51 +43,310 @@
   --savings: #10B981;
 }
 
+/* ── BASE LAYER ────────────────────────────────────────────────────── */
 @layer base {
-  body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
-  .dark body {
-    @apply bg-gray-950 text-gray-100;
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-text-primary);
+    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Scrollbar — subtle, brand-consistent */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4CCC2;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #BDB4A8;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(59, 90, 105, 0.15);
+    color: var(--color-text-primary);
   }
 }
 
+/* ── COMPONENT LAYER ───────────────────────────────────────────────── */
 @layer components {
+
+  /* ── Cards ── */
   .card {
-    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+    @apply bg-white rounded-lg border border-limestone-200 shadow-sm;
   }
-  .dark .card {
-    @apply bg-gray-900 border-gray-800;
+
+  .card-kpi {
+    @apply bg-white rounded-xl border border-limestone-200 shadow-sm;
+    padding: 24px 28px;
   }
+
+  .card-module {
+    @apply bg-white rounded-lg border border-limestone-200 overflow-hidden;
+  }
+
+  .card-insight {
+    @apply bg-white rounded-lg border border-limestone-200 p-5 transition-all duration-200;
+    border-left: 3px solid transparent;
+  }
+  .card-insight--critical { border-left-color: #C0392B; }
+  .card-insight--warning  { border-left-color: #D4860B; }
+  .card-insight--info     { border-left-color: #3B5A69; }
+  .card-insight:hover {
+    @apply shadow-md;
+    transform: translateY(-1px);
+  }
+
+  /* ── Alert Cards ── */
+  .card-alert {
+    @apply rounded-md p-3.5 flex items-start gap-3 text-sm;
+  }
+  .card-alert--critical { @apply bg-critical-50 border border-critical-100 text-critical-700; }
+  .card-alert--warning  { @apply bg-warning-50 border border-warning-100 text-warning-700; }
+  .card-alert--success  { @apply bg-success-50 border border-success-100 text-success-700; }
+  .card-alert--info     { @apply bg-info-50 border border-info-100 text-info-700; }
+
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold border-none cursor-pointer
+           transition-all duration-150 whitespace-nowrap relative overflow-hidden;
+  }
+  .btn:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(59, 90, 105, 0.25);
+  }
+  .btn:disabled {
+    @apply opacity-45 cursor-not-allowed pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-brand-700 text-white rounded-md;
+  }
+  .btn-primary:hover  { @apply bg-brand-600; }
+  .btn-primary:active { @apply bg-brand-800; }
+
+  .btn-secondary {
+    @apply bg-transparent text-brand-700 rounded-md;
+    border: 1.5px solid #3B5A69;
+  }
+  .btn-secondary:hover  { @apply bg-brand-50; }
+  .btn-secondary:active { @apply bg-brand-100; }
+
+  .btn-ghost {
+    @apply bg-transparent text-charcoal-500 rounded-md;
+  }
+  .btn-ghost:hover  { @apply bg-limestone-50 text-charcoal-900; }
+  .btn-ghost:active { @apply bg-limestone-100; }
+
+  .btn-danger {
+    @apply bg-critical-500 text-white rounded-md;
+  }
+  .btn-danger:hover  { background: #A93226; }
+  .btn-danger:active { background: #922B21; }
+
+  .btn-sm { @apply h-8 px-3 text-[13px] rounded; }
+  .btn-md { @apply h-10 px-5 text-sm; }
+  .btn-lg { @apply h-12 px-7 text-[15px]; }
+
+  /* ── Inputs ── */
   .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-           bg-white;
+    @apply w-full h-10 px-3.5 bg-white rounded-md text-sm text-charcoal-900 outline-none
+           transition-all duration-150;
+    border: 1.5px solid #E4DDD4;
   }
-  .dark .input-field {
-    @apply bg-gray-800 border-gray-600 text-gray-100;
+  .input-field::placeholder { @apply text-charcoal-300; }
+  .input-field:hover        { border-color: #BDB4A8; }
+  .input-field:focus        {
+    border-color: #3B5A69;
+    box-shadow: 0 0 0 3px rgba(59, 90, 105, 0.15);
   }
+  .input-field:disabled     { @apply bg-limestone-50 text-charcoal-300 cursor-not-allowed; }
+  .input-field--error       { border-color: #C0392B; }
+  .input-field--error:focus { box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15); }
+
+  /* ── Currency Input ── */
+  .input-currency {
+    @apply font-mono text-[15px] font-medium;
+    padding-left: 32px;
+  }
+
+  /* ── Labels ── */
   .label {
-    @apply block text-xs font-medium text-gray-600 mb-1;
+    @apply block text-[13px] font-semibold text-charcoal-700 mb-1.5;
+    letter-spacing: 0.01em;
   }
-  .dark .label {
-    @apply text-gray-400;
+  .label--required::after {
+    content: ' *';
+    color: #C0392B;
+  }
+
+  /* ── Hints ── */
+  .hint {
+    @apply text-xs text-charcoal-500 mt-1;
+    line-height: 1.4;
+  }
+  .hint--error { @apply text-critical-500; }
+
+  /* ── Tabs ── */
+  .tab-bar {
+    @apply flex gap-0 overflow-x-auto;
+    border-bottom: 2px solid #E4DDD4;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab {
+    @apply px-5 text-sm font-medium text-charcoal-500 whitespace-nowrap cursor-pointer
+           flex items-center gap-1.5 transition-all duration-150;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab:hover {
+    @apply text-charcoal-900;
+    border-bottom-color: #D4CCC2;
   }
   .tab-active {
-    @apply border-b-2 border-blue-500 text-blue-600 font-medium;
+    @apply text-brand-700 font-bold;
+    border-bottom-color: #3B5A69;
   }
   .tab-inactive {
-    @apply text-gray-500 hover:text-gray-700;
+    @apply text-charcoal-500;
+  }
+  .tab-inactive:hover {
+    @apply text-charcoal-700;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full text-[11px] font-bold uppercase
+           px-2.5 py-0.5 whitespace-nowrap;
+    letter-spacing: 0.04em;
+  }
+  .badge--success  { @apply bg-success-100 text-success-700; }
+  .badge--warning  { @apply bg-warning-100 text-warning-700; }
+  .badge--critical { @apply bg-critical-100 text-critical-700; }
+  .badge--info     { @apply bg-info-100 text-info-700; }
+  .badge--neutral  { @apply bg-charcoal-50 text-charcoal-700; }
+  .badge--brand    { @apply bg-brand-100 text-brand-700; }
+
+  /* Wealth tier badges */
+  .badge--mass-affluent { @apply bg-limestone-100 text-charcoal-500; }
+  .badge--hnw           { @apply bg-brand-100 text-brand-700; }
+  .badge--vhnw          { @apply bg-brand-200 text-brand-800; }
+  .badge--uhnw          { @apply bg-brand-700 text-white; }
+
+  /* ── Status Dots ── */
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block flex-shrink-0;
+  }
+  .status-dot--green  { @apply bg-success-500; }
+  .status-dot--yellow { @apply bg-warning-500; }
+  .status-dot--red    { @apply bg-critical-500; }
+  .status-dot--gray   { @apply bg-charcoal-300; }
+  .status-dot--blue   { @apply bg-brand-700; }
+
+  /* ── Progress Bars ── */
+  .progress-track {
+    @apply w-full h-2 bg-limestone-200 rounded-full overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full;
+    transition: width 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: #3B5A69;
+  }
+  .progress-fill--funded      { @apply bg-success-500; }
+  .progress-fill--on-track    { @apply bg-brand-700; }
+  .progress-fill--at-risk     { @apply bg-warning-500; }
+  .progress-fill--underfunded { @apply bg-critical-500; }
+
+  /* ── Data Tables ── */
+  .table-wrapper {
+    @apply w-full overflow-x-auto border border-limestone-200 rounded-lg bg-white;
+  }
+
+  /* ── Skeleton Loader ── */
+  .skeleton {
+    background: linear-gradient(90deg, #E4DDD4 25%, #F0EBE3 50%, #E4DDD4 75%);
+    background-size: 800px 100%;
+    @apply animate-shimmer rounded-md;
+  }
+
+  /* ── Form Sections ── */
+  .form-section {
+    @apply bg-white border border-limestone-200 rounded-lg p-6 mb-5;
+  }
+  .form-section__title {
+    @apply text-base font-bold text-charcoal-900 mb-5 pb-4 border-b border-limestone-200;
+  }
+
+  /* ── Success Rate Colors ── */
+  .success-rate--on-track { color: #2E8B57; }
+  .success-rate--watch    { color: #D4860B; }
+  .success-rate--at-risk  { color: #C0392B; }
+  .success-rate--critical { color: #7A1F1F; }
+}
+
+/* ── PRESENTATION MODE (Dark Theme) ───────────────────────────────── */
+[data-mode="presentation"] {
+  --color-canvas:         #1E3642;
+  --color-card:           #2B4A58;
+  --color-border:         rgba(255, 255, 255, 0.10);
+  --color-text-primary:   #F8F4F0;
+  --color-text-secondary: rgba(248, 244, 240, 0.75);
+  --color-text-tertiary:  rgba(248, 244, 240, 0.50);
+  --color-brand:          #7EA4B8;
+  --color-brand-subtle:   rgba(126, 164, 184, 0.15);
+}
+
+/* ── CLIENT PORTAL THEME ──────────────────────────────────────────── */
+[data-portal="client"] {
+  --portal-card-radius:     16px;
+  --portal-font-size-base:  16px;
+  --portal-spacing-section: 40px;
+}
+
+.portal-hero {
+  background: linear-gradient(135deg, #2B4A58 0%, #3B5A69 100%);
+  @apply p-12 rounded-2xl text-white mb-8;
+}
+
+/* ── PRINT STYLES ─────────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  .card {
+    box-shadow: none;
+    border: 1px solid #E4DDD4;
+    break-inside: avoid;
   }
 }
 
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  .card {
-    box-shadow: none;
-    border: 1px solid #e5e7eb;
-    break-inside: avoid;
+/* ── REDUCED MOTION ───────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:   0.01ms !important;
+    transition-duration:  0.01ms !important;
   }
 }

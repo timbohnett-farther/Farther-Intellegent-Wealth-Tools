@@ -48,8 +48,8 @@ export function TagInput({
   return (
     <div
       className={clsx(
-        'flex flex-wrap items-center gap-1.5 rounded-input border border-gray-300 bg-white px-2 py-1.5',
-        'transition-colors focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100',
+        'flex flex-wrap items-center gap-1.5 rounded-input border border-limestone-200 bg-white px-2 py-1.5',
+        'transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100',
         className,
       )}
     >
@@ -62,7 +62,7 @@ export function TagInput({
           <button
             type="button"
             onClick={() => onRemove(tag)}
-            className="inline-flex items-center rounded-sm p-0.5 text-brand-500 transition-colors hover:bg-brand-200 hover:text-brand-800"
+            className="inline-flex items-center rounded-sm p-0.5 text-brand-700 transition-colors hover:bg-brand-200 hover:text-brand-800"
             aria-label={`Remove ${tag}`}
           >
             <X className="h-3 w-3" />
@@ -77,7 +77,7 @@ export function TagInput({
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
         placeholder={tags.length === 0 ? placeholder : ''}
-        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-gray-900 outline-none placeholder:text-gray-400"
+        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-charcoal-900 outline-none placeholder:text-charcoal-300"
       />
     </div>
   );

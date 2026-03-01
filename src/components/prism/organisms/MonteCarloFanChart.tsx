@@ -88,14 +88,14 @@ function FanTooltip({
   ];
 
   return (
-    <div className="rounded-md border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1.5 font-semibold text-gray-900">Year {label}</p>
+    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-charcoal-900">Year {label}</p>
       <table className="w-full">
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
-              <td className="pr-3 text-gray-500">{row.label}</td>
-              <td className="text-right tabular-nums font-medium text-gray-900">
+              <td className="pr-3 text-charcoal-500">{row.label}</td>
+              <td className="text-right tabular-nums font-medium text-charcoal-900">
                 {formatCurrency(row.value)}
               </td>
             </tr>
@@ -126,18 +126,18 @@ export function MonteCarloFanChart({
     <div className={className}>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
 
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: '#6B7280' }}
-            axisLine={{ stroke: '#E5E7EB' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            axisLine={{ stroke: '#E4DDD4' }}
             tickLine={false}
           />
 
           <YAxis
             tickFormatter={formatMillions}
-            tick={{ fontSize: 11, fill: '#6B7280' }}
+            tick={{ fontSize: 11, fill: '#6B6B6B' }}
             axisLine={false}
             tickLine={false}
             domain={[0, yMax]}
@@ -146,84 +146,74 @@ export function MonteCarloFanChart({
 
           <Tooltip content={<FanTooltip />} />
 
-          {/* Band p5-p25: red zone */}
-          <Area
-            type="monotone"
-            dataKey="p5"
-            stackId="band"
-            stroke="none"
-            fill="transparent"
-            activeDot={false}
-          />
-          <Area
-            type="monotone"
-            dataKey="p25"
-            stackId="band-p5-p25"
-            stroke="none"
-            fill="#EF4444"
-            fillOpacity={0.15}
-            activeDot={false}
-            // These use absolute values; we render overlapping areas
-          />
-
-          {/*
-            Since Recharts stacked areas don't natively support "band" fills
-            between arbitrary percentiles, we use overlapping areas with
-            decreasing opacity layered bottom-to-top.
-          */}
-
-          {/* Bottom band: p5-p25 (red) */}
-          <Area
-            type="monotone"
-            dataKey="p5"
-            stroke="none"
-            fill="#EF4444"
-            fillOpacity={0.15}
-            activeDot={false}
-            isAnimationActive={false}
-          />
-
-          {/* Band p25-p50 (amber) — draws from 0 to p25 with amber, overlaps red below */}
-          <Area
-            type="monotone"
-            dataKey="p25"
-            stroke="none"
-            fill="#F59E0B"
-            fillOpacity={0.15}
-            activeDot={false}
-            isAnimationActive={false}
-          />
-
-          {/* Band p50-p75 (green) */}
-          <Area
-            type="monotone"
-            dataKey="p75"
-            stroke="none"
-            fill="#10B981"
-            fillOpacity={0.15}
-            activeDot={false}
-            isAnimationActive={false}
-          />
-
-          {/* Band p75-p95 (dark green) */}
+          {/* P5-P95 outermost band */}
           <Area
             type="monotone"
             dataKey="p95"
             stroke="none"
-            fill="#047857"
-            fillOpacity={0.15}
+            fill="rgba(59,90,105,0.08)"
+            fillOpacity={1}
+            activeDot={false}
+            isAnimationActive={false}
+          />
+          <Area
+            type="monotone"
+            dataKey="p5"
+            stroke="none"
+            fill="rgba(59,90,105,0.08)"
+            fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
           />
 
-          {/* Median line */}
+          {/* P10-P90 band */}
+          <Area
+            type="monotone"
+            dataKey="p90"
+            stroke="none"
+            fill="rgba(59,90,105,0.15)"
+            fillOpacity={1}
+            activeDot={false}
+            isAnimationActive={false}
+          />
+          <Area
+            type="monotone"
+            dataKey="p10"
+            stroke="none"
+            fill="rgba(59,90,105,0.15)"
+            fillOpacity={1}
+            activeDot={false}
+            isAnimationActive={false}
+          />
+
+          {/* P25-P75 inner band */}
+          <Area
+            type="monotone"
+            dataKey="p75"
+            stroke="none"
+            fill="rgba(59,90,105,0.30)"
+            fillOpacity={1}
+            activeDot={false}
+            isAnimationActive={false}
+          />
+          <Area
+            type="monotone"
+            dataKey="p25"
+            stroke="none"
+            fill="rgba(59,90,105,0.30)"
+            fillOpacity={1}
+            activeDot={false}
+            isAnimationActive={false}
+          />
+
+          {/* P50 median line */}
           <Area
             type="monotone"
             dataKey="p50"
-            stroke="#10B981"
-            strokeWidth={2}
+            stroke="#3B5A69"
+            strokeWidth={2.5}
             fill="none"
-            activeDot={{ r: 4, fill: '#10B981' }}
+            activeDot={{ r: 4, fill: '#3B5A69' }}
             isAnimationActive={false}
           />
 
@@ -231,12 +221,12 @@ export function MonteCarloFanChart({
           {retirementYear != null && (
             <ReferenceLine
               x={retirementYear}
-              stroke="#9CA3AF"
+              stroke="#9E9E9E"
               strokeDasharray="6 4"
               label={{
                 value: 'Retirement',
                 position: 'top',
-                fill: '#6B7280',
+                fill: '#6B6B6B',
                 fontSize: 11,
               }}
             />
@@ -246,12 +236,12 @@ export function MonteCarloFanChart({
           {goalAmount != null && (
             <ReferenceLine
               y={goalAmount}
-              stroke="#2563EB"
+              stroke="#E8A838"
               strokeDasharray="6 4"
               label={{
                 value: `Goal ${formatMillions(goalAmount)}`,
                 position: 'right',
-                fill: '#2563EB',
+                fill: '#E8A838',
                 fontSize: 11,
               }}
             />

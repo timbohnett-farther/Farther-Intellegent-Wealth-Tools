@@ -32,7 +32,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             align={align}
             sideOffset={6}
             className={clsx(
-              'z-50 max-w-xs rounded-md bg-gray-900 px-3 py-1.5 text-xs text-white shadow-md',
+              'z-50 max-w-xs rounded-md border border-limestone-200 bg-white px-3 py-1.5 text-xs text-charcoal-900 shadow-md',
               'animate-in fade-in-0 zoom-in-95',
               'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
               'data-[side=top]:slide-in-from-bottom-2',
@@ -42,7 +42,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             )}
           >
             {content}
-            <TooltipPrimitive.Arrow className="fill-gray-900" width={10} height={5} />
+            <TooltipPrimitive.Arrow className="fill-white" width={10} height={5} />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>

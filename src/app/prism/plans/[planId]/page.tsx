@@ -94,16 +94,16 @@ function SuccessGauge({ value }: { value: number }) {
   const circumference = Math.PI * radius;
   const pct = Math.min(100, Math.max(0, value));
   const offset = circumference - (pct / 100) * circumference;
-  const color = pct >= 85 ? '#10B981' : pct >= 70 ? '#F59E0B' : '#EF4444';
+  const color = pct >= 85 ? '#2E8B57' : pct >= 70 ? '#D4860B' : '#C0392B';
 
   return (
     <div className="relative inline-flex items-center justify-center">
       <svg width="100" height="60" viewBox="0 0 100 60">
-        <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="#E5E7EB" strokeWidth="8" strokeLinecap="round" />
+        <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke="#E4DDD4" strokeWidth="8" strokeLinecap="round" />
         <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={offset} />
       </svg>
-      <span className="absolute bottom-0 text-xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+      <span className="absolute bottom-0 text-xl font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
         {Math.round(pct)}%
       </span>
     </div>
@@ -203,23 +203,23 @@ export default function PlanOverviewPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-gray-900">{meta.planName}</h1>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">
+              <h1 className="text-xl font-bold text-charcoal-900">{meta.planName}</h1>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-success-100 text-success-700">
                 Active
               </span>
             </div>
             {meta.lastUpdated && (
-              <p className="text-sm text-gray-500">Last updated: {meta.lastUpdated}</p>
+              <p className="text-sm text-charcoal-500">Last updated: {meta.lastUpdated}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-limestone-200 rounded-lg hover:bg-limestone-50 text-charcoal-500">
               <Edit3 size={14} /> Edit
             </button>
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-limestone-200 rounded-lg hover:bg-limestone-50 text-charcoal-500">
               <Share2 size={14} /> Share
             </button>
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-limestone-200 rounded-lg hover:bg-limestone-50 text-charcoal-500">
               <Download size={14} /> Export
             </button>
             <button
@@ -237,80 +237,80 @@ export default function PlanOverviewPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <div className="mb-4 p-3 bg-critical-50 border border-critical-100 rounded-lg text-sm text-critical-700">
             {error}
           </div>
         )}
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col items-center">
-            <p className="text-xs text-gray-500 mb-2">Probability of Success</p>
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 flex flex-col items-center">
+            <p className="text-xs text-charcoal-500 mb-2">Probability of Success</p>
             {loading ? (
-              <Loader2 size={24} className="animate-spin text-gray-300" />
+              <Loader2 size={24} className="animate-spin text-charcoal-300" />
             ) : results ? (
               <SuccessGauge value={probabilityOfSuccess * 100} />
             ) : (
-              <p className="text-sm text-gray-400">Run plan</p>
+              <p className="text-sm text-charcoal-300">Run plan</p>
             )}
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Shield size={16} className={isRetirementReady ? 'text-green-500' : 'text-amber-500'} />
-              <p className="text-xs text-gray-500">Retirement Ready?</p>
+              <Shield size={16} className={isRetirementReady ? 'text-success-500' : 'text-warning-500'} />
+              <p className="text-xs text-charcoal-500">Retirement Ready?</p>
             </div>
-            <p className={`text-xl font-bold ${isRetirementReady ? 'text-green-600' : 'text-amber-600'}`}>
+            <p className={`text-xl font-bold ${isRetirementReady ? 'text-success-500' : 'text-warning-500'}`}>
               {results ? (isRetirementReady ? 'Yes' : 'At Risk') : '--'}
             </p>
             {retirementYear && (
-              <p className="text-xs text-gray-400 mt-1">Target: {retirementYear}</p>
+              <p className="text-xs text-charcoal-300 mt-1">Target: {retirementYear}</p>
             )}
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign size={16} className="text-brand-500" />
-              <p className="text-xs text-gray-500">Total Net Worth</p>
+              <p className="text-xs text-charcoal-500">Total Net Worth</p>
             </div>
-            <p className="text-xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(netWorth) : '--'}
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Landmark size={16} className="text-purple-500" />
-              <p className="text-xs text-gray-500">Projected Estate</p>
+              <Landmark size={16} className="text-brand-700" />
+              <p className="text-xs text-charcoal-500">Projected Estate</p>
             </div>
-            <p className="text-xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(projectedEstate) : '--'}
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Receipt size={16} className="text-amber-500" />
-              <p className="text-xs text-gray-500">Annual Tax Est.</p>
+              <Receipt size={16} className="text-warning-500" />
+              <p className="text-xs text-charcoal-500">Annual Tax Est.</p>
             </div>
-            <p className="text-xl font-bold text-gray-900" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(annualTax) : '--'}
             </p>
           </div>
         </div>
 
         {/* Planning Modules Status */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-8">
-          <h3 className="font-semibold text-gray-900 mb-4">Planning Modules</h3>
+        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 mb-8">
+          <h3 className="font-semibold text-charcoal-900 mb-4">Planning Modules</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2">
             {MODULES.map((mod) => (
               <Link
                 key={mod.segment}
                 href={`/prism/plans/${planId}${mod.segment}`}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-gray-100 hover:border-brand-200 hover:bg-brand-50 transition-colors group"
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-limestone-100 hover:border-brand-200 hover:bg-brand-50 transition-colors group"
               >
                 {mod.complete ? (
-                  <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
+                  <CheckCircle2 size={16} className="text-success-500 flex-shrink-0" />
                 ) : (
-                  <Circle size={16} className="text-gray-300 flex-shrink-0" />
+                  <Circle size={16} className="text-charcoal-300 flex-shrink-0" />
                 )}
-                <span className="text-xs font-medium text-gray-700 group-hover:text-brand-600 truncate">
+                <span className="text-xs font-medium text-charcoal-700 group-hover:text-brand-600 truncate">
                   {mod.label}
                 </span>
               </Link>
@@ -320,70 +320,70 @@ export default function PlanOverviewPage() {
 
         {/* Monte Carlo Fan Chart */}
         {results?.annualPercentileBands && results.annualPercentileBands.length > 0 && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Portfolio Projection (Monte Carlo)</h3>
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 mb-6">
+            <h3 className="font-semibold text-charcoal-900 mb-4">Portfolio Projection (Monte Carlo)</h3>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={results.annualPercentileBands} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
                   <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                   <YAxis tickFormatter={formatAxisCurrency} tick={{ fontSize: 11 }} />
                   <Tooltip formatter={(v: number) => formatCurrency(v)} />
                   {retirementYear && (
-                    <ReferenceLine x={retirementYear} stroke="#9CA3AF" strokeDasharray="5 5" label="Retirement" />
+                    <ReferenceLine x={retirementYear} stroke="#A09888" strokeDasharray="5 5" label="Retirement" />
                   )}
                   <Area type="monotone" dataKey="p95" stackId="band" fill="transparent" stroke="none" />
                   <Area type="monotone" dataKey="p75" stackId="band2" fill="#047857" fillOpacity={0.1} stroke="none" />
-                  <Area type="monotone" dataKey="p50" stackId="band3" fill="#10B981" fillOpacity={0.15} stroke="#10B981" strokeWidth={2} />
-                  <Area type="monotone" dataKey="p25" stackId="band4" fill="#F59E0B" fillOpacity={0.1} stroke="none" />
-                  <Area type="monotone" dataKey="p5" stackId="band5" fill="#EF4444" fillOpacity={0.1} stroke="none" />
+                  <Area type="monotone" dataKey="p50" stackId="band3" fill="#2E8B57" fillOpacity={0.15} stroke="#2E8B57" strokeWidth={2} />
+                  <Area type="monotone" dataKey="p25" stackId="band4" fill="#D4860B" fillOpacity={0.1} stroke="none" />
+                  <Area type="monotone" dataKey="p5" stackId="band5" fill="#C0392B" fillOpacity={0.1} stroke="none" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-green-500 rounded" /> Median (p50)</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-green-100 rounded" /> p25-p75</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-amber-100 rounded" /> p10-p25</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-red-100 rounded" /> p5-p10</span>
+            <div className="flex items-center gap-4 mt-2 text-xs text-charcoal-500">
+              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-success-500 rounded" /> Median (p50)</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-success-100 rounded" /> p25-p75</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-warning-100 rounded" /> p10-p25</span>
+              <span className="flex items-center gap-1"><span className="w-3 h-2 bg-critical-100 rounded" /> p5-p10</span>
             </div>
           </div>
         )}
 
         {/* Bottom row - Cash Flow Chart + Goals summary */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-            <h3 className="font-semibold text-gray-900 mb-4">Cash Flow Summary</h3>
+          <div className="lg:col-span-2 bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+            <h3 className="font-semibold text-charcoal-900 mb-4">Cash Flow Summary</h3>
             {results?.cashFlows && results.cashFlows.length > 0 ? (
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart data={results.cashFlows} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
                     <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                     <YAxis tickFormatter={formatAxisCurrency} tick={{ fontSize: 11 }} />
                     <Tooltip formatter={(v: number) => formatCurrency(v)} />
                     <Legend />
-                    <Bar dataKey="totalGrossIncome" name="Income" fill="#3B82F6" stackId="a" />
-                    <Bar dataKey="totalExpenses" name="Expenses" fill="#F59E0B" stackId="b" />
-                    <Bar dataKey="totalTax" name="Taxes" fill="#EF4444" stackId="b" />
-                    <Line type="monotone" dataKey="netCashFlow" name="Net" stroke="#10B981" strokeWidth={2} dot={false} />
+                    <Bar dataKey="totalGrossIncome" name="Income" fill="#3B5A69" stackId="a" />
+                    <Bar dataKey="totalExpenses" name="Expenses" fill="#D4860B" stackId="b" />
+                    <Bar dataKey="totalTax" name="Taxes" fill="#C0392B" stackId="b" />
+                    <Line type="monotone" dataKey="netCashFlow" name="Net" stroke="#2E8B57" strokeWidth={2} dot={false} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-200">
+              <div className="h-64 flex items-center justify-center bg-limestone-50 rounded-lg border border-dashed border-limestone-200">
                 <div className="text-center">
-                  <TrendingUp size={32} className="mx-auto mb-2 text-gray-300" />
-                  <p className="text-sm text-gray-400">Click "Run Plan" to generate cash flow projections</p>
+                  <TrendingUp size={32} className="mx-auto mb-2 text-charcoal-300" />
+                  <p className="text-sm text-charcoal-300">Click "Run Plan" to generate cash flow projections</p>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-            <div className="px-5 py-4 border-b border-gray-100">
-              <h3 className="font-semibold text-gray-900">Goals Summary</h3>
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+            <div className="px-5 py-4 border-b border-limestone-100">
+              <h3 className="font-semibold text-charcoal-900">Goals Summary</h3>
             </div>
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-limestone-50">
               {results?.goalResults && results.goalResults.length > 0 ? (
                 results.goalResults.map((goal) => {
                   const pct = Math.round((goal.fundedRatio ?? 0) * 100);
@@ -391,22 +391,22 @@ export default function PlanOverviewPage() {
                   return (
                     <div key={goal.goalId} className="px-5 py-3 flex items-center gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{goal.name}</p>
-                        <div className="mt-1 w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <p className="text-sm font-medium text-charcoal-900 truncate">{goal.name}</p>
+                        <div className="mt-1 w-full h-1.5 bg-limestone-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${isFunded ? 'bg-green-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-400'}`}
+                            className={`h-full rounded-full ${isFunded ? 'bg-success-500' : pct >= 50 ? 'bg-warning-500' : 'bg-critical-500'}`}
                             style={{ width: `${Math.min(100, pct)}%` }}
                           />
                         </div>
                       </div>
-                      <span className="text-xs font-medium text-gray-600" style={{ fontFeatureSettings: '"tnum"' }}>
+                      <span className="text-xs font-medium text-charcoal-500" style={{ fontFeatureSettings: '"tnum"' }}>
                         {pct}%
                       </span>
                     </div>
                   );
                 })
               ) : (
-                <div className="px-5 py-8 text-center text-sm text-gray-400">
+                <div className="px-5 py-8 text-center text-sm text-charcoal-300">
                   Run plan to see goal funding analysis
                 </div>
               )}
@@ -416,20 +416,20 @@ export default function PlanOverviewPage() {
 
         {/* Net Worth Timeline */}
         {results?.cashFlows && results.cashFlows.length > 0 && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mt-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Net Worth Over Time</h3>
+          <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 mt-6">
+            <h3 className="font-semibold text-charcoal-900 mb-4">Net Worth Over Time</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={results.cashFlows} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
                   <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                   <YAxis tickFormatter={formatAxisCurrency} tick={{ fontSize: 11 }} />
                   <Tooltip formatter={(v: number) => formatCurrency(v)} />
                   <Legend />
                   {retirementYear && (
-                    <ReferenceLine x={retirementYear} stroke="#9CA3AF" strokeDasharray="5 5" label="Retirement" />
+                    <ReferenceLine x={retirementYear} stroke="#A09888" strokeDasharray="5 5" label="Retirement" />
                   )}
-                  <Area type="monotone" dataKey="totalAssets" name="Total Assets" fill="#3B82F6" fillOpacity={0.2} stroke="#3B82F6" />
+                  <Area type="monotone" dataKey="totalAssets" name="Total Assets" fill="#3B5A69" fillOpacity={0.2} stroke="#3B5A69" />
                   <Area type="monotone" dataKey="netWorth" name="Net Worth" fill="#0A1628" fillOpacity={0.1} stroke="#0A1628" strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>

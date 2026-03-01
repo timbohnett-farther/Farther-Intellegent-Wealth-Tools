@@ -31,9 +31,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-limestone-50">
       {/* Top nav */}
-      <header className="sticky top-0 z-30 bg-gray-900 text-white">
+      <header className="sticky top-0 z-30 bg-charcoal-900 text-white">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-4">
             <Link href="/prism/dashboard" className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white">

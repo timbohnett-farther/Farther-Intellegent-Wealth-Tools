@@ -53,16 +53,16 @@ function formatGoalType(raw: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-const PRIORITY_BADGE: Record<GoalPriority, { label: string; variant: 'info' | 'warning' | 'purple' }> = {
+const PRIORITY_BADGE: Record<GoalPriority, { label: string; variant: 'info' | 'warning' | 'brand' }> = {
   needs: { label: 'Needs', variant: 'info' },
   wants: { label: 'Wants', variant: 'warning' },
-  wishes: { label: 'Wishes', variant: 'purple' },
+  wishes: { label: 'Wishes', variant: 'brand' },
 };
 
 const STATUS_COLOR: Record<GoalFundingStatus, string> = {
-  funded: '#10B981',
-  partial: '#F59E0B',
-  at_risk: '#EF4444',
+  funded: '#2E8B57',
+  partial: '#E8A838',
+  at_risk: '#C0392B',
 };
 
 const STATUS_LABEL: Record<GoalFundingStatus, string> = {
@@ -92,15 +92,15 @@ export function GoalCard({
   return (
     <div
       className={clsx(
-        'rounded-card border border-gray-200 bg-white p-5 shadow-sm',
+        'rounded-card border border-limestone-200 bg-white p-5 shadow-sm',
         className,
       )}
     >
       {/* Top row: name + type badge + priority */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <Target className="h-4 w-4 shrink-0 text-brand-500" aria-hidden="true" />
-          <h3 className="text-sm font-semibold text-gray-900 truncate">{name}</h3>
+          <Target className="h-4 w-4 shrink-0 text-brand-700" aria-hidden="true" />
+          <h3 className="text-sm font-semibold text-charcoal-900 truncate">{name}</h3>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <Badge variant={priorityCfg.variant}>{priorityCfg.label}</Badge>
@@ -109,14 +109,14 @@ export function GoalCard({
 
       {/* Type + target year */}
       <div className="mt-1.5 flex items-center gap-2">
-        <Badge variant="outline">{formatGoalType(type)}</Badge>
+        <Badge variant="neutral">{formatGoalType(type)}</Badge>
         {targetYear !== null && (
-          <span className="text-xs text-gray-400">Target {targetYear}</span>
+          <span className="text-xs text-charcoal-300">Target {targetYear}</span>
         )}
       </div>
 
       {/* Target amount */}
-      <p className="mt-3 text-xl font-bold tabular-nums text-gray-900">
+      <p className="mt-3 text-xl font-bold tabular-nums text-charcoal-900">
         {formatCurrency(targetAmount)}
       </p>
 
@@ -133,11 +133,11 @@ export function GoalCard({
       {/* Funded ratio + status */}
       <div className="mt-2 flex items-center justify-between">
         {fundedRatio !== null ? (
-          <span className="text-xs tabular-nums text-gray-500">
+          <span className="text-xs tabular-nums text-charcoal-500">
             {Math.round(fundedRatio)}% funded
           </span>
         ) : (
-          <span className="text-xs text-gray-400">--</span>
+          <span className="text-xs text-charcoal-300">--</span>
         )}
         {status && (
           <span
