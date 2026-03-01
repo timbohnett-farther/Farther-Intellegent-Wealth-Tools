@@ -31,6 +31,12 @@ const STATUS_MAP: Record<ProposalStatus, StatusConfig> = {
     textClass: 'text-charcoal-700',
     dotClass: 'bg-charcoal-400',
   },
+  READY: {
+    label: 'Ready',
+    bgClass: 'bg-info-100',
+    textClass: 'text-info-700',
+    dotClass: 'bg-info-500',
+  },
   REVIEW: {
     label: 'In Review',
     bgClass: 'bg-info-100',

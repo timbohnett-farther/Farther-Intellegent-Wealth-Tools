@@ -12,7 +12,6 @@
 import type {
   FeeAnalysis,
   FeeBreakdown,
-  FeeProjectionYear,
   Holding,
 } from './types';
 import type { MoneyCents } from '../tax-planning/types';
@@ -68,13 +67,11 @@ export function computeFeeAnalysis(params: {
   );
 
   // Annual savings
-  const annualSavings = currentFees.totalAmount - proposedFees.totalAmount;
-  const annualSavingsRate =
-    totalValueNum > 0 ? annualSavings / totalValueNum : 0;
+  const annualSavings = (currentFees.totalDollars as number) - (proposedFees.totalDollars as number);
 
   // Project compounding impact over multiple horizons
-  const projectionYears = [1, 2, 3, 5, 10, 15, 20, 25, 30];
-  const projections = computeProjections(
+  const projectionYears = [5, 10, 15, 20, 25, 30];
+  const compoundingImpact = computeProjections(
     totalValueNum,
     currentFees.totalRate,
     proposedFees.totalRate,
@@ -82,22 +79,11 @@ export function computeFeeAnalysis(params: {
     projectionYears,
   );
 
-  // Extract specific horizon savings
-  const tenYearProjection = projections.find((p) => p.year === 10);
-  const thirtyYearProjection = projections.find((p) => p.year === 30);
-
   return {
-    currentFees,
-    proposedFees,
-    annualSavings: Math.round(annualSavings),
-    annualSavingsRate: Math.round(annualSavingsRate * 10000) / 10000,
-    projections,
-    tenYearCompoundedSavings: tenYearProjection
-      ? tenYearProjection.compoundedSavings
-      : 0,
-    thirtyYearCompoundedSavings: thirtyYearProjection
-      ? thirtyYearProjection.compoundedSavings
-      : 0,
+    current: currentFees,
+    proposed: proposedFees,
+    annualSavings: Math.round(annualSavings) as MoneyCents,
+    compoundingImpact,
   };
 }
 
@@ -111,29 +97,29 @@ export function computeFeeAnalysis(params: {
 function computeFeeBreakdown(
   holdings: Holding[],
   totalValue: number,
-  advisoryRate: number,
-  transactionRate: number,
+  advisoryFeeRate: number,
+  transactionCostRate: number,
 ): FeeBreakdown {
   // Weighted fund expense ratio
   const fundExpenseRatio = computeWeightedExpenseRatio(holdings, totalValue);
 
   // Fee amounts (annual)
-  const advisoryAmount = Math.round(totalValue * advisoryRate);
-  const fundExpenseAmount = Math.round(totalValue * fundExpenseRatio);
-  const transactionAmount = Math.round(totalValue * transactionRate);
+  const advisoryFeeDollars = Math.round(totalValue * advisoryFeeRate);
+  const fundExpenseDollars = Math.round(totalValue * fundExpenseRatio);
+  const transactionCostDollars = Math.round(totalValue * transactionCostRate);
 
-  const totalRate = advisoryRate + fundExpenseRatio + transactionRate;
-  const totalAmount = advisoryAmount + fundExpenseAmount + transactionAmount;
+  const totalRate = advisoryFeeRate + fundExpenseRatio + transactionCostRate;
+  const totalDollars = advisoryFeeDollars + fundExpenseDollars + transactionCostDollars;
 
   return {
-    advisoryRate,
-    advisoryAmount,
-    fundExpenseRatio: Math.round(fundExpenseRatio * 10000) / 10000,
-    fundExpenseAmount,
-    transactionRate,
-    transactionAmount,
-    totalRate: Math.round(totalRate * 10000) / 10000,
-    totalAmount,
+    fundExpenseRatio: Math.round(fundExpenseRatio * 100000) / 100000,
+    fundExpenseDollars: fundExpenseDollars as MoneyCents,
+    advisoryFeeRate,
+    advisoryFeeDollars: advisoryFeeDollars as MoneyCents,
+    transactionCostRate,
+    transactionCostDollars: transactionCostDollars as MoneyCents,
+    totalRate: Math.round(totalRate * 100000) / 100000,
+    totalDollars: totalDollars as MoneyCents,
   };
 }
 
@@ -150,11 +136,13 @@ function computeWeightedExpenseRatio(
   let valueSum = 0;
 
   for (const h of holdings) {
-    weightedSum += h.marketValue * h.expenseRatio;
-    valueSum += h.marketValue;
+    const mv = h.marketValue as number;
+    if (h.expenseRatio !== null) {
+      weightedSum += mv * h.expenseRatio;
+    }
+    valueSum += mv;
   }
 
-  // Use actual holdings total if available, else fall back to provided totalValue
   const denominator = valueSum > 0 ? valueSum : totalValue;
   return weightedSum / denominator;
 }
@@ -162,13 +150,6 @@ function computeWeightedExpenseRatio(
 /**
  * Project portfolio growth under two fee structures and compute the
  * compounding impact of fee savings over time.
- *
- * For each year:
- *   currentFeeValue  = totalValue * (1 + growthRate - currentTotalRate)^year
- *   proposedFeeValue = totalValue * (1 + growthRate - proposedTotalRate)^year
- *   compoundedSavings = proposedFeeValue - currentFeeValue
- *
- * Also tracks cumulative dollar savings (simple, non-compounded) for comparison.
  */
 function computeProjections(
   totalValue: number,
@@ -176,36 +157,24 @@ function computeProjections(
   proposedTotalRate: number,
   growthRate: number,
   years: number[],
-): FeeProjectionYear[] {
+): FeeAnalysis['compoundingImpact'] {
   const currentNetGrowth = 1 + growthRate - currentTotalRate;
   const proposedNetGrowth = 1 + growthRate - proposedTotalRate;
 
-  // Annual savings (simple)
-  const annualFeeDifference = Math.round(
-    totalValue * (currentTotalRate - proposedTotalRate),
-  );
-
   return years.map((year) => {
-    // Compound growth under each fee structure
-    const currentFeeValue = Math.round(
+    const currentWealth = Math.round(
       totalValue * Math.pow(currentNetGrowth, year),
     );
-    const proposedFeeValue = Math.round(
+    const proposedWealth = Math.round(
       totalValue * Math.pow(proposedNetGrowth, year),
     );
-
-    // Cumulative simple savings (just annual savings * years, non-compounded)
-    const cumulativeSavings = annualFeeDifference * year;
-
-    // Compounded savings: the actual difference in portfolio values
-    const compoundedSavings = proposedFeeValue - currentFeeValue;
+    const difference = proposedWealth - currentWealth;
 
     return {
-      year,
-      currentFeeValue,
-      proposedFeeValue,
-      cumulativeSavings,
-      compoundedSavings,
+      years: year,
+      currentWealth: currentWealth as MoneyCents,
+      proposedWealth: proposedWealth as MoneyCents,
+      difference: difference as MoneyCents,
     };
   });
 }

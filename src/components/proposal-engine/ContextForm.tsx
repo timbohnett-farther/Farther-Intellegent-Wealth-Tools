@@ -16,12 +16,16 @@ import {
 import type {
   CreateProposalRequest,
   ProposalType,
+  ProposalOccasion,
   RelationshipTier,
 } from '@/lib/proposal-engine/types';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
+
+/** Form data produced by the ContextForm (clientId is not collected in the form). */
+export type ContextFormData = Omit<CreateProposalRequest, 'clientId'>;
 
 export interface ContextFormProps {
   /** Pre-populate form fields on edit/resume. */
@@ -34,7 +38,7 @@ export interface ContextFormProps {
     notes: string;
   }>;
   /** Callback when the form is submitted. */
-  onSubmit: (data: CreateProposalRequest) => void;
+  onSubmit: (data: ContextFormData) => void;
   /** Callback to navigate back (hidden on first step). */
   onBack?: () => void;
 }
@@ -184,7 +188,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
       onSubmit({
         clientName: clientName.trim(),
         proposalType,
-        occasion,
+        occasion: occasion as ProposalOccasion,
         assetsInScope,
         relationshipTier,
         notes: notes.trim(),

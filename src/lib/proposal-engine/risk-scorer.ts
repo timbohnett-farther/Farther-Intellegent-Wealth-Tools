@@ -13,7 +13,11 @@
 // weighted blend that maps to a recommended allocation.
 // =============================================================================
 
-import type { FartherRiskProfile, QuestionnaireResponse, RiskLabel } from './types';
+import type {
+  FartherRiskProfile,
+  QuestionnaireResponse,
+  RiskLabel,
+} from './types';
 import type { MoneyCents } from '../tax-planning/types';
 import { toDollars } from '../tax-planning/types';
 
@@ -37,6 +41,8 @@ export function scoreRiskProfile(params: {
   goalFundingNeeded: MoneyCents;
   currentSavings: MoneyCents;
   yearsToGoal: number;
+  // Optional: current portfolio risk for gap analysis
+  currentPortfolioRisk?: number;
 }): FartherRiskProfile {
   const behavioral = computeBehavioralScore(params.responses);
   const capacity = computeCapacityScore({
@@ -59,24 +65,48 @@ export function scoreRiskProfile(params: {
     required.score,
   );
 
-  const riskLabel = scoreToLabel(compositeScore);
+  const compositeLabel = scoreToLabel(compositeScore);
   const recommendedAllocation = scoreToAllocation(compositeScore);
 
+  const currentPortfolioRisk = params.currentPortfolioRisk ?? compositeScore;
+  const riskGap = compositeScore - currentPortfolioRisk;
+
+  let riskGapLabel: string;
+  if (Math.abs(riskGap) <= 5) {
+    riskGapLabel = 'Well aligned';
+  } else if (riskGap > 20) {
+    riskGapLabel = 'Significantly too conservative';
+  } else if (riskGap > 5) {
+    riskGapLabel = 'Slightly too conservative';
+  } else if (riskGap < -20) {
+    riskGapLabel = 'Significantly too aggressive';
+  } else {
+    riskGapLabel = 'Slightly too aggressive';
+  }
+
   return {
-    compositeScore,
-    riskLabel,
+    profileId: `rp-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
 
     behavioralScore: behavioral.score,
     behavioralLabel: behavioral.label,
+    questionnaireResponses: params.responses,
 
     capacityScore: capacity.score,
     capacityFactors: capacity.factors,
 
-    requiredReturnScore: required.score,
+    requiredScore: required.score,
     requiredReturn: required.requiredReturn,
     fundingRatio: required.fundingRatio,
 
+    compositeScore,
+    compositeLabel,
     recommendedAllocation,
+
+    currentPortfolioRisk,
+    riskGap,
+    riskGapLabel,
+
+    assessedAt: new Date().toISOString(),
   };
 }
 
@@ -114,7 +144,8 @@ export function scoreToAllocation(
 
 /**
  * Compute behavioral score from questionnaire responses.
- * Weighted average of all response scores.
+ * Uses score from each response (which is pre-computed by the question options).
+ * Weights come from the RISK_QUESTIONS definition.
  */
 function computeBehavioralScore(
   responses: QuestionnaireResponse[],
@@ -123,16 +154,14 @@ function computeBehavioralScore(
     return { score: 50, label: 'MODERATE' };
   }
 
-  let totalWeight = 0;
-  let weightedSum = 0;
-
+  // Simple average of response scores since weights are already applied
+  // in the question definitions
+  let totalScore = 0;
   for (const r of responses) {
-    const w = r.weight > 0 ? r.weight : 1;
-    weightedSum += r.score * w;
-    totalWeight += w;
+    totalScore += r.score;
   }
 
-  const score = clamp(Math.round(weightedSum / totalWeight), 1, 100);
+  const score = clamp(Math.round(totalScore / responses.length), 1, 100);
   return { score, label: scoreToLabel(score) };
 }
 
@@ -158,17 +187,14 @@ function computeCapacityScore(params: {
   if (params.timeHorizon < 3) {
     timeHorizonScore = 20;
   } else if (params.timeHorizon < 7) {
-    // Linear interpolation within [3,7) => [40,65)
     timeHorizonScore = 40 + ((params.timeHorizon - 3) / 4) * 25;
   } else if (params.timeHorizon < 15) {
-    // Linear interpolation within [7,15) => [65,85)
     timeHorizonScore = 65 + ((params.timeHorizon - 7) / 8) * 20;
   } else {
     timeHorizonScore = 85;
   }
 
   // --- Income stability sub-score ---
-  // Heuristic: higher income relative to portfolio suggests stable W2
   const incomeToPortfolio =
     toDollars(params.portfolioValue) > 0
       ? toDollars(params.annualIncome) / toDollars(params.portfolioValue)
@@ -176,17 +202,13 @@ function computeCapacityScore(params: {
 
   let incomeStabilityScore: number;
   if (incomeToPortfolio > 0.15) {
-    // High income relative to portfolio => likely active W2
-    incomeStabilityScore = 70;
+    incomeStabilityScore = 70; // High income relative to portfolio => likely active W2
   } else if (incomeToPortfolio > 0.05) {
-    // Moderate income => possibly variable or semi-retired
-    incomeStabilityScore = 55;
+    incomeStabilityScore = 55; // Moderate
   } else if (incomeToPortfolio > 0) {
-    // Low income relative to portfolio => possibly retired with pension/SS
-    incomeStabilityScore = 60;
+    incomeStabilityScore = 60; // Low income => possibly retired with pension/SS
   } else {
-    // No income
-    incomeStabilityScore = 40;
+    incomeStabilityScore = 40; // No income
   }
 
   // --- Liquidity ratio sub-score ---
@@ -194,10 +216,8 @@ function computeCapacityScore(params: {
   if (params.emergencyFundMonths < 3) {
     liquidityScore = 20;
   } else if (params.emergencyFundMonths < 12) {
-    // Linear interpolation [3,12) => [50,70)
     liquidityScore = 50 + ((params.emergencyFundMonths - 3) / 9) * 20;
   } else if (params.emergencyFundMonths < 36) {
-    // Linear interpolation [12,36) => [70,85)
     liquidityScore = 70 + ((params.emergencyFundMonths - 12) / 24) * 15;
   } else {
     liquidityScore = 85;
@@ -214,17 +234,14 @@ function computeCapacityScore(params: {
   if (debtRatio > 0.5) {
     debtScore = 25;
   } else if (debtRatio > 0.3) {
-    // Linear interpolation (0.3, 0.5] => [45, 25]
     debtScore = 45 + ((0.5 - debtRatio) / 0.2) * 20;
   } else if (debtRatio > 0.1) {
-    // Linear interpolation (0.1, 0.3] => [65, 45]
     debtScore = 65 + ((0.3 - debtRatio) / 0.2) * 20;
   } else {
     debtScore = 85;
   }
 
   // --- Human capital value ---
-  // Simplified PV: annualIncome * min(yearsToRetire, 30) * 0.7
   const assumedRetirementAge = 65;
   const estimatedAge = estimateAgeFromPortfolioAndIncome(
     toDollars(params.portfolioValue),
@@ -234,12 +251,12 @@ function computeCapacityScore(params: {
   const humanCapitalValue =
     toDollars(params.annualIncome) * Math.min(yearsToRetire, 30) * 0.7;
 
-  // Convert human capital to a 1-100 score based on ratio to total assets
+  // Convert human capital to a 1-100 score
   const hcvRatio =
     totalAssetsDollars > 0 ? humanCapitalValue / totalAssetsDollars : 0;
   let hcvScore: number;
   if (hcvRatio > 5) {
-    hcvScore = 90; // Lots of future earnings relative to current assets
+    hcvScore = 90;
   } else if (hcvRatio > 2) {
     hcvScore = 75;
   } else if (hcvRatio > 1) {
@@ -247,7 +264,7 @@ function computeCapacityScore(params: {
   } else if (hcvRatio > 0.3) {
     hcvScore = 45;
   } else {
-    hcvScore = 25; // Near or in retirement
+    hcvScore = 25;
   }
 
   // --- Blend capacity sub-scores ---
@@ -267,11 +284,11 @@ function computeCapacityScore(params: {
   return {
     score,
     factors: {
-      timeHorizon: Math.round(timeHorizonScore),
+      timeHorizon: Math.round(params.timeHorizon),
       incomeStability: Math.round(incomeStabilityScore),
-      liquidityRatio: Math.round(liquidityScore),
-      debtRatio: Math.round(debtScore),
-      humanCapitalValue: Math.round(humanCapitalValue),
+      liquidityRatio: Math.round(params.emergencyFundMonths * 100) / 100,
+      debtRatio: Math.round(debtRatio * 10000) / 10000,
+      humanCapitalValue: Math.round(humanCapitalValue * 100) as MoneyCents,
     },
   };
 }
@@ -294,45 +311,33 @@ function computeRequiredScore(params: {
   const savings = toDollars(params.currentSavings);
   const years = Math.max(params.yearsToGoal, 1);
 
-  // Funding ratio: how much of the goal is already covered
   const fundingRatio = goal > 0 ? savings / goal : 1;
 
-  // If already fully funded, minimal required return
   if (fundingRatio >= 1) {
     return { score: 20, requiredReturn: 0, fundingRatio };
   }
 
-  // If savings is zero or negative, maximum required return
   if (savings <= 0) {
     return { score: 95, requiredReturn: 1, fundingRatio: 0 };
   }
 
-  // Solve: goal = savings * (1 + r)^years  =>  r = (goal/savings)^(1/years) - 1
   const requiredReturn = Math.pow(goal / savings, 1 / years) - 1;
 
-  // Map required return to score
-  // Low return needed => lower risk score (can be conservative)
-  // High return needed => higher risk score (must be aggressive)
   let score: number;
   if (requiredReturn <= 0.02) {
-    score = 20; // 2% or less => very achievable conservatively
+    score = 20;
   } else if (requiredReturn <= 0.04) {
-    // Linear [0.02, 0.04] => [20, 35]
     score = 20 + ((requiredReturn - 0.02) / 0.02) * 15;
   } else if (requiredReturn <= 0.06) {
-    // Linear [0.04, 0.06] => [35, 50]
     score = 35 + ((requiredReturn - 0.04) / 0.02) * 15;
   } else if (requiredReturn <= 0.08) {
-    // Linear [0.06, 0.08] => [50, 65]
     score = 50 + ((requiredReturn - 0.06) / 0.02) * 15;
   } else if (requiredReturn <= 0.10) {
-    // Linear [0.08, 0.10] => [65, 80]
     score = 65 + ((requiredReturn - 0.08) / 0.02) * 15;
   } else if (requiredReturn <= 0.15) {
-    // Linear [0.10, 0.15] => [80, 95]
     score = 80 + ((requiredReturn - 0.10) / 0.05) * 15;
   } else {
-    score = 95; // 15%+ return needed => very aggressive
+    score = 95;
   }
 
   return {
@@ -378,18 +383,12 @@ function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-/**
- * Rough age estimate from portfolio size and income.
- * This is a heuristic for human capital computation when actual age
- * is not available.  In production, age would come from the client record.
- */
 function estimateAgeFromPortfolioAndIncome(
   portfolioValue: number,
   annualIncome: number,
 ): number {
-  if (annualIncome <= 0) return 65; // no income => assume retired
+  if (annualIncome <= 0) return 65;
   const ratio = portfolioValue / annualIncome;
-  // Very rough: ratio of ~2 => ~30 years old, ratio of ~15 => ~60
   const estimated = 25 + ratio * 2.5;
   return clamp(Math.round(estimated), 22, 75);
 }

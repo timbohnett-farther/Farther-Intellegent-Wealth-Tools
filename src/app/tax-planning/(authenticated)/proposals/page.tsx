@@ -29,6 +29,7 @@ interface FunnelStep {
 
 const STATUS_COLORS: Record<ProposalStatus, string> = {
   DRAFT: 'bg-limestone-100 text-charcoal-700',
+  READY: 'bg-info-100 text-info-700',
   REVIEW: 'bg-info-100 text-info-700',
   APPROVED: 'bg-brand-100 text-brand-700',
   SENT: 'bg-warning-100 text-warning-700',
@@ -124,7 +125,7 @@ export default function ProposalsDashboardPage() {
         const recent = proposalsData.filter((p) => new Date(p.createdAt) >= ninetyDaysAgo);
         const sent = proposalsData.filter((p) => p.sentAt);
         const accepted = proposalsData.filter((p) => p.status === 'ACCEPTED');
-        const aumWon = accepted.reduce((sum, p) => sum + p.proposedPortfolioValue, 0);
+        const aumWon = accepted.reduce((sum, p) => sum + (p.proposedPortfolioValue ?? 0), 0);
         setStats({
           totalCreated90d: recent.length,
           sent: sent.length,
@@ -146,8 +147,8 @@ export default function ProposalsDashboardPage() {
   // Filtering
   const filtered = proposals.filter((p) => {
     if (statusFilter !== 'ALL' && p.status !== statusFilter) return false;
-    if (typeFilter !== 'All Types' && !p.title.toLowerCase().includes(typeFilter.toLowerCase())) return false;
-    if (search && !p.clientName.toLowerCase().includes(search.toLowerCase()) && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
+    if (typeFilter !== 'All Types' && !(p.title ?? '').toLowerCase().includes(typeFilter.toLowerCase())) return false;
+    if (search && !p.clientName.toLowerCase().includes(search.toLowerCase()) && !(p.title ?? '').toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
@@ -158,7 +159,7 @@ export default function ProposalsDashboardPage() {
   const funnel: FunnelStep[] = [
     { label: 'Created', count: proposals.length, color: 'bg-brand-700' },
     { label: 'Sent', count: proposals.filter((p) => p.sentAt).length, color: 'bg-warning-500' },
-    { label: 'Viewed', count: proposals.filter((p) => p.viewedAt).length, color: 'bg-purple-500' },
+    { label: 'Viewed', count: proposals.filter((p) => !!p.viewedAt).length, color: 'bg-purple-500' },
     { label: 'Accepted', count: proposals.filter((p) => p.status === 'ACCEPTED').length, color: 'bg-success-500' },
   ];
   const maxFunnel = Math.max(1, funnel[0].count);
@@ -302,11 +303,11 @@ export default function ProposalsDashboardPage() {
                               {p.clientName}
                             </Link>
                           </td>
-                          <td className="px-4 py-3 text-sm text-charcoal-700 whitespace-nowrap">{p.title}</td>
+                          <td className="px-4 py-3 text-sm text-charcoal-700 whitespace-nowrap">{p.title ?? '--'}</td>
                           <td className="px-4 py-3 whitespace-nowrap"><StatusBadge status={p.status} /></td>
-                          <td className="px-4 py-3 text-sm text-charcoal-700 tabular-nums whitespace-nowrap">{fmt.format(p.currentPortfolioValue / 100)}</td>
+                          <td className="px-4 py-3 text-sm text-charcoal-700 tabular-nums whitespace-nowrap">{fmt.format(((p.currentPortfolioValue ?? 0) as number) / 100)}</td>
                           <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{formatDate(p.createdAt)}</td>
-                          <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{formatDate(p.sentAt)}</td>
+                          <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{formatDate(p.sentAt ?? undefined)}</td>
                           <td className="px-4 py-3 text-sm text-charcoal-500 whitespace-nowrap">{formatDate(p.viewedAt)}</td>
                           <td className="px-4 py-3 whitespace-nowrap">
                             <div className="flex items-center gap-2">
