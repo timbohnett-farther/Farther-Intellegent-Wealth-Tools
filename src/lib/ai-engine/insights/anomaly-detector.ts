@@ -64,10 +64,10 @@ function checkBalanceChanges(
   }
 
   // Individual account checks
-  const allAccountIds = new Set([
+  const allAccountIds = Array.from(new Set([
     ...Object.keys(current.accountBalances),
     ...Object.keys(previous.accountBalances),
-  ]);
+  ]));
 
   for (const accountId of allAccountIds) {
     const currentBalance = current.accountBalances[accountId] ?? 0;

@@ -11,6 +11,7 @@ import {
   Copy,
   Shield,
   CreditCard,
+  RefreshCw,
   ArrowLeft,
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -22,6 +23,7 @@ const ADMIN_NAV = [
   { label: 'Tax Tables', href: '/admin/tax-tables', icon: FileSpreadsheet },
   { label: 'Templates', href: '/admin/templates', icon: Copy },
   { label: 'Compliance', href: '/admin/compliance', icon: Shield },
+  { label: 'Update Engine', href: '/admin/update-engine', icon: RefreshCw },
   { label: 'Billing', href: '/admin/billing', icon: CreditCard },
 ];
 
