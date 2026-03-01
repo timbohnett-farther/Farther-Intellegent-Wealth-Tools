@@ -480,6 +480,63 @@ export interface InvestmentModel {
 // Proposal Types
 // =====================================================================
 
+/** Tracking event type for proposal engagement. */
+export type TrackingEventType =
+  | 'EMAIL_OPENED'
+  | 'LINK_CLICKED'
+  | 'PROPOSAL_VIEWED'
+  | 'PROPOSAL_DOWNLOADED'
+  | 'PROPOSAL_ACCEPTED'
+  | 'PROPOSAL_DECLINED';
+
+/** A single tracking event. */
+export interface TrackingEvent {
+  /** Unique event identifier. */
+  eventId: string;
+  /** Type of tracking event. */
+  eventType: TrackingEventType;
+  /** ISO 8601 timestamp of the event. */
+  timestamp: string;
+  /** IP address of the viewer. */
+  ipAddress?: string;
+  /** User agent string. */
+  userAgent?: string;
+  /** Additional metadata. */
+  metadata?: Record<string, unknown>;
+}
+
+/** A recipient of a proposal. */
+export interface ProposalRecipient {
+  /** Recipient email address. */
+  email: string;
+  /** Recipient display name. */
+  name: string;
+  /** Role of the recipient. */
+  role: 'PRIMARY' | 'SPOUSE' | 'TRUSTEE' | 'OTHER';
+}
+
+/** Tracking record for a sent proposal. */
+export interface ProposalTracking {
+  /** Unique tracking identifier. */
+  trackingId: string;
+  /** ID of the proposal being tracked. */
+  proposalId: string;
+  /** When the proposal was sent. */
+  sentAt: string;
+  /** Who it was sent to. */
+  recipients: ProposalRecipient[];
+  /** Individual tracking events. */
+  events: TrackingEvent[];
+  /** Current outcome status. */
+  outcome: 'PENDING' | 'VIEWED' | 'ACCEPTED' | 'DECLINED' | 'EXPIRED';
+  /** When the outcome was last updated. */
+  outcomeUpdatedAt: string;
+  /** Unique link for the recipient to view the proposal. */
+  viewLink: string;
+  /** Expiration date for the proposal link. */
+  expiresAt: string;
+}
+
 /** A complete portfolio proposal. */
 export interface Proposal {
   /** Unique proposal identifier. */
@@ -492,10 +549,16 @@ export interface Proposal {
   advisorId: string;
   /** Client display name. */
   clientName: string;
+  /** Client email address. */
+  clientEmail?: string;
   /** Proposal title. */
   title: string;
+  /** Proposal type. */
+  type: ProposalType;
   /** Current status. */
   status: ProposalStatus;
+  /** Current wizard step (1-6). */
+  wizardStep: number;
   /** Client's risk profile. */
   riskProfile?: FartherRiskProfile;
   /** Current portfolio holdings. */
@@ -513,6 +576,10 @@ export interface Proposal {
   feeAnalysis?: FeeAnalysis;
   /** Tax transition analysis. */
   taxTransition?: TaxTransitionAnalysis;
+  /** Statement scan results. */
+  scanResults?: StatementScanResult[];
+  /** Tracking data if sent. */
+  tracking?: ProposalTracking;
   /** Advisor notes. */
   notes?: string;
   /** When the proposal was sent to the client. */
@@ -552,14 +619,112 @@ export type RelationshipTier =
   | 'PRIVATE_CLIENT'
   | 'INSTITUTIONAL';
 
+// =====================================================================
+// API Request Types
+// =====================================================================
+
+/** Standard error envelope returned by all API endpoints on failure. */
+export interface ErrorEnvelope {
+  error: {
+    /** Machine-readable error code. */
+    code: string;
+    /** Human-readable error description. */
+    message: string;
+    /** Additional structured error details. */
+    details: Record<string, unknown>;
+    /** Unique correlation ID for log tracing. */
+    correlationId: string;
+  };
+}
+
 /** Request payload for creating a new proposal. */
 export interface CreateProposalRequest {
   clientName: string;
-  proposalType: ProposalType;
-  occasion: string;
-  assetsInScope: number;
-  relationshipTier: RelationshipTier;
-  notes: string;
+  clientEmail?: string;
+  householdId: string;
+  type: ProposalType;
+  title: string;
+  notes?: string;
+}
+
+/** Request body for updating a proposal. */
+export interface UpdateProposalRequest {
+  /** Update wizard step progress. */
+  wizardStep?: number;
+  /** Update status. */
+  status?: ProposalStatus;
+  /** Update title. */
+  title?: string;
+  /** Update notes. */
+  notes?: string;
+  /** Update client name. */
+  clientName?: string;
+  /** Update client email. */
+  clientEmail?: string;
+  /** Set selected model ID. */
+  selectedModelId?: string;
+  /** Update current holdings (after manual edits). */
+  currentHoldings?: Holding[];
+}
+
+/** Request body for scanning a statement. */
+export interface ScanStatementRequest {
+  /** Original filename of the uploaded statement. */
+  filename: string;
+  /** MIME type of the file. */
+  mimeType?: string;
+  /** Base64-encoded file content (Stage 1: not actually processed). */
+  fileContent?: string;
+}
+
+/** Request body for submitting risk questionnaire responses. */
+export interface RiskAssessmentRequest {
+  /** Array of questionnaire responses. */
+  responses: QuestionnaireResponse[];
+  /** Client's investment time horizon in years. */
+  timeHorizon: number;
+  /** Client's annual income. */
+  annualIncome?: number;
+  /** Client's total net worth. */
+  netWorth?: number;
+  /** Client's liquid net worth. */
+  liquidNetWorth?: number;
+  /** Client's goal funding target. */
+  goalTarget?: number;
+  /** Client's current savings rate (annual). */
+  currentSavingsRate?: number;
+}
+
+/** Request body for computing analytics. */
+export interface ComputeAnalyticsRequest {
+  /** Current portfolio holdings to analyze. */
+  currentHoldings: Holding[];
+  /** Selected model ID for proposed portfolio. */
+  proposedModelId: string;
+  /** Total portfolio value for the proposed allocation. */
+  proposedValue: number;
+  /** Client's marginal tax rate (0-1). */
+  marginalTaxRate?: number;
+  /** State tax rate (0-1). */
+  stateTaxRate?: number;
+}
+
+/** Request body for sending a proposal. */
+export interface SendProposalRequest {
+  /** Recipients to send the proposal to. */
+  recipients: ProposalRecipient[];
+  /** Optional personal message to include. */
+  message?: string;
+  /** Expiration days for the proposal link (default 30). */
+  expirationDays?: number;
+}
+
+/** Request body for recording a tracking event. */
+export interface RecordTrackingEventRequest {
+  /** Type of tracking event. */
+  eventType: TrackingEventType;
+  /** Additional metadata. */
+  metadata?: Record<string, unknown>;
 }
 
 /** Result from an OCR statement scan. */
@@ -622,20 +787,28 @@ export interface ProposalSection {
 /** Summary item for the proposal dashboard list. */
 export interface ProposalListItem {
   proposalId: string;
+  firmId: string;
+  advisorId: string;
   clientName: string;
-  proposalType: ProposalType;
+  type: ProposalType;
   status: ProposalStatus;
-  portfolioValue: number;
+  wizardStep: number;
+  title: string;
+  currentPortfolioValue: number;
   createdAt: string;
   updatedAt: string;
-  sentAt?: string;
-  viewedAt?: string;
 }
 
 /** Dashboard-level statistics. */
 export interface ProposalDashboardStats {
-  created90d: number;
+  totalProposals: number;
+  drafts: number;
+  inReview: number;
   sent: number;
-  conversionRate: number;
-  aumWon: number;
+  viewed: number;
+  accepted: number;
+  declined: number;
+  totalProposalAUM: number;
+  averageProposalValue: number;
+  acceptanceRate: number;
 }
