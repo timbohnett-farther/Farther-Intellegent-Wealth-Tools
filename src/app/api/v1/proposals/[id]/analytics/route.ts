@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // POST /api/v1/proposals/:id/analytics  - Compute analytics for proposal
 // GET  /api/v1/proposals/:id/analytics  - Get cached analytics results

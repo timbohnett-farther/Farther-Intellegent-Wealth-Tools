@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET /api/v1/pulse/churn — Churn Signals & Risk Analysis
 //

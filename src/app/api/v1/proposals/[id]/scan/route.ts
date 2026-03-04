@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // POST /api/v1/proposals/:id/scan  - Upload statement for OCR scanning
 // =============================================================================

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET    /api/v1/households/:id  - Get household detail with persons, returns, documents
 // PATCH  /api/v1/households/:id  - Update household

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET  /api/v1/household/:id/goals  - List goals of a household
 // POST /api/v1/household/:id/goals  - Add a goal to a household

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET /api/v1/household/stats  - Get household dashboard statistics
 // =============================================================================

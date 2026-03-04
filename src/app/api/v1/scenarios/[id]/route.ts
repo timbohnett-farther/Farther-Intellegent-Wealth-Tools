@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET   /api/v1/scenarios/:id  - Get scenario with overrides
 // PATCH /api/v1/scenarios/:id  - Update scenario (name, add/remove overrides)

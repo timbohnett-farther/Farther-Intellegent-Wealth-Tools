@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET  /api/v1/proposals/:id/tracking  - Get proposal tracking data
 // POST /api/v1/proposals/:id/tracking  - Record a proposal open/view event

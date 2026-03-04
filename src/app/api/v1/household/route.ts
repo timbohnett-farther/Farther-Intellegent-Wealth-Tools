@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET  /api/v1/household       - List/search households
 // POST /api/v1/household       - Create a new household

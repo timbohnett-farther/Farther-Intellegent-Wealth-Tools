@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // POST /api/v1/return-documents  - Create document + return presigned upload URL
 // =============================================================================

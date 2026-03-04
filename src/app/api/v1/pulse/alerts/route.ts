@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET  /api/v1/pulse/alerts       — List/filter alerts
 // POST /api/v1/pulse/alerts       — Alert actions (acknowledge, resolve, snooze, dismiss)

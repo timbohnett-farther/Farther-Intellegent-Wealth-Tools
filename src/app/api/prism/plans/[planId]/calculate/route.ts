@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prism/db';
 import { projectCashFlows } from '@/lib/calc-engine/projections/cash-flow-engine';

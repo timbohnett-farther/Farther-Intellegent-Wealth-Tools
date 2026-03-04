@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET    /api/v1/proposals/:id  - Get full proposal detail
 // PATCH  /api/v1/proposals/:id  - Update proposal (wizard progress, status, data)

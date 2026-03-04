@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // =============================================================================
 // GET  /api/v1/proposals    - List proposals for firm
 // POST /api/v1/proposals    - Create a new proposal

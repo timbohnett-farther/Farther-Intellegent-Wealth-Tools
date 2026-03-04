@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { isAIEnabled } from '@/lib/risk-profile/ai-service';
 
