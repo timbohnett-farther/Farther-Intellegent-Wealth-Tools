@@ -56,7 +56,6 @@ COPY --from=builder /app/node_modules/better-sqlite3 ./node_modules/better-sqlit
 COPY --from=builder /app/node_modules/bindings ./node_modules/bindings
 COPY --from=builder /app/node_modules/file-uri-to-path ./node_modules/file-uri-to-path
 COPY --from=builder /app/node_modules/prebuild-install ./node_modules/prebuild-install
-COPY --from=builder /app/node_modules/node-addon-api ./node_modules/node-addon-api
 
 # Copy Prisma CLI and engines for db push at startup
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
