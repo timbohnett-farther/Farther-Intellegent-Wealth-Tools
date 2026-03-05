@@ -58,6 +58,15 @@ COPY --from=builder /app/node_modules/file-uri-to-path ./node_modules/file-uri-t
 COPY --from=builder /app/node_modules/prebuild-install ./node_modules/prebuild-install
 COPY --from=builder /app/node_modules/node-addon-api ./node_modules/node-addon-api
 
+# Copy Prisma CLI and engines for db push at startup
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/@prisma/engines ./node_modules/@prisma/engines
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+
+# Copy startup script
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
+
 # Create writable data directory for SQLite and set default DATABASE_URL
 RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 ENV DATABASE_URL="file:/app/data/prod.db"
@@ -68,4 +77,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
