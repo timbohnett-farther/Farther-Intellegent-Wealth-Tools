@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils/cn";
 
 const inputVariants = tv({
   base: [
-    "w-full h-10 px-3.5 rounded-md text-sm text-white",
+    "w-full h-10 px-3.5 rounded-xl text-sm text-white",
     "bg-white/[0.06]",
     "outline-hidden transition-all duration-150",
     "border-[1.5px] border-white/[0.10]",

@@ -3,7 +3,7 @@
 export const chartConfig = {
   backgroundColor:  '#111111',
   gridColor:        'rgba(255, 255, 255, 0.06)',
-  axisColor:        'rgba(255, 255, 255, 0.10)',
+  axisColor:        'rgba(255, 255, 255, 0.30)',
   axisLabelColor:   'rgba(255, 255, 255, 0.40)',
   legendColor:      'rgba(255, 255, 255, 0.60)',
   fontFamily:       '"Fakt", sans-serif',
@@ -48,7 +48,7 @@ export const chartConfig = {
   },
 
   barChart: {
-    barRadius:       [4, 4, 0, 0] as [number, number, number, number],
+    barRadius:       [6, 6, 0, 0] as [number, number, number, number],
     barGap:          '20%',
     barCategoryGap:  '35%',
   },

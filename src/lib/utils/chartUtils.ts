@@ -4,6 +4,10 @@ export type ChartColorName =
   | "brand"
   | "brand-light"
   | "brand-dark"
+  | "teal-medium"
+  | "teal-light"
+  | "slate-dark"
+  | "slate-light"
   | "charcoal"
   | "limestone"
   | "success"
@@ -19,6 +23,10 @@ export const chartColors: Record<ChartColorName, string> = {
   brand: "#1d7682",
   "brand-light": "#b6d0ed",
   "brand-dark": "#0d3538",
+  "teal-medium": "#28a1af",
+  "teal-light": "#88cbd3",
+  "slate-dark": "#5b6a71",
+  "slate-light": "#8a9aa2",
   charcoal: "rgba(255, 255, 255, 0.40)",
   limestone: "rgba(255, 255, 255, 0.10)",
   success: "#22c55e",
@@ -36,9 +44,11 @@ export const getChartColor = (name: ChartColorName): string =>
 
 export const defaultChartColorSeries: ChartColorName[] = [
   "brand",
+  "teal-medium",
   "brand-light",
-  "success",
-  "warning",
+  "teal-light",
+  "slate-dark",
+  "slate-light",
   "gold",
   "purple",
   "terra",

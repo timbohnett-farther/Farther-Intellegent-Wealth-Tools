@@ -16,7 +16,8 @@ const buttonVariants = tv({
     variant: {
       primary: [
         "text-white rounded-md",
-        "bg-gradient-to-br from-teal-500 to-teal-600",
+        "bg-gradient-to-br from-[#1d7682] to-[#28a1af]",
+        "shadow-[0_4px_16px_rgba(29,118,130,0.3)]",
         "hover:from-teal-400 hover:to-teal-500",
         "active:from-teal-700 active:to-teal-800",
       ],
