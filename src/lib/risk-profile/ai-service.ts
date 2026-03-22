@@ -15,14 +15,12 @@ import type {
 } from './types';
 import { CATEGORY_TO_AXIS, RISK_BAND_LABELS } from './types';
 
-// ── Configuration ────────────────────────────────────────────────────
+// ── Configuration (delegated to AI Gateway) ─────────────────────────
 
-const AI_API_KEY = process.env.AI_API_KEY ?? '';
-const AI_MODEL = process.env.AI_MODEL ?? 'claude-sonnet-4-20250514';
-const AI_BASE_URL = process.env.AI_BASE_URL ?? 'https://api.anthropic.com';
+import { callAI, isAIAvailable } from '../ai/gateway';
 
 export function isAIEnabled(): boolean {
-  return AI_API_KEY.length > 0;
+  return isAIAvailable();
 }
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -102,41 +100,18 @@ function getAxisCoverage(questions: RiskQuestion[]): Record<QuestionAxis, number
   return coverage;
 }
 
-// ── Anthropic API Call ──────────────────────────────────────────────
+// ── AI API Call (delegated to gateway) ─────────────────────────────
 
 async function callAnthropicAPI(
   systemPrompt: string,
   userPrompt: string,
 ): Promise<string> {
-  const response = await fetch(`${AI_BASE_URL}/v1/messages`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': AI_API_KEY,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: AI_MODEL,
-      max_tokens: 4096,
-      system: systemPrompt,
-      messages: [
-        { role: 'user', content: userPrompt },
-      ],
-    }),
+  const response = await callAI({
+    systemPrompt,
+    userPrompt,
+    maxTokens: 4096,
   });
-
-  if (!response.ok) {
-    const errorBody = await response.text().catch(() => 'Unknown error');
-    throw new Error(`Anthropic API error ${response.status}: ${errorBody}`);
-  }
-
-  const data = await response.json();
-  const textBlock = data.content?.find((b: { type: string }) => b.type === 'text');
-  if (!textBlock?.text) {
-    throw new Error('No text content in AI response');
-  }
-
-  return textBlock.text;
+  return response.text;
 }
 
 // ── Extract JSON from AI response ────────────────────────────────────

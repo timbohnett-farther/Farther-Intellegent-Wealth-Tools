@@ -1,6 +1,6 @@
 // ==================== EMAIL COMPOSER ====================
-// Template-based email generation from plan insights.
-// Produces professional draft emails for advisor review before sending.
+// Template-based email generation from plan insights, with optional
+// AI-enhanced version via the AI gateway.
 
 import type {
   PlanInsight,
@@ -8,6 +8,8 @@ import type {
   ClientInfo,
   DraftEmail,
 } from '../types';
+
+import { callAI, extractJSON, isAIAvailable } from '../../ai/gateway';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -185,4 +187,82 @@ export function composeClientEmail(
     insightId: insight.id,
     generatedAt: new Date().toISOString(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// AI-ENHANCED VERSION
+// ---------------------------------------------------------------------------
+
+const EMAIL_SYSTEM_PROMPT = `Compose a professional advisor-to-client email about a financial planning insight.
+
+Rules:
+1. Use a warm but professional tone appropriate for a wealth management relationship
+2. Open with a personalized greeting using the client's preferred name
+3. Explain the insight clearly without excessive jargon
+4. Include specific numbers (dollar amounts, percentages) when available
+5. Suggest a clear next step (meeting, call, or review)
+6. Close with the advisor's full contact information
+7. Keep the email concise — 150-250 words in the body
+
+Return ONLY a JSON object with this structure:
+{
+  "subject": "Email subject line",
+  "body": "Full email body text"
+}`;
+
+/**
+ * AI-enhanced email composition from a plan insight.
+ * Falls back to the template-based `composeClientEmail()` on any error.
+ */
+export async function composeClientEmailEnhanced(
+  insight: PlanInsight,
+  advisor: AdvisorInfo,
+  client: ClientInfo,
+): Promise<DraftEmail> {
+  if (!isAIAvailable()) {
+    return composeClientEmail(insight, advisor, client);
+  }
+
+  try {
+    const clientName = client.preferredName ?? client.firstName;
+
+    const userPrompt = `Compose an email for this insight:
+
+ADVISOR: ${advisor.name}, ${advisor.title} at ${advisor.firmName}
+  Email: ${advisor.email} | Phone: ${advisor.phone}
+
+CLIENT: ${clientName} ${client.lastName} (email: ${client.email})
+
+INSIGHT:
+  Type: ${insight.type}
+  Category: ${insight.category}
+  Title: ${insight.title}
+  Summary: ${insight.summary}
+  Impact: ${insight.estimatedImpact.type} of $${insight.estimatedImpact.amount.toLocaleString()} (${insight.estimatedImpact.timeframe})
+
+Available actions: ${insight.actions.map(a => a.label).join(', ') || 'Schedule a meeting'}`;
+
+    const response = await callAI({
+      systemPrompt: EMAIL_SYSTEM_PROMPT,
+      userPrompt,
+      temperature: 0.5,
+      maxTokens: 1024,
+      jsonMode: true,
+    });
+
+    const parsed = extractJSON<{ subject: string; body: string }>(response.text);
+
+    return {
+      to: client.email,
+      from: advisor.email,
+      subject: parsed.subject,
+      body: parsed.body,
+      isDraft: true,
+      insightId: insight.id,
+      generatedAt: new Date().toISOString(),
+    };
+  } catch (error) {
+    console.warn('[EmailComposer] AI generation failed, falling back to template:', error);
+    return composeClientEmail(insight, advisor, client);
+  }
 }
