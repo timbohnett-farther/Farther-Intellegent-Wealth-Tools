@@ -1,0 +1,232 @@
+'use client';
+
+import React, { useState, useMemo } from 'react';
+import clsx from 'clsx';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+} from '@tanstack/react-table';
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/prism/atoms';
+import { SearchInput } from '@/components/prism/molecules';
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export interface DataTableProps<T> {
+  /** Row data */
+  data: T[];
+  /** TanStack column definitions */
+  columns: ColumnDef<T, unknown>[];
+  /** Show a search / global filter input above the table */
+  searchable?: boolean;
+  /** Enable pagination controls (default true) */
+  pagination?: boolean;
+  /** Rows per page – used as initial page size (default 25) */
+  pageSize?: number;
+  /** Callback when a row is clicked */
+  onRowClick?: (row: T) => void;
+  /** Additional CSS classes for the outer wrapper */
+  className?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Page-size options
+// ---------------------------------------------------------------------------
+
+const PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+export function DataTable<T>({
+  data,
+  columns,
+  searchable = false,
+  pagination = true,
+  pageSize = 25,
+  onRowClick,
+  className,
+}: DataTableProps<T>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState('');
+
+  const table = useReactTable<T>({
+    data,
+    columns,
+    state: {
+      sorting,
+      globalFilter,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    ...(pagination
+      ? {
+          getPaginationRowModel: getPaginationRowModel(),
+          initialState: { pagination: { pageSize } },
+        }
+      : {}),
+  });
+
+  const pageIndex = table.getState().pagination.pageIndex;
+  const currentPageSize = table.getState().pagination.pageSize;
+  const totalRows = table.getFilteredRowModel().rows.length;
+  const pageCount = table.getPageCount();
+  const startRow = pageIndex * currentPageSize + 1;
+  const endRow = Math.min((pageIndex + 1) * currentPageSize, totalRows);
+
+  return (
+    <div className={clsx('w-full', className)}>
+      {/* ---- Toolbar ---- */}
+      {searchable && (
+        <div className="mb-3">
+          <SearchInput
+            value={globalFilter}
+            onChange={setGlobalFilter}
+            placeholder="Search table..."
+            className="max-w-sm"
+          />
+        </div>
+      )}
+
+      {/* ---- Table ---- */}
+      <div className="overflow-x-auto rounded-card border border-limestone-200">
+        <table className="w-full text-sm">
+          <thead className="border-b border-limestone-200 bg-limestone-50">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  const canSort = header.column.getCanSort();
+                  const sortDir = header.column.getIsSorted();
+                  return (
+                    <th
+                      key={header.id}
+                      className={clsx(
+                        'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500',
+                        canSort && 'cursor-pointer select-none',
+                      )}
+                      style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
+                      onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
+                    >
+                      <span className="inline-flex items-center gap-1.5">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                        {canSort && (
+                          <span className="text-charcoal-300">
+                            {sortDir === 'asc' ? (
+                              <ArrowUp className="h-3.5 w-3.5" />
+                            ) : sortDir === 'desc' ? (
+                              <ArrowDown className="h-3.5 w-3.5" />
+                            ) : (
+                              <ArrowUpDown className="h-3.5 w-3.5" />
+                            )}
+                          </span>
+                        )}
+                      </span>
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+
+          <tbody className="divide-y divide-limestone-100 bg-white">
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-4 py-12 text-center text-sm text-charcoal-300"
+                >
+                  No results found.
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  onClick={() => onRowClick?.(row.original)}
+                  className={clsx(
+                    'transition-colors',
+                    onRowClick && 'cursor-pointer',
+                    'hover:bg-limestone-50',
+                  )}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-4 py-3 text-charcoal-700">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ---- Pagination ---- */}
+      {pagination && totalRows > 0 && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-charcoal-500">
+          {/* Left – page size selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-charcoal-500">Rows per page</span>
+            <select
+              value={currentPageSize}
+              onChange={(e) => table.setPageSize(Number(e.target.value))}
+              className="h-8 rounded-md border border-limestone-300 bg-white px-2 text-xs text-charcoal-700 focus:border-brand-700 focus:outline-none focus:ring-1 focus:ring-brand-700"
+            >
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Center – row range */}
+          <span className="text-xs tabular-nums text-charcoal-500">
+            {startRow}–{endRow} of {totalRows}
+          </span>
+
+          {/* Right – prev / next */}
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="xs"
+              disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
+              aria-label="Previous page"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="px-2 text-xs tabular-nums">
+              Page {pageIndex + 1} of {pageCount}
+            </span>
+            <Button
+              variant="ghost"
+              size="xs"
+              disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
+              aria-label="Next page"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+DataTable.displayName = 'DataTable';

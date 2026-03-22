@@ -1,0 +1,71 @@
+'use client';
+
+import React from 'react';
+import clsx from 'clsx';
+
+export interface ProgressBarProps {
+  /** Progress value between 0 and 100 */
+  value: number;
+  label?: string;
+  showPercentage?: boolean;
+  color?: string;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const sizeStyles = {
+  sm: 'h-1.5',
+  md: 'h-2.5',
+  lg: 'h-4',
+} as const;
+
+export function ProgressBar({
+  value,
+  label,
+  showPercentage = true,
+  color,
+  size = 'md',
+  className,
+}: ProgressBarProps) {
+  const clamped = Math.min(100, Math.max(0, value));
+
+  return (
+    <div className={clsx('w-full', className)}>
+      {(label || showPercentage) && (
+        <div className="mb-1.5 flex items-center justify-between">
+          {label && (
+            <span className="text-sm font-medium text-charcoal-700">{label}</span>
+          )}
+          {showPercentage && (
+            <span className="text-xs tabular-nums text-charcoal-500">
+              {Math.round(clamped)}%
+            </span>
+          )}
+        </div>
+      )}
+
+      <div
+        className={clsx(
+          'w-full overflow-hidden rounded-full bg-limestone-200',
+          sizeStyles[size],
+        )}
+        role="progressbar"
+        aria-valuenow={clamped}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={label || 'Progress'}
+      >
+        <div
+          className={clsx(
+            'h-full rounded-full transition-all duration-300 ease-out',
+            !color && 'bg-brand-700',
+          )}
+          style={{
+            width: `${clamped}%`,
+            ...(color ? { backgroundColor: color } : {}),
+          }}
+        />
+      </div>
+    </div>
+  );
+}
