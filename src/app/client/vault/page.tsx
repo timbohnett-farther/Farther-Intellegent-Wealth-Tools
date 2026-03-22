@@ -146,7 +146,7 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
           <label className="block text-sm font-medium text-charcoal-700 mb-1">
             Folder
           </label>
-          <select className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+          <select className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500">
             {FOLDERS.map((f) => (
               <option key={f.key} value={f.key}>
                 {f.label}
@@ -209,7 +209,7 @@ export default function ClientVaultPage() {
           placeholder="Search documents..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+          className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500 bg-white"
         />
       </div>
 

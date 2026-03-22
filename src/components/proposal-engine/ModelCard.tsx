@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Shield, TrendingUp, AlertTriangle } from 'lucide-react';
 import type { InvestmentModel, ModelCategory, AssetClass } from '@/lib/proposal-engine/types';
 import { AllocationBar } from './AllocationBar';
@@ -90,7 +90,7 @@ export function ModelCard({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'relative rounded-lg border-2 bg-white p-5 shadow-sm transition-all',
         selected
           ? 'border-brand-700 shadow-md shadow-brand-700/10'
@@ -103,7 +103,7 @@ export function ModelCard({
           {model.name}
         </h4>
         <span
-          className={clsx(
+          className={cn(
             'shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide',
             categoryConfig.bgClass,
             categoryConfig.textClass,
@@ -128,7 +128,7 @@ export function ModelCard({
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className={clsx(
+              className={cn(
                 'h-2 flex-1 rounded-full transition-colors',
                 i < filledDots
                   ? model.riskScore <= 30
@@ -218,7 +218,7 @@ export function ModelCard({
         <button
           type="button"
           onClick={() => onSelect(model.modelId)}
-          className={clsx(
+          className={cn(
             'w-full rounded-lg px-4 py-2 text-sm font-medium transition-colors',
             selected
               ? 'bg-brand-700 text-white'

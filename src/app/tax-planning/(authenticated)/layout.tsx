@@ -162,7 +162,7 @@ export default function AuthenticatedLayout({
           {/* Mobile sidebar overlay */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-charcoal-900/50 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-charcoal-900/50 backdrop-blur-xs lg:hidden"
               onClick={() => setSidebarOpen(false)}
               aria-hidden="true"
             />
@@ -320,7 +320,7 @@ export default function AuthenticatedLayout({
 
           {/* Toast notifications */}
           {toasts.length > 0 && (
-            <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2">
+            <div className="fixed bottom-4 right-4 z-100 flex flex-col gap-2">
               {toasts.map((toast) => (
                 <div
                   key={toast.id}

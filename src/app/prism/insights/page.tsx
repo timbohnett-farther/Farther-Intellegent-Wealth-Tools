@@ -283,13 +283,13 @@ export default function InsightsPage() {
           <input
             type="text"
             placeholder="Search by client or insight..."
-            className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <select
-          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500/20"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
         >
@@ -299,7 +299,7 @@ export default function InsightsPage() {
           ))}
         </select>
         <select
-          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500/20"
           value={severityFilter}
           onChange={(e) => setSeverityFilter(e.target.value as Severity | 'all')}
         >

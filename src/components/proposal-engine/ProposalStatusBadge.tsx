@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import type { ProposalStatus } from '@/lib/proposal-engine/types';
 
 // ---------------------------------------------------------------------------
@@ -90,7 +90,7 @@ export function ProposalStatusBadge({ status }: ProposalStatusBadgeProps) {
 
   return (
     <span
-      className={clsx(
+      className={cn(
         'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5',
         'text-[11px] font-bold uppercase tracking-wide',
         config.bgClass,
@@ -98,7 +98,7 @@ export function ProposalStatusBadge({ status }: ProposalStatusBadgeProps) {
       )}
     >
       <span
-        className={clsx('inline-block h-1.5 w-1.5 rounded-full', config.dotClass)}
+        className={cn('inline-block h-1.5 w-1.5 rounded-full', config.dotClass)}
         aria-hidden="true"
       />
       {config.label}

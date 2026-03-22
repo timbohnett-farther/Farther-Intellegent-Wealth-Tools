@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
-import { ChevronDown } from 'lucide-react';
+import { SelectNative } from '@/components/ui/SelectNative';
+import { Label } from '@/components/ui/Label';
 
 export interface SelectOption {
   value: string;
@@ -53,51 +53,30 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label
-            htmlFor={selectId}
-            className="text-sm font-medium text-charcoal-700"
-          >
-            {label}
-          </label>
+          <Label htmlFor={selectId}>{label}</Label>
         )}
 
-        <div className="relative">
-          <select
-            ref={ref}
-            id={selectId}
-            name={name}
-            value={value}
-            onChange={onChange}
-            disabled={disabled}
-            className={clsx(
-              'h-9 w-full appearance-none rounded-lg border-[1.5px] bg-white pl-3 pr-9 text-sm text-charcoal-900',
-              'transition-colors',
-              'focus:outline-none focus:border-brand-700 focus:shadow-focus',
-              'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
-              error
-                ? 'border-critical-500 focus:border-critical-500'
-                : 'border-limestone-200',
-              !value && placeholder ? 'text-charcoal-300' : '',
-              className,
-            )}
-          >
-            {placeholder && (
-              <option value="" disabled>
-                {placeholder}
-              </option>
-            )}
-            {options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-
-          <ChevronDown
-            className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-300"
-            aria-hidden="true"
-          />
-        </div>
+        <SelectNative
+          ref={ref}
+          id={selectId}
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          hasError={!!error}
+          className={className}
+        >
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
+            </option>
+          )}
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </SelectNative>
 
         {error && (
           <p className="text-xs text-critical-500">{error}</p>

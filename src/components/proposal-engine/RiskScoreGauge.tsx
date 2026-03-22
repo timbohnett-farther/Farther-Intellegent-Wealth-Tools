@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -136,7 +136,7 @@ export function RiskScoreGauge({
           style={{ paddingBottom: 4 }}
         >
           <span
-            className={clsx(
+            className={cn(
               config.scoreFontSize,
               'font-bold tabular-nums',
               getScoreTextClass(normalizedScore),
@@ -149,7 +149,7 @@ export function RiskScoreGauge({
 
       {/* Label */}
       <span
-        className={clsx(
+        className={cn(
           config.labelFontSize,
           'mt-1 font-medium text-charcoal-500 text-center',
         )}

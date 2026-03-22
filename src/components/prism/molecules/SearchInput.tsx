@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
 import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/Input';
+import { cn } from '@/lib/utils/cn';
 
 export interface SearchInputProps {
   value: string;
@@ -18,20 +19,17 @@ export function SearchInput({
   className,
 }: SearchInputProps) {
   return (
-    <div
-      className={clsx(
-        'flex items-center gap-2 rounded-input border border-limestone-200 bg-limestone-50 px-3',
-        'transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100',
-        className,
-      )}
-    >
-      <Search className="h-4 w-4 shrink-0 text-charcoal-500" aria-hidden="true" />
-      <input
+    <div className={cn('relative', className)}>
+      <Search
+        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-500"
+        aria-hidden="true"
+      />
+      <Input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-none placeholder:text-charcoal-300"
+        className="pl-9 bg-limestone-50"
       />
     </div>
   );

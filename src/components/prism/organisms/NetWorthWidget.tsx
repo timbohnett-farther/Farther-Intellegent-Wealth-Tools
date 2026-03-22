@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   BarChart,
   Bar,
@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
+import { Card } from '@/components/ui/Card';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -83,12 +84,7 @@ export function NetWorthWidget({
   );
 
   return (
-    <div
-      className={clsx(
-        'rounded-card border border-limestone-200 bg-white p-5 shadow-sm',
-        className,
-      )}
-    >
+    <Card className={cn('p-5', className)}>
       {/* Stacked numbers */}
       <div className="space-y-3">
         {/* Total Assets */}
@@ -120,7 +116,7 @@ export function NetWorthWidget({
             Net Worth
           </p>
           <p
-            className={clsx(
+            className={cn(
               'mt-0.5 text-2xl font-bold tabular-nums',
               netWorth >= 0 ? 'text-charcoal-900' : 'text-critical-500',
             )}
@@ -160,7 +156,7 @@ export function NetWorthWidget({
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </Card>
   );
 }
 

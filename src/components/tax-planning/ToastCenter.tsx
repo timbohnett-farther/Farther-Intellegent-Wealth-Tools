@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react';
 
 // =====================================================================
@@ -82,19 +82,19 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onDismiss }) => {
   return (
     <div
       role="alert"
-      className={clsx(
+      className={cn(
         'flex items-start gap-3 rounded-lg border px-4 py-3 shadow-md animate-in slide-in-from-right-full duration-300',
         BG_MAP[toast.type]
       )}
     >
       <span className="flex-shrink-0 mt-0.5">{ICON_MAP[toast.type]}</span>
-      <p className={clsx('flex-1 text-sm font-medium', TEXT_MAP[toast.type])}>
+      <p className={cn('flex-1 text-sm font-medium', TEXT_MAP[toast.type])}>
         {toast.message}
       </p>
       <button
         type="button"
         onClick={() => onDismiss(toast.id)}
-        className={clsx(
+        className={cn(
           'flex-shrink-0 rounded p-0.5 transition-colors hover:bg-white/50',
           TEXT_MAP[toast.type]
         )}
@@ -165,7 +165,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       {/* Toast stack */}
       {toasts.length > 0 && (
         <div
-          className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 w-full max-w-sm"
+          className="fixed bottom-4 right-4 z-100 flex flex-col gap-2 w-full max-w-sm"
           aria-live="polite"
           aria-label="Notifications"
         >

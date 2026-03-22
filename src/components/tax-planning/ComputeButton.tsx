@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Calculator } from 'lucide-react';
 import { Spinner } from '@/components/prism/atoms/Spinner';
 
@@ -43,9 +43,9 @@ export const ComputeButton: React.FC<ComputeButtonProps> = ({
         type="button"
         onClick={handleClick}
         disabled={disabled || loading}
-        className={clsx(
+        className={cn(
           'inline-flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium transition-colors shadow-sm',
-          'focus-visible:outline-none focus-visible:shadow-focus',
+          'focus-visible:outline-hidden focus-visible:shadow-focus',
           'disabled:pointer-events-none disabled:opacity-45',
           'bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800'
         )}

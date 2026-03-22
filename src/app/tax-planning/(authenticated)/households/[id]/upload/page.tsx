@@ -67,7 +67,7 @@ function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
 
             {!isLast && (
               <div
-                className={`mx-3 mt-[-18px] h-0.5 w-16 sm:w-24 ${
+                className={`mx-3 -mt-4.5 h-0.5 w-16 sm:w-24 ${
                   isCompleted ? 'bg-success-500' : 'bg-limestone-200'
                 }`}
               />

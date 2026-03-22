@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 export interface ProgressBarProps {
   /** Progress value between 0 and 100 */
@@ -30,7 +30,7 @@ export function ProgressBar({
   const clamped = Math.min(100, Math.max(0, value));
 
   return (
-    <div className={clsx('w-full', className)}>
+    <div className={cn('w-full', className)}>
       {(label || showPercentage) && (
         <div className="mb-1.5 flex items-center justify-between">
           {label && (
@@ -45,7 +45,7 @@ export function ProgressBar({
       )}
 
       <div
-        className={clsx(
+        className={cn(
           'w-full overflow-hidden rounded-full bg-limestone-200',
           sizeStyles[size],
         )}
@@ -56,7 +56,7 @@ export function ProgressBar({
         aria-label={label || 'Progress'}
       >
         <div
-          className={clsx(
+          className={cn(
             'h-full rounded-full transition-all duration-300 ease-out',
             !color && 'bg-brand-700',
           )}

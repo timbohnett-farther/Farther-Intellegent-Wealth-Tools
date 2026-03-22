@@ -573,19 +573,19 @@ function TrustsTab() {
             <h3 className="text-xs font-semibold text-charcoal-700 uppercase tracking-wide">Calculator Inputs</h3>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Asset Value</label>
-              <input type="number" value={crtAssetValue} onChange={(e) => setCrtAssetValue(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none tabular-nums" />
+              <input type="number" value={crtAssetValue} onChange={(e) => setCrtAssetValue(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Payout Rate (%)</label>
-              <input type="number" step="0.1" value={crtPayoutRate} onChange={(e) => setCrtPayoutRate(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none tabular-nums" />
+              <input type="number" step="0.1" value={crtPayoutRate} onChange={(e) => setCrtPayoutRate(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Term (Years)</label>
-              <input type="number" value={crtTerm} onChange={(e) => setCrtTerm(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none tabular-nums" />
+              <input type="number" value={crtTerm} onChange={(e) => setCrtTerm(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Section 7520 Rate (%)</label>
-              <input type="number" step="0.1" value={crtRate7520} onChange={(e) => setCrtRate7520(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none tabular-nums" />
+              <input type="number" step="0.1" value={crtRate7520} onChange={(e) => setCrtRate7520(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   ArrowUpRight,
   ArrowDownRight,
@@ -72,13 +72,13 @@ function DirectionIcon({
   if (direction === 'up') {
     return (
       <ArrowUpRight
-        className={clsx('h-4 w-4', isImprovement ? 'text-success-600' : 'text-critical-600')}
+        className={cn('h-4 w-4', isImprovement ? 'text-success-600' : 'text-critical-600')}
       />
     );
   }
   return (
     <ArrowDownRight
-      className={clsx('h-4 w-4', isImprovement ? 'text-success-600' : 'text-critical-600')}
+      className={cn('h-4 w-4', isImprovement ? 'text-success-600' : 'text-critical-600')}
     />
   );
 }
@@ -121,7 +121,7 @@ function MetricRow({
       </div>
       <div>
         <p
-          className={clsx(
+          className={cn(
             'text-sm font-semibold tabular-nums',
             direction !== 'neutral' && isImprovement && 'text-success-700',
             direction !== 'neutral' && !isImprovement && 'text-critical-700',

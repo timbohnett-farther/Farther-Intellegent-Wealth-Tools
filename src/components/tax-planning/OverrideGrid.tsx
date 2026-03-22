@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Plus, Trash2 } from 'lucide-react';
 import type { ScenarioOverride, OverrideMode } from '@/lib/tax-planning/types';
 
@@ -81,7 +81,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                     handleLineRefChange(override.override_id, e.target.value)
                   }
                   placeholder="e.g., f1040:l1z:wages"
-                  className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm font-mono text-charcoal-900 placeholder:text-charcoal-300 focus:outline-none focus:border-brand-700 focus:shadow-focus transition-colors"
+                  className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm font-mono text-charcoal-900 placeholder:text-charcoal-300 focus:outline-hidden focus:border-brand-700 focus:shadow-focus transition-colors"
                 />
               </div>
 
@@ -95,7 +95,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                   onClick={() =>
                     handleModeToggle(override.override_id, override.mode)
                   }
-                  className={clsx(
+                  className={cn(
                     'h-9 rounded-lg px-4 text-sm font-medium transition-colors border-[1.5px]',
                     override.mode === 'ABSOLUTE'
                       ? 'border-brand-700 bg-brand-50 text-brand-700'
@@ -122,7 +122,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                     onBlur={(e) =>
                       handleAmountChange(override.override_id, e.target.value)
                     }
-                    className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white pl-7 pr-3 text-sm text-right tabular-nums text-charcoal-900 focus:outline-none focus:border-brand-700 focus:shadow-focus transition-colors"
+                    className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white pl-7 pr-3 text-sm text-right tabular-nums text-charcoal-900 focus:outline-hidden focus:border-brand-700 focus:shadow-focus transition-colors"
                   />
                 </div>
               </div>

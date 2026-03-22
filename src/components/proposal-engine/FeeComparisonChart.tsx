@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { DollarSign, TrendingUp, ArrowDown } from 'lucide-react';
 import type { FeeAnalysis, FeeBreakdown, MoneyCents } from '@/lib/proposal-engine/types';
 
@@ -67,7 +67,7 @@ function FeeBreakdownCard({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'rounded-lg border p-5 shadow-sm',
         variant === 'proposed'
           ? 'border-brand-200 bg-brand-700/5'
@@ -75,7 +75,7 @@ function FeeBreakdownCard({
       )}
     >
       <h4
-        className={clsx(
+        className={cn(
           'text-sm font-semibold mb-4',
           variant === 'proposed' ? 'text-brand-700' : 'text-charcoal-900',
         )}

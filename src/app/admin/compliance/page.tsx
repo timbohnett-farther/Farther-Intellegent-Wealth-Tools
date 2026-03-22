@@ -97,7 +97,7 @@ export default function CompliancePage() {
               <input
                 type="text"
                 placeholder="Search audit log..."
-                className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500/20"
                 value={auditSearch}
                 onChange={(e) => setAuditSearch(e.target.value)}
               />

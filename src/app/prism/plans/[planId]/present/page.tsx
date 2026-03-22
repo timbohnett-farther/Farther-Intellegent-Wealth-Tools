@@ -140,7 +140,7 @@ export default function PresentationPage() {
   return (
     <div className={`bg-charcoal-900 text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Top Bar */}
-      <div className="bg-charcoal-900/80 backdrop-blur border-b border-white/10 px-6 py-3 flex items-center justify-between">
+      <div className="bg-charcoal-900/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button onClick={exitPresentation} className="text-charcoal-300 hover:text-white transition-colors">
             <X size={20} />
@@ -296,7 +296,7 @@ export default function PresentationPage() {
             {/* Success Rate Gauge */}
             <div className="flex items-center justify-center mb-8">
               <div className="text-center">
-                <div className="text-8xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                <div className="text-8xl font-bold bg-linear-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                   {successRate}%
                 </div>
                 <p className="text-xl text-charcoal-300 mt-2">Probability of Success</p>
@@ -607,7 +607,7 @@ export default function PresentationPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="bg-charcoal-900/80 backdrop-blur border-t border-white/10 px-8 py-4 flex items-center justify-between">
+      <div className="bg-charcoal-900/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
         <button
           onClick={goPrev}
           disabled={currentSection === 0}

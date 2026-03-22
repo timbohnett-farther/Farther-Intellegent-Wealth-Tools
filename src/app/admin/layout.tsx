@@ -14,7 +14,7 @@ import {
   RefreshCw,
   ArrowLeft,
 } from 'lucide-react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 const ADMIN_NAV = [
   { label: 'Firm Overview', href: '/admin', icon: LayoutDashboard },
@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
             <div className="w-px h-6 bg-white/20" />
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-linear-to-br from-brand-500 to-accent-500 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">FP</span>
               </div>
               <span className="font-semibold text-sm">Admin Portal</span>
@@ -59,7 +59,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={clsx(
+                  className={cn(
                     'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                     isActive ? 'border-brand-400 text-white' : 'border-transparent text-white/50 hover:text-white/80'
                   )}

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 type AvatarSize = 'sm' | 'md' | 'lg';
 
@@ -34,7 +34,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 }) => {
   return (
     <AvatarPrimitive.Root
-      className={clsx(
+      className={cn(
         'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-100',
         sizeStyles[size],
         className,

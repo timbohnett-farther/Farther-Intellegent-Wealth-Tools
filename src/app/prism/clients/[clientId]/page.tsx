@@ -269,7 +269,7 @@ export default function ClientDetailPage() {
       </div>
 
       {/* Right panel — Recent activity & alerts */}
-      <div className="w-[300px] flex-shrink-0 p-6 border-l border-limestone-200 bg-white min-h-[calc(100vh-3.5rem)] hidden xl:block">
+      <div className="w-right-panel flex-shrink-0 p-6 border-l border-limestone-200 bg-white min-h-[calc(100vh-3.5rem)] hidden xl:block">
         <h3 className="font-semibold text-charcoal-900 mb-4">Activity & Alerts</h3>
 
         <div className="space-y-4">

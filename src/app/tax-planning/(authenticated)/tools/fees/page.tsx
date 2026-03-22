@@ -113,7 +113,7 @@ function FeeField({
           step={step}
           min={min}
           max={max}
-          className="h-10 w-full bg-transparent px-3 text-sm font-mono text-charcoal-900 tabular-nums outline-none placeholder:text-charcoal-300"
+          className="h-10 w-full bg-transparent px-3 text-sm font-mono text-charcoal-900 tabular-nums outline-hidden placeholder:text-charcoal-300"
         />
         {suffix && <span className="pr-3 text-sm text-charcoal-500">{suffix}</span>}
       </div>

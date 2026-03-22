@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 type SpinnerSize = 'sm' | 'md' | 'lg';
 
@@ -24,7 +24,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
 }) => {
   return (
     <svg
-      className={clsx('animate-spin text-brand-700', sizeStyles[size], className)}
+      className={cn('animate-spin text-brand-700', sizeStyles[size], className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   FileText,
   RefreshCw,
@@ -213,10 +213,10 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           value={clientName}
           onChange={(e) => setClientName(e.target.value)}
           placeholder="Search or enter client name..."
-          className={clsx(
+          className={cn(
             'mt-1.5 h-10 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900',
             'placeholder:text-charcoal-300 transition-colors',
-            'focus:outline-none focus:border-brand-700 focus:shadow-focus',
+            'focus:outline-hidden focus:border-brand-700 focus:shadow-focus',
             errors.clientName ? 'border-critical-500' : 'border-limestone-200',
           )}
         />
@@ -238,7 +238,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
             return (
               <label
                 key={opt.value}
-                className={clsx(
+                className={cn(
                   'relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 px-3 py-4 text-center transition-all',
                   isSelected
                     ? 'border-brand-700 bg-brand-50 shadow-sm shadow-brand-700/10'
@@ -254,13 +254,13 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
                   className="sr-only"
                 />
                 <Icon
-                  className={clsx(
+                  className={cn(
                     'h-5 w-5',
                     isSelected ? 'text-brand-700' : 'text-charcoal-400',
                   )}
                 />
                 <span
-                  className={clsx(
+                  className={cn(
                     'text-xs font-semibold',
                     isSelected ? 'text-brand-700' : 'text-charcoal-700',
                   )}
@@ -289,9 +289,9 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
             id="occasion"
             value={occasion}
             onChange={(e) => setOccasion(e.target.value)}
-            className={clsx(
+            className={cn(
               'h-10 w-full appearance-none rounded-lg border-[1.5px] bg-white pl-3 pr-9 text-sm text-charcoal-900',
-              'transition-colors focus:outline-none focus:border-brand-700 focus:shadow-focus',
+              'transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus',
               errors.occasion ? 'border-critical-500' : 'border-limestone-200',
               !occasion && 'text-charcoal-300',
             )}
@@ -318,7 +318,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
             Assets in Scope
           </label>
           <div
-            className={clsx(
+            className={cn(
               'mt-1.5 flex items-center rounded-lg border-[1.5px] bg-white transition-colors',
               'focus-within:border-brand-700 focus-within:shadow-focus',
               errors.assetsInScope ? 'border-critical-500' : 'border-limestone-200',
@@ -333,7 +333,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
               onChange={handleAssetsChange}
               onBlur={handleAssetsBlur}
               placeholder="0"
-              className="h-10 w-full bg-transparent pl-1 pr-3 text-sm font-mono text-charcoal-900 outline-none tabular-nums placeholder:text-charcoal-300"
+              className="h-10 w-full bg-transparent pl-1 pr-3 text-sm font-mono text-charcoal-900 outline-hidden tabular-nums placeholder:text-charcoal-300"
             />
           </div>
           {errors.assetsInScope && (
@@ -347,7 +347,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           </label>
           <div className="mt-1.5 flex h-10 items-center rounded-lg border-[1.5px] border-limestone-200 bg-limestone-50 px-3">
             <span
-              className={clsx(
+              className={cn(
                 'text-sm font-semibold',
                 relationshipTier === 'INSTITUTIONAL' && 'text-brand-700',
                 relationshipTier === 'PRIVATE_CLIENT' && 'text-brand-600',
@@ -376,10 +376,10 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Add any context for this proposal..."
           rows={4}
-          className={clsx(
+          className={cn(
             'mt-1.5 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 py-2.5 text-sm text-charcoal-900',
             'placeholder:text-charcoal-300 transition-colors resize-none',
-            'focus:outline-none focus:border-brand-700 focus:shadow-focus',
+            'focus:outline-hidden focus:border-brand-700 focus:shadow-focus',
           )}
         />
       </div>

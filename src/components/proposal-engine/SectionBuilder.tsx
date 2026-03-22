@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   ChevronUp,
   ChevronDown,
@@ -101,7 +101,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
           return (
             <li
               key={section.key}
-              className={clsx(
+              className={cn(
                 'flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors',
                 section.included
                   ? 'border-limestone-200 bg-white'
@@ -121,7 +121,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
               {/* Section label */}
               <div className="flex-1 min-w-0">
                 <span
-                  className={clsx(
+                  className={cn(
                     'text-sm',
                     section.included
                       ? 'font-medium text-charcoal-900'
@@ -142,7 +142,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                 <button
                   type="button"
                   onClick={() => handleToggle(section.key)}
-                  className={clsx(
+                  className={cn(
                     'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors',
                     section.included ? 'bg-brand-700' : 'bg-limestone-300',
                   )}
@@ -151,9 +151,9 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                   aria-label={`${section.included ? 'Exclude' : 'Include'} ${section.label}`}
                 >
                   <span
-                    className={clsx(
+                    className={cn(
                       'inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform',
-                      section.included ? 'translate-x-[18px]' : 'translate-x-1',
+                      section.included ? 'translate-x-4.5' : 'translate-x-1',
                     )}
                   />
                 </button>
@@ -165,7 +165,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                   type="button"
                   onClick={() => handleMoveUp(section.key)}
                   disabled={isFirst}
-                  className={clsx(
+                  className={cn(
                     'rounded p-1 transition-colors',
                     isFirst
                       ? 'text-charcoal-200 cursor-not-allowed'
@@ -179,7 +179,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                   type="button"
                   onClick={() => handleMoveDown(section.key)}
                   disabled={isLast}
-                  className={clsx(
+                  className={cn(
                     'rounded p-1 transition-colors',
                     isLast
                       ? 'text-charcoal-200 cursor-not-allowed'

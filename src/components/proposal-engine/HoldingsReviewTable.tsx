@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   ArrowUp,
   ArrowDown,
@@ -216,7 +216,7 @@ export function HoldingsReviewTable({
                   <th
                     key={col.key}
                     onClick={() => handleSort(col.key)}
-                    className={clsx(
+                    className={cn(
                       'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-charcoal-500 cursor-pointer select-none',
                       col.align === 'right' && 'text-right',
                       col.align === 'center' && 'text-center',
@@ -285,7 +285,7 @@ export function HoldingsReviewTable({
 
                   {/* Gain/Loss */}
                   <td
-                    className={clsx(
+                    className={cn(
                       'px-3 py-2 text-right tabular-nums font-medium',
                       gl !== null && (gl as number) >= 0 && 'text-success-700',
                       gl !== null && (gl as number) < 0 && 'text-critical-700',
@@ -355,7 +355,7 @@ export function HoldingsReviewTable({
                   {totals.totalCostBasis !== null ? fmtMoney(totals.totalCostBasis as MoneyCents) : '--'}
                 </td>
                 <td
-                  className={clsx(
+                  className={cn(
                     'px-3 py-2.5 text-right tabular-nums',
                     totals.totalGL !== null && totals.totalGL >= 0 && 'text-success-700',
                     totals.totalGL !== null && totals.totalGL < 0 && 'text-critical-700',

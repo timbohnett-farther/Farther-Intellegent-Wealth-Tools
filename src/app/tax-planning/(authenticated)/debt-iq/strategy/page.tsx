@@ -239,7 +239,7 @@ function DebtFreeCountdown({ minimumPath, optimizedPath }: {
   const interestSaved = minimumPath.totalInterest - optimizedPath.totalInterest;
 
   return (
-    <div className="rounded-xl border border-limestone-200 bg-gradient-to-br from-brand-50 to-white p-6 shadow-sm">
+    <div className="rounded-xl border border-limestone-200 bg-linear-to-br from-brand-50 to-white p-6 shadow-sm">
       <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-4">Debt-Free Projection</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>

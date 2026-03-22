@@ -43,7 +43,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
               placeholder={`Filter by ${filter.label.toLowerCase()}...`}
-              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-none focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
             />
           )}
 
@@ -52,7 +52,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               id={`filter-${filter.key}`}
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
-              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-none focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
             >
               <option value="">All</option>
               {filter.options?.map((opt) => (
@@ -69,7 +69,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               type="date"
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
-              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 transition-colors focus:outline-none focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
             />
           )}
         </div>

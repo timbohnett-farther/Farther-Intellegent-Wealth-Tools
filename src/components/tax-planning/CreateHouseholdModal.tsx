@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { X } from 'lucide-react';
 
 export interface CreateHouseholdModalProps {
@@ -127,7 +127,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-xs"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -174,8 +174,8 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="e.g., Smith Family"
               maxLength={120}
-              className={clsx(
-                'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-none focus:shadow-focus',
+              className={cn(
+                'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:shadow-focus',
                 errors.displayName
                   ? 'border-critical-500 focus:border-critical-500'
                   : 'border-limestone-200 focus:border-brand-700'
@@ -201,7 +201,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
               id="household-state"
               value={primaryState}
               onChange={(e) => setPrimaryState(e.target.value)}
-              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-none focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
             >
               <option value="">Select a state (optional)</option>
               {US_STATES.map((s) => (

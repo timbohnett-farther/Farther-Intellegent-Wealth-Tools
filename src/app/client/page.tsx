@@ -220,7 +220,7 @@ export default function ClientHomePage() {
       </div>
 
       {/* ── Plan Health Summary ── */}
-      <div className="bg-gradient-to-r from-brand-50 to-white border border-brand-100 rounded-card p-6">
+      <div className="bg-linear-to-r from-brand-50 to-white border border-brand-100 rounded-card p-6">
         <h2 className="text-lg font-semibold text-charcoal-900 mb-2">
           Plan Health Summary
         </h2>

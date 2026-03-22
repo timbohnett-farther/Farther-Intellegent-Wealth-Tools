@@ -166,7 +166,7 @@ export default function HouseholdsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search households..."
-          className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-none placeholder:text-charcoal-300"
+          className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-hidden placeholder:text-charcoal-300"
         />
       </div>
 

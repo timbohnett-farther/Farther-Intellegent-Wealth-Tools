@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -75,7 +75,7 @@ export function ProbabilityGauge({
   const valuePath = clamped > 0 ? describeArc(startAngle, valueAngle) : '';
 
   return (
-    <div className={clsx('inline-flex flex-col items-center', className)}>
+    <div className={cn('inline-flex flex-col items-center', className)}>
       <svg
         width={cfg.width}
         height={cfg.width / 2 + cfg.strokeWidth}

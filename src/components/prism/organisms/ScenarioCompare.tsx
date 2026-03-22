@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -95,7 +96,7 @@ function DeltaIndicator({
 
   return (
     <span
-      className={clsx(
+      className={cn(
         'inline-flex items-center gap-0.5 text-[10px] font-medium',
         isBetter ? 'text-success-500' : 'text-critical-500',
       )}
@@ -121,12 +122,7 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
   const colCount = scenarios.length;
 
   return (
-    <div
-      className={clsx(
-        'rounded-card border border-limestone-200 bg-white shadow-sm overflow-hidden',
-        className,
-      )}
-    >
+    <Card className={cn('overflow-hidden p-0', className)}>
       {/* Header row – scenario names */}
       <div
         className="grid border-b border-limestone-200 bg-limestone-50"
@@ -138,7 +134,7 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
         {scenarios.map((s, i) => (
           <div
             key={s.name}
-            className={clsx(
+            className={cn(
               'px-4 py-3 text-center text-sm font-semibold text-charcoal-900',
               i === 0 && 'bg-brand-50/50',
             )}
@@ -173,7 +169,7 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
             return (
               <div
                 key={s.name}
-                className={clsx(
+                className={cn(
                   'flex flex-col items-center justify-center gap-0.5 px-4 py-3',
                   isBase && 'bg-brand-50/30',
                 )}
@@ -194,7 +190,7 @@ export function ScenarioCompare({ scenarios, className }: ScenarioCompareProps) 
           })}
         </div>
       ))}
-    </div>
+    </Card>
   );
 }
 

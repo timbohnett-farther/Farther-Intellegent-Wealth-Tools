@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Check } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
@@ -56,14 +56,14 @@ export function WizardProgress({
           return (
             <li
               key={step.number}
-              className={clsx('flex items-center', !isLast && 'flex-1')}
+              className={cn('flex items-center', !isLast && 'flex-1')}
             >
               {/* Step circle + label */}
               <button
                 type="button"
                 onClick={() => isClickable && onStepClick(step.number)}
                 disabled={!isClickable}
-                className={clsx(
+                className={cn(
                   'group flex flex-col items-center gap-1.5',
                   isClickable ? 'cursor-pointer' : 'cursor-default',
                 )}
@@ -72,7 +72,7 @@ export function WizardProgress({
               >
                 {/* Circle */}
                 <div
-                  className={clsx(
+                  className={cn(
                     'relative flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-200',
                     isActive && 'border-brand-700 bg-brand-700 text-white shadow-md shadow-brand-700/20',
                     isCompleted && !isActive && 'border-success-500 bg-success-500 text-white',
@@ -91,7 +91,7 @@ export function WizardProgress({
 
                 {/* Label */}
                 <span
-                  className={clsx(
+                  className={cn(
                     'text-[11px] font-medium leading-tight text-center max-w-[80px] transition-colors',
                     isActive && 'text-brand-700',
                     isCompleted && !isActive && 'text-charcoal-700',
@@ -104,9 +104,9 @@ export function WizardProgress({
 
               {/* Connecting line */}
               {!isLast && (
-                <div className="mx-2 mt-[-18px] flex-1">
+                <div className="mx-2 -mt-4.5 flex-1">
                   <div
-                    className={clsx(
+                    className={cn(
                       'h-0.5 w-full rounded-full transition-colors duration-300',
                       isCompleted ? 'bg-success-500' : 'bg-limestone-200',
                     )}

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -102,7 +102,7 @@ export function ConversionFunnel({
                 {/* Bar container */}
                 <div className="relative flex-1">
                   <div
-                    className={clsx(
+                    className={cn(
                       'flex items-center justify-center rounded-md transition-all duration-500',
                       stage.color,
                     )}
@@ -112,7 +112,7 @@ export function ConversionFunnel({
                       marginLeft: `${(100 - widthPct) / 2}%`, // center the bar
                     }}
                   >
-                    <span className="text-xs font-bold tabular-nums text-white drop-shadow-sm">
+                    <span className="text-xs font-bold tabular-nums text-white drop-shadow-xs">
                       {value.toLocaleString()}
                     </span>
                   </div>

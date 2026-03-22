@@ -38,7 +38,7 @@ export default function AdvisorsPage() {
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-sm">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300" />
-          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500/20" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-brand-500 text-white rounded-lg hover:bg-brand-600">
           <Plus size={14} /> Add Advisor

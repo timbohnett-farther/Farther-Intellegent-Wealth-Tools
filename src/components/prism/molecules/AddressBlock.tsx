@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { US_STATES } from '@/lib/prism/types';
 
 export interface AddressValue {
@@ -20,7 +20,7 @@ export interface AddressBlockProps {
 }
 
 const inputBaseClass =
-  'w-full rounded-input border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 outline-none transition-colors placeholder:text-charcoal-300 focus:border-brand-700 focus:ring-2 focus:ring-brand-100';
+  'w-full rounded-input border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 outline-hidden transition-colors placeholder:text-charcoal-300 focus:border-brand-700 focus:ring-2 focus:ring-brand-100';
 
 const labelClass = 'mb-1 block text-sm font-medium text-charcoal-700';
 
@@ -37,7 +37,7 @@ export function AddressBlock({
   );
 
   return (
-    <div className={clsx('grid gap-4', className)}>
+    <div className={cn('grid gap-4', className)}>
       {/* Address Line 1 */}
       <div>
         <label className={labelClass}>
@@ -91,7 +91,7 @@ export function AddressBlock({
           <select
             value={value.state}
             onChange={(e) => update('state', e.target.value)}
-            className={clsx(inputBaseClass, 'cursor-pointer')}
+            className={cn(inputBaseClass, 'cursor-pointer')}
             autoComplete="address-level1"
           >
             <option value="">Select...</option>
@@ -131,7 +131,7 @@ export function AddressBlock({
         <select
           value={value.country}
           onChange={(e) => update('country', e.target.value)}
-          className={clsx(inputBaseClass, 'cursor-pointer')}
+          className={cn(inputBaseClass, 'cursor-pointer')}
           autoComplete="country"
         >
           <option value="US">United States</option>

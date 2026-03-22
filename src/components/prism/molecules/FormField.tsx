@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { Label } from '@/components/ui/Label';
+import { cn } from '@/lib/utils/cn';
 
 export interface FormFieldProps {
   label: string;
@@ -21,11 +22,8 @@ export function FormField({
   className,
 }: FormFieldProps) {
   return (
-    <div className={clsx('flex flex-col gap-1.5', className)}>
-      <label className="text-sm font-medium text-charcoal-700">
-        {label}
-        {required && <span className="ml-0.5 text-critical-500">*</span>}
-      </label>
+    <div className={cn('flex flex-col gap-1.5', className)}>
+      <Label required={required}>{label}</Label>
 
       {children}
 

@@ -220,7 +220,7 @@ function EventWizard({
                   }
                   rows={3}
                   placeholder={field.placeholder}
-                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500"
                 />
               ) : field.type === 'select' ? (
                 <select
@@ -229,7 +229,7 @@ function EventWizard({
                     setFormData({ ...formData, [field.name]: e.target.value })
                   }
                   required={field.required}
-                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500"
                 >
                   <option value="">Select...</option>
                   {field.options?.map((opt) => (
@@ -247,7 +247,7 @@ function EventWizard({
                   }
                   required={field.required}
                   placeholder={field.placeholder}
-                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500"
                 />
               )}
             </div>

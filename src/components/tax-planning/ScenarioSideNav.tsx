@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Star, Plus } from 'lucide-react';
 
 export interface ScenarioSideNavProps {
@@ -43,7 +43,7 @@ export const ScenarioSideNav: React.FC<ScenarioSideNavProps> = ({
               <button
                 type="button"
                 onClick={() => onSelect(scenario.scenarioId)}
-                className={clsx(
+                className={cn(
                   'flex items-center gap-2 w-full px-3 py-2.5 text-sm rounded-r-lg transition-colors text-left',
                   isActive
                     ? 'border-l-[3px] border-brand-700 bg-brand-50 text-brand-700 font-semibold pl-[9px]'
@@ -52,7 +52,7 @@ export const ScenarioSideNav: React.FC<ScenarioSideNavProps> = ({
               >
                 {scenario.isBaseline && (
                   <Star
-                    className={clsx(
+                    className={cn(
                       'h-4 w-4 flex-shrink-0',
                       isActive ? 'text-brand-700 fill-brand-700' : 'text-warning-500 fill-warning-500'
                     )}

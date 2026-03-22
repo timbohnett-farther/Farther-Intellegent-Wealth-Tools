@@ -301,7 +301,7 @@ export default function ReviewQueuePage() {
                           <input
                             type="text"
                             placeholder="Add notes..."
-                            className="w-64 px-3 py-1.5 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                            className="w-64 px-3 py-1.5 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500"
                           />
                         </div>
                       </div>

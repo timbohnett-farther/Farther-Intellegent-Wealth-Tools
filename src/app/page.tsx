@@ -118,7 +118,7 @@ export default function HomePage() {
       <header className="bg-white border-b border-limestone-200">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-700 to-brand-900 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-brand-700 to-brand-900 flex items-center justify-center">
               <span className="text-white font-bold text-lg">F</span>
             </div>
             <div>
@@ -130,7 +130,7 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white">
+      <section className="bg-linear-to-br from-brand-900 via-brand-800 to-brand-700 text-white">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl">
             Intelligent tools for modern wealth management
@@ -166,7 +166,7 @@ export default function HomePage() {
             const content = (
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white shadow-sm`}>
+                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-linear-to-br ${tool.color} flex items-center justify-center text-white shadow-sm`}>
                     {tool.icon}
                   </div>
 

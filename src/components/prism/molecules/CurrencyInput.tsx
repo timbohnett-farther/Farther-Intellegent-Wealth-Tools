@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 export interface CurrencyInputProps {
   value: number;
@@ -96,7 +96,7 @@ export function CurrencyInput({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex items-center rounded-input border bg-white transition-colors',
         error
           ? 'border-critical-500 focus-within:ring-2 focus-within:ring-critical-100'
@@ -115,8 +115,8 @@ export function CurrencyInput({
         onBlur={handleBlur}
         placeholder={placeholder}
         disabled={disabled}
-        className={clsx(
-          'w-full bg-transparent py-2 pl-1 pr-3 text-sm font-mono text-charcoal-900 outline-none',
+        className={cn(
+          'w-full bg-transparent py-2 pl-1 pr-3 text-sm font-mono text-charcoal-900 outline-hidden',
           'tabular-nums placeholder:text-charcoal-300',
           disabled && 'cursor-not-allowed',
         )}

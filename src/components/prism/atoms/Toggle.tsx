@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import * as SwitchPrimitive from '@radix-ui/react-switch';
-import clsx from 'clsx';
+import { Switch } from '@/components/ui/Switch';
 
 export interface ToggleProps {
   /** Whether the toggle is on */
@@ -24,46 +23,14 @@ export const Toggle: React.FC<ToggleProps> = ({
   label,
   id,
 }) => {
-  const toggleId = id || (label ? `toggle-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined);
-
   return (
-    <div className="inline-flex items-center gap-2">
-      <SwitchPrimitive.Root
-        id={toggleId}
-        checked={checked}
-        onCheckedChange={onCheckedChange}
-        disabled={disabled}
-        className={clsx(
-          'peer relative h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent',
-          'transition-colors',
-          'focus-visible:outline-none focus-visible:shadow-focus',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          'data-[state=checked]:bg-brand-700',
-          'data-[state=unchecked]:bg-limestone-300',
-        )}
-      >
-        <SwitchPrimitive.Thumb
-          className={clsx(
-            'pointer-events-none block h-4 w-4 rounded-full bg-white shadow',
-            'transition-transform',
-            'data-[state=checked]:translate-x-4',
-            'data-[state=unchecked]:translate-x-0',
-          )}
-        />
-      </SwitchPrimitive.Root>
-
-      {label && (
-        <label
-          htmlFor={toggleId}
-          className={clsx(
-            'text-sm text-charcoal-700 select-none',
-            disabled && 'cursor-not-allowed opacity-50',
-          )}
-        >
-          {label}
-        </label>
-      )}
-    </div>
+    <Switch
+      id={id}
+      checked={checked}
+      onCheckedChange={onCheckedChange}
+      disabled={disabled}
+      label={label}
+    />
   );
 };
 

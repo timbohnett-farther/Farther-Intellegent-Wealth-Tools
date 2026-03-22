@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { AlertTriangle, Clock, TrendingDown } from 'lucide-react';
 import type { StressTestResult } from '@/lib/proposal-engine/types';
 
@@ -99,7 +99,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <AlertTriangle
-                        className={clsx(
+                        className={cn(
                           'h-3.5 w-3.5 shrink-0',
                           result.portfolioReturn < -0.2
                             ? 'text-critical-500'
@@ -116,7 +116,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
 
                   {/* Portfolio Return */}
                   <td
-                    className={clsx(
+                    className={cn(
                       'px-4 py-3 text-right tabular-nums font-semibold',
                       getReturnColor(result.portfolioReturn),
                     )}
@@ -126,7 +126,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
 
                   {/* Benchmark Return */}
                   <td
-                    className={clsx(
+                    className={cn(
                       'px-4 py-3 text-right tabular-nums',
                       getReturnColor(result.benchmarkReturn),
                     )}
@@ -154,7 +154,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
                     <div className="flex items-center gap-2">
                       <div className="relative h-4 flex-1 rounded-full bg-limestone-100 overflow-hidden">
                         <div
-                          className={clsx(
+                          className={cn(
                             'absolute top-0 h-full rounded-full transition-all duration-500',
                             getReturnBgColor(result.portfolioReturn),
                           )}

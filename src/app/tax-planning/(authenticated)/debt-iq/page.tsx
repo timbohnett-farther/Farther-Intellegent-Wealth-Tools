@@ -183,7 +183,7 @@ function DebtScoreHero({ score }: { score: FartherDebtScore }) {
       {/* Score bar */}
       <div className="w-full h-3 rounded-full bg-limestone-100 overflow-hidden mb-6">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-critical-500 via-warning-500 via-brand-500 to-success-500 transition-all duration-700"
+          className="h-full rounded-full bg-linear-to-r from-critical-500 via-warning-500 via-brand-500 to-success-500 transition-all duration-700"
           style={{ width: `${pct}%` }}
         />
       </div>

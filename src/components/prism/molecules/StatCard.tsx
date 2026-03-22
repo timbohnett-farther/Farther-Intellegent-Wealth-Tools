@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
+import { cn } from '@/lib/utils/cn';
 
 export interface StatCardProps {
   label: string;
@@ -40,28 +41,23 @@ export function StatCard({
   const TrendIcon = trendInfo?.icon;
 
   return (
-    <div
-      className={clsx(
-        'rounded-card border border-limestone-200 bg-white p-4 shadow-sm',
-        className,
-      )}
-    >
+    <Card className={cn('p-4', className)}>
       <p className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
         {label}
       </p>
 
       <p
-        className={clsx('mt-1 text-2xl font-bold tabular-nums', color || 'text-charcoal-900')}
+        className={cn('mt-1 text-2xl font-bold tabular-nums', color || 'text-charcoal-900')}
       >
         {value}
       </p>
 
       {delta && (
-        <div className={clsx('mt-1 flex items-center gap-1', trendInfo?.colorClass)}>
+        <div className={cn('mt-1 flex items-center gap-1', trendInfo?.colorClass)}>
           {TrendIcon && <TrendIcon className="h-3.5 w-3.5" aria-hidden="true" />}
           <span className="text-xs font-medium">{delta}</span>
         </div>
       )}
-    </div>
+    </Card>
   );
 }

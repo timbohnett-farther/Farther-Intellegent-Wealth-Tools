@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   Landmark,
   Wallet,
@@ -128,7 +128,7 @@ export function AccountRow({
   return (
     <div
       onClick={onClick}
-      className={clsx(
+      className={cn(
         'flex items-center gap-4 rounded-lg border border-limestone-200 bg-white px-4 py-3 transition-colors',
         onClick && 'cursor-pointer hover:bg-limestone-50',
         className,
@@ -160,7 +160,7 @@ export function AccountRow({
 
       {/* Balance */}
       <p
-        className={clsx(
+        className={cn(
           'text-sm font-bold tabular-nums shrink-0 w-28 text-right',
           balance < 0 ? 'text-[#C0392B]' : 'text-charcoal-900',
         )}

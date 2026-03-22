@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import type { FartherRiskProfile, RiskLabel, MoneyCents } from '@/lib/proposal-engine/types';
 import { RiskScoreGauge } from './RiskScoreGauge';
@@ -69,7 +69,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
           />
           <div className="mt-4 text-center sm:mt-0 sm:text-left">
             <span
-              className={clsx(
+              className={cn(
                 'inline-block rounded-full px-3 py-1 text-xs font-bold uppercase',
                 compositeConfig.bgClass,
                 compositeConfig.colorClass,
@@ -95,7 +95,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
             size="md"
           />
           <span
-            className={clsx(
+            className={cn(
               'mt-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase',
               getRiskLabelConfig(profile.behavioralLabel).bgClass,
               getRiskLabelConfig(profile.behavioralLabel).colorClass,
@@ -113,7 +113,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
             size="md"
           />
           <span
-            className={clsx(
+            className={cn(
               'mt-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase',
               getRiskLabelConfig(capacityLabelVal).bgClass,
               getRiskLabelConfig(capacityLabelVal).colorClass,
@@ -131,7 +131,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
             size="md"
           />
           <span
-            className={clsx(
+            className={cn(
               'mt-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase',
               getRiskLabelConfig(requiredLabelVal).bgClass,
               getRiskLabelConfig(requiredLabelVal).colorClass,
@@ -229,7 +229,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
       {/* Risk gap information */}
       {profile.riskGap !== 0 && (
         <div
-          className={clsx(
+          className={cn(
             'rounded-lg border p-5',
             Math.abs(profile.riskGap) > 15
               ? 'border-warning-200 bg-warning-50'
@@ -238,7 +238,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
         >
           <div className="flex items-start gap-3">
             <AlertTriangle
-              className={clsx(
+              className={cn(
                 'mt-0.5 h-5 w-5 shrink-0',
                 Math.abs(profile.riskGap) > 15
                   ? 'text-warning-600'
@@ -248,7 +248,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
             />
             <div className="flex-1">
               <h4
-                className={clsx(
+                className={cn(
                   'text-sm font-semibold',
                   Math.abs(profile.riskGap) > 15
                     ? 'text-warning-800'

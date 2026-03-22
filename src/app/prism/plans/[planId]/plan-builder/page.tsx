@@ -397,7 +397,7 @@ export default function PlanBuilderPage() {
                       ? 'Press Enter to confirm, or type corrections...'
                       : 'Type your response...'
                   }
-                  className="w-full px-4 py-2.5 border border-limestone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-700 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-limestone-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-700 focus:border-transparent"
                   disabled={isProcessing}
                 />
               </div>

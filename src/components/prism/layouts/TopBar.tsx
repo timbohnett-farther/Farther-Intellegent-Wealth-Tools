@@ -53,7 +53,7 @@ export function TopBar({ title, breadcrumbs }: TopBarProps) {
           <input
             type="text"
             placeholder="Search clients, plans..."
-            className="w-[280px] h-9 pl-9 pr-4 text-sm bg-limestone-50 border border-limestone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-charcoal-900 placeholder:text-charcoal-300"
+            className="w-[280px] h-9 pl-9 pr-4 text-sm bg-limestone-50 border border-limestone-200 rounded-md focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-charcoal-900 placeholder:text-charcoal-300"
           />
         </div>
 

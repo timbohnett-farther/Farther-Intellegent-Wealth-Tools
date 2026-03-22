@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { LayoutDashboard, Users, Shield } from 'lucide-react';
 import { Badge } from '@/components/prism/atoms/Badge';
 
@@ -74,7 +74,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   );
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[240px] bg-white border-r border-limestone-200 flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-screen w-sidebar bg-white border-r border-limestone-200 flex flex-col z-40">
       {/* Logo area */}
       <div className="h-16 flex items-center gap-3 px-4 border-b border-limestone-200 flex-shrink-0">
         <div className="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center flex-shrink-0">
@@ -101,7 +101,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={clsx(
+                  className={cn(
                     'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors',
                     isActive
                       ? 'bg-brand-50 text-brand-700 font-semibold border-l-[3px] border-brand-700 pl-[13px]'
@@ -109,7 +109,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   )}
                 >
                   <span
-                    className={clsx(
+                    className={cn(
                       'flex-shrink-0',
                       isActive ? 'text-brand-700' : 'text-charcoal-500'
                     )}

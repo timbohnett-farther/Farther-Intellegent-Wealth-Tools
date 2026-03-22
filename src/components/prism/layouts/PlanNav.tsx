@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 interface PlanNavProps {
   planId: string;
@@ -64,7 +64,7 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
               <Link
                 key={tab.segment}
                 href={href}
-                className={clsx(
+                className={cn(
                   'px-5 py-3.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
                   isActive
                     ? 'border-brand-700 text-brand-700 font-bold'

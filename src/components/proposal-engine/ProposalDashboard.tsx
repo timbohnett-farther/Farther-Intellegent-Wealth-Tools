@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   Plus,
   Search,
@@ -273,7 +273,7 @@ export function ProposalDashboard({
                 setPage(0);
               }}
               placeholder="Search proposals..."
-              className="w-48 bg-transparent text-sm text-charcoal-700 outline-none placeholder:text-charcoal-300"
+              className="w-48 bg-transparent text-sm text-charcoal-700 outline-hidden placeholder:text-charcoal-300"
             />
           </div>
 
@@ -286,7 +286,7 @@ export function ProposalDashboard({
                 setStatusFilter(e.target.value as ProposalStatus | 'ALL');
                 setPage(0);
               }}
-              className="bg-transparent text-sm font-medium text-charcoal-700 outline-none"
+              className="bg-transparent text-sm font-medium text-charcoal-700 outline-hidden"
             >
               {STATUS_FILTER_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -417,7 +417,7 @@ export function ProposalDashboard({
               type="button"
               onClick={() => handlePageChange(-1)}
               disabled={page === 0}
-              className={clsx(
+              className={cn(
                 'rounded-md p-1.5 transition-colors',
                 page === 0
                   ? 'text-charcoal-300 cursor-not-allowed'
@@ -436,7 +436,7 @@ export function ProposalDashboard({
               type="button"
               onClick={() => handlePageChange(1)}
               disabled={page >= totalPages - 1}
-              className={clsx(
+              className={cn(
                 'rounded-md p-1.5 transition-colors',
                 page >= totalPages - 1
                   ? 'text-charcoal-300 cursor-not-allowed'

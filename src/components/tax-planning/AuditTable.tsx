@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { ChevronDown, ChevronRight, ChevronLeft } from 'lucide-react';
 import type { AuditEvent } from '@/lib/tax-planning/types';
 import { Badge } from '@/components/prism/atoms/Badge';
@@ -98,7 +98,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                   return (
                     <React.Fragment key={event.event_id}>
                       <tr
-                        className={clsx(
+                        className={cn(
                           'border-b border-limestone-100 hover:bg-limestone-50 transition-colors cursor-pointer',
                           isExpanded && 'bg-limestone-50'
                         )}
@@ -190,7 +190,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                   key={pageNum}
                   type="button"
                   onClick={() => onPageChange(pageNum)}
-                  className={clsx(
+                  className={cn(
                     'inline-flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors',
                     pageNum === page
                       ? 'bg-brand-700 text-white'

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Search, ArrowUpDown, Star } from 'lucide-react';
 import type { InvestmentModel, ModelCategory } from '@/lib/proposal-engine/types';
 import { ModelCard } from './ModelCard';
@@ -124,7 +124,7 @@ export function ModelLibrary({
               placeholder="Search models..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="rounded-lg border border-limestone-200 bg-white py-2 pl-8 pr-3 text-xs text-charcoal-700 placeholder:text-charcoal-400 outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
+              className="rounded-lg border border-limestone-200 bg-white py-2 pl-8 pr-3 text-xs text-charcoal-700 placeholder:text-charcoal-400 outline-hidden focus:border-brand-700 focus:ring-1 focus:ring-brand-700"
             />
           </div>
 
@@ -147,7 +147,7 @@ export function ModelLibrary({
             key={tab.key}
             type="button"
             onClick={() => setActiveCategory(tab.key)}
-            className={clsx(
+            className={cn(
               'shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-all',
               activeCategory === tab.key
                 ? 'bg-white text-brand-700 shadow-sm'

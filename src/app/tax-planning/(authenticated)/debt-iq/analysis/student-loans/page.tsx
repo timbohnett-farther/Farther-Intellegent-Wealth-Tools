@@ -316,7 +316,7 @@ function PSLFTab({ token }: { token: string | null }) {
           <span className="text-sm font-bold text-brand-700">{Number(qualifyingPayments)} / 120 payments</span>
         </div>
         <div className="h-4 rounded-full bg-limestone-100 overflow-hidden mb-2">
-          <div className="h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-700 transition-all duration-500" style={{ width: `${progressPct}%` }} />
+          <div className="h-full rounded-full bg-linear-to-r from-brand-500 to-brand-700 transition-all duration-500" style={{ width: `${progressPct}%` }} />
         </div>
         <div className="flex justify-between text-xs text-charcoal-400">
           <span>0</span>

@@ -24,7 +24,7 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
     <div className="max-w-xl mx-auto">
       <div className="card p-8 text-center">
         {/* Icon */}
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 flex items-center justify-center mb-6">
+        <div className="w-16 h-16 mx-auto rounded-2xl bg-linear-to-br from-brand-700 to-brand-900 flex items-center justify-center mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2a10 10 0 1 0 10 10" />
             <path d="M12 12 12 2" />
@@ -328,7 +328,7 @@ export default function RiskProfilePage() {
     <div className="min-h-screen bg-limestone-50">
       {/* Header */}
       <header className="bg-white border-b border-limestone-200 sticky top-0 z-50 no-print">
-        <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-panel-dashboard mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -359,7 +359,7 @@ export default function RiskProfilePage() {
         </div>
       </header>
 
-      <div className="max-w-[1200px] mx-auto px-4 py-8">
+      <div className="max-w-panel-dashboard mx-auto px-4 py-8">
         {/* Intro Phase */}
         {phase === 'intro' && (
           <IntroScreen onContinue={() => setPhase('intake')} />

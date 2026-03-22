@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   CheckCircle2,
   Star,
@@ -58,7 +58,7 @@ function StrategyCard({
 }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'relative rounded-lg border-2 p-5 shadow-sm transition-all',
         isRecommended
           ? 'border-brand-700 bg-brand-700/5'

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Pencil, Check, X } from 'lucide-react';
 import { Badge } from '@/components/prism/atoms/Badge';
 
@@ -166,7 +166,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                               if (e.key === 'Enter') confirmEdit(line.taxLineRef);
                               if (e.key === 'Escape') cancelEdit();
                             }}
-                            className="w-28 h-7 rounded border border-brand-700 bg-white px-2 text-right text-sm text-charcoal-900 focus:outline-none focus:shadow-focus"
+                            className="w-28 h-7 rounded border border-brand-700 bg-white px-2 text-right text-sm text-charcoal-900 focus:outline-hidden focus:shadow-focus"
                             autoFocus
                           />
                         </div>
@@ -184,7 +184,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                         <div className="flex items-center gap-2">
                           <div className="h-2 w-16 overflow-hidden rounded-full bg-limestone-200">
                             <div
-                              className={clsx(
+                              className={cn(
                                 'h-full rounded-full transition-all',
                                 getConfidenceColor(line.confidence)
                               )}

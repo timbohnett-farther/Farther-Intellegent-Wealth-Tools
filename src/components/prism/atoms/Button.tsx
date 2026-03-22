@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
 import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils/cn';
+import { buttonVariants } from '@/components/ui/Button';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'icon-only';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
@@ -13,26 +14,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   loading?: boolean;
   children?: React.ReactNode;
 }
-
-const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800 focus-visible:shadow-focus shadow-sm',
-  secondary:
-    'border border-brand-700 bg-white text-brand-700 hover:bg-brand-50 focus-visible:shadow-focus',
-  ghost:
-    'bg-transparent text-charcoal-500 hover:bg-limestone-50 focus-visible:shadow-focus',
-  danger:
-    'bg-critical-500 text-white hover:bg-critical-600 focus-visible:shadow-focus shadow-sm',
-  'icon-only':
-    'bg-transparent text-charcoal-500 hover:bg-limestone-50 hover:text-charcoal-700 focus-visible:shadow-focus',
-};
-
-const sizeStyles: Record<ButtonSize, string> = {
-  xs: 'h-7 px-2.5 text-xs gap-1 rounded',
-  sm: 'h-8 px-3 text-[13px] gap-1.5 rounded-md',
-  md: 'h-10 px-5 text-sm gap-2 rounded-lg',
-  lg: 'h-12 px-7 text-base gap-2 rounded-lg',
-};
 
 const iconOnlySizeStyles: Record<ButtonSize, string> = {
   xs: 'h-7 w-7 rounded',
@@ -64,23 +45,35 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isIconOnly = variant === 'icon-only';
 
+    // icon-only has no Tremor equivalent — keep custom styles
+    const classes = isIconOnly
+      ? cn(
+          'inline-flex items-center justify-center font-medium transition-colors',
+          'focus-visible:outline-hidden focus-visible:shadow-focus',
+          'disabled:pointer-events-none disabled:opacity-45',
+          'bg-transparent text-charcoal-500 hover:bg-limestone-50 hover:text-charcoal-700',
+          iconOnlySizeStyles[size],
+          className,
+        )
+      : cn(
+          buttonVariants({
+            variant: variant as 'primary' | 'secondary' | 'ghost' | 'danger',
+            size: size === 'xs' ? 'sm' : size,
+          }),
+          size === 'xs' && 'h-7 px-2.5 text-xs gap-1 rounded',
+          className,
+        );
+
     return (
       <button
         ref={ref}
         type={type}
         disabled={disabled || loading}
-        className={clsx(
-          'inline-flex items-center justify-center font-medium transition-colors',
-          'focus-visible:outline-none',
-          'disabled:pointer-events-none disabled:opacity-45',
-          variantStyles[variant],
-          isIconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
-          className,
-        )}
+        className={classes}
         {...props}
       >
         {loading && (
-          <Loader2 className={clsx('animate-spin', spinnerSizes[size])} />
+          <Loader2 className={cn('animate-spin', spinnerSizes[size])} />
         )}
         {!(loading && isIconOnly) && children}
       </button>

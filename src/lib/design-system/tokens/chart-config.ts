@@ -88,3 +88,16 @@ export const monteCarloConfig = {
   ],
   height: 400,
 } as const;
+
+// Tremor chart color bridge — maps existing design tokens to Tremor color names
+export const tremorChartColors = {
+  brand: chartConfig.colors.primary,
+  "brand-light": chartConfig.colors.secondary,
+  "brand-muted": chartConfig.colors.tertiary,
+  success: chartConfig.colors.positive,
+  critical: chartConfig.colors.negative,
+  neutral: chartConfig.colors.neutral,
+  gold: chartConfig.colors.goal,
+  purple: chartConfig.colors.estate,
+  terra: chartConfig.colors.tax,
+} as const;

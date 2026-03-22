@@ -430,7 +430,7 @@ export default function SocialSecurityPage() {
                   type="number"
                   value={pia}
                   onChange={(e) => setPia(Number(e.target.value) || 0)}
-                  className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-hidden"
                 />
                 <span className="text-xs text-charcoal-300">/mo</span>
               </div>
@@ -446,7 +446,7 @@ export default function SocialSecurityPage() {
                 min={65}
                 max={67}
                 step={1}
-                className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-hidden"
               />
             </div>
             <div>
@@ -461,7 +461,7 @@ export default function SocialSecurityPage() {
                   step={0.1}
                   min={0}
                   max={10}
-                  className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-16 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-hidden"
                 />
                 <span className="text-xs text-charcoal-300">%</span>
               </div>
@@ -476,7 +476,7 @@ export default function SocialSecurityPage() {
                   type="number"
                   value={otherIncome}
                   onChange={(e) => setOtherIncome(Number(e.target.value) || 0)}
-                  className="w-28 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                  className="w-28 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-hidden"
                 />
               </div>
             </div>
@@ -506,7 +506,7 @@ export default function SocialSecurityPage() {
                     type="number"
                     value={coClientPIA}
                     onChange={(e) => setCoClientPIA(Number(e.target.value) || 0)}
-                    className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+                    className="w-24 px-2 py-1.5 text-sm border border-limestone-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-hidden"
                   />
                   <span className="text-xs text-charcoal-300">/mo</span>
                 </div>

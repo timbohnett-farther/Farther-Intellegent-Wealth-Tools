@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { FileText, ChevronRight } from 'lucide-react';
 import type { ReturnDocument } from '@/lib/tax-planning/types';
 import { Badge } from '@/components/prism/atoms/Badge';

@@ -469,7 +469,7 @@ function MarginLoanTab({ token }: { token: string | null }) {
           <div className="rounded-lg border border-limestone-200 bg-white p-6">
             <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Margin Safety Gauge</h3>
             <div className="relative">
-              <div className="h-4 rounded-full bg-gradient-to-r from-critical-500 via-warning-500 to-success-500 overflow-hidden" />
+              <div className="h-4 rounded-full bg-linear-to-r from-critical-500 via-warning-500 to-success-500 overflow-hidden" />
               <div
                 className="absolute top-0 h-4 w-1 bg-charcoal-900 rounded"
                 style={{ left: `${Math.min(100, Math.max(0, Math.abs(result.portfolioDropToCall) * 200))}%` }}

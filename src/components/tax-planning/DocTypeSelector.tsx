@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { FileText, FileSearch, File } from 'lucide-react';
 
 export interface DocTypeSelectorProps {
@@ -50,7 +50,7 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
           return (
             <label
               key={docType.value}
-              className={clsx(
+              className={cn(
                 'flex items-center gap-4 rounded-lg border-[1.5px] p-4 cursor-pointer transition-all',
                 isSelected
                   ? 'border-brand-700 bg-brand-50 shadow-sm'
@@ -67,13 +67,13 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
               />
 
               <div
-                className={clsx(
+                className={cn(
                   'flex items-center justify-center h-10 w-10 rounded-lg flex-shrink-0',
                   isSelected ? 'bg-brand-700' : 'bg-limestone-100'
                 )}
               >
                 <Icon
-                  className={clsx(
+                  className={cn(
                     'h-5 w-5',
                     isSelected ? 'text-white' : 'text-charcoal-500'
                   )}
@@ -82,7 +82,7 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
 
               <div className="flex-1 min-w-0">
                 <p
-                  className={clsx(
+                  className={cn(
                     'text-sm font-medium',
                     isSelected ? 'text-brand-700' : 'text-charcoal-900'
                   )}
@@ -96,7 +96,7 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
 
               {/* Custom radio indicator */}
               <div
-                className={clsx(
+                className={cn(
                   'flex-shrink-0 h-5 w-5 rounded-full border-2 flex items-center justify-center',
                   isSelected
                     ? 'border-brand-700'

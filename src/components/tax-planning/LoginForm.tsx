@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { AlertCircle } from 'lucide-react';
 import { Spinner } from '@/components/prism/atoms/Spinner';
 
@@ -98,8 +98,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder="you@example.com"
             disabled={loading}
             autoComplete="email"
-            className={clsx(
-              'h-10 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-none focus:shadow-focus',
+            className={cn(
+              'h-10 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:shadow-focus',
               'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
               validationErrors.email
                 ? 'border-critical-500 focus:border-critical-500'
@@ -132,8 +132,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder="Enter your password"
             disabled={loading}
             autoComplete="current-password"
-            className={clsx(
-              'h-10 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-none focus:shadow-focus',
+            className={cn(
+              'h-10 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:shadow-focus',
               'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
               validationErrors.password
                 ? 'border-critical-500 focus:border-critical-500'
@@ -149,9 +149,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <button
           type="submit"
           disabled={loading}
-          className={clsx(
+          className={cn(
             'inline-flex items-center justify-center gap-2 w-full h-10 rounded-lg text-sm font-medium transition-colors shadow-sm',
-            'focus-visible:outline-none focus-visible:shadow-focus',
+            'focus-visible:outline-hidden focus-visible:shadow-focus',
             'disabled:pointer-events-none disabled:opacity-45',
             'bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800'
           )}

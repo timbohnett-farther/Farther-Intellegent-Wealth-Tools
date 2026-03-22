@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { X, Download, Mail, Link2, Check } from 'lucide-react';
 
 export interface ShareModalProps {
@@ -77,7 +77,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-xs"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -174,8 +174,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                     if (emailError) setEmailError('');
                   }}
                   placeholder="client@example.com"
-                  className={clsx(
-                    'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-none focus:shadow-focus',
+                  className={cn(
+                    'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:shadow-focus',
                     emailError
                       ? 'border-critical-500 focus:border-critical-500'
                       : 'border-limestone-200 focus:border-brand-700'
@@ -188,7 +188,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <button
                 type="button"
                 onClick={handleSendEmail}
-                className={clsx(
+                className={cn(
                   'h-9 px-4 rounded-lg text-sm font-medium transition-colors shadow-sm',
                   emailSent
                     ? 'bg-success-500 text-white'

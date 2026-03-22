@@ -472,7 +472,7 @@ export default function SentinelDashboardPage() {
           <p className="text-sm font-medium text-critical-700 mb-3">{error}</p>
           <button
             onClick={fetchData}
-            className="rounded-lg bg-steelBlue-700 px-4 py-2 text-sm font-medium text-white hover:bg-steelBlue-600 transition-colors"
+            className="rounded-lg bg-steel-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-steel-blue-600 transition-colors"
           >
             Retry
           </button>

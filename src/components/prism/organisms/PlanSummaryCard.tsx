@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Calendar } from 'lucide-react';
 import { Badge } from '@/components/prism/atoms';
 import { ProgressBar } from '@/components/prism/molecules';
 import { ProbabilityGauge } from './ProbabilityGauge';
+import { Card } from '@/components/ui/Card';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -66,12 +67,7 @@ export function PlanSummaryCard({
   const statusCfg = STATUS_VARIANT[status];
 
   return (
-    <div
-      className={clsx(
-        'rounded-card border border-limestone-200 bg-white p-5 shadow-sm',
-        className,
-      )}
-    >
+    <Card className={cn('p-5', className)}>
       {/* Header row */}
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -109,7 +105,7 @@ export function PlanSummaryCard({
           />
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

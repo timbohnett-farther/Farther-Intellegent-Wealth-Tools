@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { X } from 'lucide-react';
 
 export interface TagInputProps {
@@ -47,7 +47,7 @@ export function TagInput({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-wrap items-center gap-1.5 rounded-input border border-limestone-200 bg-white px-2 py-1.5',
         'transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100',
         className,
@@ -77,7 +77,7 @@ export function TagInput({
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
         placeholder={tags.length === 0 ? placeholder : ''}
-        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-charcoal-900 outline-none placeholder:text-charcoal-300"
+        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-charcoal-900 outline-hidden placeholder:text-charcoal-300"
       />
     </div>
   );

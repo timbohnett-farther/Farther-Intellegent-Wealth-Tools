@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { Divider as TremorDivider } from '@/components/ui/Divider';
+import { cn } from '@/lib/utils/cn';
 
 export interface DividerProps {
   /** Optional label displayed in the center of the divider */
@@ -13,21 +14,17 @@ export interface DividerProps {
 export const Divider: React.FC<DividerProps> = ({ label, className }) => {
   if (label) {
     return (
-      <div className={clsx('flex items-center gap-3', className)} role="separator">
-        <div className="h-px flex-1 bg-limestone-200" />
+      <div className={cn('flex items-center gap-3', className)} role="separator">
+        <TremorDivider className="flex-1" />
         <span className="text-xs font-medium text-charcoal-300 uppercase tracking-wider">
           {label}
         </span>
-        <div className="h-px flex-1 bg-limestone-200" />
+        <TremorDivider className="flex-1" />
       </div>
     );
   }
 
-  return (
-    <hr
-      className={clsx('h-px border-0 bg-limestone-200', className)}
-    />
-  );
+  return <TremorDivider className={className} />;
 };
 
 Divider.displayName = 'Divider';

@@ -189,7 +189,7 @@ export default function BusinessDebtAnalysisPage() {
             <select
               value={businessType}
               onChange={(e) => setBusinessType(e.target.value as BusinessType)}
-              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none"
+              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden"
             >
               {BUSINESS_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
@@ -197,17 +197,17 @@ export default function BusinessDebtAnalysisPage() {
           <div>
             <label className="block text-xs font-medium text-charcoal-500 mb-1">Annual Revenue</label>
             <input type="number" value={businessIncome} onChange={e => setBusinessIncome(Number(e.target.value))}
-              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" />
+              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" />
           </div>
           <div>
             <label className="block text-xs font-medium text-charcoal-500 mb-1">EBITDA</label>
             <input type="number" value={ebitda} onChange={e => setEbitda(Number(e.target.value))}
-              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" />
+              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" />
           </div>
           <div>
             <label className="block text-xs font-medium text-charcoal-500 mb-1">Personal Net Worth</label>
             <input type="number" value={netWorth} onChange={e => setNetWorth(Number(e.target.value))}
-              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" />
+              className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" />
           </div>
         </div>
       </div>
@@ -236,22 +236,22 @@ export default function BusinessDebtAnalysisPage() {
                 <tr key={d.id}>
                   <td className="px-4 py-2">
                     <select value={d.type} onChange={e => updateDebt(d.id, 'type', e.target.value)}
-                      className="w-full rounded border border-limestone-200 px-2 py-1.5 text-sm focus:border-brand-500 outline-none">
+                      className="w-full rounded border border-limestone-200 px-2 py-1.5 text-sm focus:border-brand-500 outline-hidden">
                       {DEBT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                     </select>
                   </td>
                   <td className="px-4 py-2">
                     <input type="number" value={d.balance} onChange={e => updateDebt(d.id, 'balance', Number(e.target.value))}
-                      className="w-24 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-none" />
+                      className="w-24 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-hidden" />
                   </td>
                   <td className="px-4 py-2">
                     <input type="number" value={(d.rate * 100).toFixed(2)} step="0.01"
                       onChange={e => updateDebt(d.id, 'rate', Number(e.target.value) / 100)}
-                      className="w-20 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-none" />
+                      className="w-20 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-hidden" />
                   </td>
                   <td className="px-4 py-2">
                     <input type="number" value={d.termMonths} onChange={e => updateDebt(d.id, 'termMonths', Number(e.target.value))}
-                      className="w-16 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-none" />
+                      className="w-16 rounded border border-limestone-200 px-2 py-1.5 text-sm text-right focus:border-brand-500 outline-hidden" />
                   </td>
                   <td className="px-4 py-2 text-center">
                     <input type="checkbox" checked={d.isPersonallyGuaranteed}

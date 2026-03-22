@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { FileText, Check, AlertCircle, Loader2, Upload } from 'lucide-react';
 
 export interface UploadFileProgress {
@@ -75,7 +75,7 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
             <div className="flex items-center gap-2 flex-shrink-0">
               {getStatusIcon(file.status)}
               <span
-                className={clsx(
+                className={cn(
                   'text-xs font-medium',
                   file.status === 'done' && 'text-success-700',
                   file.status === 'error' && 'text-critical-700',
@@ -91,7 +91,7 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
           {/* Progress bar */}
           <div className="h-2 w-full overflow-hidden rounded-full bg-limestone-200">
             <div
-              className={clsx(
+              className={cn(
                 'h-full rounded-full transition-all duration-300 ease-out',
                 getProgressBarColor(file.status)
               )}

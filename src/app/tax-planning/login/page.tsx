@@ -126,7 +126,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@farther.com"
-                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition-colors"
+                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-hidden transition-colors"
               />
             </div>
 
@@ -146,7 +146,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition-colors"
+                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-hidden transition-colors"
               />
             </div>
 
@@ -154,7 +154,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-sm bg-brand-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-sm bg-brand-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-hidden focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">

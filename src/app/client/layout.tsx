@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   Home,
   Wallet,
@@ -41,7 +41,7 @@ export default function ClientPortalLayout({
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-500 to-accent-500 flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-sm">F</span>
               </div>
               <span className="text-lg font-bold text-brand-900 tracking-tight">
@@ -62,7 +62,7 @@ export default function ClientPortalLayout({
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={clsx(
+                    className={cn(
                       'flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                       isActive
                         ? 'bg-brand-50 text-brand-600'
@@ -113,7 +113,7 @@ export default function ClientPortalLayout({
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={clsx(
+                    className={cn(
                       'flex items-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
                       isActive
                         ? 'bg-brand-50 text-brand-600'

@@ -234,16 +234,16 @@ function AddFundModal({ open, onClose }: { open: boolean; onClose: () => void })
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-charcoal-700 mb-1">Fund Name</label>
-            <input className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="e.g. Andreessen Horowitz Fund VII" />
+            <input className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="e.g. Andreessen Horowitz Fund VII" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Vintage Year</label>
-              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="2024" />
+              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="2024" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Asset Class</label>
-              <select className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none">
+              <select className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden">
                 <option>PE Buyout</option>
                 <option>Venture Capital</option>
                 <option>Growth Equity</option>
@@ -254,26 +254,26 @@ function AddFundModal({ open, onClose }: { open: boolean; onClose: () => void })
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Committed Capital</label>
-              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="1,000,000" />
+              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="1,000,000" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Called Capital</label>
-              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="500,000" />
+              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="500,000" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Distributions</label>
-              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="0" />
+              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="0" />
             </div>
             <div>
               <label className="block text-xs font-medium text-charcoal-700 mb-1">Current NAV</label>
-              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="0" />
+              <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="0" />
             </div>
           </div>
           <div>
             <label className="block text-xs font-medium text-charcoal-700 mb-1">Expected Exit Year</label>
-            <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none" placeholder="2030" />
+            <input type="number" className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden" placeholder="2030" />
           </div>
         </div>
         <div className="flex justify-end gap-3 mt-6">

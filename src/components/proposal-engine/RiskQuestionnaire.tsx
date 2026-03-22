@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   ChevronLeft,
   ChevronRight,
@@ -159,7 +159,7 @@ export function RiskQuestionnaire({
               key={String(opt.value)}
               type="button"
               onClick={() => handleAnswer(opt.value, opt.score)}
-              className={clsx(
+              className={cn(
                 'w-full rounded-lg border-2 px-4 py-3 text-left text-sm transition-all',
                 isSelected
                   ? 'border-brand-700 bg-brand-700/5 text-charcoal-900'
@@ -168,7 +168,7 @@ export function RiskQuestionnaire({
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={clsx(
+                  className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
                     isSelected
                       ? 'border-brand-700 bg-brand-700'
@@ -179,7 +179,7 @@ export function RiskQuestionnaire({
                     <div className="h-2 w-2 rounded-full bg-white" />
                   )}
                 </div>
-                <span className={clsx(isSelected && 'font-medium')}>
+                <span className={cn(isSelected && 'font-medium')}>
                   {opt.label}
                 </span>
               </div>
@@ -202,7 +202,7 @@ export function RiskQuestionnaire({
               key={String(opt.value)}
               type="button"
               onClick={() => handleAnswer(opt.value, opt.score)}
-              className={clsx(
+              className={cn(
                 'flex flex-col items-center rounded-lg border-2 p-4 transition-all',
                 isSelected
                   ? 'border-brand-700 bg-brand-700/5 shadow-md'
@@ -213,7 +213,7 @@ export function RiskQuestionnaire({
                 {bars.map((val, i) => (
                   <div
                     key={i}
-                    className={clsx(
+                    className={cn(
                       'w-2 rounded-t-sm transition-all',
                       isSelected ? 'bg-brand-600' : 'bg-charcoal-200',
                     )}
@@ -222,7 +222,7 @@ export function RiskQuestionnaire({
                 ))}
               </div>
               <span
-                className={clsx(
+                className={cn(
                   'text-xs font-semibold text-center',
                   isSelected ? 'text-brand-700' : 'text-charcoal-700',
                 )}
@@ -280,7 +280,7 @@ export function RiskQuestionnaire({
               key={String(opt.value)}
               type="button"
               onClick={() => handleAnswer(opt.value, opt.score)}
-              className={clsx(
+              className={cn(
                 'flex flex-col items-center rounded-xl border-2 p-6 transition-all',
                 isSelected
                   ? 'border-brand-700 bg-brand-700/5 shadow-md'
@@ -288,20 +288,20 @@ export function RiskQuestionnaire({
               )}
             >
               <div
-                className={clsx(
+                className={cn(
                   'mb-3 flex h-14 w-14 items-center justify-center rounded-full',
                   isSelected ? 'bg-brand-100' : 'bg-limestone-100',
                 )}
               >
                 <Dice5
-                  className={clsx(
+                  className={cn(
                     'h-6 w-6',
                     isSelected ? 'text-brand-700' : 'text-charcoal-400',
                   )}
                 />
               </div>
               <span
-                className={clsx(
+                className={cn(
                   'text-sm font-semibold text-center',
                   isSelected ? 'text-brand-900' : 'text-charcoal-900',
                 )}
@@ -356,7 +356,7 @@ export function RiskQuestionnaire({
               key={q.id}
               type="button"
               onClick={() => setCurrentStep(i)}
-              className={clsx(
+              className={cn(
                 'h-2 flex-1 rounded-full transition-colors',
                 i === currentStep && 'bg-brand-700',
                 i !== currentStep && responses.has(q.id) && 'bg-brand-700/40',
@@ -405,7 +405,7 @@ export function RiskQuestionnaire({
           type="button"
           onClick={handleBack}
           disabled={currentStep === 0}
-          className={clsx(
+          className={cn(
             'inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
             currentStep === 0
               ? 'cursor-not-allowed text-charcoal-300'
@@ -421,7 +421,7 @@ export function RiskQuestionnaire({
             type="button"
             onClick={handleComplete}
             disabled={answeredCount < totalQuestions}
-            className={clsx(
+            className={cn(
               'inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors',
               answeredCount >= totalQuestions
                 ? 'bg-brand-700 text-white hover:bg-brand-600'
@@ -436,7 +436,7 @@ export function RiskQuestionnaire({
             type="button"
             onClick={handleNext}
             disabled={!canProceed}
-            className={clsx(
+            className={cn(
               'inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors',
               canProceed
                 ? 'bg-brand-700 text-white hover:bg-brand-600'

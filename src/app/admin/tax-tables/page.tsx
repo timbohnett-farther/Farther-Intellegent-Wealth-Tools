@@ -153,7 +153,7 @@ export default function TaxTablesPage() {
               {s.status === 'complete' ? (
                 <CheckCircle2 size={18} className="text-success-500 flex-shrink-0" />
               ) : (
-                <div className="w-[18px] h-[18px] rounded-full border-2 border-limestone-300 flex-shrink-0" />
+                <div className="w-4.5 h-4.5 rounded-full border-2 border-limestone-300 flex-shrink-0" />
               )}
               <span className={`text-sm ${s.status === 'complete' ? 'text-charcoal-500' : 'text-charcoal-900 font-medium'}`}>
                 Step {s.step}: {s.label}

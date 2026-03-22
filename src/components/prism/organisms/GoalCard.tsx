@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Target } from 'lucide-react';
 import { Badge } from '@/components/prism/atoms';
 import { ProgressBar } from '@/components/prism/molecules';
+import { Card } from '@/components/ui/Card';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -90,12 +91,7 @@ export function GoalCard({
   const progressColor = status ? STATUS_COLOR[status] : undefined;
 
   return (
-    <div
-      className={clsx(
-        'rounded-card border border-limestone-200 bg-white p-5 shadow-sm',
-        className,
-      )}
-    >
+    <Card className={cn('p-5', className)}>
       {/* Top row: name + type badge + priority */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
@@ -148,7 +144,7 @@ export function GoalCard({
           </span>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 

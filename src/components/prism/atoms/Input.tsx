@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { Input as TremorInput } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -34,15 +35,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label
-            htmlFor={inputId}
-            className="text-sm font-medium text-charcoal-700"
-          >
-            {label}
-          </label>
+          <Label htmlFor={inputId}>{label}</Label>
         )}
 
-        <input
+        <TremorInput
           ref={ref}
           id={inputId}
           type={type}
@@ -50,17 +46,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={clsx(
-            'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900',
-            'placeholder:text-charcoal-300',
-            'transition-colors',
-            'focus:outline-none focus:border-brand-700 focus:shadow-focus',
-            'disabled:cursor-not-allowed disabled:bg-limestone-50 disabled:text-charcoal-300',
-            error
-              ? 'border-critical-500 focus:border-critical-500'
-              : 'border-limestone-200',
-            className,
-          )}
+          hasError={!!error}
+          className={className}
           {...props}
         />
 

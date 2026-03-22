@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Plus, Search, ChevronRight } from 'lucide-react';
 import type { Household } from '@/lib/tax-planning/types';
 import { Badge } from '@/components/prism/atoms/Badge';
@@ -49,7 +49,7 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
       {/* Toolbar */}
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
-          className={clsx(
+          className={cn(
             'flex items-center gap-2 rounded-lg border border-limestone-200 bg-limestone-50 px-3',
             'transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100'
           )}
@@ -60,7 +60,7 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search households..."
-            className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-none placeholder:text-charcoal-300 sm:w-64"
+            className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-hidden placeholder:text-charcoal-300 sm:w-64"
           />
         </div>
 

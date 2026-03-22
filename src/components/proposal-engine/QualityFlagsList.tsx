@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { AlertTriangle, Lightbulb, CheckCircle2 } from 'lucide-react';
 import type { QualityFlag, FlagSeverity } from '@/lib/proposal-engine/types';
 
@@ -114,7 +114,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
         return (
           <li
             key={flag.flagId}
-            className={clsx(
+            className={cn(
               'rounded-lg border px-4 py-3',
               style.bgClass,
               style.borderClass,
@@ -124,7 +124,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
             <div className="flex items-start gap-3">
               {/* Icon */}
               <Icon
-                className={clsx('mt-0.5 h-4 w-4 flex-shrink-0', style.iconColor)}
+                className={cn('mt-0.5 h-4 w-4 flex-shrink-0', style.iconColor)}
                 aria-hidden="true"
               />
 
@@ -132,7 +132,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span
-                    className={clsx(
+                    className={cn(
                       'text-sm text-charcoal-900',
                       style.textWeight,
                     )}
@@ -173,7 +173,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
 
               {/* Severity badge */}
               <span
-                className={clsx(
+                className={cn(
                   'shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase',
                   flag.severity === 'HIGH' && 'bg-warning-200 text-warning-800',
                   flag.severity === 'MEDIUM' && 'bg-warning-100 text-warning-700',

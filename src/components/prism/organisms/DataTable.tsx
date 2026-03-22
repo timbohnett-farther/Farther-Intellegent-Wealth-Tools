@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   useReactTable,
   getCoreRowModel,
@@ -87,7 +87,7 @@ export function DataTable<T>({
   const endRow = Math.min((pageIndex + 1) * currentPageSize, totalRows);
 
   return (
-    <div className={clsx('w-full', className)}>
+    <div className={cn('w-full', className)}>
       {/* ---- Toolbar ---- */}
       {searchable && (
         <div className="mb-3">
@@ -112,7 +112,7 @@ export function DataTable<T>({
                   return (
                     <th
                       key={header.id}
-                      className={clsx(
+                      className={cn(
                         'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500',
                         canSort && 'cursor-pointer select-none',
                       )}
@@ -157,7 +157,7 @@ export function DataTable<T>({
                 <tr
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
-                  className={clsx(
+                  className={cn(
                     'transition-colors',
                     onRowClick && 'cursor-pointer',
                     'hover:bg-limestone-50',
@@ -184,7 +184,7 @@ export function DataTable<T>({
             <select
               value={currentPageSize}
               onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="h-8 rounded-md border border-limestone-300 bg-white px-2 text-xs text-charcoal-700 focus:border-brand-700 focus:outline-none focus:ring-1 focus:ring-brand-700"
+              className="h-8 rounded-md border border-limestone-300 bg-white px-2 text-xs text-charcoal-700 focus:border-brand-700 focus:outline-hidden focus:ring-1 focus:ring-brand-700"
             >
               {PAGE_SIZE_OPTIONS.map((size) => (
                 <option key={size} value={size}>

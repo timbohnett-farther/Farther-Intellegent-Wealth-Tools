@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   DollarSign,
   Layers,

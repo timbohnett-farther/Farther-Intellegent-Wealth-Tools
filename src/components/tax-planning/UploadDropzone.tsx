@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import { Upload, X, FileText } from 'lucide-react';
 
 export interface UploadDropzoneProps {
@@ -135,9 +135,9 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
             handleClick();
           }
         }}
-        className={clsx(
+        className={cn(
           'relative flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-8 transition-colors',
-          'cursor-pointer focus-visible:outline-none focus-visible:shadow-focus',
+          'cursor-pointer focus-visible:outline-hidden focus-visible:shadow-focus',
           disabled && 'cursor-not-allowed opacity-50',
           isDragActive
             ? 'border-brand-700 bg-brand-50'
@@ -145,7 +145,7 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
         )}
       >
         <Upload
-          className={clsx(
+          className={cn(
             'h-10 w-10',
             isDragActive ? 'text-brand-700' : 'text-charcoal-300'
           )}

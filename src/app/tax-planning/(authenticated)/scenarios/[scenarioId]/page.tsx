@@ -433,7 +433,7 @@ export default function ScenarioBuilderPage() {
                     setNameValue(scenario.name);
                   }
                 }}
-                className="h-10 rounded-lg border-[1.5px] border-brand-700 bg-white px-3 text-xl font-bold text-charcoal-900 focus:outline-none focus:shadow-focus"
+                className="h-10 rounded-lg border-[1.5px] border-brand-700 bg-white px-3 text-xl font-bold text-charcoal-900 focus:outline-hidden focus:shadow-focus"
                 autoFocus
               />
               <button

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   Upload,
   X,
@@ -222,7 +222,7 @@ export function StatementUploader({
               key={tab.key}
               type="button"
               onClick={() => setActiveTab(tab.key)}
-              className={clsx(
+              className={cn(
                 'flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all',
                 isActive
                   ? 'bg-white text-brand-700 shadow-sm'
@@ -253,16 +253,16 @@ export function StatementUploader({
                 inputRef.current?.click();
               }
             }}
-            className={clsx(
+            className={cn(
               'relative flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-10 transition-colors',
-              'cursor-pointer focus-visible:outline-none focus-visible:shadow-focus',
+              'cursor-pointer focus-visible:outline-hidden focus-visible:shadow-focus',
               isDragActive
                 ? 'border-brand-700 bg-brand-50'
                 : 'border-limestone-300 bg-limestone-50 hover:border-brand-400 hover:bg-brand-50',
             )}
           >
             <Upload
-              className={clsx(
+              className={cn(
                 'h-10 w-10',
                 isDragActive ? 'text-brand-700' : 'text-charcoal-300',
               )}
@@ -449,7 +449,7 @@ export function StatementUploader({
                       </td>
                       <td className="px-4 py-2.5 text-center">
                         <span
-                          className={clsx(
+                          className={cn(
                             'inline-block rounded-full px-2 py-0.5 text-[11px] font-bold tabular-nums',
                             badge.bgClass,
                             badge.textClass,

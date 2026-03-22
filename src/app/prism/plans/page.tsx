@@ -51,11 +51,11 @@ export default function PlansPage() {
           <input
             type="text" placeholder="Search plans or clients..."
             value={search} onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500 bg-white"
           />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-500">
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
           <option value="draft">Draft</option>

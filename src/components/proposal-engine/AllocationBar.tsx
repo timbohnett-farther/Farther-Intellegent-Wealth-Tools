@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -98,7 +98,7 @@ export function AllocationBar({
           return (
             <div
               key={seg.key}
-              className={clsx(
+              className={cn(
                 seg.color,
                 'relative flex items-center justify-center transition-all duration-300',
               )}
@@ -106,7 +106,7 @@ export function AllocationBar({
             >
               {showInlineLabel && (
                 <span
-                  className={clsx(
+                  className={cn(
                     seg.textColor,
                     'text-[11px] font-semibold tabular-nums leading-none',
                   )}
@@ -136,7 +136,7 @@ export function AllocationBar({
             return (
               <div key={seg.key} className="flex items-center gap-1.5">
                 <span
-                  className={clsx('inline-block h-2.5 w-2.5 rounded-sm', seg.color)}
+                  className={cn('inline-block h-2.5 w-2.5 rounded-sm', seg.color)}
                   aria-hidden="true"
                 />
                 <span className="text-xs text-charcoal-700">

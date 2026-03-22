@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 import {
   LayoutDashboard,
   Users,
@@ -80,9 +80,9 @@ export function Sidebar() {
 
   return (
     <aside
-      className={clsx(
+      className={cn(
         'fixed left-0 top-0 h-screen bg-white border-r border-limestone-200 flex flex-col transition-all duration-200 z-40',
-        collapsed ? 'w-[64px]' : 'w-[240px]'
+        collapsed ? 'w-sidebar-collapsed' : 'w-sidebar'
       )}
     >
       {/* Sidebar Header — 64px, border-bottom limestone-200, logo FP in brand-700 */}
@@ -128,7 +128,7 @@ export function Sidebar() {
                         setExpandedItem(isExpanded ? null : item.label);
                       }
                     }}
-                    className={clsx(
+                    className={cn(
                       'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors relative',
                       isActive
                         ? 'bg-brand-50 text-brand-700 font-semibold border-l-[3px] border-brand-700 pl-[13px]'
@@ -136,7 +136,7 @@ export function Sidebar() {
                     )}
                   >
                     <span
-                      className={clsx(
+                      className={cn(
                         'flex-shrink-0 transition-colors',
                         isActive
                           ? 'text-brand-700'
@@ -149,14 +149,14 @@ export function Sidebar() {
                       <>
                         <span className="flex-1">{item.label}</span>
                         {item.badge != null && (
-                          <span className="bg-critical-500 text-white text-[11px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                          <span className="bg-critical-500 text-white text-[11px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1">
                             {item.badge}
                           </span>
                         )}
                         {item.children && (
                           <ChevronRight
                             size={14}
-                            className={clsx(
+                            className={cn(
                               'transition-transform text-charcoal-300',
                               isExpanded && 'rotate-90'
                             )}
@@ -173,7 +173,7 @@ export function Sidebar() {
                         <Link
                           key={child.label}
                           href={child.href}
-                          className={clsx(
+                          className={cn(
                             'block px-3 py-1.5 text-xs rounded-md transition-colors',
                             pathname === child.href
                               ? 'text-brand-700 bg-brand-50 font-semibold'

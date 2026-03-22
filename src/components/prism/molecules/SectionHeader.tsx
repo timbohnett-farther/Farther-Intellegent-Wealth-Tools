@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils/cn';
 
 export interface SectionHeaderProps {
   title: string;
@@ -18,7 +18,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex items-start justify-between gap-4',
         className,
       )}
