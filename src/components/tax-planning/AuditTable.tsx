@@ -61,22 +61,22 @@ export const AuditTable: React.FC<AuditTableProps> = ({
 
   return (
     <div className="w-full">
-      <div className="bg-white rounded-lg shadow-sm border border-limestone-200 overflow-hidden">
+      <div className="bg-white/[0.07] rounded-lg shadow-sm border border-white/[0.06] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-limestone-200 bg-limestone-50">
+              <tr className="border-b border-white/[0.06] bg-transparent">
                 <th className="w-8 px-2 py-3" aria-label="Expand" />
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Timestamp
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   User
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Event
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Details
                 </th>
               </tr>
@@ -86,7 +86,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                 <tr>
                   <td
                     colSpan={5}
-                    className="px-4 py-12 text-center text-charcoal-500"
+                    className="px-4 py-12 text-center text-white/50"
                   >
                     No audit events to display.
                   </td>
@@ -99,22 +99,22 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                     <React.Fragment key={event.event_id}>
                       <tr
                         className={cn(
-                          'border-b border-limestone-100 hover:bg-limestone-50 transition-colors cursor-pointer',
-                          isExpanded && 'bg-limestone-50'
+                          'border-b border-limestone-100 hover:bg-white/[0.04] transition-colors cursor-pointer',
+                          isExpanded && 'bg-transparent'
                         )}
                         onClick={() => toggleExpand(event.event_id)}
                       >
                         <td className="px-2 py-3 text-center">
                           {isExpanded ? (
-                            <ChevronDown className="inline-block h-4 w-4 text-charcoal-400" />
+                            <ChevronDown className="inline-block h-4 w-4 text-white/30" />
                           ) : (
-                            <ChevronRight className="inline-block h-4 w-4 text-charcoal-400" />
+                            <ChevronRight className="inline-block h-4 w-4 text-white/30" />
                           )}
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-charcoal-700 tabular-nums">
+                        <td className="px-4 py-3 whitespace-nowrap text-white/60 tabular-nums">
                           {formatTimestamp(event.timestamp)}
                         </td>
-                        <td className="px-4 py-3 text-charcoal-700 font-mono text-xs">
+                        <td className="px-4 py-3 text-white/60 font-mono text-xs">
                           {event.user_id.slice(0, 8)}...
                         </td>
                         <td className="px-4 py-3">
@@ -122,7 +122,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                             {event.event_key}
                           </Badge>
                         </td>
-                        <td className="px-4 py-3 text-charcoal-500 max-w-xs truncate">
+                        <td className="px-4 py-3 text-white/50 max-w-xs truncate">
                           {event.ip && (
                             <span className="text-xs">IP: {event.ip}</span>
                           )}
@@ -132,12 +132,12 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                       {/* Expanded payload row */}
                       {isExpanded && (
                         <tr className="border-b border-limestone-100">
-                          <td colSpan={5} className="px-4 py-4 bg-limestone-50">
-                            <div className="rounded-lg border border-limestone-200 bg-white p-4">
-                              <h4 className="text-xs font-semibold text-charcoal-500 uppercase tracking-wide mb-2">
+                          <td colSpan={5} className="px-4 py-4 bg-transparent">
+                            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4">
+                              <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wide mb-2">
                                 Event Payload
                               </h4>
-                              <pre className="text-xs text-charcoal-700 overflow-x-auto whitespace-pre-wrap font-mono bg-limestone-50 rounded p-3">
+                              <pre className="text-xs text-white/60 overflow-x-auto whitespace-pre-wrap font-mono bg-transparent rounded p-3">
                                 {JSON.stringify(event.payload, null, 2)}
                               </pre>
                             </div>
@@ -156,7 +156,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
       {/* Pagination */}
       {total > 0 && (
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-xs text-charcoal-500">
+          <p className="text-xs text-white/50">
             Showing {(page - 1) * PAGE_SIZE + 1}
             &ndash;
             {Math.min(page * PAGE_SIZE, total)} of {total} events
@@ -167,7 +167,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
               type="button"
               disabled={page <= 1}
               onClick={() => onPageChange(page - 1)}
-              className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-limestone-200 bg-white text-charcoal-700 hover:bg-limestone-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl text-white/60 hover:bg-white/[0.04] disabled:opacity-40 disabled:pointer-events-none transition-colors"
               aria-label="Previous page"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -193,8 +193,8 @@ export const AuditTable: React.FC<AuditTableProps> = ({
                   className={cn(
                     'inline-flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors',
                     pageNum === page
-                      ? 'bg-brand-700 text-white'
-                      : 'border border-limestone-200 bg-white text-charcoal-700 hover:bg-limestone-50'
+                      ? 'bg-teal-500 text-white'
+                      : 'border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl text-white/60 hover:bg-white/[0.04]'
                   )}
                 >
                   {pageNum}
@@ -206,7 +206,7 @@ export const AuditTable: React.FC<AuditTableProps> = ({
               type="button"
               disabled={page >= totalPages}
               onClick={() => onPageChange(page + 1)}
-              className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-limestone-200 bg-white text-charcoal-700 hover:bg-limestone-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl text-white/60 hover:bg-white/[0.04] disabled:opacity-40 disabled:pointer-events-none transition-colors"
               aria-label="Next page"
             >
               <ChevronRight className="h-4 w-4" />

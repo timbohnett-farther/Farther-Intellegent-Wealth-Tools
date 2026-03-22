@@ -11,7 +11,7 @@ interface Props {
 export default function ExecutiveSummarySection({ data }: Props) {
   const levelColors = {
     strongly_favorable: 'bg-success-50 border-success-500 text-success-700',
-    favorable: 'bg-brand-50 border-brand-700 text-brand-700',
+    favorable: 'bg-teal-500/10 border-teal-500 text-teal-300',
     neutral: 'bg-warning-50 border-warning-500 text-warning-700',
     caution: 'bg-critical-50 border-critical-500 text-critical-700',
   };
@@ -19,7 +19,7 @@ export default function ExecutiveSummarySection({ data }: Props) {
   const scoreColor = data.overallScore >= 80
     ? 'text-success-500'
     : data.overallScore >= 60
-    ? 'text-brand-700'
+    ? 'text-teal-300'
     : data.overallScore >= 40
     ? 'text-warning-500'
     : 'text-critical-500';
@@ -38,7 +38,7 @@ export default function ExecutiveSummarySection({ data }: Props) {
       case 'Favorable': return <span className="text-success-500">&#x2705;</span>;
       case 'Marginal': return <span className="text-warning-500">&#x26A0;&#xFE0F;</span>;
       case 'Unfavorable': return <span className="text-critical-500">&#x1F534;</span>;
-      default: return <span className="text-charcoal-300">&#x2139;&#xFE0F;</span>;
+      default: return <span className="text-white/30">&#x2139;&#xFE0F;</span>;
     }
   };
 
@@ -101,19 +101,19 @@ export default function ExecutiveSummarySection({ data }: Props) {
       {/* Key Metrics Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">Annual Savings</p>
+          <p className="text-xs text-white/50">Annual Savings</p>
           <p className="text-xl font-bold text-savings">{formatCurrency(data.annualInterestSavings)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">After-Tax Rate</p>
+          <p className="text-xs text-white/50">After-Tax Rate</p>
           <p className="text-xl font-bold text-box-spread">{formatPercentValue(data.afterTaxCost * 100)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">Margin Safety</p>
+          <p className="text-xs text-white/50">Margin Safety</p>
           <p className="text-xl font-bold text-safe">{formatPercentValue(data.marginSafetyDecline)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">MC Probability</p>
+          <p className="text-xs text-white/50">MC Probability</p>
           <p className={`text-xl font-bold ${data.mcProbability < 5 ? 'text-safe' : data.mcProbability < 15 ? 'text-warning' : 'text-danger'}`}>
             {formatPercentValue(data.mcProbability)}
           </p>
@@ -122,23 +122,23 @@ export default function ExecutiveSummarySection({ data }: Props) {
 
       {/* Decision Matrix Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-limestone-200">
+        <div className="px-4 py-3 border-b border-white/[0.06]">
           <h3 className="font-semibold text-sm">Decision Matrix</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-limestone-50">
-                <th className="text-left px-4 py-2 font-medium text-charcoal-500">Decision Factor</th>
-                <th className="text-left px-4 py-2 font-medium text-charcoal-500">Metric</th>
-                <th className="text-center px-4 py-2 font-medium text-charcoal-500">Assessment</th>
+              <tr className="bg-transparent">
+                <th className="text-left px-4 py-2 font-medium text-white/50">Decision Factor</th>
+                <th className="text-left px-4 py-2 font-medium text-white/50">Metric</th>
+                <th className="text-center px-4 py-2 font-medium text-white/50">Assessment</th>
               </tr>
             </thead>
             <tbody>
               {metrics.map((m, i) => (
                 <tr key={i} className="border-t border-limestone-100">
                   <td className="px-4 py-2 font-medium">{m.factor}</td>
-                  <td className="px-4 py-2 text-charcoal-500">{m.value}</td>
+                  <td className="px-4 py-2 text-white/50">{m.value}</td>
                   <td className="px-4 py-2 text-center">
                     <span className="inline-flex items-center gap-1">
                       {getIcon(m.assessment)} {m.assessment}

@@ -18,7 +18,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   actions,
 }) => {
   return (
-    <header className="h-16 bg-white border-b border-limestone-200 shadow-xs flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 bg-white/[0.03] border-b border-white/[0.06] backdrop-blur-xl shadow-xs flex items-center justify-between px-6 sticky top-0 z-30">
       {/* Left: Breadcrumbs and/or title */}
       <div className="flex items-center gap-2 min-w-0">
         {breadcrumbs && breadcrumbs.length > 0 ? (
@@ -29,30 +29,30 @@ export const Topbar: React.FC<TopbarProps> = ({
               return (
                 <React.Fragment key={`${crumb.label}-${idx}`}>
                   {idx > 0 && (
-                    <span className="text-charcoal-300" aria-hidden="true">
+                    <span className="text-white/30" aria-hidden="true">
                       /
                     </span>
                   )}
                   {isLast ? (
-                    <span className="text-sm font-semibold text-charcoal-900">
+                    <span className="text-sm font-semibold text-white">
                       {crumb.label}
                     </span>
                   ) : crumb.href ? (
                     <Link
                       href={crumb.href}
-                      className="text-sm text-charcoal-500 hover:text-brand-700 transition-colors"
+                      className="text-sm text-white/50 hover:text-teal-300 transition-colors"
                     >
                       {crumb.label}
                     </Link>
                   ) : (
-                    <span className="text-sm text-charcoal-500">{crumb.label}</span>
+                    <span className="text-sm text-white/50">{crumb.label}</span>
                   )}
                 </React.Fragment>
               );
             })}
           </nav>
         ) : (
-          <h2 className="text-sm font-semibold text-charcoal-900 truncate">
+          <h2 className="text-sm font-semibold text-white truncate">
             {title}
           </h2>
         )}

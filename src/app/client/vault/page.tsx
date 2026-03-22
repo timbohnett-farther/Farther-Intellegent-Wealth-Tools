@@ -77,9 +77,9 @@ function fileIcon(type: string) {
     case 'png':
     case 'jpg':
     case 'jpeg':
-      return <Image size={18} className="text-brand-700" />;
+      return <Image size={18} className="text-teal-300" />;
     default:
-      return <File size={18} className="text-charcoal-300" />;
+      return <File size={18} className="text-white/30" />;
   }
 }
 
@@ -107,14 +107,14 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-modal shadow-xl w-full max-w-lg mx-4 p-6">
+      <div className="bg-white/[0.07] rounded-modal shadow-xl w-full max-w-lg mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-charcoal-900">
+          <h3 className="text-lg font-semibold text-white">
             Upload Document
           </h3>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-limestone-100 text-charcoal-300"
+            className="p-1 rounded hover:bg-white/[0.06] text-white/30"
           >
             <X size={20} />
           </button>
@@ -126,27 +126,27 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors ${
             isDragOver
-              ? 'border-brand-500 bg-brand-50'
-              : 'border-limestone-300 hover:border-limestone-300'
+              ? 'border-brand-500 bg-teal-500/10'
+              : 'border-white/[0.10] hover:border-white/[0.10]'
           }`}
         >
-          <Upload size={32} className="mx-auto text-charcoal-300 mb-3" />
-          <p className="text-sm text-charcoal-500">
+          <Upload size={32} className="mx-auto text-white/30 mb-3" />
+          <p className="text-sm text-white/50">
             Drag and drop files here, or{' '}
-            <button className="text-brand-500 font-medium hover:underline">
+            <button className="text-teal-300 font-medium hover:underline">
               browse
             </button>
           </p>
-          <p className="text-xs text-charcoal-300 mt-2">
+          <p className="text-xs text-white/30 mt-2">
             PDF, XLSX, CSV, PNG, JPG up to 25 MB
           </p>
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-charcoal-700 mb-1">
+          <label className="block text-sm font-medium text-white/60 mb-1">
             Folder
           </label>
-          <select className="w-full border border-limestone-300 rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500">
+          <select className="w-full border border-white/[0.10] rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-teal-500">
             {FOLDERS.map((f) => (
               <option key={f.key} value={f.key}>
                 {f.label}
@@ -158,11 +158,11 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-charcoal-700 bg-white border border-limestone-300 rounded-lg hover:bg-limestone-50"
+            className="px-4 py-2 text-sm font-medium text-white/60 bg-white/[0.07] border border-white/[0.10] rounded-lg hover:bg-white/[0.04]"
           >
             Cancel
           </button>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600">
+          <button className="px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400">
             Upload
           </button>
         </div>
@@ -188,10 +188,10 @@ export default function ClientVaultPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-charcoal-900">Document Vault</h1>
+        <h1 className="text-2xl font-bold text-white">Document Vault</h1>
         <button
           onClick={() => setShowUpload(true)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-colors"
         >
           <Upload size={16} />
           Upload Document
@@ -202,36 +202,36 @@ export default function ClientVaultPage() {
       <div className="relative max-w-md">
         <Search
           size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
         />
         <input
           type="text"
           placeholder="Search documents..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500 bg-white"
+          className="w-full pl-9 pr-4 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500 bg-white/[0.06]"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Folder Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-card border border-limestone-200 overflow-hidden">
+          <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
             <div className="px-4 py-3 border-b border-limestone-100">
-              <h2 className="text-sm font-semibold text-charcoal-900">Folders</h2>
+              <h2 className="text-sm font-semibold text-white">Folders</h2>
             </div>
             <nav className="p-2">
               <button
                 onClick={() => setActiveFolder(null)}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
                   activeFolder === null
-                    ? 'bg-brand-50 text-brand-600 font-medium'
-                    : 'text-charcoal-500 hover:bg-limestone-50'
+                    ? 'bg-teal-500/10 text-teal-300 font-medium'
+                    : 'text-white/50 hover:bg-white/[0.04]'
                 }`}
               >
                 <Folder size={16} />
                 All Documents
-                <span className="ml-auto text-xs text-charcoal-300">
+                <span className="ml-auto text-xs text-white/30">
                   {DOCUMENTS.length}
                 </span>
               </button>
@@ -241,13 +241,13 @@ export default function ClientVaultPage() {
                   onClick={() => setActiveFolder(folder.key)}
                   className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
                     activeFolder === folder.key
-                      ? 'bg-brand-50 text-brand-600 font-medium'
-                      : 'text-charcoal-500 hover:bg-limestone-50'
+                      ? 'bg-teal-500/10 text-teal-300 font-medium'
+                      : 'text-white/50 hover:bg-white/[0.04]'
                   }`}
                 >
                   <Folder size={16} />
                   {folder.label}
-                  <span className="ml-auto text-xs text-charcoal-300">
+                  <span className="ml-auto text-xs text-white/30">
                     {folder.count}
                   </span>
                 </button>
@@ -258,9 +258,9 @@ export default function ClientVaultPage() {
 
         {/* Document List */}
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-card border border-limestone-200 overflow-hidden">
+          <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
             {/* Header */}
-            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-limestone-100 text-xs font-medium text-charcoal-500 uppercase tracking-wider">
+            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-limestone-100 text-xs font-medium text-white/50 uppercase tracking-wider">
               <span className="col-span-5">Name</span>
               <span className="col-span-2">Type</span>
               <span className="col-span-2">Date</span>
@@ -270,7 +270,7 @@ export default function ClientVaultPage() {
 
             {/* Rows */}
             {filteredDocs.length === 0 ? (
-              <div className="px-6 py-12 text-center text-sm text-charcoal-500">
+              <div className="px-6 py-12 text-center text-sm text-white/50">
                 No documents found.
               </div>
             ) : (
@@ -278,34 +278,34 @@ export default function ClientVaultPage() {
                 {filteredDocs.map((doc) => (
                   <div
                     key={doc.id}
-                    className="grid grid-cols-12 gap-4 px-6 py-3 items-center hover:bg-limestone-50 transition-colors"
+                    className="grid grid-cols-12 gap-4 px-6 py-3 items-center hover:bg-white/[0.04] transition-colors"
                   >
                     <div className="col-span-5 flex items-center gap-2 min-w-0">
                       {fileIcon(doc.fileType)}
-                      <span className="text-sm text-charcoal-900 truncate">
+                      <span className="text-sm text-white truncate">
                         {doc.fileName}
                       </span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-xs font-medium text-charcoal-500 uppercase">
+                      <span className="text-xs font-medium text-white/50 uppercase">
                         {doc.fileType}
                       </span>
                     </div>
-                    <div className="col-span-2 text-xs text-charcoal-500">
+                    <div className="col-span-2 text-xs text-white/50">
                       {formatDate(doc.uploadedDate)}
                     </div>
-                    <div className="col-span-1 text-xs text-charcoal-500">
+                    <div className="col-span-1 text-xs text-white/50">
                       {formatFileSize(doc.fileSize)}
                     </div>
                     <div className="col-span-2 flex items-center justify-end gap-1">
                       <button
-                        className="p-1.5 rounded hover:bg-limestone-100 text-charcoal-300 hover:text-charcoal-500"
+                        className="p-1.5 rounded hover:bg-white/[0.06] text-white/30 hover:text-white/50"
                         title="View"
                       >
                         <Eye size={16} />
                       </button>
                       <button
-                        className="p-1.5 rounded hover:bg-limestone-100 text-charcoal-300 hover:text-charcoal-500"
+                        className="p-1.5 rounded hover:bg-white/[0.06] text-white/30 hover:text-white/50"
                         title="Download"
                       >
                         <Download size={16} />

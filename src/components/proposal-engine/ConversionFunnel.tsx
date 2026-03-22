@@ -30,8 +30,8 @@ interface FunnelStage {
 }
 
 const STAGES: FunnelStage[] = [
-  { key: 'created', label: 'Created', color: 'bg-charcoal-200', bgClass: 'bg-charcoal-50' },
-  { key: 'sent', label: 'Sent', color: 'bg-brand-400', bgClass: 'bg-brand-50' },
+  { key: 'created', label: 'Created', color: 'bg-charcoal-200', bgClass: 'bg-white/[0.04]' },
+  { key: 'sent', label: 'Sent', color: 'bg-teal-400', bgClass: 'bg-teal-500/10' },
   { key: 'viewed', label: 'Viewed', color: 'bg-warning-400', bgClass: 'bg-warning-50' },
   { key: 'accepted', label: 'Accepted', color: 'bg-success-500', bgClass: 'bg-success-50' },
 ];
@@ -72,7 +72,7 @@ export function ConversionFunnel({
                 <div className="flex items-center justify-center py-0.5">
                   <div className="flex items-center gap-1.5">
                     <svg
-                      className="h-3 w-3 text-charcoal-300"
+                      className="h-3 w-3 text-white/30"
                       viewBox="0 0 12 12"
                       fill="none"
                       aria-hidden="true"
@@ -85,7 +85,7 @@ export function ConversionFunnel({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className="text-[11px] font-semibold tabular-nums text-charcoal-500">
+                    <span className="text-[11px] font-semibold tabular-nums text-white/50">
                       {rate.toFixed(0)}%
                     </span>
                   </div>
@@ -95,7 +95,7 @@ export function ConversionFunnel({
               {/* Bar */}
               <div className="flex items-center gap-3">
                 {/* Label */}
-                <span className="w-20 shrink-0 text-right text-xs font-medium text-charcoal-600">
+                <span className="w-20 shrink-0 text-right text-xs font-medium text-white/50">
                   {stage.label}
                 </span>
 
@@ -119,7 +119,7 @@ export function ConversionFunnel({
                 </div>
 
                 {/* Count on the right */}
-                <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-charcoal-700">
+                <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-white/60">
                   {value.toLocaleString()}
                 </span>
               </div>
@@ -129,14 +129,14 @@ export function ConversionFunnel({
       </div>
 
       {/* Overall conversion */}
-      <div className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-limestone-200 bg-limestone-50 px-4 py-2">
-        <span className="text-xs font-medium text-charcoal-500">
+      <div className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-white/[0.06] bg-transparent px-4 py-2">
+        <span className="text-xs font-medium text-white/50">
           Overall Conversion
         </span>
-        <span className="text-sm font-bold tabular-nums text-brand-700">
+        <span className="text-sm font-bold tabular-nums text-teal-300">
           {created > 0 ? ((accepted / created) * 100).toFixed(1) : '0.0'}%
         </span>
-        <span className="text-xs text-charcoal-400">
+        <span className="text-xs text-white/30">
           ({accepted} of {created})
         </span>
       </div>

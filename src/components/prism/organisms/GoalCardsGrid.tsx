@@ -122,18 +122,18 @@ function GoalCardItem({ goal }: { goal: GoalCardData }) {
   const progressPercent = Math.min(goal.fundedRatio * 100, 100);
 
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
       {/* Header: icon + name + target year */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50">
-            <Icon className="h-4 w-4 text-brand-700" aria-hidden="true" />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-teal-500/10">
+            <Icon className="h-4 w-4 text-teal-300" aria-hidden="true" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-charcoal-900 truncate">
+            <h3 className="text-sm font-semibold text-white truncate">
               {goal.goalName}
             </h3>
-            <span className="text-xs text-charcoal-300">Target {goal.targetYear}</span>
+            <span className="text-xs text-white/30">Target {goal.targetYear}</span>
           </div>
         </div>
 
@@ -146,15 +146,15 @@ function GoalCardItem({ goal }: { goal: GoalCardData }) {
       </div>
 
       {/* Target amount */}
-      <p className="mt-3 text-lg font-bold tabular-nums text-charcoal-900">
+      <p className="mt-3 text-lg font-bold tabular-nums text-white">
         {formatCurrency(goal.targetAmount)}
       </p>
 
       {/* Progress bar */}
       <div className="mt-3">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-xs text-charcoal-500">Funded</span>
-          <span className="text-xs font-medium tabular-nums text-charcoal-700">
+          <span className="text-xs text-white/50">Funded</span>
+          <span className="text-xs font-medium tabular-nums text-white/60">
             {formatPercent(goal.fundedRatio)}
           </span>
         </div>
@@ -170,8 +170,8 @@ function GoalCardItem({ goal }: { goal: GoalCardData }) {
 
       {/* Probability */}
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-xs text-charcoal-300">Probability</span>
-        <span className="text-xs font-medium tabular-nums text-charcoal-500">
+        <span className="text-xs text-white/30">Probability</span>
+        <span className="text-xs font-medium tabular-nums text-white/50">
           {Math.round(goal.probabilityOfMeeting * 100)}%
         </span>
       </div>
@@ -204,7 +204,7 @@ export function GoalCardsGrid({ goals, className }: GoalCardsGridProps) {
   if (goals.length === 0) {
     return (
       <div className={className}>
-        <p className="text-sm text-charcoal-300">No goals configured.</p>
+        <p className="text-sm text-white/30">No goals configured.</p>
       </div>
     );
   }

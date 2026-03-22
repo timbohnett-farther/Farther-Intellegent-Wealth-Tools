@@ -26,12 +26,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const hasActiveFilters = filters.some((f) => f.value.trim() !== '');
 
   return (
-    <div className="flex flex-wrap items-end gap-3 rounded-lg border border-limestone-200 bg-white p-4 shadow-sm">
+    <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
       {filters.map((filter) => (
         <div key={filter.key} className="flex flex-col gap-1.5 min-w-[160px]">
           <label
             htmlFor={`filter-${filter.key}`}
-            className="text-xs font-medium text-charcoal-500"
+            className="text-xs font-medium text-white/50"
           >
             {filter.label}
           </label>
@@ -43,7 +43,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
               placeholder={`Filter by ${filter.label.toLowerCase()}...`}
-              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full rounded-lg border-[1.5px] border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white placeholder:text-white/30 transition-colors focus:outline-hidden focus:border-teal-500 focus:shadow-focus"
             />
           )}
 
@@ -52,7 +52,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               id={`filter-${filter.key}`}
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
-              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-white/[0.06] bg-white pl-3 pr-9 text-sm text-white transition-colors focus:outline-hidden focus:border-teal-500 focus:shadow-focus"
             >
               <option value="">All</option>
               {filter.options?.map((opt) => (
@@ -69,7 +69,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               type="date"
               value={filter.value}
               onChange={(e) => onFilterChange(filter.key, e.target.value)}
-              className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full rounded-lg border-[1.5px] border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white transition-colors focus:outline-hidden focus:border-teal-500 focus:shadow-focus"
             />
           )}
         </div>
@@ -80,7 +80,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         <button
           type="button"
           onClick={onClear}
-          className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium text-charcoal-500 hover:bg-limestone-50 hover:text-charcoal-700 transition-colors self-end"
+          className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-sm font-medium text-white/50 hover:bg-white/[0.04] hover:text-white/60 transition-colors self-end"
         >
           <X className="h-3.5 w-3.5" />
           Clear all

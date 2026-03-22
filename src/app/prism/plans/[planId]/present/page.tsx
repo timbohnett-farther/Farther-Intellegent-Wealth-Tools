@@ -60,11 +60,11 @@ const CASH_FLOW_DATA = Array.from({ length: 15 }, (_, i) => ({
 }));
 
 const ALLOCATION_DATA = [
-  { name: 'US Equity', value: 45, color: '#3B5A69' },
+  { name: 'US Equity', value: 45, color: '#1d7682' },
   { name: 'Int\'l Equity', value: 15, color: '#7B68EE' },
-  { name: 'Fixed Income', value: 25, color: '#6189A0' },
-  { name: 'Alternatives', value: 10, color: '#2E8B57' },
-  { name: 'Cash', value: 5, color: '#D4860B' },
+  { name: 'Fixed Income', value: 25, color: '#2a9aa8' },
+  { name: 'Alternatives', value: 10, color: '#22c55e' },
+  { name: 'Cash', value: 5, color: '#f59e0b' },
 ];
 
 const GOAL_DATA = [
@@ -138,32 +138,32 @@ export default function PresentationPage() {
   const section = SECTIONS[currentSection];
 
   return (
-    <div className={`bg-charcoal-900 text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`bg-[#1a1a1a] text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Top Bar */}
-      <div className="bg-charcoal-900/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
+      <div className="bg-[#1a1a1a]/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button onClick={exitPresentation} className="text-charcoal-300 hover:text-white transition-colors">
+          <button onClick={exitPresentation} className="text-white/30 hover:text-white transition-colors">
             <X size={20} />
           </button>
           <div className="h-5 w-px bg-white/20" />
           <span className="text-sm font-medium">Presentation Mode</span>
-          <span className="text-xs text-charcoal-500">Smith Family Financial Plan</span>
+          <span className="text-xs text-white/50">Smith Family Financial Plan</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-charcoal-300">
+          <span className="text-xs text-white/30">
             {currentSection + 1} / {SECTIONS.length}
           </span>
           <button
             onClick={() => setIsAutoPlay(!isAutoPlay)}
-            className="p-2 text-charcoal-300 hover:text-white transition-colors"
+            className="p-2 text-white/30 hover:text-white transition-colors"
             title={isAutoPlay ? 'Pause auto-advance' : 'Auto-advance slides'}
           >
             {isAutoPlay ? <Pause size={16} /> : <Play size={16} />}
           </button>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-2 text-charcoal-300 hover:text-white transition-colors"
+            className="p-2 text-white/30 hover:text-white transition-colors"
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
@@ -171,15 +171,15 @@ export default function PresentationPage() {
       </div>
 
       {/* Section Navigation Pills */}
-      <div className="bg-charcoal-900/50 px-6 py-2 flex items-center gap-1 overflow-x-auto">
+      <div className="bg-[#1a1a1a]/50 px-6 py-2 flex items-center gap-1 overflow-x-auto">
         {SECTIONS.map((s, i) => (
           <button
             key={s.id}
             onClick={() => setCurrentSection(i)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap ${
               i === currentSection
-                ? 'bg-brand-700 text-white'
-                : 'text-charcoal-300 hover:text-white hover:bg-white/5'
+                ? 'bg-teal-500 text-white'
+                : 'text-white/30 hover:text-white hover:bg-white/5'
             }`}
           >
             {s.icon}
@@ -194,7 +194,7 @@ export default function PresentationPage() {
         {section.id === 'net_worth' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Net Worth Summary</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Where you stand today</p>
+            <p className="text-white/30 text-lg mb-8">Where you stand today</p>
 
             <div className="grid grid-cols-3 gap-6 mb-8">
               {[
@@ -202,8 +202,8 @@ export default function PresentationPage() {
                 { label: 'Total Liabilities', value: '$450,000', change: '-8.2%' },
                 { label: 'Net Worth', value: '$4,400,000', change: '+15.1%' },
               ].map((card) => (
-                <div key={card.label} className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                  <p className="text-sm text-charcoal-300">{card.label}</p>
+                <div key={card.label} className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
+                  <p className="text-sm text-white/30">{card.label}</p>
                   <p className="text-3xl font-bold mt-1">{card.value}</p>
                   <p className="text-sm text-success-500 mt-1">{card.change} vs last year</p>
                 </div>
@@ -212,13 +212,13 @@ export default function PresentationPage() {
 
             <div className="grid grid-cols-5 gap-6">
               <div className="col-span-3 bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-sm font-semibold text-charcoal-300 mb-4">Net Worth Projection</h3>
+                <h3 className="text-sm font-semibold text-white/30 mb-4">Net Worth Projection</h3>
                 <ResponsiveContainer width="100%" height={350}>
                   <AreaChart data={NET_WORTH_DATA}>
                     <defs>
                       <linearGradient id="colorNW" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B5A69" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#3B5A69" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#1d7682" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#1d7682" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -229,14 +229,14 @@ export default function PresentationPage() {
                       labelStyle={{ color: '#A09888' }}
                       formatter={(value: number) => [`$${(value / 1000000).toFixed(2)}M`]}
                     />
-                    <Area type="monotone" dataKey="netWorth" stroke="#3B5A69" fill="url(#colorNW)" strokeWidth={2} name="Net Worth" />
-                    <Area type="monotone" dataKey="assets" stroke="#2E8B57" fill="none" strokeWidth={1} strokeDasharray="5 5" name="Assets" />
+                    <Area type="monotone" dataKey="netWorth" stroke="#1d7682" fill="url(#colorNW)" strokeWidth={2} name="Net Worth" />
+                    <Area type="monotone" dataKey="assets" stroke="#22c55e" fill="none" strokeWidth={1} strokeDasharray="5 5" name="Assets" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
               <div className="col-span-2 bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-sm font-semibold text-charcoal-300 mb-4">Asset Allocation</h3>
+                <h3 className="text-sm font-semibold text-white/30 mb-4">Asset Allocation</h3>
                 <ResponsiveContainer width="100%" height={250}>
                   <RPieChart>
                     <Pie
@@ -265,9 +265,9 @@ export default function PresentationPage() {
         {section.id === 'cash_flow' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Cash Flow Analysis</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Income vs expenses over time</p>
+            <p className="text-white/30 text-lg mb-8">Income vs expenses over time</p>
 
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart data={CASH_FLOW_DATA}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -277,10 +277,10 @@ export default function PresentationPage() {
                     contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
                     formatter={(value: number) => [`$${(value / 1000).toFixed(0)}K`]}
                   />
-                  <Bar dataKey="income" fill="#3B5A69" radius={[4, 4, 0, 0]} name="Income" />
+                  <Bar dataKey="income" fill="#1d7682" radius={[4, 4, 0, 0]} name="Income" />
                   <Bar dataKey="expenses" fill="#E07B54" radius={[4, 4, 0, 0]} name="Expenses" />
-                  <Bar dataKey="taxes" fill="#C0392B" radius={[4, 4, 0, 0]} name="Taxes" />
-                  <Line type="monotone" dataKey="net" stroke="#2E8B57" strokeWidth={2} dot={false} name="Net" />
+                  <Bar dataKey="taxes" fill="#ef4444" radius={[4, 4, 0, 0]} name="Taxes" />
+                  <Line type="monotone" dataKey="net" stroke="#22c55e" strokeWidth={2} dot={false} name="Net" />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -291,7 +291,7 @@ export default function PresentationPage() {
         {section.id === 'retirement' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Retirement Readiness</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Your probability of achieving retirement goals</p>
+            <p className="text-white/30 text-lg mb-8">Your probability of achieving retirement goals</p>
 
             {/* Success Rate Gauge */}
             <div className="flex items-center justify-center mb-8">
@@ -299,7 +299,7 @@ export default function PresentationPage() {
                 <div className="text-8xl font-bold bg-linear-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                   {successRate}%
                 </div>
-                <p className="text-xl text-charcoal-300 mt-2">Probability of Success</p>
+                <p className="text-xl text-white/30 mt-2">Probability of Success</p>
                 {delta !== 0 && (
                   <p className={`text-sm mt-1 ${delta > 0 ? 'text-success-500' : 'text-critical-500'}`}>
                     {delta > 0 ? '+' : ''}{delta}% from baseline
@@ -311,8 +311,8 @@ export default function PresentationPage() {
             {/* Live Planning Sliders */}
             <div className="max-w-2xl mx-auto bg-white/5 rounded-2xl p-6 border border-white/10">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-charcoal-300">Interactive Planning Levers</h3>
-                <button onClick={resetSliders} className="text-xs text-charcoal-300 hover:text-white flex items-center gap-1">
+                <h3 className="text-sm font-semibold text-white/30">Interactive Planning Levers</h3>
+                <button onClick={resetSliders} className="text-xs text-white/30 hover:text-white flex items-center gap-1">
                   <RotateCcw size={12} /> Reset
                 </button>
               </div>
@@ -326,7 +326,7 @@ export default function PresentationPage() {
               ].map(({ key, label, min, max, step, format }) => (
                 <div key={key} className="mb-4">
                   <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-charcoal-300">{label}</span>
+                    <span className="text-white/30">{label}</span>
                     <span className="font-medium text-white">{format(sliders[key])}</span>
                   </div>
                   <input
@@ -336,16 +336,16 @@ export default function PresentationPage() {
                     step={step}
                     value={sliders[key]}
                     onChange={(e) => handleSliderChange(key, parseFloat(e.target.value))}
-                    className="w-full h-1.5 rounded-full bg-charcoal-700 appearance-none cursor-pointer accent-brand-700"
+                    className="w-full h-1.5 rounded-full bg-[#2a2a2a] appearance-none cursor-pointer accent-brand-700"
                   />
-                  <div className="flex justify-between text-[10px] text-charcoal-500 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-white/50 mt-0.5">
                     <span>{format(min)}</span>
                     <span>{format(max)}</span>
                   </div>
                 </div>
               ))}
 
-              <button className="w-full mt-4 px-4 py-2 bg-brand-700 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors flex items-center justify-center gap-2">
+              <button className="w-full mt-4 px-4 py-2 bg-teal-500 rounded-lg text-sm font-medium hover:bg-teal-500 transition-colors flex items-center justify-center gap-2">
                 <Save size={14} /> Save as Scenario
               </button>
             </div>
@@ -356,11 +356,11 @@ export default function PresentationPage() {
         {section.id === 'goals' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Goal Progress</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Tracking your financial goals</p>
+            <p className="text-white/30 text-lg mb-8">Tracking your financial goals</p>
 
             <div className="grid grid-cols-2 gap-6">
               {GOAL_DATA.map((goal) => (
-                <div key={goal.name} className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div key={goal.name} className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-lg font-semibold">{goal.name}</h3>
                     <span
@@ -373,7 +373,7 @@ export default function PresentationPage() {
                       {goal.status === 'on_track' ? 'On Track' : 'Attention Needed'}
                     </span>
                   </div>
-                  <p className="text-sm text-charcoal-300 mb-3">{goal.amount}</p>
+                  <p className="text-sm text-white/30 mb-3">{goal.amount}</p>
                   <div className="relative h-4 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-1000 ${
@@ -393,7 +393,7 @@ export default function PresentationPage() {
         {section.id === 'tax' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Tax Strategy</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Current year and forward-looking tax planning</p>
+            <p className="text-white/30 text-lg mb-8">Current year and forward-looking tax planning</p>
 
             <div className="grid grid-cols-4 gap-4 mb-8">
               {[
@@ -402,16 +402,16 @@ export default function PresentationPage() {
                 { label: 'Roth Conversion Opportunity', value: '$50,000', sub: 'Fill 24% bracket' },
                 { label: 'Lifetime Tax Savings', value: '$142,000', sub: 'With Roth strategy' },
               ].map((card) => (
-                <div key={card.label} className="bg-white/5 rounded-2xl p-5 border border-white/10">
-                  <p className="text-xs text-charcoal-300">{card.label}</p>
+                <div key={card.label} className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10">
+                  <p className="text-xs text-white/30">{card.label}</p>
                   <p className="text-2xl font-bold mt-1">{card.value}</p>
-                  <p className="text-xs text-charcoal-500 mt-1">{card.sub}</p>
+                  <p className="text-xs text-white/50 mt-1">{card.sub}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-sm font-semibold text-charcoal-300 mb-3">Key Tax Recommendations</h3>
+            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
+              <h3 className="text-sm font-semibold text-white/30 mb-3">Key Tax Recommendations</h3>
               <div className="space-y-3">
                 {[
                   'Convert $50,000 from Traditional IRA to Roth IRA (fills 24% bracket without IRMAA impact)',
@@ -419,9 +419,9 @@ export default function PresentationPage() {
                   'Harvest $15,000 in tax losses from international fund position',
                   'Contribute max $7,500 to HSA for triple tax benefit',
                 ].map((rec, i) => (
-                  <div key={i} className="flex items-start gap-3 text-sm text-charcoal-300">
-                    <div className="w-6 h-6 rounded-full bg-brand-700/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold text-brand-700">{i + 1}</span>
+                  <div key={i} className="flex items-start gap-3 text-sm text-white/30">
+                    <div className="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-teal-300">{i + 1}</span>
                     </div>
                     {rec}
                   </div>
@@ -435,7 +435,7 @@ export default function PresentationPage() {
         {section.id === 'social_security' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Social Security Strategy</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Optimal claiming recommendation</p>
+            <p className="text-white/30 text-lg mb-8">Optimal claiming recommendation</p>
 
             <div className="grid grid-cols-3 gap-6 mb-8">
               {[
@@ -453,18 +453,18 @@ export default function PresentationPage() {
                     <span className="text-xs font-medium text-success-500 mb-2 block">Recommended</span>
                   )}
                   <p className="text-4xl font-bold">Age {opt.age}</p>
-                  <p className="text-sm text-charcoal-300 mt-1">{opt.label}</p>
+                  <p className="text-sm text-white/30 mt-1">{opt.label}</p>
                   <div className="mt-4 space-y-1">
                     <p className="text-lg font-semibold">{opt.monthly}/mo</p>
-                    <p className="text-sm text-charcoal-300">{opt.annual}/year</p>
-                    <p className="text-xs text-charcoal-500">{opt.note}</p>
+                    <p className="text-sm text-white/30">{opt.annual}/year</p>
+                    <p className="text-xs text-white/50">{opt.note}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <p className="text-sm text-charcoal-300">
+            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
+              <p className="text-sm text-white/30">
                 <strong>Recommendation:</strong> Delay Social Security to age 70 for maximum lifetime benefit.
                 Break-even age vs claiming at 62 is age 80. With your family longevity (both parents lived to 90+),
                 the delayed strategy provides an additional <strong>$288,000</strong> in cumulative benefits by age 90.
@@ -477,7 +477,7 @@ export default function PresentationPage() {
         {section.id === 'insurance' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Insurance Review</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Coverage gaps and recommendations</p>
+            <p className="text-white/30 text-lg mb-8">Coverage gaps and recommendations</p>
 
             <div className="space-y-4">
               {[
@@ -486,13 +486,13 @@ export default function PresentationPage() {
                 { type: 'Umbrella', current: '$1,000,000', need: '$3,000,000', status: 'gap', gap: 'Increase recommended' },
                 { type: 'Long-Term Care', current: 'None', need: 'Evaluate by age 55', status: 'warning', gap: 'No coverage in place' },
               ].map((ins) => (
-                <div key={ins.type} className="bg-white/5 rounded-2xl p-5 border border-white/10 flex items-center gap-6">
+                <div key={ins.type} className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10 flex items-center gap-6">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold">{ins.type}</h3>
-                    <p className="text-sm text-charcoal-300">Current: {ins.current}</p>
+                    <p className="text-sm text-white/30">Current: {ins.current}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-charcoal-300">Recommended: {ins.need}</p>
+                    <p className="text-sm text-white/30">Recommended: {ins.need}</p>
                     <p className="text-sm text-warning-500 flex items-center gap-1 justify-end">
                       <AlertTriangle size={14} /> {ins.gap}
                     </p>
@@ -507,7 +507,7 @@ export default function PresentationPage() {
         {section.id === 'estate' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Estate Plan Status</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Document checklist and planning status</p>
+            <p className="text-white/30 text-lg mb-8">Document checklist and planning status</p>
 
             <div className="grid grid-cols-2 gap-4">
               {[
@@ -518,7 +518,7 @@ export default function PresentationPage() {
                 { doc: 'HIPAA Authorization', status: 'not_in_place', date: null },
                 { doc: 'Beneficiary Review', status: 'needs_update', date: '2021' },
               ].map((item) => (
-                <div key={item.doc} className="bg-white/5 rounded-xl p-4 border border-white/10 flex items-center gap-4">
+                <div key={item.doc} className="bg-white/[0.07]/5 rounded-xl p-4 border border-white/10 flex items-center gap-4">
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                       item.status === 'in_place'
@@ -538,7 +538,7 @@ export default function PresentationPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">{item.doc}</p>
-                    <p className="text-xs text-charcoal-500">
+                    <p className="text-xs text-white/50">
                       {item.status === 'in_place' ? `Updated ${item.date}` : item.status === 'needs_update' ? `Last updated ${item.date}` : 'Not in place'}
                     </p>
                   </div>
@@ -552,13 +552,13 @@ export default function PresentationPage() {
         {section.id === 'actions' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Action Items</h1>
-            <p className="text-charcoal-300 text-lg mb-8">Prioritized next steps for your plan</p>
+            <p className="text-white/30 text-lg mb-8">Prioritized next steps for your plan</p>
 
             <div className="space-y-4 max-w-3xl">
               {ACTION_ITEMS.map((item, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 rounded-2xl p-5 border border-white/10 flex items-start gap-4"
+                  className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10 flex items-start gap-4"
                 >
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -566,7 +566,7 @@ export default function PresentationPage() {
                         ? 'bg-critical-500/20'
                         : item.priority === 'medium'
                         ? 'bg-warning-500/20'
-                        : 'bg-brand-700/20'
+                        : 'bg-teal-500/20'
                     }`}
                   >
                     <span
@@ -575,7 +575,7 @@ export default function PresentationPage() {
                           ? 'text-critical-500'
                           : item.priority === 'medium'
                           ? 'text-warning-500'
-                          : 'text-brand-700'
+                          : 'text-teal-300'
                       }`}
                     >
                       {i + 1}
@@ -590,7 +590,7 @@ export default function PresentationPage() {
                             ? 'bg-critical-500/20 text-critical-500'
                             : item.priority === 'medium'
                             ? 'bg-warning-500/20 text-warning-500'
-                            : 'bg-brand-700/20 text-brand-700'
+                            : 'bg-teal-500/20 text-teal-300'
                         }`}
                       >
                         {item.priority.toUpperCase()}
@@ -598,7 +598,7 @@ export default function PresentationPage() {
                       <span className="text-xs text-success-500">{item.impact}</span>
                     </div>
                   </div>
-                  <ArrowRight size={16} className="text-charcoal-500 mt-1" />
+                  <ArrowRight size={16} className="text-white/50 mt-1" />
                 </div>
               ))}
             </div>
@@ -607,11 +607,11 @@ export default function PresentationPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="bg-charcoal-900/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
+      <div className="bg-[#1a1a1a]/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
         <button
           onClick={goPrev}
           disabled={currentSection === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-charcoal-300 hover:text-white hover:bg-white/5"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-white/30 hover:text-white hover:bg-white/5"
         >
           <ChevronLeft size={18} />
           Previous
@@ -623,7 +623,7 @@ export default function PresentationPage() {
               key={i}
               onClick={() => setCurrentSection(i)}
               className={`w-2 h-2 rounded-full transition-colors ${
-                i === currentSection ? 'bg-brand-700' : 'bg-charcoal-500 hover:bg-charcoal-300'
+                i === currentSection ? 'bg-teal-500' : 'bg-white/[0.04]0 hover:bg-white/20'
               }`}
             />
           ))}
@@ -632,7 +632,7 @@ export default function PresentationPage() {
         <button
           onClick={goNext}
           disabled={currentSection === SECTIONS.length - 1}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-brand-700 text-white hover:bg-brand-700"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-teal-500 text-white hover:bg-teal-500"
         >
           Next
           <ChevronRight size={18} />

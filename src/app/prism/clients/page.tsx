@@ -24,9 +24,9 @@ function formatCurrency(value: number): string {
 }
 
 const tierColors: Record<string, string> = {
-  emerging: 'bg-limestone-100 text-charcoal-500',
-  mass_affluent: 'bg-brand-100 text-brand-700',
-  hnw: 'bg-brand-100 text-brand-700',
+  emerging: 'bg-white/[0.06] text-white/50',
+  mass_affluent: 'bg-teal-500/15 text-teal-300',
+  hnw: 'bg-teal-500/15 text-teal-300',
   uhnw: 'bg-warning-100 text-warning-700',
 };
 const tierLabels: Record<string, string> = {
@@ -35,9 +35,9 @@ const tierLabels: Record<string, string> = {
 
 const statusColors: Record<string, string> = {
   active: 'bg-success-100 text-success-700',
-  draft: 'bg-limestone-100 text-charcoal-500',
+  draft: 'bg-white/[0.06] text-white/50',
   needs_review: 'bg-warning-100 text-warning-700',
-  archived: 'bg-limestone-100 text-charcoal-500',
+  archived: 'bg-white/[0.06] text-white/50',
 };
 const statusLabels: Record<string, string> = {
   active: 'Active', draft: 'Draft', needs_review: 'Needs Review', archived: 'Archived',
@@ -59,10 +59,10 @@ export default function ClientsPage() {
     <div className="max-w-content mx-auto px-6 py-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-charcoal-900">Clients</h1>
+        <h1 className="text-2xl font-bold text-white">Clients</h1>
         <Link
           href="/prism/clients?new=true"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 text-white text-sm font-medium rounded-lg hover:bg-brand-600 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-400 transition-colors"
         >
           <Plus size={16} />
           New Client
@@ -72,19 +72,19 @@ export default function ClientsPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3 mb-4">
         <div className="relative flex-1 min-w-[200px] max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
           <input
             type="text"
             placeholder="Search by name or household..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-limestone-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500 bg-white/[0.06]"
           />
         </div>
         <select
           value={tierFilter}
           onChange={(e) => setTierFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-500"
+          className="px-3 py-2 text-sm border border-white/[0.06] rounded-lg bg-white/[0.06] focus:outline-hidden focus:ring-2 focus:ring-teal-500"
         >
           <option value="all">All Tiers</option>
           <option value="emerging">Emerging</option>
@@ -95,7 +95,7 @@ export default function ClientsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-limestone-200 rounded-lg bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-500"
+          className="px-3 py-2 text-sm border border-white/[0.06] rounded-lg bg-white/[0.06] focus:outline-hidden focus:ring-2 focus:ring-teal-500"
         >
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
@@ -106,42 +106,42 @@ export default function ClientsPage() {
       </div>
 
       {/* Client Table */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm overflow-hidden">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-limestone-200 bg-limestone-50">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Client</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Household</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Tier</th>
-                <th className="text-right px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">AUM</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Plan Status</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Last Review</th>
-                <th className="text-right px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Success Rate</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Advisor</th>
-                <th className="text-right px-5 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wider">Actions</th>
+              <tr className="border-b border-white/[0.06] bg-transparent">
+                <th className="text-left px-5 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Client</th>
+                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Household</th>
+                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Tier</th>
+                <th className="text-right px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">AUM</th>
+                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Plan Status</th>
+                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Last Review</th>
+                <th className="text-right px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Success Rate</th>
+                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Advisor</th>
+                <th className="text-right px-5 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-limestone-100">
               {filtered.map((client) => (
-                <tr key={client.id} className="hover:bg-limestone-50 transition-colors">
+                <tr key={client.id} className="hover:bg-white/[0.04] transition-colors">
                   <td className="px-5 py-3">
                     <Link href={`/prism/clients/${client.id}`} className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0">
-                        <span className="text-brand-600 text-[10px] font-semibold">
+                      <div className="w-8 h-8 rounded-full bg-teal-500/15 flex items-center justify-center flex-shrink-0">
+                        <span className="text-teal-300 text-[10px] font-semibold">
                           {client.name.split(' ').map(n => n[0]).join('')}
                         </span>
                       </div>
-                      <span className="font-medium text-charcoal-900 hover:text-brand-600">{client.name}</span>
+                      <span className="font-medium text-white hover:text-teal-300">{client.name}</span>
                     </Link>
                   </td>
-                  <td className="px-3 py-3 text-charcoal-500">{client.household}</td>
+                  <td className="px-3 py-3 text-white/50">{client.household}</td>
                   <td className="px-3 py-3">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${tierColors[client.tier]}`}>
                       {tierLabels[client.tier]}
                     </span>
                   </td>
-                  <td className="px-3 py-3 text-right font-medium text-charcoal-900" style={{ fontFeatureSettings: '"tnum"' }}>
+                  <td className="px-3 py-3 text-right font-medium text-white" style={{ fontFeatureSettings: '"tnum"' }}>
                     {formatCurrency(client.aum)}
                   </td>
                   <td className="px-3 py-3">
@@ -149,31 +149,31 @@ export default function ClientsPage() {
                       {statusLabels[client.planStatus]}
                     </span>
                   </td>
-                  <td className="px-3 py-3 text-charcoal-500" style={{ fontFeatureSettings: '"tnum"' }}>
+                  <td className="px-3 py-3 text-white/50" style={{ fontFeatureSettings: '"tnum"' }}>
                     {client.lastReview || '—'}
                   </td>
                   <td className="px-3 py-3 text-right">
                     {client.successRate !== null ? (
                       <div className="flex items-center justify-end gap-2">
-                        <div className="w-12 h-1.5 bg-limestone-200 rounded-full overflow-hidden">
+                        <div className="w-12 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${client.successRate >= 85 ? 'bg-success-500' : client.successRate >= 70 ? 'bg-warning-500' : 'bg-critical-500'}`}
                             style={{ width: `${client.successRate}%` }}
                           />
                         </div>
-                        <span className="text-xs font-medium text-charcoal-700" style={{ fontFeatureSettings: '"tnum"' }}>
+                        <span className="text-xs font-medium text-white/60" style={{ fontFeatureSettings: '"tnum"' }}>
                           {client.successRate}%
                         </span>
                       </div>
                     ) : (
-                      <span className="text-xs text-charcoal-300">—</span>
+                      <span className="text-xs text-white/30">—</span>
                     )}
                   </td>
-                  <td className="px-3 py-3 text-charcoal-500 text-xs">{client.advisor}</td>
+                  <td className="px-3 py-3 text-white/50 text-xs">{client.advisor}</td>
                   <td className="px-5 py-3 text-right">
                     <Link
                       href={`/prism/clients/${client.id}`}
-                      className="text-xs text-brand-500 hover:text-brand-600 font-medium"
+                      className="text-xs text-teal-300 hover:text-teal-300 font-medium"
                     >
                       View
                     </Link>
@@ -185,12 +185,12 @@ export default function ClientsPage() {
         </div>
 
         {/* Pagination */}
-        <div className="px-5 py-3 border-t border-limestone-200 flex items-center justify-between text-xs text-charcoal-500">
+        <div className="px-5 py-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-white/50">
           <span>Showing {filtered.length} of {SAMPLE_CLIENTS.length} clients</span>
           <div className="flex items-center gap-2">
-            <button className="p-1 rounded hover:bg-limestone-100" disabled><ChevronLeft size={16} /></button>
-            <span className="px-2 py-1 bg-brand-500 text-white rounded text-xs font-medium">1</span>
-            <button className="p-1 rounded hover:bg-limestone-100" disabled><ChevronRight size={16} /></button>
+            <button className="p-1 rounded hover:bg-white/[0.06]" disabled><ChevronLeft size={16} /></button>
+            <span className="px-2 py-1 bg-teal-500 text-white rounded text-xs font-medium">1</span>
+            <button className="p-1 rounded hover:bg-white/[0.06]" disabled><ChevronRight size={16} /></button>
           </div>
         </div>
       </div>

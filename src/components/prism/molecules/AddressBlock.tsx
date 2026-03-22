@@ -20,9 +20,9 @@ export interface AddressBlockProps {
 }
 
 const inputBaseClass =
-  'w-full rounded-input border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 outline-hidden transition-colors placeholder:text-charcoal-300 focus:border-brand-700 focus:ring-2 focus:ring-brand-100';
+  'w-full rounded-input border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-sm text-white outline-hidden transition-colors placeholder:text-white/30 focus:border-teal-500 focus:ring-2 focus:ring-teal-100';
 
-const labelClass = 'mb-1 block text-sm font-medium text-charcoal-700';
+const labelClass = 'mb-1 block text-sm font-medium text-white/60';
 
 export function AddressBlock({
   value,

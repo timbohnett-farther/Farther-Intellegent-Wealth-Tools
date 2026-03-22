@@ -105,15 +105,15 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
           return (
             <div
               key={card.label}
-              className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm"
             >
               <div className="flex items-center gap-2">
-                <Icon className="h-4 w-4 text-charcoal-400" aria-hidden="true" />
-                <span className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
+                <Icon className="h-4 w-4 text-white/30" aria-hidden="true" />
+                <span className="text-xs font-medium uppercase tracking-wide text-white/50">
                   {card.label}
                 </span>
               </div>
-              <p className="mt-1.5 text-xl font-bold tabular-nums text-charcoal-900">
+              <p className="mt-1.5 text-xl font-bold tabular-nums text-white">
                 {card.value}
               </p>
             </div>
@@ -122,8 +122,8 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       </div>
 
       {/* Allocation bar */}
-      <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-charcoal-500 mb-3">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-white/50 mb-3">
           Asset Allocation
         </h4>
         <AllocationBar
@@ -139,7 +139,7 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       {/* Quality flags */}
       {qualityFlags.length > 0 && (
         <div>
-          <h4 className="text-sm font-semibold text-charcoal-900 mb-3">
+          <h4 className="text-sm font-semibold text-white mb-3">
             Quality Flags
           </h4>
           <QualityFlagsList flags={qualityFlags} />
@@ -147,29 +147,29 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       )}
 
       {/* Top 5 holdings table */}
-      <div className="rounded-lg border border-limestone-200 bg-white shadow-sm">
-        <div className="border-b border-limestone-200 px-5 py-3">
-          <h4 className="text-sm font-semibold text-charcoal-900">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm">
+        <div className="border-b border-white/[0.06] px-5 py-3">
+          <h4 className="text-sm font-semibold text-white">
             Top Holdings
           </h4>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b border-limestone-100 bg-limestone-50">
+            <thead className="border-b border-limestone-100 bg-transparent">
               <tr>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Ticker
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Description
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                   Asset Class
                 </th>
-                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                   Value
                 </th>
-                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                   % of Total
                 </th>
               </tr>
@@ -181,20 +181,20 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
                     ? ((h.marketValue as number) / (metrics.totalValue as number)) * 100
                     : 0;
                 return (
-                  <tr key={i} className="hover:bg-limestone-50 transition-colors">
-                    <td className="px-4 py-2.5 font-mono font-semibold text-charcoal-900">
+                  <tr key={i} className="hover:bg-white/[0.04] transition-colors">
+                    <td className="px-4 py-2.5 font-mono font-semibold text-white">
                       {h.ticker ?? '--'}
                     </td>
-                    <td className="px-4 py-2.5 text-charcoal-700 truncate max-w-[200px]">
+                    <td className="px-4 py-2.5 text-white/60 truncate max-w-[200px]">
                       {h.description}
                     </td>
-                    <td className="px-4 py-2.5 text-xs text-charcoal-600">
+                    <td className="px-4 py-2.5 text-xs text-white/50">
                       {fmtAssetClass(h.assetClass)}
                     </td>
-                    <td className="px-4 py-2.5 text-right tabular-nums text-charcoal-900 font-medium">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-white font-medium">
                       {fmtMoney(h.marketValue)}
                     </td>
-                    <td className="px-4 py-2.5 text-right tabular-nums text-charcoal-500">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-white/50">
                       {pctOfTotal.toFixed(1)}%
                     </td>
                   </tr>

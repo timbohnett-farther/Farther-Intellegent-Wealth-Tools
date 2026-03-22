@@ -149,13 +149,13 @@ function WizardProgress({ currentStep }: { currentStep: WizardStep }) {
         {WIZARD_STEPS.map((step, idx) => (
           <React.Fragment key={step.num}>
             {idx > 0 && (
-              <div className={`flex-1 h-0.5 mx-2 ${step.num <= currentStep ? 'bg-brand-700' : 'bg-limestone-200'}`} />
+              <div className={`flex-1 h-0.5 mx-2 ${step.num <= currentStep ? 'bg-teal-500' : 'bg-white/[0.06]'}`} />
             )}
             <div className="flex flex-col items-center gap-1.5">
               <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
-                step.num < currentStep ? 'bg-brand-700 text-white' :
-                step.num === currentStep ? 'bg-brand-700 text-white ring-4 ring-brand-100' :
-                'bg-limestone-100 text-charcoal-500'
+                step.num < currentStep ? 'bg-teal-500 text-white' :
+                step.num === currentStep ? 'bg-teal-500 text-white ring-4 ring-teal-100' :
+                'bg-white/[0.06] text-white/50'
               }`}>
                 {step.num < currentStep ? (
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -163,7 +163,7 @@ function WizardProgress({ currentStep }: { currentStep: WizardStep }) {
                   </svg>
                 ) : step.num}
               </div>
-              <span className={`text-xs font-medium hidden sm:block ${step.num <= currentStep ? 'text-brand-700' : 'text-charcoal-500'}`}>
+              <span className={`text-xs font-medium hidden sm:block ${step.num <= currentStep ? 'text-teal-300' : 'text-white/50'}`}>
                 {step.label}
               </span>
             </div>
@@ -440,22 +440,22 @@ export default function CreateProposalWizardPage() {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Create Proposal</h1>
-          <p className="mt-1 text-sm text-charcoal-500">Build a comprehensive investment proposal in 6 steps.</p>
+          <h1 className="text-2xl font-bold text-white">Create Proposal</h1>
+          <p className="mt-1 text-sm text-white/50">Build a comprehensive investment proposal in 6 steps.</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={handleSaveAsDraft}
             disabled={saving || !ctx.clientName}
-            className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2.5 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] px-4 py-2.5 text-sm font-medium text-white/60 hover:bg-white/[0.04] disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save Draft'}
           </button>
           <button
             type="button"
             onClick={() => router.push('/tax-planning/proposals')}
-            className="text-sm font-medium text-charcoal-500 hover:text-charcoal-700"
+            className="text-sm font-medium text-white/50 hover:text-white/60"
           >
             Cancel
           </button>
@@ -469,8 +469,8 @@ export default function CreateProposalWizardPage() {
       {/* ================================================================= */}
       {step === 1 && (
         <div className="space-y-6">
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Type</h2>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white mb-4">Proposal Type</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PROPOSAL_TYPES.map((pt) => (
                 <button
@@ -479,56 +479,56 @@ export default function CreateProposalWizardPage() {
                   onClick={() => setCtx((c) => ({ ...c, proposalType: pt.value }))}
                   className={`rounded-lg border p-4 text-left transition-all ${
                     ctx.proposalType === pt.value
-                      ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
-                      : 'border-limestone-200 hover:border-brand-300'
+                      ? 'border-teal-500 bg-teal-500/10 ring-2 ring-teal-200'
+                      : 'border-white/[0.06] hover:border-teal-300'
                   }`}
                 >
-                  <p className="text-sm font-semibold text-charcoal-900">{pt.label}</p>
-                  <p className="text-xs text-charcoal-500 mt-0.5">{pt.desc}</p>
+                  <p className="text-sm font-semibold text-white">{pt.label}</p>
+                  <p className="text-xs text-white/50 mt-0.5">{pt.desc}</p>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Client Information</h2>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white mb-4">Client Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-charcoal-700 mb-1">Client Name *</label>
+                <label className="block text-sm font-medium text-white/60 mb-1">Client Name *</label>
                 <input
                   type="text"
                   value={ctx.clientName}
                   onChange={(e) => setCtx((c) => ({ ...c, clientName: e.target.value }))}
                   placeholder="John & Jane Smith"
-                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-charcoal-700 mb-1">Household ID</label>
+                <label className="block text-sm font-medium text-white/60 mb-1">Household ID</label>
                 <input
                   type="text"
                   value={ctx.householdId}
                   onChange={(e) => setCtx((c) => ({ ...c, householdId: e.target.value }))}
                   placeholder="HH-12345"
-                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-charcoal-700 mb-1">Estimated Assets</label>
+                <label className="block text-sm font-medium text-white/60 mb-1">Estimated Assets</label>
                 <input
                   type="text"
                   value={ctx.estimatedAssets}
                   onChange={(e) => setCtx((c) => ({ ...c, estimatedAssets: e.target.value }))}
                   placeholder="$1,500,000"
-                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-charcoal-700 mb-1">Occasion</label>
+                <label className="block text-sm font-medium text-white/60 mb-1">Occasion</label>
                 <select
                   value={ctx.occasion}
                   onChange={(e) => setCtx((c) => ({ ...c, occasion: e.target.value }))}
-                  className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                 >
                   <option value="">Select occasion...</option>
                   <option value="INITIAL_MEETING">Initial Meeting</option>
@@ -541,13 +541,13 @@ export default function CreateProposalWizardPage() {
               </div>
             </div>
             <div className="mt-4">
-              <label className="block text-sm font-medium text-charcoal-700 mb-1">Notes</label>
+              <label className="block text-sm font-medium text-white/60 mb-1">Notes</label>
               <textarea
                 value={ctx.notes}
                 onChange={(e) => setCtx((c) => ({ ...c, notes: e.target.value }))}
                 rows={3}
                 placeholder="Additional context about this proposal..."
-                className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
               />
             </div>
           </div>
@@ -559,8 +559,8 @@ export default function CreateProposalWizardPage() {
       {/* ================================================================= */}
       {step === 2 && (
         <div className="space-y-6">
-          <div className="rounded-lg border border-limestone-200 bg-white shadow-sm">
-            <div className="flex border-b border-limestone-200">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm">
+            <div className="flex border-b border-white/[0.06]">
               {([['ocr', 'Scan Statement'], ['custodian', 'Custodian Feed'], ['manual', 'Manual Entry']] as const).map(([tab, label]) => (
                 <button
                   key={tab}
@@ -568,8 +568,8 @@ export default function CreateProposalWizardPage() {
                   onClick={() => setCaptureTab(tab)}
                   className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                     captureTab === tab
-                      ? 'border-brand-700 text-brand-700'
-                      : 'border-transparent text-charcoal-500 hover:text-charcoal-700'
+                      ? 'border-teal-500 text-teal-300'
+                      : 'border-transparent text-white/50 hover:text-white/60'
                   }`}
                 >
                   {label}
@@ -589,15 +589,15 @@ export default function CreateProposalWizardPage() {
                       const file = e.dataTransfer.files[0];
                       if (file) setScanFile(file);
                     }}
-                    className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-limestone-300 bg-limestone-50 p-10 cursor-pointer hover:border-brand-400 hover:bg-brand-50/20 transition-colors"
+                    className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-white/[0.10] bg-transparent p-10 cursor-pointer hover:border-brand-400 hover:bg-teal-500/10/20 transition-colors"
                   >
-                    <svg className="h-10 w-10 text-charcoal-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <svg className="h-10 w-10 text-white/30 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                     </svg>
-                    <p className="text-sm font-medium text-charcoal-700">
+                    <p className="text-sm font-medium text-white/60">
                       {scanFile ? scanFile.name : 'Drop a brokerage statement here or click to browse'}
                     </p>
-                    <p className="text-xs text-charcoal-500 mt-1">PDF, PNG, or JPG up to 10MB</p>
+                    <p className="text-xs text-white/50 mt-1">PDF, PNG, or JPG up to 10MB</p>
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -615,13 +615,13 @@ export default function CreateProposalWizardPage() {
                         type="button"
                         onClick={handleScan}
                         disabled={scanning}
-                        className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50"
                       >
                         {scanning ? (
                           <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> Scanning...</>
                         ) : 'Scan Statement'}
                       </button>
-                      <button type="button" onClick={() => setScanFile(null)} className="text-sm text-charcoal-500 hover:text-charcoal-700">Clear</button>
+                      <button type="button" onClick={() => setScanFile(null)} className="text-sm text-white/50 hover:text-white/60">Clear</button>
                     </div>
                   )}
                 </div>
@@ -630,11 +630,11 @@ export default function CreateProposalWizardPage() {
               {/* Custodian Tab */}
               {captureTab === 'custodian' && (
                 <div className="text-center py-10">
-                  <svg className="mx-auto h-12 w-12 text-charcoal-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="mx-auto h-12 w-12 text-white/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.556a4.5 4.5 0 00-6.364-6.364L4.5 8.87" />
                   </svg>
-                  <p className="text-sm font-medium text-charcoal-700">Custodian integration coming soon</p>
-                  <p className="text-xs text-charcoal-500 mt-1">Schwab, Fidelity, and Pershing feeds will be available.</p>
+                  <p className="text-sm font-medium text-white/60">Custodian integration coming soon</p>
+                  <p className="text-xs text-white/50 mt-1">Schwab, Fidelity, and Pershing feeds will be available.</p>
                 </div>
               )}
 
@@ -643,29 +643,29 @@ export default function CreateProposalWizardPage() {
                 <div>
                   <div className="flex items-end gap-3 mb-4">
                     <div className="flex-1">
-                      <label className="block text-sm font-medium text-charcoal-700 mb-1">Ticker</label>
+                      <label className="block text-sm font-medium text-white/60 mb-1">Ticker</label>
                       <input
                         type="text"
                         value={manualTicker}
                         onChange={(e) => setManualTicker(e.target.value)}
                         placeholder="VTI"
-                        className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                        className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="block text-sm font-medium text-charcoal-700 mb-1">Shares</label>
+                      <label className="block text-sm font-medium text-white/60 mb-1">Shares</label>
                       <input
                         type="number"
                         value={manualShares}
                         onChange={(e) => setManualShares(e.target.value)}
                         placeholder="100"
-                        className="w-full rounded-sm border border-limestone-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                        className="w-full rounded-sm border border-white/[0.10] px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={addManualHolding}
-                      className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
+                      className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400"
                     >
                       Add
                     </button>
@@ -677,30 +677,30 @@ export default function CreateProposalWizardPage() {
 
           {/* Holdings table */}
           {holdings.length > 0 && (
-            <div className="rounded-lg border border-limestone-200 bg-white shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-limestone-200">
-                <h3 className="text-sm font-semibold text-charcoal-900">
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+                <h3 className="text-sm font-semibold text-white">
                   Current Holdings ({holdings.length})
                 </h3>
-                <span className="text-sm font-medium text-charcoal-700 tabular-nums">{fmt.format(totalValue / 100)}</span>
+                <span className="text-sm font-medium text-white/60 tabular-nums">{fmt.format(totalValue / 100)}</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-limestone-200">
-                  <thead className="bg-limestone-50">
+                  <thead className="bg-transparent">
                     <tr>
                       {['Ticker', 'Description', 'Asset Class', 'Qty', 'Market Value', ''].map((h) => (
-                        <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-charcoal-500">{h}</th>
+                        <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-white/50">{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-limestone-100">
                     {holdings.map((h, idx) => (
-                      <tr key={idx} className="hover:bg-limestone-50">
-                        <td className="px-4 py-2 text-sm font-medium text-charcoal-900">{h.ticker || '--'}</td>
-                        <td className="px-4 py-2 text-sm text-charcoal-700 max-w-[180px] truncate">{h.description}</td>
-                        <td className="px-4 py-2 text-xs text-charcoal-500">{h.assetClass.replace(/_/g, ' ')}</td>
-                        <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{h.quantity.toLocaleString()}</td>
-                        <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{fmt.format((h.marketValue as number) / 100)}</td>
+                      <tr key={idx} className="hover:bg-white/[0.04]">
+                        <td className="px-4 py-2 text-sm font-medium text-white">{h.ticker || '--'}</td>
+                        <td className="px-4 py-2 text-sm text-white/60 max-w-[180px] truncate">{h.description}</td>
+                        <td className="px-4 py-2 text-xs text-white/50">{h.assetClass.replace(/_/g, ' ')}</td>
+                        <td className="px-4 py-2 text-sm text-white/60 tabular-nums">{h.quantity.toLocaleString()}</td>
+                        <td className="px-4 py-2 text-sm text-white/60 tabular-nums">{fmt.format((h.marketValue as number) / 100)}</td>
                         <td className="px-4 py-2">
                           <button type="button" onClick={() => removeHolding(idx)} className="text-xs text-critical-600 hover:text-critical-700">Remove</button>
                         </td>
@@ -719,12 +719,12 @@ export default function CreateProposalWizardPage() {
       {/* ================================================================= */}
       {step === 3 && (
         <div className="space-y-6">
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-charcoal-900">Risk Assessment Questionnaire</h2>
+              <h2 className="text-lg font-semibold text-white">Risk Assessment Questionnaire</h2>
               <div className="text-right">
-                <p className="text-xs text-charcoal-500">Progress</p>
-                <p className="text-sm font-bold text-charcoal-900">
+                <p className="text-xs text-white/50">Progress</p>
+                <p className="text-sm font-bold text-white">
                   {Object.keys(riskAnswers).length} / {RISK_QUESTIONS.length}
                 </p>
               </div>
@@ -733,8 +733,8 @@ export default function CreateProposalWizardPage() {
             <div className="space-y-6">
               {RISK_QUESTIONS.map((q, qIdx) => (
                 <div key={q.id} className="border-b border-limestone-100 pb-5 last:border-0">
-                  <p className="text-sm font-medium text-charcoal-900 mb-3">
-                    <span className="text-brand-700 mr-2">{qIdx + 1}.</span>
+                  <p className="text-sm font-medium text-white mb-3">
+                    <span className="text-teal-300 mr-2">{qIdx + 1}.</span>
                     {q.text}
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -745,8 +745,8 @@ export default function CreateProposalWizardPage() {
                         onClick={() => setRiskAnswers((prev) => ({ ...prev, [q.id]: opt.score }))}
                         className={`rounded-md border p-3 text-left text-sm transition-all ${
                           riskAnswers[q.id] === opt.score
-                            ? 'border-brand-700 bg-brand-50 text-brand-700 font-medium'
-                            : 'border-limestone-200 text-charcoal-700 hover:border-brand-300'
+                            ? 'border-teal-500 bg-teal-500/10 text-teal-300 font-medium'
+                            : 'border-white/[0.06] text-white/60 hover:border-teal-300'
                         }`}
                       >
                         {opt.label}
@@ -760,27 +760,27 @@ export default function CreateProposalWizardPage() {
 
           {/* Risk Score Summary */}
           {Object.keys(riskAnswers).length >= RISK_QUESTIONS.length && (
-            <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Risk Profile Summary</h3>
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-white mb-4">Risk Profile Summary</h3>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50">
-                    <span className="text-2xl font-bold text-brand-700">{riskScore}</span>
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-500/10">
+                    <span className="text-2xl font-bold text-teal-300">{riskScore}</span>
                   </div>
-                  <p className="text-xs text-charcoal-500 mt-2">Behavioral Score</p>
+                  <p className="text-xs text-white/50 mt-2">Behavioral Score</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-lg font-bold text-charcoal-900 mt-4">
+                  <p className="text-lg font-bold text-white mt-4">
                     {riskLabelFromScore(riskScore).replace(/_/g, ' ')}
                   </p>
-                  <p className="text-xs text-charcoal-500 mt-1">Risk Label</p>
+                  <p className="text-xs text-white/50 mt-1">Risk Label</p>
                 </div>
                 <div className="text-center">
                   <div className="mt-4">
-                    <div className="h-2 w-full rounded-full bg-limestone-200">
-                      <div className="h-2 rounded-full bg-brand-700 transition-all" style={{ width: riskScore + '%' }} />
+                    <div className="h-2 w-full rounded-full bg-white/[0.06]">
+                      <div className="h-2 rounded-full bg-teal-500 transition-all" style={{ width: riskScore + '%' }} />
                     </div>
-                    <div className="flex justify-between text-[10px] text-charcoal-400 mt-1">
+                    <div className="flex justify-between text-[10px] text-white/30 mt-1">
                       <span>Conservative</span>
                       <span>Aggressive</span>
                     </div>
@@ -797,11 +797,11 @@ export default function CreateProposalWizardPage() {
       {/* ================================================================= */}
       {step === 4 && (
         <div className="space-y-6">
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-charcoal-900">Select Investment Model</h2>
+              <h2 className="text-lg font-semibold text-white">Select Investment Model</h2>
               <div className="relative w-64">
-                <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
                 <input
@@ -809,7 +809,7 @@ export default function CreateProposalWizardPage() {
                   placeholder="Search models..."
                   value={modelSearch}
                   onChange={(e) => setModelSearch(e.target.value)}
-                  className="w-full border border-limestone-300 rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-brand-400"
+                  className="w-full border border-white/[0.10] rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
                 />
               </div>
             </div>
@@ -817,16 +817,16 @@ export default function CreateProposalWizardPage() {
             {loadingModels ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="rounded-lg border border-limestone-200 p-5 animate-pulse">
-                    <div className="h-5 w-36 rounded bg-limestone-200 mb-2" />
-                    <div className="h-3 w-24 rounded bg-limestone-200 mb-3" />
-                    <div className="h-12 rounded bg-limestone-200" />
+                  <div key={i} className="rounded-lg border border-white/[0.06] p-5 animate-pulse">
+                    <div className="h-5 w-36 rounded bg-white/[0.06] mb-2" />
+                    <div className="h-3 w-24 rounded bg-white/[0.06] mb-3" />
+                    <div className="h-12 rounded bg-white/[0.06]" />
                   </div>
                 ))}
               </div>
             ) : filteredModels.length === 0 ? (
-              <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-8 text-center">
-                <p className="text-sm text-charcoal-500">No models found</p>
+              <div className="rounded-lg border border-white/[0.06] bg-transparent p-8 text-center">
+                <p className="text-sm text-white/50">No models found</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -837,28 +837,28 @@ export default function CreateProposalWizardPage() {
                     onClick={() => setSelectedModel(model)}
                     className={`rounded-lg border p-5 text-left transition-all ${
                       selectedModel?.modelId === model.modelId
-                        ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
-                        : 'border-limestone-200 hover:border-brand-300 shadow-sm'
+                        ? 'border-teal-500 bg-teal-500/10 ring-2 ring-teal-200'
+                        : 'border-white/[0.06] hover:border-teal-300 shadow-sm'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-sm font-semibold text-charcoal-900">{model.name}</p>
+                      <p className="text-sm font-semibold text-white">{model.name}</p>
                       {model.riskLabel && (
                         <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-info-100 text-info-700">
                           {model.riskLabel.replace(/_/g, ' ')}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-charcoal-500 line-clamp-2 mb-3">{model.description}</p>
+                    <p className="text-xs text-white/50 line-clamp-2 mb-3">{model.description}</p>
                     {model.targetAllocation && (
                       <div className="flex h-2 w-full overflow-hidden rounded-full mb-2">
-                        <div className="bg-brand-700" style={{ width: model.targetAllocation.equity + '%' }} />
+                        <div className="bg-teal-500" style={{ width: model.targetAllocation.equity + '%' }} />
                         <div className="bg-info-500" style={{ width: model.targetAllocation.fixedIncome + '%' }} />
                         <div className="bg-warning-500" style={{ width: model.targetAllocation.alternatives + '%' }} />
-                        <div className="bg-limestone-300" style={{ width: model.targetAllocation.cash + '%' }} />
+                        <div className="bg-white/[0.10]" style={{ width: model.targetAllocation.cash + '%' }} />
                       </div>
                     )}
-                    <div className="flex gap-4 text-xs text-charcoal-500">
+                    <div className="flex gap-4 text-xs text-white/50">
                       <span>Risk: {model.riskScore}</span>
                       {model.weightedExpenseRatio != null && <span>ER: {fmtPct(model.weightedExpenseRatio)}</span>}
                       {model.targetReturn != null && <span>Ret: {fmtPct(model.targetReturn)}</span>}
@@ -871,25 +871,25 @@ export default function CreateProposalWizardPage() {
 
           {/* Selected model detail */}
           {selectedModel && (
-            <div className="rounded-lg border border-brand-200 bg-brand-50 p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-charcoal-900 mb-2">Selected: {selectedModel.name}</h3>
-              <p className="text-xs text-charcoal-500 mb-4">{selectedModel.description}</p>
+            <div className="rounded-lg border border-brand-200 bg-teal-500/10 p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-white mb-2">Selected: {selectedModel.name}</h3>
+              <p className="text-xs text-white/50 mb-4">{selectedModel.description}</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-charcoal-500">Risk Score</p>
-                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.riskScore}</p>
+                  <p className="text-xs text-white/50">Risk Score</p>
+                  <p className="text-sm font-bold text-white">{selectedModel.riskScore}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-charcoal-500">Expense Ratio</p>
-                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.weightedExpenseRatio != null ? fmtPct(selectedModel.weightedExpenseRatio) : '--'}</p>
+                  <p className="text-xs text-white/50">Expense Ratio</p>
+                  <p className="text-sm font-bold text-white">{selectedModel.weightedExpenseRatio != null ? fmtPct(selectedModel.weightedExpenseRatio) : '--'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-charcoal-500">Category</p>
-                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.category}</p>
+                  <p className="text-xs text-white/50">Category</p>
+                  <p className="text-sm font-bold text-white">{selectedModel.category}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-charcoal-500">Tax Efficiency</p>
-                  <p className="text-sm font-bold text-charcoal-900">{selectedModel.taxEfficiency || '--'}</p>
+                  <p className="text-xs text-white/50">Tax Efficiency</p>
+                  <p className="text-sm font-bold text-white">{selectedModel.taxEfficiency || '--'}</p>
                 </div>
               </div>
             </div>
@@ -903,53 +903,53 @@ export default function CreateProposalWizardPage() {
       {step === 5 && (
         <div className="space-y-6">
           {loadingAnalysis ? (
-            <div className="rounded-lg border border-limestone-200 bg-white p-12 text-center">
-              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-brand-700 border-t-transparent mb-4" />
-              <p className="text-sm font-medium text-charcoal-700">Running portfolio analysis...</p>
-              <p className="text-xs text-charcoal-500 mt-1">Analyzing risk, fees, tax impact, and stress scenarios</p>
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-12 text-center">
+              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-teal-500 border-t-transparent mb-4" />
+              <p className="text-sm font-medium text-white/60">Running portfolio analysis...</p>
+              <p className="text-xs text-white/50 mt-1">Analyzing risk, fees, tax impact, and stress scenarios</p>
             </div>
           ) : (
             <>
               {/* Portfolio Analytics */}
               {analytics && (
-                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Portfolio Comparison</h3>
+                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-white mb-4">Portfolio Comparison</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-charcoal-500">Current Value</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{fmt.format(totalValue / 100)}</p>
+                      <p className="text-xs text-white/50">Current Value</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{fmt.format(totalValue / 100)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Holdings Count</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{holdings.length}</p>
+                      <p className="text-xs text-white/50">Holdings Count</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{holdings.length}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Risk Score Match</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{riskScore} / {selectedModel?.riskScore || '--'}</p>
+                      <p className="text-xs text-white/50">Risk Score Match</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{riskScore} / {selectedModel?.riskScore || '--'}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Sharpe Ratio</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{analytics.sharpeRatio?.toFixed(2) ?? '--'}</p>
+                      <p className="text-xs text-white/50">Sharpe Ratio</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{analytics.sharpeRatio?.toFixed(2) ?? '--'}</p>
                     </div>
                   </div>
                   {analytics.maxDrawdown != null && (
-                    <div className="mt-4 border-t border-limestone-200 pt-4">
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-charcoal-500 mb-2">Risk Metrics</h4>
+                    <div className="mt-4 border-t border-white/[0.06] pt-4">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-2">Risk Metrics</h4>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div>
-                          <p className="text-xs text-charcoal-500">Max Drawdown</p>
+                          <p className="text-xs text-white/50">Max Drawdown</p>
                           <p className="text-sm font-bold text-critical-700">{fmtPct(analytics.maxDrawdown)}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-charcoal-500">Std. Deviation</p>
-                          <p className="text-sm font-bold text-charcoal-900">{fmtPct(analytics.standardDeviation)}</p>
+                          <p className="text-xs text-white/50">Std. Deviation</p>
+                          <p className="text-sm font-bold text-white">{fmtPct(analytics.standardDeviation)}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-charcoal-500">Sortino Ratio</p>
-                          <p className="text-sm font-bold text-charcoal-900">{analytics.sortinoRatio?.toFixed(2) ?? '--'}</p>
+                          <p className="text-xs text-white/50">Sortino Ratio</p>
+                          <p className="text-sm font-bold text-white">{analytics.sortinoRatio?.toFixed(2) ?? '--'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-charcoal-500">VaR (95%)</p>
+                          <p className="text-xs text-white/50">VaR (95%)</p>
                           <p className="text-sm font-bold text-critical-700">{fmtPct(analytics.valueAtRisk95)}</p>
                         </div>
                       </div>
@@ -960,25 +960,25 @@ export default function CreateProposalWizardPage() {
 
               {/* Stress Test Results */}
               {stressResults.length > 0 && (
-                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Stress Test Results</h3>
+                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-white mb-4">Stress Test Results</h3>
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-limestone-200">
-                      <thead className="bg-limestone-50">
+                      <thead className="bg-transparent">
                         <tr>
                           {['Scenario', 'Portfolio Return', 'Benchmark Return', 'Max Drawdown'].map((h) => (
-                            <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-charcoal-500">{h}</th>
+                            <th key={h} className="px-4 py-2 text-left text-xs font-semibold uppercase text-white/50">{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-limestone-100">
                         {stressResults.map((sr) => (
-                          <tr key={sr.scenario} className="hover:bg-limestone-50">
-                            <td className="px-4 py-2 text-sm font-medium text-charcoal-900">
+                          <tr key={sr.scenario} className="hover:bg-white/[0.04]">
+                            <td className="px-4 py-2 text-sm font-medium text-white">
                               {sr.scenarioLabel || STRESS_SCENARIOS.find((s) => s.id === sr.scenario)?.name || sr.scenario}
                             </td>
                             <td className="px-4 py-2 text-sm text-critical-700 tabular-nums">{fmtPct(sr.portfolioReturn)}</td>
-                            <td className="px-4 py-2 text-sm text-charcoal-700 tabular-nums">{fmtPct(sr.benchmarkReturn)}</td>
+                            <td className="px-4 py-2 text-sm text-white/60 tabular-nums">{fmtPct(sr.benchmarkReturn)}</td>
                             <td className="px-4 py-2">
                               <span className="text-xs font-medium text-critical-700">
                                 {fmtPct(sr.maxDrawdown)}
@@ -994,23 +994,23 @@ export default function CreateProposalWizardPage() {
 
               {/* Fee Analysis */}
               {feeAnalysis && (
-                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Fee Comparison</h3>
+                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-white mb-4">Fee Comparison</h3>
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="rounded-lg bg-limestone-50 p-4 text-center">
-                      <p className="text-xs text-charcoal-500">Current Fees</p>
-                      <p className="text-lg font-bold text-charcoal-900 tabular-nums">{fmt.format((feeAnalysis.current.totalDollars as number) / 100)}</p>
-                      <p className="text-xs text-charcoal-500">/year</p>
+                    <div className="rounded-lg bg-transparent p-4 text-center">
+                      <p className="text-xs text-white/50">Current Fees</p>
+                      <p className="text-lg font-bold text-white tabular-nums">{fmt.format((feeAnalysis.current.totalDollars as number) / 100)}</p>
+                      <p className="text-xs text-white/50">/year</p>
                     </div>
-                    <div className="rounded-lg bg-brand-50 p-4 text-center">
-                      <p className="text-xs text-charcoal-500">Proposed Fees</p>
-                      <p className="text-lg font-bold text-brand-700 tabular-nums">{fmt.format((feeAnalysis.proposed.totalDollars as number) / 100)}</p>
-                      <p className="text-xs text-charcoal-500">/year</p>
+                    <div className="rounded-lg bg-teal-500/10 p-4 text-center">
+                      <p className="text-xs text-white/50">Proposed Fees</p>
+                      <p className="text-lg font-bold text-teal-300 tabular-nums">{fmt.format((feeAnalysis.proposed.totalDollars as number) / 100)}</p>
+                      <p className="text-xs text-white/50">/year</p>
                     </div>
                     <div className="rounded-lg bg-success-50 p-4 text-center">
-                      <p className="text-xs text-charcoal-500">Annual Savings</p>
+                      <p className="text-xs text-white/50">Annual Savings</p>
                       <p className="text-lg font-bold text-success-700 tabular-nums">{fmt.format((feeAnalysis.annualSavings as number) / 100)}</p>
-                      <p className="text-xs text-charcoal-500">/year</p>
+                      <p className="text-xs text-white/50">/year</p>
                     </div>
                   </div>
                 </div>
@@ -1018,24 +1018,24 @@ export default function CreateProposalWizardPage() {
 
               {/* Tax Transition */}
               {taxTransition && (
-                <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Tax Transition Summary</h3>
+                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+                  <h3 className="text-sm font-semibold text-white mb-4">Tax Transition Summary</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-charcoal-500">Unrealized Gains</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{taxTransition.totalUnrealizedGain != null ? fmt.format((taxTransition.totalUnrealizedGain as number) / 100) : '--'}</p>
+                      <p className="text-xs text-white/50">Unrealized Gains</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{taxTransition.totalUnrealizedGain != null ? fmt.format((taxTransition.totalUnrealizedGain as number) / 100) : '--'}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Unrealized Losses</p>
+                      <p className="text-xs text-white/50">Unrealized Losses</p>
                       <p className="text-sm font-bold text-success-700 tabular-nums">{taxTransition.totalUnrealizedLoss != null ? fmt.format((taxTransition.totalUnrealizedLoss as number) / 100) : '--'}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Strategies Evaluated</p>
-                      <p className="text-sm font-bold text-charcoal-900 tabular-nums">{taxTransition.strategies?.length || 0}</p>
+                      <p className="text-xs text-white/50">Strategies Evaluated</p>
+                      <p className="text-sm font-bold text-white tabular-nums">{taxTransition.strategies?.length || 0}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-charcoal-500">Recommended</p>
-                      <p className="text-sm font-bold text-charcoal-900">{taxTransition.recommendedStrategy || '--'}</p>
+                      <p className="text-xs text-white/50">Recommended</p>
+                      <p className="text-sm font-bold text-white">{taxTransition.recommendedStrategy || '--'}</p>
                     </div>
                   </div>
                 </div>
@@ -1046,7 +1046,7 @@ export default function CreateProposalWizardPage() {
                 <button
                   type="button"
                   onClick={() => { setAnalytics(null); setStressResults([]); setFeeAnalysis(null); setTaxTransition(null); runAnalysis(); }}
-                  className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] px-4 py-2 text-sm font-medium text-white/60 hover:bg-white/[0.04]"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
@@ -1065,8 +1065,8 @@ export default function CreateProposalWizardPage() {
       {step === 6 && (
         <div className="space-y-6">
           {/* Template Style */}
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Template</h2>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white mb-4">Proposal Template</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {([
                 { id: 'standard' as const, label: 'Standard', desc: 'Clean and professional layout' },
@@ -1079,20 +1079,20 @@ export default function CreateProposalWizardPage() {
                   onClick={() => setTemplateStyle(t.id)}
                   className={`rounded-lg border p-4 text-left transition-all ${
                     templateStyle === t.id
-                      ? 'border-brand-700 bg-brand-50 ring-2 ring-brand-200'
-                      : 'border-limestone-200 hover:border-brand-300'
+                      ? 'border-teal-500 bg-teal-500/10 ring-2 ring-teal-200'
+                      : 'border-white/[0.06] hover:border-teal-300'
                   }`}
                 >
-                  <p className="text-sm font-semibold text-charcoal-900">{t.label}</p>
-                  <p className="text-xs text-charcoal-500 mt-0.5">{t.desc}</p>
+                  <p className="text-sm font-semibold text-white">{t.label}</p>
+                  <p className="text-xs text-white/50 mt-0.5">{t.desc}</p>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Section Builder */}
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Sections</h2>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white mb-4">Proposal Sections</h2>
             <div className="space-y-2">
               {sections
                 .sort((a, b) => a.order - b.order)
@@ -1100,12 +1100,12 @@ export default function CreateProposalWizardPage() {
                   <div
                     key={section.id}
                     className={`flex items-center justify-between rounded-md border p-3 transition-colors ${
-                      section.enabled ? 'border-brand-200 bg-brand-50/30' : 'border-limestone-200 bg-limestone-50'
+                      section.enabled ? 'border-brand-200 bg-teal-500/10/30' : 'border-white/[0.06] bg-transparent'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-charcoal-400 w-5 text-right">{section.order + 1}</span>
-                      <span className={`text-sm font-medium ${section.enabled ? 'text-charcoal-900' : 'text-charcoal-400'}`}>
+                      <span className="text-xs font-mono text-white/30 w-5 text-right">{section.order + 1}</span>
+                      <span className={`text-sm font-medium ${section.enabled ? 'text-white' : 'text-white/30'}`}>
                         {section.label}
                       </span>
                     </div>
@@ -1113,7 +1113,7 @@ export default function CreateProposalWizardPage() {
                       type="button"
                       onClick={() => toggleSection(section.id)}
                       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                        section.enabled ? 'bg-brand-700' : 'bg-limestone-300'
+                        section.enabled ? 'bg-teal-500' : 'bg-white/[0.10]'
                       }`}
                     >
                       <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
@@ -1126,24 +1126,24 @@ export default function CreateProposalWizardPage() {
           </div>
 
           {/* Summary */}
-          <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-charcoal-900 mb-4">Proposal Summary</h2>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-white mb-4">Proposal Summary</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
               <div>
-                <p className="text-xs text-charcoal-500">Client</p>
-                <p className="text-sm font-bold text-charcoal-900">{ctx.clientName || '--'}</p>
+                <p className="text-xs text-white/50">Client</p>
+                <p className="text-sm font-bold text-white">{ctx.clientName || '--'}</p>
               </div>
               <div>
-                <p className="text-xs text-charcoal-500">Type</p>
-                <p className="text-sm font-bold text-charcoal-900">{PROPOSAL_TYPES.find((p) => p.value === ctx.proposalType)?.label || '--'}</p>
+                <p className="text-xs text-white/50">Type</p>
+                <p className="text-sm font-bold text-white">{PROPOSAL_TYPES.find((p) => p.value === ctx.proposalType)?.label || '--'}</p>
               </div>
               <div>
-                <p className="text-xs text-charcoal-500">Holdings</p>
-                <p className="text-sm font-bold text-charcoal-900 tabular-nums">{holdings.length}</p>
+                <p className="text-xs text-white/50">Holdings</p>
+                <p className="text-sm font-bold text-white tabular-nums">{holdings.length}</p>
               </div>
               <div>
-                <p className="text-xs text-charcoal-500">Model</p>
-                <p className="text-sm font-bold text-charcoal-900">{selectedModel?.name || '--'}</p>
+                <p className="text-xs text-white/50">Model</p>
+                <p className="text-sm font-bold text-white">{selectedModel?.name || '--'}</p>
               </div>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -1151,7 +1151,7 @@ export default function CreateProposalWizardPage() {
                 type="button"
                 onClick={handleGenerate}
                 disabled={generating}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-6 py-3 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-teal-500 px-6 py-3 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50"
               >
                 {generating ? (
                   <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" /> Generating...</>
@@ -1170,7 +1170,7 @@ export default function CreateProposalWizardPage() {
                     href={generatedUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-limestone-300 px-4 py-3 text-sm font-medium text-charcoal-700 hover:bg-limestone-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/[0.10] px-4 py-3 text-sm font-medium text-white/60 hover:bg-white/[0.04]"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -1197,19 +1197,19 @@ export default function CreateProposalWizardPage() {
       {/* ================================================================= */}
       {/* Bottom Navigation                                                  */}
       {/* ================================================================= */}
-      <div className="mt-8 flex items-center justify-between border-t border-limestone-200 pt-6">
+      <div className="mt-8 flex items-center justify-between border-t border-white/[0.06] pt-6">
         <button
           type="button"
           onClick={goBack}
           disabled={step === 1}
-          className="inline-flex items-center gap-2 rounded-lg border border-limestone-300 px-4 py-2.5 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] px-4 py-2.5 text-sm font-medium text-white/60 hover:bg-white/[0.04] disabled:opacity-50"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
           Back
         </button>
-        <div className="text-xs text-charcoal-500">
+        <div className="text-xs text-white/50">
           Step {step} of {WIZARD_STEPS.length}
         </div>
         {step < 6 ? (
@@ -1217,7 +1217,7 @@ export default function CreateProposalWizardPage() {
             type="button"
             onClick={goNext}
             disabled={!canProceed()}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50"
           >
             Next
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1229,7 +1229,7 @@ export default function CreateProposalWizardPage() {
             type="button"
             onClick={handleSaveAsDraft}
             disabled={saving}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Finish & Save'}
           </button>

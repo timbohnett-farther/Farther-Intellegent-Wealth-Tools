@@ -170,9 +170,9 @@ const triggerLabel: Record<string, string> = {
 };
 
 const triggerColor: Record<string, string> = {
-  quarterly: 'bg-brand-100 text-brand-700',
-  monthly_afr: 'bg-brand-100 text-brand-700',
-  daily_congress: 'bg-limestone-100 text-charcoal-700',
+  quarterly: 'bg-teal-500/15 text-teal-300',
+  monthly_afr: 'bg-teal-500/15 text-teal-300',
+  daily_congress: 'bg-white/[0.06] text-white/60',
   annual_tables: 'bg-warning-100 text-warning-700',
 };
 
@@ -189,21 +189,21 @@ export default function UpdateEnginePage() {
       {/* KPI strip */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { label: 'Sources Monitored', value: '57', sub: '6 federal · 51 state', icon: Globe, color: 'text-brand-700' },
+          { label: 'Sources Monitored', value: '57', sub: '6 federal · 51 state', icon: Globe, color: 'text-teal-300' },
           { label: 'Tables Current', value: `${TABLE_VERSIONS.length}`, sub: 'All validated', icon: Database, color: 'text-success-500' },
-          { label: 'Pending Review', value: `${PENDING_REVIEW.length}`, sub: `${PENDING_REVIEW.filter(p => p.severity === 'medium').length} medium priority`, icon: AlertTriangle, color: PENDING_REVIEW.length > 0 ? 'text-warning-500' : 'text-charcoal-300' },
-          { label: 'Last Run', value: '4m 32s', sub: 'Mar 1, 2026 3:00 AM', icon: Clock, color: 'text-brand-700' },
-          { label: 'Plans Recalculated', value: '284', sub: 'Q1 2026 run', icon: Activity, color: 'text-brand-700' },
+          { label: 'Pending Review', value: `${PENDING_REVIEW.length}`, sub: `${PENDING_REVIEW.filter(p => p.severity === 'medium').length} medium priority`, icon: AlertTriangle, color: PENDING_REVIEW.length > 0 ? 'text-warning-500' : 'text-white/30' },
+          { label: 'Last Run', value: '4m 32s', sub: 'Mar 1, 2026 3:00 AM', icon: Clock, color: 'text-teal-300' },
+          { label: 'Plans Recalculated', value: '284', sub: 'Q1 2026 run', icon: Activity, color: 'text-teal-300' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
+            <div key={kpi.label} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-charcoal-500">{kpi.label}</p>
+                <p className="text-xs font-medium text-white/50">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
-              <p className="text-xl font-bold text-charcoal-900">{kpi.value}</p>
-              <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
+              <p className="text-xl font-bold text-white">{kpi.value}</p>
+              <p className="text-xs text-white/30 mt-0.5">{kpi.sub}</p>
             </div>
           );
         })}
@@ -212,31 +212,31 @@ export default function UpdateEnginePage() {
       {/* Pending review + Schedule */}
       <div className="grid grid-cols-2 gap-6">
         {/* Pending review */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-charcoal-900">Human Review Queue</h3>
-            <Link href="/admin/update-engine/review-queue" className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1">
+            <h3 className="text-sm font-semibold text-white">Human Review Queue</h3>
+            <Link href="/admin/update-engine/review-queue" className="text-xs font-medium text-teal-300 hover:text-teal-300 flex items-center gap-1">
               View All <ChevronRight size={12} />
             </Link>
           </div>
           {PENDING_REVIEW.length === 0 ? (
-            <p className="text-sm text-charcoal-300 py-4 text-center">No items pending review</p>
+            <p className="text-sm text-white/30 py-4 text-center">No items pending review</p>
           ) : (
             <div className="space-y-3">
               {PENDING_REVIEW.map((item) => (
-                <div key={item.id} className="p-3 rounded-lg border border-limestone-100 hover:border-limestone-200 transition-colors">
+                <div key={item.id} className="p-3 rounded-lg border border-limestone-100 hover:border-white/[0.06] transition-colors">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-charcoal-900">{item.title}</span>
+                    <span className="text-sm font-medium text-white">{item.title}</span>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                       item.severity === 'high' ? 'bg-critical-100 text-critical-700' :
                       item.severity === 'medium' ? 'bg-warning-100 text-warning-700' :
-                      'bg-brand-100 text-brand-700'
+                      'bg-teal-500/15 text-teal-300'
                     }`}>{item.severity}</span>
                   </div>
-                  <p className="text-xs text-charcoal-500 mb-1.5">{item.summary}</p>
+                  <p className="text-xs text-white/50 mb-1.5">{item.summary}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-charcoal-300">{item.source} · {item.detectedAt}</span>
-                    <span className="text-xs text-charcoal-500">{item.affectedClients.toLocaleString()} clients</span>
+                    <span className="text-xs text-white/30">{item.source} · {item.detectedAt}</span>
+                    <span className="text-xs text-white/50">{item.affectedClients.toLocaleString()} clients</span>
                   </div>
                 </div>
               ))}
@@ -245,10 +245,10 @@ export default function UpdateEnginePage() {
         </div>
 
         {/* Schedule */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-charcoal-900">Update Schedule</h3>
-            <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+            <h3 className="text-sm font-semibold text-white">Update Schedule</h3>
+            <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
               <Play size={12} /> Run Now
             </button>
           </div>
@@ -256,15 +256,15 @@ export default function UpdateEnginePage() {
             {SCHEDULE.map((s) => {
               const Icon = s.icon;
               return (
-                <div key={s.name} className="flex items-center gap-3 p-3 rounded-lg bg-limestone-50">
-                  <Icon size={16} className="text-charcoal-300 flex-shrink-0" />
+                <div key={s.name} className="flex items-center gap-3 p-3 rounded-lg bg-transparent">
+                  <Icon size={16} className="text-white/30 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-charcoal-900">{s.name}</p>
-                    <p className="text-xs text-charcoal-500">{s.cron}</p>
+                    <p className="text-sm font-medium text-white">{s.name}</p>
+                    <p className="text-xs text-white/50">{s.cron}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-medium text-charcoal-500">Next run</p>
-                    <p className="text-xs text-charcoal-300">{s.nextRun}</p>
+                    <p className="text-xs font-medium text-white/50">Next run</p>
+                    <p className="text-xs text-white/30">{s.nextRun}</p>
                   </div>
                 </div>
               );
@@ -274,8 +274,8 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Source status */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Data Source Status</h3>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-white mb-3">Data Source Status</h3>
         <div className="grid grid-cols-4 gap-3">
           {SOURCE_STATUS.map((src) => (
             <div key={src.name} className={`flex items-center gap-2 p-2.5 rounded-lg border ${
@@ -287,11 +287,11 @@ export default function UpdateEnginePage() {
                 <AlertTriangle size={14} className="text-critical-500 flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-charcoal-900 truncate">{src.name}</p>
-                <p className="text-[10px] text-charcoal-500">{src.lastCheck}</p>
+                <p className="text-xs font-medium text-white truncate">{src.name}</p>
+                <p className="text-[10px] text-white/50">{src.lastCheck}</p>
               </div>
               {src.changesLastMonth > 0 && (
-                <span className="text-[10px] font-medium text-brand-700 bg-brand-50 px-1.5 py-0.5 rounded-full">
+                <span className="text-[10px] font-medium text-teal-300 bg-teal-500/10 px-1.5 py-0.5 rounded-full">
                   {src.changesLastMonth}
                 </span>
               )}
@@ -301,30 +301,30 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Tax table versions */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
         <div className="px-5 py-4 border-b border-limestone-100">
-          <h3 className="text-sm font-semibold text-charcoal-900">Current Tax Table Versions</h3>
+          <h3 className="text-sm font-semibold text-white">Current Tax Table Versions</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Table Type</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Tax Year</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Version</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Last Updated</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Source</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Table Type</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Tax Year</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Version</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Last Updated</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Source</th>
             </tr>
           </thead>
           <tbody>
             {TABLE_VERSIONS.map((tv) => (
-              <tr key={tv.type} className="border-b border-limestone-50 hover:bg-limestone-50/50">
-                <td className="px-5 py-3 font-medium text-charcoal-900">{tv.type}</td>
-                <td className="px-5 py-3 text-charcoal-500">{tv.taxYear}</td>
+              <tr key={tv.type} className="border-b border-limestone-50 hover:bg-white/[0.04]/50">
+                <td className="px-5 py-3 font-medium text-white">{tv.type}</td>
+                <td className="px-5 py-3 text-white/50">{tv.taxYear}</td>
                 <td className="px-5 py-3">
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 text-success-700">{tv.version}</span>
                 </td>
-                <td className="px-5 py-3 text-charcoal-500">{tv.lastUpdated}</td>
-                <td className="px-5 py-3 text-charcoal-500 text-xs">{tv.source}</td>
+                <td className="px-5 py-3 text-white/50">{tv.lastUpdated}</td>
+                <td className="px-5 py-3 text-white/50 text-xs">{tv.source}</td>
               </tr>
             ))}
           </tbody>
@@ -332,10 +332,10 @@ export default function UpdateEnginePage() {
       </div>
 
       {/* Run history */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
         <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-charcoal-900">Run History</h3>
-          <button onClick={() => setShowAllRuns(!showAllRuns)} className="text-xs font-medium text-brand-600 hover:text-brand-700">
+          <h3 className="text-sm font-semibold text-white">Run History</h3>
+          <button onClick={() => setShowAllRuns(!showAllRuns)} className="text-xs font-medium text-teal-300 hover:text-teal-300">
             {showAllRuns ? 'Show Less' : 'Show All'}
           </button>
         </div>
@@ -344,7 +344,7 @@ export default function UpdateEnginePage() {
             <div key={run.runId} className="px-5 py-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-charcoal-900">{run.runId}</span>
+                  <span className="text-sm font-bold text-white">{run.runId}</span>
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${triggerColor[run.trigger]}`}>
                     {triggerLabel[run.trigger]}
                   </span>
@@ -352,10 +352,10 @@ export default function UpdateEnginePage() {
                     <CheckCircle2 size={10} /> Completed
                   </span>
                 </div>
-                <span className="text-xs text-charcoal-300">{run.runDate} · {run.duration}</span>
+                <span className="text-xs text-white/30">{run.runDate} · {run.duration}</span>
               </div>
-              <p className="text-sm text-charcoal-500 mb-2">{run.summary}</p>
-              <div className="flex items-center gap-4 text-xs text-charcoal-300">
+              <p className="text-sm text-white/50 mb-2">{run.summary}</p>
+              <div className="flex items-center gap-4 text-xs text-white/30">
                 <span>{run.sourcesChecked} sources checked</span>
                 <span>{run.changesDetected} changes detected</span>
                 <span>{run.tablesUpdated} tables updated</span>

@@ -74,17 +74,17 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   );
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-sidebar bg-white border-r border-limestone-200 flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-screen w-sidebar bg-white/[0.07] backdrop-blur-xl border-r border-white/[0.06] flex flex-col z-40">
       {/* Logo area */}
-      <div className="h-16 flex items-center gap-3 px-4 border-b border-limestone-200 flex-shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center flex-shrink-0">
+      <div className="h-16 flex items-center gap-3 px-4 border-b border-white/[0.06] flex-shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center flex-shrink-0">
           <span className="text-white font-bold text-sm">FT</span>
         </div>
         <div className="overflow-hidden">
-          <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-charcoal-900">
+          <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-white">
             Farther Tax Planning
           </h1>
-          <p className="text-[10px] text-charcoal-300">Tax Planning Platform</p>
+          <p className="text-[10px] text-white/30">Tax Planning Platform</p>
         </div>
       </div>
 
@@ -104,14 +104,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   className={cn(
                     'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors',
                     isActive
-                      ? 'bg-brand-50 text-brand-700 font-semibold border-l-[3px] border-brand-700 pl-[13px]'
-                      : 'text-charcoal-700 font-medium hover:bg-limestone-50 hover:text-charcoal-900'
+                      ? 'bg-teal-500/10 text-teal-300 font-semibold border-l-[3px] border-teal-500 pl-[13px]'
+                      : 'text-white/60 font-medium hover:bg-white/[0.04] hover:text-white'
                   )}
                 >
                   <span
                     className={cn(
                       'flex-shrink-0',
-                      isActive ? 'text-brand-700' : 'text-charcoal-500'
+                      isActive ? 'text-teal-300' : 'text-white/50'
                     )}
                   >
                     {link.icon}
@@ -125,15 +125,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </nav>
 
       {/* User info at bottom */}
-      <div className="border-t border-limestone-200 px-3 py-3 flex-shrink-0">
+      <div className="border-t border-white/[0.06] px-3 py-3 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0">
-            <span className="text-brand-700 text-xs font-semibold">
+          <div className="w-8 h-8 rounded-full bg-teal-500/15 flex items-center justify-center flex-shrink-0">
+            <span className="text-teal-300 text-xs font-semibold">
               {getUserInitials(userName)}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-charcoal-900 truncate">
+            <p className="text-sm font-medium text-white truncate">
               {userName}
             </p>
             <Badge variant={getRoleBadgeVariant(userRole)} className="mt-0.5">

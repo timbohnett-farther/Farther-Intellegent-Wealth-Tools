@@ -124,8 +124,8 @@ export function PlanAssumptionsForm({
       {/* ── Expected Returns ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Expected Returns</h3>
-          <p className="mt-0.5 text-sm text-charcoal-500">Long-term nominal return assumptions by asset class.</p>
+          <h3 className="text-base font-semibold text-white">Expected Returns</h3>
+          <p className="mt-0.5 text-sm text-white/50">Long-term nominal return assumptions by asset class.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -206,8 +206,8 @@ export function PlanAssumptionsForm({
       {/* ── Inflation ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Inflation</h3>
-          <p className="mt-0.5 text-sm text-charcoal-500">Annual inflation rate assumptions.</p>
+          <h3 className="text-base font-semibold text-white">Inflation</h3>
+          <p className="mt-0.5 text-sm text-white/50">Annual inflation rate assumptions.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -260,8 +260,8 @@ export function PlanAssumptionsForm({
       {/* ── Monte Carlo ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Monte Carlo Simulation</h3>
-          <p className="mt-0.5 text-sm text-charcoal-500">Parameters for probability-based projections.</p>
+          <h3 className="text-base font-semibold text-white">Monte Carlo Simulation</h3>
+          <p className="mt-0.5 text-sm text-white/50">Parameters for probability-based projections.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -325,7 +325,7 @@ export function PlanAssumptionsForm({
       {/* ── Social Security ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Social Security</h3>
+          <h3 className="text-base font-semibold text-white">Social Security</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -369,7 +369,7 @@ export function PlanAssumptionsForm({
       {/* ── Tax ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Tax</h3>
+          <h3 className="text-base font-semibold text-white">Tax</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -409,7 +409,7 @@ export function PlanAssumptionsForm({
       {/* ── Life Expectancy ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Life Expectancy</h3>
+          <h3 className="text-base font-semibold text-white">Life Expectancy</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -465,7 +465,7 @@ export function PlanAssumptionsForm({
       </section>
 
       {/* ── Actions ── */}
-      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 pt-6">
+      <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] pt-6">
         <Button type="submit" loading={isLoading}>
           Save Assumptions
         </Button>

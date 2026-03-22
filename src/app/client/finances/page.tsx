@@ -32,10 +32,10 @@ const ACCOUNTS = [
 ];
 
 const ALLOCATION = [
-  { label: 'US Equities', pct: 42, color: '#3B5A69' },
+  { label: 'US Equities', pct: 42, color: '#1d7682' },
   { label: 'International Equities', pct: 18, color: '#0EA5E9' },
-  { label: 'Fixed Income', pct: 22, color: '#2E8B57' },
-  { label: 'Real Estate', pct: 8, color: '#D4860B' },
+  { label: 'Fixed Income', pct: 22, color: '#22c55e' },
+  { label: 'Real Estate', pct: 8, color: '#f59e0b' },
   { label: 'Alternatives', pct: 5, color: '#7B68EE' },
   { label: 'Cash', pct: 5, color: '#7A7265' },
 ];
@@ -68,7 +68,7 @@ function bucketColor(bucket: string) {
     case 'tax_deferred': return 'bg-tax-deferred/10 text-tax-deferred';
     case 'tax_free': return 'bg-tax-free/10 text-tax-free';
     case 'liability': return 'bg-critical-50 text-critical-500';
-    default: return 'bg-limestone-100 text-charcoal-500';
+    default: return 'bg-white/[0.06] text-white/50';
   }
 }
 
@@ -84,14 +84,14 @@ function NetWorthChart({ data }: { data: typeof NET_WORTH_HISTORY }) {
         const height = range > 0 ? ((point.value - min) / range) * 100 : 50;
         return (
           <div key={i} className="flex-1 flex flex-col items-center gap-2">
-            <span className="text-[10px] text-charcoal-500 font-medium">
+            <span className="text-[10px] text-white/50 font-medium">
               {formatCurrency(point.value)}
             </span>
             <div
-              className="w-full rounded-t-md bg-brand-500 transition-all"
+              className="w-full rounded-t-md bg-teal-500 transition-all"
               style={{ height: `${Math.max(height, 8)}%` }}
             />
-            <span className="text-[10px] text-charcoal-300">{point.month.split(' ')[0]}</span>
+            <span className="text-[10px] text-white/30">{point.month.split(' ')[0]}</span>
           </div>
         );
       })}
@@ -136,8 +136,8 @@ function AllocationChart({ data }: { data: typeof ALLOCATION }) {
               className="w-3 h-3 rounded-sm flex-shrink-0"
               style={{ backgroundColor: slice.color }}
             />
-            <span className="text-charcoal-500">{slice.label}</span>
-            <span className="font-semibold text-charcoal-900 ml-auto">{slice.pct}%</span>
+            <span className="text-white/50">{slice.label}</span>
+            <span className="font-semibold text-white ml-auto">{slice.pct}%</span>
           </div>
         ))}
       </div>
@@ -159,51 +159,51 @@ export default function ClientFinancesPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-charcoal-900">My Finances</h1>
+      <h1 className="text-2xl font-bold text-white">My Finances</h1>
 
       {/* ── Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-card border border-limestone-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
+        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
+          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
             <TrendingUp size={16} className="text-goal-funded" />
             Total Assets
           </div>
-          <p className="text-2xl font-bold text-charcoal-900">
+          <p className="text-2xl font-bold text-white">
             {formatCurrency(totalAssets)}
           </p>
         </div>
-        <div className="bg-white rounded-card border border-limestone-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
+        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
+          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
             <TrendingDown size={16} className="text-goal-at-risk" />
             Total Liabilities
           </div>
-          <p className="text-2xl font-bold text-charcoal-900">
+          <p className="text-2xl font-bold text-white">
             {formatCurrency(totalLiabilities)}
           </p>
         </div>
-        <div className="bg-white rounded-card border border-limestone-200 p-5">
-          <div className="flex items-center gap-2 text-sm text-charcoal-500 mb-1">
-            <BarChart3 size={16} className="text-brand-500" />
+        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
+          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+            <BarChart3 size={16} className="text-teal-300" />
             Net Worth
           </div>
-          <p className="text-2xl font-bold text-charcoal-900">
+          <p className="text-2xl font-bold text-white">
             {formatCurrency(netWorth)}
           </p>
         </div>
       </div>
 
       {/* ── Net Worth Chart ── */}
-      <div className="bg-white rounded-card border border-limestone-200 p-6">
-        <h2 className="text-lg font-semibold text-charcoal-900 mb-4">
+      <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
+        <h2 className="text-lg font-semibold text-white mb-4">
           Net Worth Trend
         </h2>
         <NetWorthChart data={NET_WORTH_HISTORY} />
       </div>
 
       {/* ── Accounts ── */}
-      <div className="bg-white rounded-card border border-limestone-200 overflow-hidden">
+      <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
         <div className="px-6 py-4 border-b border-limestone-100">
-          <h2 className="text-lg font-semibold text-charcoal-900">Accounts</h2>
+          <h2 className="text-lg font-semibold text-white">Accounts</h2>
         </div>
         <div className="divide-y divide-gray-100">
           {ACCOUNTS.map((account) => (
@@ -212,23 +212,23 @@ export default function ClientFinancesPage() {
               className="flex items-center justify-between px-6 py-4"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-lg bg-limestone-100 flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-white/[0.06] flex items-center justify-center flex-shrink-0">
                   {account.balance < 0 ? (
-                    <CreditCard size={18} className="text-charcoal-300" />
+                    <CreditCard size={18} className="text-white/30" />
                   ) : account.type.includes('401') ||
                     account.type.includes('IRA') ? (
-                    <Landmark size={18} className="text-charcoal-300" />
+                    <Landmark size={18} className="text-white/30" />
                   ) : account.type === 'Mortgage' ? (
-                    <Home size={18} className="text-charcoal-300" />
+                    <Home size={18} className="text-white/30" />
                   ) : (
-                    <BarChart3 size={18} className="text-charcoal-300" />
+                    <BarChart3 size={18} className="text-white/30" />
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-charcoal-900 truncate">
+                  <p className="text-sm font-medium text-white truncate">
                     {account.name}
                   </p>
-                  <p className="text-xs text-charcoal-500">
+                  <p className="text-xs text-white/50">
                     {account.institution} &middot; {account.type}
                   </p>
                 </div>
@@ -241,7 +241,7 @@ export default function ClientFinancesPage() {
                 </span>
                 <span
                   className={`text-sm font-semibold tabular-nums ${
-                    account.balance < 0 ? 'text-critical-500' : 'text-charcoal-900'
+                    account.balance < 0 ? 'text-critical-500' : 'text-white'
                   }`}
                 >
                   {formatCurrency(account.balance)}
@@ -253,8 +253,8 @@ export default function ClientFinancesPage() {
       </div>
 
       {/* ── Asset Allocation ── */}
-      <div className="bg-white rounded-card border border-limestone-200 p-6">
-        <h2 className="text-lg font-semibold text-charcoal-900 mb-6">
+      <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
+        <h2 className="text-lg font-semibold text-white mb-6">
           Asset Allocation
         </h2>
         <AllocationChart data={ALLOCATION} />

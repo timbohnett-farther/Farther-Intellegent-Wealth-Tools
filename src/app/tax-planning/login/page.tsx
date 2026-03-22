@@ -73,7 +73,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Branding header */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-700 shadow-brand">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-teal-500 shadow-brand">
             <svg
               className="h-8 w-8 text-white"
               viewBox="0 0 24 24"
@@ -89,16 +89,16 @@ export default function LoginPage() {
               <path d="M2 12l10 5 10-5" />
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold text-charcoal-900">
+          <h1 className="text-2xl font-semibold text-white">
             Farther Tax Planning
           </h1>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <p className="mt-1 text-sm text-white/50">
             Sign in to your advisor account
           </p>
         </div>
 
         {/* Login card */}
-        <div className="rounded-lg border border-limestone-200 bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Error banner */}
             {error && (
@@ -114,7 +114,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="login-email"
-                className="mb-1.5 block text-sm font-medium text-charcoal-700"
+                className="mb-1.5 block text-sm font-medium text-white/60"
               >
                 Email address
               </label>
@@ -126,7 +126,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@farther.com"
-                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-hidden transition-colors"
+                className="w-full border border-white/[0.10] rounded-sm px-3 py-2 text-sm text-white placeholder:text-white/30 focus:ring-2 focus:ring-teal-400 focus:border-brand-400 outline-hidden transition-colors"
               />
             </div>
 
@@ -134,7 +134,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="login-password"
-                className="mb-1.5 block text-sm font-medium text-charcoal-700"
+                className="mb-1.5 block text-sm font-medium text-white/60"
               >
                 Password
               </label>
@@ -146,7 +146,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full border border-limestone-300 rounded-sm px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-hidden transition-colors"
+                className="w-full border border-white/[0.10] rounded-sm px-3 py-2 text-sm text-white placeholder:text-white/30 focus:ring-2 focus:ring-teal-400 focus:border-brand-400 outline-hidden transition-colors"
               />
             </div>
 
@@ -154,7 +154,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-sm bg-brand-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 focus:outline-hidden focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-sm bg-teal-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 focus:outline-hidden focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -202,7 +202,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-6 text-center text-xs text-charcoal-500">
+        <p className="mt-6 text-center text-xs text-white/50">
           Farther Financial Advisors &middot; Tax Planning Platform v1.0
         </p>
       </div>

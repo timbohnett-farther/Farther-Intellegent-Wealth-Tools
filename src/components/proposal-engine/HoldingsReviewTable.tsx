@@ -200,15 +200,15 @@ export function HoldingsReviewTable({
     <div className="w-full space-y-3">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-charcoal-900">
+        <h3 className="text-sm font-semibold text-white">
           Holdings ({holdings.length})
         </h3>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-limestone-200">
+      <div className="overflow-x-auto rounded-lg border border-white/[0.06]">
         <table className="w-full text-sm">
-          <thead className="border-b border-limestone-200 bg-limestone-50">
+          <thead className="border-b border-white/[0.06] bg-transparent">
             <tr>
               {COLUMNS.map((col) => {
                 const isSorted = sortKey === col.key;
@@ -217,7 +217,7 @@ export function HoldingsReviewTable({
                     key={col.key}
                     onClick={() => handleSort(col.key)}
                     className={cn(
-                      'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-charcoal-500 cursor-pointer select-none',
+                      'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-white/50 cursor-pointer select-none',
                       col.align === 'right' && 'text-right',
                       col.align === 'center' && 'text-center',
                       col.width,
@@ -225,7 +225,7 @@ export function HoldingsReviewTable({
                   >
                     <span className="inline-flex items-center gap-1">
                       {col.label}
-                      <span className="text-charcoal-300">
+                      <span className="text-white/30">
                         {isSorted && sortDir === 'asc' && <ArrowUp className="h-3 w-3" />}
                         {isSorted && sortDir === 'desc' && <ArrowDown className="h-3 w-3" />}
                         {!isSorted && <ArrowUpDown className="h-3 w-3" />}
@@ -246,40 +246,40 @@ export function HoldingsReviewTable({
               return (
                 <tr
                   key={origIdx}
-                  className="transition-colors hover:bg-limestone-50"
+                  className="transition-colors hover:bg-white/[0.04]"
                 >
                   {/* Ticker */}
-                  <td className="px-3 py-2 font-mono font-semibold text-charcoal-900">
+                  <td className="px-3 py-2 font-mono font-semibold text-white">
                     {h.ticker ?? '--'}
                   </td>
 
                   {/* Description */}
-                  <td className="px-3 py-2 text-charcoal-700 truncate max-w-[200px]">
+                  <td className="px-3 py-2 text-white/60 truncate max-w-[200px]">
                     {h.description}
                   </td>
 
                   {/* Asset Class */}
-                  <td className="px-3 py-2 text-xs text-charcoal-600">
+                  <td className="px-3 py-2 text-xs text-white/50">
                     {fmtAssetClass(h.assetClass)}
                   </td>
 
                   {/* Shares */}
-                  <td className="px-3 py-2 text-right tabular-nums text-charcoal-700">
+                  <td className="px-3 py-2 text-right tabular-nums text-white/60">
                     {fmtShares(h.quantity)}
                   </td>
 
                   {/* Price */}
-                  <td className="px-3 py-2 text-right tabular-nums text-charcoal-700">
+                  <td className="px-3 py-2 text-right tabular-nums text-white/60">
                     {fmtMoney(h.price)}
                   </td>
 
                   {/* Market Value */}
-                  <td className="px-3 py-2 text-right tabular-nums text-charcoal-900 font-medium">
+                  <td className="px-3 py-2 text-right tabular-nums text-white font-medium">
                     {fmtMoney(h.marketValue)}
                   </td>
 
                   {/* Cost Basis */}
-                  <td className="px-3 py-2 text-right tabular-nums text-charcoal-600">
+                  <td className="px-3 py-2 text-right tabular-nums text-white/50">
                     {fmtMoney(h.costBasis)}
                   </td>
 
@@ -289,7 +289,7 @@ export function HoldingsReviewTable({
                       'px-3 py-2 text-right tabular-nums font-medium',
                       gl !== null && (gl as number) >= 0 && 'text-success-700',
                       gl !== null && (gl as number) < 0 && 'text-critical-700',
-                      gl === null && 'text-charcoal-400',
+                      gl === null && 'text-white/30',
                     )}
                   >
                     {gl !== null ? fmtMoney(gl) : '--'}
@@ -301,7 +301,7 @@ export function HoldingsReviewTable({
                   </td>
 
                   {/* Expense Ratio */}
-                  <td className="px-3 py-2 text-right tabular-nums text-charcoal-600">
+                  <td className="px-3 py-2 text-right tabular-nums text-white/50">
                     {fmtPct(h.expenseRatio)}
                   </td>
 
@@ -313,7 +313,7 @@ export function HoldingsReviewTable({
                           <button
                             type="button"
                             onClick={() => onEdit(origIdx, h)}
-                            className="rounded p-1 text-charcoal-400 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                            className="rounded p-1 text-white/30 hover:bg-teal-500/10 hover:text-teal-300 transition-colors"
                             aria-label={`Edit ${h.ticker ?? h.description}`}
                           >
                             <Pencil className="h-3.5 w-3.5" />
@@ -323,7 +323,7 @@ export function HoldingsReviewTable({
                           <button
                             type="button"
                             onClick={() => onRemove(origIdx)}
-                            className="rounded p-1 text-charcoal-300 hover:bg-critical-50 hover:text-critical-600 transition-colors"
+                            className="rounded p-1 text-white/30 hover:bg-critical-50 hover:text-critical-600 transition-colors"
                             aria-label={`Remove ${h.ticker ?? h.description}`}
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -339,19 +339,19 @@ export function HoldingsReviewTable({
 
           {/* Totals row */}
           {holdings.length > 0 && (
-            <tfoot className="border-t-2 border-limestone-200 bg-limestone-50">
+            <tfoot className="border-t-2 border-white/[0.06] bg-transparent">
               <tr className="font-semibold">
-                <td className="px-3 py-2.5 text-charcoal-900" colSpan={3}>
+                <td className="px-3 py-2.5 text-white" colSpan={3}>
                   Total ({holdings.length} holdings)
                 </td>
-                <td className="px-3 py-2.5 text-right tabular-nums text-charcoal-700">
+                <td className="px-3 py-2.5 text-right tabular-nums text-white/60">
                   {fmtShares(totals.totalShares)}
                 </td>
                 <td className="px-3 py-2.5" />
-                <td className="px-3 py-2.5 text-right tabular-nums text-charcoal-900">
+                <td className="px-3 py-2.5 text-right tabular-nums text-white">
                   {fmtMoney(totals.totalValue as MoneyCents)}
                 </td>
-                <td className="px-3 py-2.5 text-right tabular-nums text-charcoal-600">
+                <td className="px-3 py-2.5 text-right tabular-nums text-white/50">
                   {totals.totalCostBasis !== null ? fmtMoney(totals.totalCostBasis as MoneyCents) : '--'}
                 </td>
                 <td
@@ -363,7 +363,7 @@ export function HoldingsReviewTable({
                 >
                   {totals.totalGL !== null ? fmtMoney(totals.totalGL as MoneyCents) : '--'}
                 </td>
-                <td className="px-3 py-2.5 text-right tabular-nums text-charcoal-700">
+                <td className="px-3 py-2.5 text-right tabular-nums text-white/60">
                   {fmtPct(totals.weightedExpRatio)}
                 </td>
                 {editable && <td className="px-3 py-2.5" />}

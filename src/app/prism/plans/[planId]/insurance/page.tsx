@@ -22,27 +22,27 @@ export default function InsurancePage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Shield size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-charcoal-900">Insurance</h1>
+              <Shield size={20} className="text-teal-300" />
+              <h1 className="text-xl font-bold text-white">Insurance</h1>
             </div>
-            <p className="text-sm text-charcoal-500">
+            <p className="text-sm text-white/50">
               Review life, disability, long-term care, and umbrella coverage.
             </p>
           </div>
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-brand-500 text-white rounded-lg hover:bg-brand-600 transition-colors">
+          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
             <Plus size={16} />
             Add Policy
           </button>
         </div>
 
         {/* Empty state */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-8">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-8">
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-12 h-12 rounded-full bg-brand-50 flex items-center justify-center mb-4">
-              <Umbrella size={24} className="text-brand-700" />
+            <div className="w-12 h-12 rounded-full bg-teal-500/10 flex items-center justify-center mb-4">
+              <Umbrella size={24} className="text-teal-300" />
             </div>
-            <h3 className="text-sm font-semibold text-charcoal-900 mb-1">No insurance policies added yet</h3>
-            <p className="text-sm text-charcoal-500 max-w-sm">
+            <h3 className="text-sm font-semibold text-white mb-1">No insurance policies added yet</h3>
+            <p className="text-sm text-white/50 max-w-sm">
               No insurance policies added yet. Click + Add Policy to get started.
             </p>
           </div>

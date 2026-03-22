@@ -51,13 +51,13 @@ function getDocTypeLabel(docType: string): string {
 export const DocsPanel: React.FC<DocsPanelProps> = ({ documents, onSelect }) => {
   return (
     <div className="w-full">
-      <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Documents</h3>
+      <h3 className="text-sm font-semibold text-white mb-4">Documents</h3>
 
       {documents.length === 0 ? (
-        <div className="rounded-lg border border-limestone-200 bg-white px-4 py-12 text-center shadow-sm">
-          <FileText className="mx-auto h-10 w-10 text-charcoal-300 mb-3" />
-          <p className="text-sm text-charcoal-700 font-medium">No documents</p>
-          <p className="mt-1 text-xs text-charcoal-500">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-12 text-center shadow-sm">
+          <FileText className="mx-auto h-10 w-10 text-white/30 mb-3" />
+          <p className="text-sm text-white/60 font-medium">No documents</p>
+          <p className="mt-1 text-xs text-white/50">
             Documents will appear here once uploaded.
           </p>
         </div>
@@ -71,18 +71,18 @@ export const DocsPanel: React.FC<DocsPanelProps> = ({ documents, onSelect }) => 
                 key={doc.doc_id}
                 type="button"
                 onClick={() => onSelect(doc.doc_id)}
-                className="w-full rounded-lg border border-limestone-200 bg-white px-4 py-3 shadow-sm hover:border-brand-300 hover:shadow transition-all text-left group"
+                className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-3 shadow-sm hover:border-teal-300 hover:shadow transition-all text-left group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 min-w-0">
-                    <FileText className="h-5 w-5 flex-shrink-0 text-charcoal-400" />
+                    <FileText className="h-5 w-5 flex-shrink-0 text-white/30" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-charcoal-900 truncate">
+                      <p className="text-sm font-medium text-white truncate">
                         {doc.original_filename || `Document ${doc.doc_id.slice(0, 8)}`}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="neutral">{getDocTypeLabel(doc.doc_type)}</Badge>
-                        <span className="text-xs text-charcoal-500">
+                        <span className="text-xs text-white/50">
                           TY {String(doc.tax_year)}
                         </span>
                       </div>
@@ -94,7 +94,7 @@ export const DocsPanel: React.FC<DocsPanelProps> = ({ documents, onSelect }) => 
                       {statusInfo.showSpinner && <Spinner size="sm" />}
                       <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-charcoal-300 group-hover:text-brand-700 transition-colors" />
+                    <ChevronRight className="h-4 w-4 text-white/30 group-hover:text-teal-300 transition-colors" />
                   </div>
                 </div>
               </button>

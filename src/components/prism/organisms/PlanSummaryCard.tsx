@@ -71,14 +71,14 @@ export function PlanSummaryCard({
       {/* Header row */}
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-base font-bold text-charcoal-900 truncate">{clientName}</p>
-          <p className="mt-0.5 text-sm text-charcoal-500 truncate">{planName}</p>
+          <p className="text-base font-bold text-white truncate">{clientName}</p>
+          <p className="mt-0.5 text-sm text-white/50 truncate">{planName}</p>
         </div>
         <Badge variant={statusCfg.variant}>{statusCfg.label}</Badge>
       </div>
 
       {/* Last updated */}
-      <div className="mt-3 flex items-center gap-1.5 text-xs text-charcoal-300">
+      <div className="mt-3 flex items-center gap-1.5 text-xs text-white/30">
         <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Updated {formatDate(lastUpdated)}</span>
       </div>
@@ -91,7 +91,7 @@ export function PlanSummaryCard({
             <ProbabilityGauge value={successRate} label="Success" size="sm" />
           ) : (
             <div className="flex h-[46px] w-[80px] items-center justify-center">
-              <span className="text-xs text-charcoal-300">N/A</span>
+              <span className="text-xs text-white/30">N/A</span>
             </div>
           )}
         </div>

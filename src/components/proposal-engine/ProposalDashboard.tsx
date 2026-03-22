@@ -184,46 +184,46 @@ export function ProposalDashboard({
     <div className="space-y-6">
       {/* KPI stat cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <FileText className="h-4 w-4 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <FileText className="h-4 w-4 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Created (90d)
             </span>
           </div>
-          <p className="text-2xl font-bold tabular-nums text-charcoal-900">
+          <p className="text-2xl font-bold tabular-nums text-white">
             {stats.created90d ?? stats.totalCreated90Days}
           </p>
         </div>
 
-        <div className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <Send className="h-4 w-4 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <Send className="h-4 w-4 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Sent
             </span>
           </div>
-          <p className="text-2xl font-bold tabular-nums text-charcoal-900">
+          <p className="text-2xl font-bold tabular-nums text-white">
             {stats.sent ?? stats.totalSent}
           </p>
         </div>
 
-        <div className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <BarChart3 className="h-4 w-4 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <BarChart3 className="h-4 w-4 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Conversion
             </span>
           </div>
-          <p className="text-2xl font-bold tabular-nums text-brand-700">
+          <p className="text-2xl font-bold tabular-nums text-teal-300">
             {(stats.conversionRate * 100).toFixed(1)}%
           </p>
         </div>
 
-        <div className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="h-4 w-4 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <DollarSign className="h-4 w-4 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               AUM Won
             </span>
           </div>
@@ -238,15 +238,15 @@ export function ProposalDashboard({
         <button
           type="button"
           onClick={() => setShowFunnel((v) => !v)}
-          className="inline-flex items-center gap-2 rounded-lg border border-limestone-200 bg-white px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors"
+          className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-2 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
         >
-          <BarChart3 className="h-4 w-4 text-charcoal-400" />
+          <BarChart3 className="h-4 w-4 text-white/30" />
           {showFunnel ? 'Hide' : 'Show'} Conversion Funnel
         </button>
 
         {showFunnel && (
-          <div className="mt-4 rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-charcoal-900 mb-4">
+          <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-white mb-4">
               Conversion Funnel
             </h3>
             <ConversionFunnel
@@ -263,8 +263,8 @@ export function ProposalDashboard({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           {/* Search */}
-          <div className="flex items-center gap-2 rounded-lg border border-limestone-200 bg-white px-3 py-2">
-            <Search className="h-4 w-4 text-charcoal-400" />
+          <div className="flex items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2">
+            <Search className="h-4 w-4 text-white/30" />
             <input
               type="text"
               value={searchQuery}
@@ -273,20 +273,20 @@ export function ProposalDashboard({
                 setPage(0);
               }}
               placeholder="Search proposals..."
-              className="w-48 bg-transparent text-sm text-charcoal-700 outline-hidden placeholder:text-charcoal-300"
+              className="w-48 bg-transparent text-sm text-white/60 outline-hidden placeholder:text-white/30"
             />
           </div>
 
           {/* Status filter */}
-          <div className="flex items-center gap-1.5 rounded-lg border border-limestone-200 bg-white px-3 py-2">
-            <Filter className="h-3.5 w-3.5 text-charcoal-400" />
+          <div className="flex items-center gap-1.5 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2">
+            <Filter className="h-3.5 w-3.5 text-white/30" />
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value as ProposalStatus | 'ALL');
                 setPage(0);
               }}
-              className="bg-transparent text-sm font-medium text-charcoal-700 outline-hidden"
+              className="bg-transparent text-sm font-medium text-white/60 outline-hidden"
             >
               {STATUS_FILTER_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -301,7 +301,7 @@ export function ProposalDashboard({
         <button
           type="button"
           onClick={onCreateNew}
-          className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 active:bg-brand-800 transition-colors"
+          className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-teal-400 active:bg-teal-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
           New Proposal
@@ -309,26 +309,26 @@ export function ProposalDashboard({
       </div>
 
       {/* Proposal table */}
-      <div className="overflow-x-auto rounded-lg border border-limestone-200 shadow-sm">
+      <div className="overflow-x-auto rounded-lg border border-white/[0.06] shadow-sm">
         <table className="w-full text-sm">
-          <thead className="border-b border-limestone-200 bg-limestone-50">
+          <thead className="border-b border-white/[0.06] bg-transparent">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                 Client
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                 Type
               </th>
-              <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-white/50">
                 Status
               </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Portfolio Value
               </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Created
               </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Updated
               </th>
               <th className="px-4 py-3 w-12" />
@@ -337,7 +337,7 @@ export function ProposalDashboard({
           <tbody className="divide-y divide-limestone-100 bg-white">
             {pageItems.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-12 text-center text-sm text-charcoal-300">
+                <td colSpan={7} className="px-4 py-12 text-center text-sm text-white/30">
                   {searchQuery || statusFilter !== 'ALL'
                     ? 'No proposals match the current filters.'
                     : 'No proposals yet. Create your first one!'}
@@ -348,18 +348,18 @@ export function ProposalDashboard({
                 <tr
                   key={proposal.proposalId}
                   onClick={() => onSelect(proposal.proposalId)}
-                  className="cursor-pointer transition-colors hover:bg-limestone-50"
+                  className="cursor-pointer transition-colors hover:bg-white/[0.04]"
                 >
                   {/* Client name */}
                   <td className="px-4 py-3">
-                    <span className="font-medium text-charcoal-900">
+                    <span className="font-medium text-white">
                       {proposal.clientName}
                     </span>
                   </td>
 
                   {/* Type */}
                   <td className="px-4 py-3">
-                    <span className="rounded bg-limestone-100 px-2 py-0.5 text-xs font-medium text-charcoal-600">
+                    <span className="rounded bg-white/[0.06] px-2 py-0.5 text-xs font-medium text-white/50">
                       {PROPOSAL_TYPE_LABELS[proposal.proposalType] ?? proposal.proposalType}
                     </span>
                   </td>
@@ -370,17 +370,17 @@ export function ProposalDashboard({
                   </td>
 
                   {/* Portfolio value */}
-                  <td className="px-4 py-3 text-right tabular-nums text-charcoal-700">
+                  <td className="px-4 py-3 text-right tabular-nums text-white/60">
                     {fmtFullDollars((proposal.portfolioValue ?? proposal.assetsInScope) as number)}
                   </td>
 
                   {/* Created */}
-                  <td className="px-4 py-3 text-right text-xs text-charcoal-500">
+                  <td className="px-4 py-3 text-right text-xs text-white/50">
                     {fmtRelative(proposal.createdAt)}
                   </td>
 
                   {/* Updated */}
-                  <td className="px-4 py-3 text-right text-xs text-charcoal-500">
+                  <td className="px-4 py-3 text-right text-xs text-white/50">
                     {fmtRelative(proposal.updatedAt)}
                   </td>
 
@@ -392,7 +392,7 @@ export function ProposalDashboard({
                         e.stopPropagation();
                         onSelect(proposal.proposalId);
                       }}
-                      className="rounded p-1 text-charcoal-400 hover:bg-limestone-100 hover:text-charcoal-700 transition-colors"
+                      className="rounded p-1 text-white/30 hover:bg-white/[0.06] hover:text-white/60 transition-colors"
                       aria-label={`Open ${proposal.clientName} proposal`}
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -407,7 +407,7 @@ export function ProposalDashboard({
 
       {/* Pagination */}
       {filtered.length > PAGE_SIZE && (
-        <div className="flex items-center justify-between text-sm text-charcoal-500">
+        <div className="flex items-center justify-between text-sm text-white/50">
           <span className="text-xs tabular-nums">
             {pageStart + 1}--{Math.min(pageEnd, filtered.length)} of {filtered.length}
           </span>
@@ -420,8 +420,8 @@ export function ProposalDashboard({
               className={cn(
                 'rounded-md p-1.5 transition-colors',
                 page === 0
-                  ? 'text-charcoal-300 cursor-not-allowed'
-                  : 'text-charcoal-500 hover:bg-limestone-100',
+                  ? 'text-white/30 cursor-not-allowed'
+                  : 'text-white/50 hover:bg-white/[0.06]',
               )}
               aria-label="Previous page"
             >
@@ -439,8 +439,8 @@ export function ProposalDashboard({
               className={cn(
                 'rounded-md p-1.5 transition-colors',
                 page >= totalPages - 1
-                  ? 'text-charcoal-300 cursor-not-allowed'
-                  : 'text-charcoal-500 hover:bg-limestone-100',
+                  ? 'text-white/30 cursor-not-allowed'
+                  : 'text-white/50 hover:bg-white/[0.06]',
               )}
               aria-label="Next page"
             >

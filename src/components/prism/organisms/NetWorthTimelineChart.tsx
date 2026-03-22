@@ -76,39 +76,39 @@ function TimelineTooltip({
   ).payload;
 
   const rows: Array<{ label: string; value: number; color: string }> = [
-    { label: 'Total Assets', value: dataPoint.totalAssets, color: '#6189A0' },
-    { label: 'Total Liabilities', value: dataPoint.totalLiabilities, color: '#C0392B' },
-    { label: 'Net Worth', value: dataPoint.netWorth, color: '#3B5A69' },
+    { label: 'Total Assets', value: dataPoint.totalAssets, color: '#2a9aa8' },
+    { label: 'Total Liabilities', value: dataPoint.totalLiabilities, color: '#ef4444' },
+    { label: 'Net Worth', value: dataPoint.netWorth, color: '#1d7682' },
   ];
 
   // Add portfolio breakdown if available
   if (dataPoint.taxablePortfolio != null) {
-    rows.push({ label: 'Taxable', value: dataPoint.taxablePortfolio, color: '#6B6B6B' });
+    rows.push({ label: 'Taxable', value: dataPoint.taxablePortfolio, color: 'rgba(255,255,255,0.40)' });
   }
   if (dataPoint.taxDeferredPortfolio != null) {
-    rows.push({ label: 'Tax-Deferred', value: dataPoint.taxDeferredPortfolio, color: '#6B6B6B' });
+    rows.push({ label: 'Tax-Deferred', value: dataPoint.taxDeferredPortfolio, color: 'rgba(255,255,255,0.40)' });
   }
   if (dataPoint.taxFreePortfolio != null) {
-    rows.push({ label: 'Tax-Free', value: dataPoint.taxFreePortfolio, color: '#6B6B6B' });
+    rows.push({ label: 'Tax-Free', value: dataPoint.taxFreePortfolio, color: 'rgba(255,255,255,0.40)' });
   }
 
   return (
-    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
-      <p className="mb-1.5 font-semibold text-charcoal-900">
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-white">
         Year {label} (Age {dataPoint.clientAge})
       </p>
       <table className="w-full">
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
-              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
+              <td className="pr-3 flex items-center gap-1.5 text-white/50">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: row.color }}
                 />
                 {row.label}
               </td>
-              <td className="text-right tabular-nums font-medium text-charcoal-900">
+              <td className="text-right tabular-nums font-medium text-white">
                 {formatCurrency(row.value)}
               </td>
             </tr>
@@ -151,18 +151,18 @@ export function NetWorthTimelineChart({
     <div className={className}>
       <ResponsiveContainer width="100%" height={420}>
         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
 
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
-            axisLine={{ stroke: '#E4DDD4' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
+            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
             tickLine={false}
           />
 
           <YAxis
             tickFormatter={formatMillions}
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
             axisLine={false}
             tickLine={false}
             domain={yDomain}
@@ -173,7 +173,7 @@ export function NetWorthTimelineChart({
 
           {/* Zero line when liabilities push chart below 0 */}
           {yDomain[0] < 0 && (
-            <ReferenceLine y={0} stroke="#E4DDD4" strokeWidth={1} />
+            <ReferenceLine y={0} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
           )}
 
           {/* Total assets area */}
@@ -181,9 +181,9 @@ export function NetWorthTimelineChart({
             type="monotone"
             dataKey="totalAssets"
             name="Total Assets"
-            stroke="#6189A0"
+            stroke="#2a9aa8"
             strokeWidth={1.5}
-            fill="#6189A0"
+            fill="#2a9aa8"
             fillOpacity={0.3}
             activeDot={false}
             isAnimationActive={false}
@@ -194,9 +194,9 @@ export function NetWorthTimelineChart({
             type="monotone"
             dataKey="liabilitiesNeg"
             name="Total Liabilities"
-            stroke="#C0392B"
+            stroke="#ef4444"
             strokeWidth={1.5}
-            fill="#C0392B"
+            fill="#ef4444"
             fillOpacity={0.3}
             activeDot={false}
             isAnimationActive={false}
@@ -207,10 +207,10 @@ export function NetWorthTimelineChart({
             type="monotone"
             dataKey="netWorth"
             name="Net Worth"
-            stroke="#3B5A69"
+            stroke="#1d7682"
             strokeWidth={2.5}
             fill="none"
-            activeDot={{ r: 4, fill: '#3B5A69' }}
+            activeDot={{ r: 4, fill: '#1d7682' }}
             isAnimationActive={false}
           />
 
@@ -218,12 +218,12 @@ export function NetWorthTimelineChart({
           {retirementYear != null && (
             <ReferenceLine
               x={retirementYear}
-              stroke="#9E9E9E"
+              stroke="rgba(255,255,255,0.30)"
               strokeDasharray="6 4"
               label={{
                 value: 'Retirement',
                 position: 'top',
-                fill: '#6B6B6B',
+                fill: 'rgba(255,255,255,0.40)',
                 fontSize: 11,
               }}
             />

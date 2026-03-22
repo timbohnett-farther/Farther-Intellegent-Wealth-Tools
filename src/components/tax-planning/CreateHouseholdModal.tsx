@@ -127,7 +127,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-xs"
+        className="absolute inset-0 bg-[#1a1a1a]/50 backdrop-blur-xs"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -137,20 +137,20 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="create-household-title"
-        className="relative z-10 w-full max-w-md rounded-lg bg-white shadow-lg border border-limestone-200"
+        className="relative z-10 w-full max-w-md rounded-lg bg-white/[0.07] backdrop-blur-xl shadow-lg border border-white/[0.06]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-limestone-200 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] px-6 py-4">
           <h2
             id="create-household-title"
-            className="text-lg font-semibold text-charcoal-900"
+            className="text-lg font-semibold text-white"
           >
             Create Household
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded p-1 text-charcoal-400 hover:bg-limestone-50 hover:text-charcoal-700 transition-colors"
+            className="rounded p-1 text-white/30 hover:bg-white/[0.04] hover:text-white/60 transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -163,7 +163,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="household-display-name"
-              className="text-sm font-medium text-charcoal-700"
+              className="text-sm font-medium text-white/60"
             >
               Display Name <span className="text-critical-500">*</span>
             </label>
@@ -175,16 +175,16 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
               placeholder="e.g., Smith Family"
               maxLength={120}
               className={cn(
-                'h-9 w-full rounded-lg border-[1.5px] bg-white px-3 text-sm text-charcoal-900 placeholder:text-charcoal-300 transition-colors focus:outline-hidden focus:shadow-focus',
+                'h-9 w-full rounded-lg border-[1.5px] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white placeholder:text-white/30 transition-colors focus:outline-hidden focus:shadow-focus',
                 errors.displayName
                   ? 'border-critical-500 focus:border-critical-500'
-                  : 'border-limestone-200 focus:border-brand-700'
+                  : 'border-white/[0.06] focus:border-teal-500'
               )}
             />
             {errors.displayName && (
               <p className="text-xs text-critical-500">{errors.displayName}</p>
             )}
-            <p className="text-xs text-charcoal-400">
+            <p className="text-xs text-white/30">
               {displayName.length}/120 characters
             </p>
           </div>
@@ -193,7 +193,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="household-state"
-              className="text-sm font-medium text-charcoal-700"
+              className="text-sm font-medium text-white/60"
             >
               Primary State
             </label>
@@ -201,7 +201,7 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
               id="household-state"
               value={primaryState}
               onChange={(e) => setPrimaryState(e.target.value)}
-              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-limestone-200 bg-white pl-3 pr-9 text-sm text-charcoal-900 transition-colors focus:outline-hidden focus:border-brand-700 focus:shadow-focus"
+              className="h-9 w-full appearance-none rounded-lg border-[1.5px] border-white/[0.06] bg-white pl-3 pr-9 text-sm text-white transition-colors focus:outline-hidden focus:border-teal-500 focus:shadow-focus"
             >
               <option value="">Select a state (optional)</option>
               {US_STATES.map((s) => (
@@ -214,18 +214,18 @@ export const CreateHouseholdModal: React.FC<CreateHouseholdModalProps> = ({
         </form>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-limestone-200 px-6 py-4">
+        <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] px-6 py-4">
           <button
             type="button"
             onClick={onClose}
-            className="h-10 px-5 rounded-lg border border-limestone-200 bg-white text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors"
+            className="h-10 px-5 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSubmit as () => void}
-            className="h-10 px-5 rounded-lg bg-brand-700 text-white text-sm font-medium hover:bg-brand-600 transition-colors shadow-sm"
+            className="h-10 px-5 rounded-lg bg-teal-500 text-white text-sm font-medium hover:bg-teal-400 transition-colors shadow-sm"
           >
             Create
           </button>

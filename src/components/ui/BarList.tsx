@@ -36,15 +36,15 @@ function BarList({
         return (
           <div key={i} className="group">
             <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2 text-sm text-charcoal-700 truncate">
+              <div className="flex items-center gap-2 text-sm text-white/60 truncate">
                 {item.icon}
                 <span className="truncate">{item.name}</span>
               </div>
-              <span className="text-sm font-mono font-medium text-charcoal-900 ml-2 shrink-0">
+              <span className="text-sm font-mono font-medium text-white ml-2 shrink-0">
                 {valueFormatter(item.value)}
               </span>
             </div>
-            <div className="h-2 w-full bg-limestone-100 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-white/[0.06] rounded-full overflow-hidden">
               <div
                 className={cn(
                   "h-full rounded-full",

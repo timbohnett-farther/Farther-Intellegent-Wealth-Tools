@@ -87,34 +87,34 @@ function TaxTooltip({
   );
 
   return (
-    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
-      <p className="mb-1.5 font-semibold text-charcoal-900">Year {label}</p>
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-white">Year {label}</p>
       <table className="w-full">
         <tbody>
           {barEntries.map((entry) => (
             <tr key={entry.name}>
-              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
+              <td className="pr-3 flex items-center gap-1.5 text-white/50">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </td>
-              <td className="text-right tabular-nums font-medium text-charcoal-900">
+              <td className="text-right tabular-nums font-medium text-white">
                 {formatCurrency(entry.value)}
               </td>
             </tr>
           ))}
           {rateEntries.map((entry) => (
             <tr key={entry.name}>
-              <td className="pr-3 flex items-center gap-1.5 text-charcoal-500">
+              <td className="pr-3 flex items-center gap-1.5 text-white/50">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </td>
-              <td className="text-right tabular-nums font-medium text-charcoal-900">
+              <td className="text-right tabular-nums font-medium text-white">
                 {formatPercent(entry.value)}
               </td>
             </tr>
@@ -143,12 +143,12 @@ export function TaxProjectionChart({
     <div className={className}>
       <ResponsiveContainer width="100%" height={420}>
         <ComposedChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
 
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
-            axisLine={{ stroke: '#E4DDD4' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
+            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
             tickLine={false}
           />
 
@@ -156,7 +156,7 @@ export function TaxProjectionChart({
           <YAxis
             yAxisId="dollars"
             tickFormatter={formatCompactAxis}
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
             axisLine={false}
             tickLine={false}
             width={65}
@@ -167,7 +167,7 @@ export function TaxProjectionChart({
             yAxisId="rate"
             orientation="right"
             tickFormatter={(v: number) => `${v}%`}
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
             axisLine={false}
             tickLine={false}
             domain={[0, 'auto']}
@@ -189,7 +189,7 @@ export function TaxProjectionChart({
             dataKey="federalTax"
             name="Federal Tax"
             stackId="tax"
-            fill="#3B5A69"
+            fill="#1d7682"
             maxBarSize={24}
           />
           <Bar
@@ -205,7 +205,7 @@ export function TaxProjectionChart({
             dataKey="seTax"
             name="SE Tax"
             stackId="tax"
-            fill="#6189A0"
+            fill="#2a9aa8"
             maxBarSize={24}
           />
           <Bar
@@ -237,7 +237,7 @@ export function TaxProjectionChart({
               type="monotone"
               dataKey="marginalRate"
               name="Marginal Rate"
-              stroke="#9E9E9E"
+              stroke="rgba(255,255,255,0.30)"
               strokeWidth={1.5}
               strokeDasharray="4 3"
               dot={false}

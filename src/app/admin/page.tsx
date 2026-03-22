@@ -82,10 +82,10 @@ const MONTHLY_ACTIVITY = [
 ];
 
 const WEALTH_TIER_DIST = [
-  { name: 'Mass Affluent', value: 95, color: '#3B5A69' },
-  { name: 'HNW', value: 128, color: '#2E8B57' },
-  { name: 'UHNW', value: 48, color: '#D4860B' },
-  { name: 'Ultra UHNW', value: 13, color: '#C0392B' },
+  { name: 'Mass Affluent', value: 95, color: '#1d7682' },
+  { name: 'HNW', value: 128, color: '#22c55e' },
+  { name: 'UHNW', value: 48, color: '#f59e0b' },
+  { name: 'Ultra UHNW', value: 13, color: '#ef4444' },
 ];
 
 const INTEGRATION_STATUS = [
@@ -116,21 +116,21 @@ export default function AdminOverviewPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-brand-700' },
-          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-brand-700' },
+          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-teal-300' },
+          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-teal-300' },
           { label: 'Firm AUM', value: fmtCompact(FIRM_STATS.totalAUM), sub: 'Across all plans', icon: DollarSign, color: 'text-success-500' },
-          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-brand-700' },
+          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-teal-300' },
           { label: 'Open Alerts', value: `${FIRM_STATS.criticalAlerts + FIRM_STATS.warningAlerts}`, sub: `${FIRM_STATS.criticalAlerts} critical`, icon: AlertTriangle, color: 'text-critical-500' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
+            <div key={kpi.label} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-charcoal-500">{kpi.label}</p>
+                <p className="text-xs font-medium text-white/50">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
-              <p className="text-xl font-bold text-charcoal-900">{kpi.value}</p>
-              <p className="text-xs text-charcoal-300 mt-0.5">{kpi.sub}</p>
+              <p className="text-xl font-bold text-white">{kpi.value}</p>
+              <p className="text-xs text-white/30 mt-0.5">{kpi.sub}</p>
             </div>
           );
         })}
@@ -138,37 +138,37 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Monthly activity */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Monthly Activity</h3>
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-white mb-4">Monthly Activity</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={MONTHLY_ACTIVITY}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="plans" fill="#3B5A69" name="Plans Created" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="reports" fill="#2E8B57" name="Reports Generated" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="meetings" fill="#D4860B" name="Client Meetings" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="plans" fill="#1d7682" name="Plans Created" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="reports" fill="#22c55e" name="Reports Generated" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="meetings" fill="#f59e0b" name="Client Meetings" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Success rate distribution */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-4">Plan Success Rate Distribution</h3>
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-white mb-4">Plan Success Rate Distribution</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={SUCCESS_DISTRIBUTION}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                 <XAxis dataKey="range" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Bar dataKey="count" name="Plans" radius={[3, 3, 0, 0]}>
                   {SUCCESS_DISTRIBUTION.map((entry, i) => (
-                    <Cell key={i} fill={i < 2 ? '#C0392B' : i < 3 ? '#D4860B' : '#2E8B57'} />
+                    <Cell key={i} fill={i < 2 ? '#ef4444' : i < 3 ? '#f59e0b' : '#22c55e'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -179,30 +179,30 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Top advisors */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5 col-span-2">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Advisor Performance</h3>
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 col-span-2">
+          <h3 className="text-sm font-semibold text-white mb-3">Advisor Performance</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-limestone-100 text-left">
-                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Advisor</th>
-                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Clients</th>
-                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Plans</th>
-                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase text-right">Avg Success</th>
-                <th className="pb-2 text-xs font-medium text-charcoal-500 uppercase">Last Active</th>
+                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Advisor</th>
+                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Clients</th>
+                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Plans</th>
+                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Avg Success</th>
+                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Last Active</th>
               </tr>
             </thead>
             <tbody>
               {ADVISOR_PERFORMANCE.map((a) => (
                 <tr key={a.name} className="border-b border-limestone-50">
-                  <td className="py-2.5 font-medium text-charcoal-900">{a.name}</td>
-                  <td className="py-2.5 text-charcoal-500 text-right">{a.clients}</td>
-                  <td className="py-2.5 text-charcoal-500 text-right">{a.plans}</td>
+                  <td className="py-2.5 font-medium text-white">{a.name}</td>
+                  <td className="py-2.5 text-white/50 text-right">{a.clients}</td>
+                  <td className="py-2.5 text-white/50 text-right">{a.plans}</td>
                   <td className="py-2.5 text-right">
                     <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-success-500' : a.avgSuccess >= 70 ? 'text-warning-500' : 'text-critical-500'}`}>
                       {a.avgSuccess}%
                     </span>
                   </td>
-                  <td className="py-2.5 text-charcoal-500">{a.lastLogin}</td>
+                  <td className="py-2.5 text-white/50">{a.lastLogin}</td>
                 </tr>
               ))}
             </tbody>
@@ -210,8 +210,8 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Client distribution */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Clients by Wealth Tier</h3>
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-white mb-3">Clients by Wealth Tier</h3>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -229,7 +229,7 @@ export default function AdminOverviewPage() {
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
                 </span>
-                <span className="font-medium text-charcoal-700">{d.value}</span>
+                <span className="font-medium text-white/60">{d.value}</span>
               </div>
             ))}
           </div>
@@ -237,10 +237,10 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Integration status */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-charcoal-900">Integration Status</h3>
-          <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+          <h3 className="text-sm font-semibold text-white">Integration Status</h3>
+          <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
             <RefreshCw size={12} /> Sync All
           </button>
         </div>
@@ -255,8 +255,8 @@ export default function AdminOverviewPage() {
                 <WifiOff size={16} className="text-critical-500 flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-charcoal-900 truncate">{int.name}</p>
-                <p className="text-xs text-charcoal-500">
+                <p className="text-sm font-medium text-white truncate">{int.name}</p>
+                <p className="text-xs text-white/50">
                   {int.lastSync}{int.accounts ? ` · ${int.accounts.toLocaleString()} accounts` : ''}
                 </p>
               </div>
@@ -271,8 +271,8 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Plans needing review */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-white mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
         <div className="space-y-2">
           {[
             { client: 'Robert Johnson', advisor: 'James Wilson', lastReview: '14 months ago', successRate: 64, reason: 'Success rate below 70%' },
@@ -285,12 +285,12 @@ export default function AdminOverviewPage() {
               <div className="flex items-center gap-3">
                 <AlertTriangle size={14} className={p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'} />
                 <div>
-                  <p className="text-sm font-medium text-charcoal-900">{p.client}</p>
-                  <p className="text-xs text-charcoal-500">{p.advisor} · Last review: {p.lastReview}</p>
+                  <p className="text-sm font-medium text-white">{p.client}</p>
+                  <p className="text-xs text-white/50">{p.advisor} · Last review: {p.lastReview}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-charcoal-500">{p.reason}</span>
+                <span className="text-xs text-white/50">{p.reason}</span>
                 <span className={`text-sm font-bold ${p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'}`}>{p.successRate}%</span>
               </div>
             </div>

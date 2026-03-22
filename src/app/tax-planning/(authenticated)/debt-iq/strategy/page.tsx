@@ -89,13 +89,13 @@ const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD',
 function PageSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
-      <div className="h-12 w-full rounded-lg bg-limestone-200" />
+      <div className="h-12 w-full rounded-lg bg-white/[0.06]" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-40 rounded-lg bg-limestone-200" />
+          <div key={i} className="h-40 rounded-lg bg-white/[0.06]" />
         ))}
       </div>
-      <div className="h-64 rounded-lg bg-limestone-200" />
+      <div className="h-64 rounded-lg bg-white/[0.06]" />
     </div>
   );
 }
@@ -111,7 +111,7 @@ function ExtraPaymentSlider({ value, onChange, max }: {
 }) {
   return (
     <div className="flex items-center gap-4">
-      <label className="text-sm font-medium text-charcoal-700 whitespace-nowrap">
+      <label className="text-sm font-medium text-white/60 whitespace-nowrap">
         Extra Monthly:
       </label>
       <input
@@ -121,9 +121,9 @@ function ExtraPaymentSlider({ value, onChange, max }: {
         step={50}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="flex-1 h-2 rounded-full appearance-none bg-limestone-200 accent-brand-700"
+        className="flex-1 h-2 rounded-full appearance-none bg-white/[0.06] accent-brand-700"
       />
-      <span className="text-sm font-bold text-charcoal-900 w-20 text-right">
+      <span className="text-sm font-bold text-white w-20 text-right">
         {fmt.format(value)}
       </span>
     </div>
@@ -141,8 +141,8 @@ function StrategyCard({ s, isRecommended, isSelected, onSelect }: {
       onClick={onSelect}
       className={`relative w-full text-left rounded-lg border p-4 transition-all ${
         isSelected
-          ? 'border-brand-500 bg-brand-50 shadow-md ring-2 ring-brand-200'
-          : 'border-limestone-200 bg-white hover:bg-limestone-50 hover:shadow-sm'
+          ? 'border-brand-500 bg-teal-500/10 shadow-md ring-2 ring-teal-200'
+          : 'border-white/[0.06] bg-white/[0.07] hover:bg-white/[0.04] hover:shadow-sm'
       }`}
     >
       {isRecommended && (
@@ -150,24 +150,24 @@ function StrategyCard({ s, isRecommended, isSelected, onSelect }: {
           Recommended
         </span>
       )}
-      <h4 className="text-sm font-semibold text-charcoal-900 mb-2">{STRATEGY_LABELS[s.strategy]}</h4>
-      <p className="text-xs text-charcoal-500 mb-3 line-clamp-2">{STRATEGY_DESCRIPTIONS[s.strategy]}</p>
+      <h4 className="text-sm font-semibold text-white mb-2">{STRATEGY_LABELS[s.strategy]}</h4>
+      <p className="text-xs text-white/50 mb-3 line-clamp-2">{STRATEGY_DESCRIPTIONS[s.strategy]}</p>
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs">
-          <span className="text-charcoal-500">Total Interest:</span>
-          <span className="font-mono font-semibold text-charcoal-900">{fmt.format(s.totalInterestPaid)}</span>
+          <span className="text-white/50">Total Interest:</span>
+          <span className="font-mono font-semibold text-white">{fmt.format(s.totalInterestPaid)}</span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-charcoal-500">Debt-Free:</span>
-          <span className="font-medium text-charcoal-700">{s.debtFreeDate}</span>
+          <span className="text-white/50">Debt-Free:</span>
+          <span className="font-medium text-white/60">{s.debtFreeDate}</span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-charcoal-500">Months:</span>
-          <span className="font-medium text-charcoal-700">{s.monthsToDebtFree}</span>
+          <span className="text-white/50">Months:</span>
+          <span className="font-medium text-white/60">{s.monthsToDebtFree}</span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-charcoal-500">First Win:</span>
-          <span className="font-medium text-charcoal-700">{s.firstPayoff} (m{s.firstPayoffMonth})</span>
+          <span className="text-white/50">First Win:</span>
+          <span className="font-medium text-white/60">{s.firstPayoff} (m{s.firstPayoffMonth})</span>
         </div>
       </div>
     </button>
@@ -189,11 +189,11 @@ function ComparisonTable({ strategies, recommendation }: {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-limestone-100 bg-limestone-50/50">
-            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Metric</th>
+          <tr className="border-b border-limestone-100 bg-transparent/50">
+            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-white/30">Metric</th>
             {strategies.map((s) => (
               <th key={s.strategy} className={`px-4 py-3 text-right text-xs font-semibold uppercase ${
-                s.strategy === recommendation ? 'text-brand-700' : 'text-charcoal-400'
+                s.strategy === recommendation ? 'text-teal-300' : 'text-white/30'
               }`}>
                 {STRATEGY_LABELS[s.strategy]}
                 {s.strategy === recommendation && ' \u2605'}
@@ -207,13 +207,13 @@ function ComparisonTable({ strategies, recommendation }: {
             const bestVal = m.best === 'min' ? Math.min(...values) : Math.max(...values);
             return (
               <tr key={m.key}>
-                <td className="px-4 py-3 font-medium text-charcoal-700">{m.label}</td>
+                <td className="px-4 py-3 font-medium text-white/60">{m.label}</td>
                 {strategies.map((s) => {
                   const val = (s as unknown as Record<string, number>)[m.key] as number;
                   const isBest = val === bestVal;
                   return (
                     <td key={s.strategy} className={`px-4 py-3 text-right font-mono ${
-                      isBest ? 'font-bold text-success-700' : 'text-charcoal-700'
+                      isBest ? 'font-bold text-success-700' : 'text-white/60'
                     }`}>
                       {m.format(val)}
                       {isBest && ' \u2713'}
@@ -239,20 +239,20 @@ function DebtFreeCountdown({ minimumPath, optimizedPath }: {
   const interestSaved = minimumPath.totalInterest - optimizedPath.totalInterest;
 
   return (
-    <div className="rounded-xl border border-limestone-200 bg-linear-to-br from-brand-50 to-white p-6 shadow-sm">
-      <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-4">Debt-Free Projection</h3>
+    <div className="rounded-xl border border-white/[0.06] bg-linear-to-br from-brand-50 to-white p-6 shadow-sm">
+      <h3 className="text-sm font-semibold uppercase text-white/30 mb-4">Debt-Free Projection</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p className="text-xs text-charcoal-500 mb-1">Current Path (Minimum Payments)</p>
-          <p className="text-lg font-bold text-charcoal-900">
+          <p className="text-xs text-white/50 mb-1">Current Path (Minimum Payments)</p>
+          <p className="text-lg font-bold text-white">
             {Math.floor(minimumPath.debtFreeMonths / 12)} years {minimumPath.debtFreeMonths % 12} months
           </p>
-          <p className="text-sm text-charcoal-500">
+          <p className="text-sm text-white/50">
             Interest: {fmt.format(minimumPath.totalInterest)}
           </p>
         </div>
         <div>
-          <p className="text-xs text-charcoal-500 mb-1">Optimized Path</p>
+          <p className="text-xs text-white/50 mb-1">Optimized Path</p>
           <p className="text-lg font-bold text-success-700">
             {Math.floor(optimizedPath.debtFreeMonths / 12)} years {optimizedPath.debtFreeMonths % 12} months
           </p>
@@ -262,12 +262,12 @@ function DebtFreeCountdown({ minimumPath, optimizedPath }: {
         </div>
       </div>
       <div className="mt-4 pt-4 border-t border-limestone-100 text-center">
-        <p className="text-2xl font-bold text-brand-700">
+        <p className="text-2xl font-bold text-teal-300">
           {yearsSaved > 0 && `${yearsSaved} year${yearsSaved !== 1 ? 's' : ''} `}
           {remainingMonths > 0 && `${remainingMonths} month${remainingMonths !== 1 ? 's' : ''} `}
           saved
         </p>
-        <p className="text-sm text-charcoal-600 mt-1">
+        <p className="text-sm text-white/50 mt-1">
           {fmt.format(interestSaved)} less interest paid
         </p>
       </div>
@@ -281,28 +281,28 @@ function MonthlyAllocationTable({ plan }: {
   if (plan.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-limestone-100">
-        <h3 className="text-base font-semibold text-charcoal-900">Monthly Payoff Plan</h3>
-        <p className="text-xs text-charcoal-500 mt-1">Step-by-step allocation of your extra payments</p>
+        <h3 className="text-base font-semibold text-white">Monthly Payoff Plan</h3>
+        <p className="text-xs text-white/50 mt-1">Step-by-step allocation of your extra payments</p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-limestone-100 bg-limestone-50/50">
-              <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Months</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Target Debt</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Allocation</th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-charcoal-400">Amount</th>
+            <tr className="border-b border-limestone-100 bg-transparent/50">
+              <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-white/30">Months</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-white/30">Target Debt</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-white/30">Allocation</th>
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-white/30">Amount</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-limestone-100">
             {plan.map((row, i) => (
-              <tr key={i} className="hover:bg-limestone-50/50">
-                <td className="px-6 py-3 font-medium text-charcoal-700">Month {row.month}</td>
-                <td className="px-4 py-3 text-charcoal-900 font-medium">{row.target}</td>
-                <td className="px-4 py-3 text-charcoal-600">{row.allocation}</td>
-                <td className="px-4 py-3 text-right font-mono font-semibold text-charcoal-900">{fmt.format(row.amount)}</td>
+              <tr key={i} className="hover:bg-white/[0.04]/50">
+                <td className="px-6 py-3 font-medium text-white/60">Month {row.month}</td>
+                <td className="px-4 py-3 text-white font-medium">{row.target}</td>
+                <td className="px-4 py-3 text-white/50">{row.allocation}</td>
+                <td className="px-4 py-3 text-right font-mono font-semibold text-white">{fmt.format(row.amount)}</td>
               </tr>
             ))}
           </tbody>
@@ -387,13 +387,13 @@ export default function DebtPayoffStrategyPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Payoff Strategy Optimizer</h1>
+          <h1 className="text-2xl font-bold text-white">Payoff Strategy Optimizer</h1>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
           <p className="text-sm font-medium text-critical-700 mb-3">{error}</p>
           <button
             onClick={fetchDebts}
-            className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
           >
             Retry
           </button>
@@ -411,14 +411,14 @@ export default function DebtPayoffStrategyPage() {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Link href="/tax-planning/debt-iq" className="text-sm text-brand-700 hover:text-brand-600">
+            <Link href="/tax-planning/debt-iq" className="text-sm text-teal-300 hover:text-teal-300">
               Debt Analysis
             </Link>
-            <span className="text-charcoal-300">/</span>
-            <span className="text-sm text-charcoal-500">Strategy</span>
+            <span className="text-white/30">/</span>
+            <span className="text-sm text-white/50">Strategy</span>
           </div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Multi-Debt Payoff Optimizer</h1>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <h1 className="text-2xl font-bold text-white">Multi-Debt Payoff Optimizer</h1>
+          <p className="mt-1 text-sm text-white/50">
             Compare 8 strategies simultaneously and find the optimal payoff path
           </p>
         </div>
@@ -427,12 +427,12 @@ export default function DebtPayoffStrategyPage() {
       {loading ? (
         <PageSkeleton />
       ) : debts.length === 0 ? (
-        <div className="rounded-xl border border-limestone-200 bg-white p-12 text-center shadow-sm">
-          <p className="text-base font-medium text-charcoal-700 mb-2">No debts to optimize</p>
-          <p className="text-sm text-charcoal-500 mb-4">Add debts to your household profile to use the payoff optimizer.</p>
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-12 text-center shadow-sm">
+          <p className="text-base font-medium text-white/60 mb-2">No debts to optimize</p>
+          <p className="text-sm text-white/50 mb-4">Add debts to your household profile to use the payoff optimizer.</p>
           <Link
             href="/tax-planning/debt-iq"
-            className="rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            className="rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
           >
             Back to Debt Dashboard
           </Link>
@@ -440,10 +440,10 @@ export default function DebtPayoffStrategyPage() {
       ) : (
         <>
           {/* Extra Payment Control */}
-          <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-end gap-4">
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-charcoal-900 mb-3">
+                <h3 className="text-sm font-semibold text-white mb-3">
                   Available Extra Payment Per Month
                 </h3>
                 <ExtraPaymentSlider
@@ -455,7 +455,7 @@ export default function DebtPayoffStrategyPage() {
               <button
                 onClick={runOptimizer}
                 disabled={computing}
-                className="rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                className="rounded-lg bg-teal-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-teal-400 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
               >
                 {computing ? 'Computing...' : 'Run Optimizer'}
               </button>
@@ -463,35 +463,35 @@ export default function DebtPayoffStrategyPage() {
           </div>
 
           {/* Current Debts Summary */}
-          <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-limestone-100">
-              <h3 className="text-base font-semibold text-charcoal-900">
+              <h3 className="text-base font-semibold text-white">
                 Debts Included ({debts.length})
               </h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-limestone-100 bg-limestone-50/50">
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Name</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-charcoal-400">Balance</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-charcoal-400">APR</th>
-                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-charcoal-400">Min Payment</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-charcoal-400">Deductible</th>
+                  <tr className="border-b border-limestone-100 bg-transparent/50">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase text-white/30">Name</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-white/30">Balance</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-white/30">APR</th>
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-white/30">Min Payment</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-white/30">Deductible</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-limestone-100">
                   {debts.map((debt) => (
-                    <tr key={debt.id} className="hover:bg-limestone-50/50">
-                      <td className="px-6 py-3 font-medium text-charcoal-900">{debt.name}</td>
-                      <td className="px-4 py-3 text-right font-mono text-charcoal-900">{fmt.format(debt.currentBalance)}</td>
-                      <td className="px-4 py-3 text-right font-mono text-charcoal-700">
+                    <tr key={debt.id} className="hover:bg-white/[0.04]/50">
+                      <td className="px-6 py-3 font-medium text-white">{debt.name}</td>
+                      <td className="px-4 py-3 text-right font-mono text-white">{fmt.format(debt.currentBalance)}</td>
+                      <td className="px-4 py-3 text-right font-mono text-white/60">
                         {(debt.interestRate * 100).toFixed(2)}%
                       </td>
-                      <td className="px-4 py-3 text-right font-mono text-charcoal-700">{fmt.format(debt.minimumPayment)}</td>
+                      <td className="px-4 py-3 text-right font-mono text-white/60">{fmt.format(debt.minimumPayment)}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                          debt.isDeductible ? 'bg-success-100 text-success-700' : 'bg-limestone-100 text-charcoal-500'
+                          debt.isDeductible ? 'bg-success-100 text-success-700' : 'bg-white/[0.06] text-white/50'
                         }`}>
                           {debt.isDeductible ? 'Yes' : 'No'}
                         </span>
@@ -514,7 +514,7 @@ export default function DebtPayoffStrategyPage() {
 
               {/* Strategy Cards */}
               <div>
-                <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">
+                <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">
                   Strategy Comparison
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -531,17 +531,17 @@ export default function DebtPayoffStrategyPage() {
               </div>
 
               {/* Recommendation Narrative */}
-              <div className="rounded-xl border border-brand-200 bg-brand-50 p-6">
-                <h3 className="text-sm font-semibold text-brand-700 mb-2">Recommendation</h3>
-                <p className="text-sm text-charcoal-700 leading-relaxed">
+              <div className="rounded-xl border border-brand-200 bg-teal-500/10 p-6">
+                <h3 className="text-sm font-semibold text-teal-300 mb-2">Recommendation</h3>
+                <p className="text-sm text-white/60 leading-relaxed">
                   {result.recommendationReason}
                 </p>
               </div>
 
               {/* Detailed Comparison Table */}
-              <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-limestone-100">
-                  <h3 className="text-base font-semibold text-charcoal-900">Detailed Comparison</h3>
+                  <h3 className="text-base font-semibold text-white">Detailed Comparison</h3>
                 </div>
                 <ComparisonTable
                   strategies={result.strategies}
@@ -553,15 +553,15 @@ export default function DebtPayoffStrategyPage() {
               <MonthlyAllocationTable plan={result.monthlyPlan} />
 
               {/* Actions */}
-              <div className="flex items-center justify-between rounded-xl border border-limestone-200 bg-white p-6 shadow-sm">
-                <p className="text-sm text-charcoal-600">
+              <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+                <p className="text-sm text-white/50">
                   Generate a client-ready report with the selected strategy
                 </p>
                 <div className="flex items-center gap-3">
-                  <button className="rounded-lg border border-limestone-200 bg-white px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors">
+                  <button className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-2 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors">
                     Export PDF
                   </button>
-                  <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors shadow-sm">
+                  <button className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors shadow-sm">
                     Add to Financial Plan
                   </button>
                 </div>

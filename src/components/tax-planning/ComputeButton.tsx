@@ -47,7 +47,7 @@ export const ComputeButton: React.FC<ComputeButtonProps> = ({
           'inline-flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium transition-colors shadow-sm',
           'focus-visible:outline-hidden focus-visible:shadow-focus',
           'disabled:pointer-events-none disabled:opacity-45',
-          'bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800'
+          'bg-teal-500 text-white hover:bg-teal-400 active:bg-teal-600'
         )}
       >
         {loading ? (

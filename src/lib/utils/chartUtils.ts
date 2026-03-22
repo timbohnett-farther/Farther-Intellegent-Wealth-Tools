@@ -1,4 +1,4 @@
-// Tremor chart color utilities for Farther brand palette
+// Tremor chart color utilities for dark glass-morphism palette
 
 export type ChartColorName =
   | "brand"
@@ -16,19 +16,19 @@ export type ChartColorName =
   | "cyan";
 
 export const chartColors: Record<ChartColorName, string> = {
-  brand: "#3B5A69",
-  "brand-light": "#7EA4B8",
-  "brand-dark": "#1E3642",
-  charcoal: "#6B6B6B",
-  limestone: "#D4CCC2",
-  success: "#2E8B57",
-  warning: "#D4860B",
-  critical: "#C0392B",
-  info: "#2980B9",
-  gold: "#E8A838",
-  purple: "#7B68EE",
-  terra: "#E07B54",
-  cyan: "#06B6D4",
+  brand: "#1d7682",
+  "brand-light": "#b6d0ed",
+  "brand-dark": "#0d3538",
+  charcoal: "rgba(255, 255, 255, 0.40)",
+  limestone: "rgba(255, 255, 255, 0.10)",
+  success: "#22c55e",
+  warning: "#f59e0b",
+  critical: "#ef4444",
+  info: "#3b82f6",
+  gold: "#f59e0b",
+  purple: "#8b5cf6",
+  terra: "#f97316",
+  cyan: "#06b6d4",
 };
 
 export const getChartColor = (name: ChartColorName): string =>

@@ -74,9 +74,9 @@ export function WizardProgress({
                 <div
                   className={cn(
                     'relative flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-200',
-                    isActive && 'border-brand-700 bg-brand-700 text-white shadow-md shadow-brand-700/20',
+                    isActive && 'border-teal-500 bg-teal-500 text-white shadow-md shadow-brand-700/20',
                     isCompleted && !isActive && 'border-success-500 bg-success-500 text-white',
-                    !isActive && !isCompleted && 'border-limestone-300 bg-white text-charcoal-400',
+                    !isActive && !isCompleted && 'border-white/[0.10] bg-white/[0.07] text-white/30',
                     isClickable && !isActive && 'group-hover:border-brand-400 group-hover:shadow-sm',
                   )}
                 >
@@ -93,9 +93,9 @@ export function WizardProgress({
                 <span
                   className={cn(
                     'text-[11px] font-medium leading-tight text-center max-w-[80px] transition-colors',
-                    isActive && 'text-brand-700',
-                    isCompleted && !isActive && 'text-charcoal-700',
-                    !isActive && !isCompleted && 'text-charcoal-400',
+                    isActive && 'text-teal-300',
+                    isCompleted && !isActive && 'text-white/60',
+                    !isActive && !isCompleted && 'text-white/30',
                   )}
                 >
                   {step.label}
@@ -108,7 +108,7 @@ export function WizardProgress({
                   <div
                     className={cn(
                       'h-0.5 w-full rounded-full transition-colors duration-300',
-                      isCompleted ? 'bg-success-500' : 'bg-limestone-200',
+                      isCompleted ? 'bg-success-500' : 'bg-white/[0.06]',
                     )}
                   />
                 </div>

@@ -253,8 +253,8 @@ export function ClientProfileForm({
       {/* ── Personal Information ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Personal Information</h3>
-          <p className="mt-0.5 text-sm text-charcoal-500">Basic identifying information for the client.</p>
+          <h3 className="text-base font-semibold text-white">Personal Information</h3>
+          <p className="mt-0.5 text-sm text-white/50">Basic identifying information for the client.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -362,7 +362,7 @@ export function ClientProfileForm({
       {/* ── Contact Information ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Contact Information</h3>
+          <h3 className="text-base font-semibold text-white">Contact Information</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -390,7 +390,7 @@ export function ClientProfileForm({
       {/* ── Address ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Address</h3>
+          <h3 className="text-base font-semibold text-white">Address</h3>
         </div>
 
         <Controller
@@ -424,7 +424,7 @@ export function ClientProfileForm({
       {/* ── Employment ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Employment</h3>
+          <h3 className="text-base font-semibold text-white">Employment</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -483,7 +483,7 @@ export function ClientProfileForm({
       {/* ── Planning ── */}
       <section>
         <div className="mb-4">
-          <h3 className="text-base font-semibold text-charcoal-900">Planning</h3>
+          <h3 className="text-base font-semibold text-white">Planning</h3>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -500,7 +500,7 @@ export function ClientProfileForm({
                 placeholder="90"
               />
               <Tooltip content="Age at which the financial plan ends">
-                <button type="button" className="text-charcoal-300 hover:text-charcoal-500">
+                <button type="button" className="text-white/30 hover:text-white/50">
                   <HelpCircle className="h-4 w-4" />
                 </button>
               </Tooltip>
@@ -534,7 +534,7 @@ export function ClientProfileForm({
       </section>
 
       {/* ── Actions ── */}
-      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 pt-6">
+      <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] pt-6">
         <Button type="submit" loading={isLoading}>
           Save Profile
         </Button>

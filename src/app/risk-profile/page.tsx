@@ -24,7 +24,7 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
     <div className="max-w-xl mx-auto">
       <div className="card p-8 text-center">
         {/* Icon */}
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-linear-to-br from-brand-700 to-brand-900 flex items-center justify-center mb-6">
+        <div className="w-16 h-16 mx-auto rounded-2xl bg-linear-to-br from-teal-500 to-teal-800 flex items-center justify-center mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2a10 10 0 1 0 10 10" />
             <path d="M12 12 12 2" />
@@ -32,10 +32,10 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
           </svg>
         </div>
 
-        <h2 className="text-2xl font-bold text-charcoal-900 mb-3">
+        <h2 className="text-2xl font-bold text-white mb-3">
           Farther Focus
         </h2>
-        <p className="text-base text-charcoal-500 mb-6 leading-relaxed max-w-md mx-auto">
+        <p className="text-base text-white/50 mb-6 leading-relaxed max-w-md mx-auto">
           This is not a test. It&apos;s a conversation to understand how you think and feel about risk, and what your finances can realistically support.
         </p>
 
@@ -46,12 +46,12 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
             { step: '3', label: 'Your Risk Blueprint', desc: 'AI-powered profile, portfolio options, and backtests' },
           ].map(({ step, label, desc }) => (
             <div key={step} className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-teal-500/15 text-teal-300 flex items-center justify-center text-xs font-bold">
                 {step}
               </div>
               <div>
-                <p className="text-sm font-semibold text-charcoal-900">{label}</p>
-                <p className="text-xs text-charcoal-500">{desc}</p>
+                <p className="text-sm font-semibold text-white">{label}</p>
+                <p className="text-xs text-white/50">{desc}</p>
               </div>
             </div>
           ))}
@@ -59,12 +59,12 @@ function IntroScreen({ onContinue }: { onContinue: () => void }) {
 
         <button
           onClick={onContinue}
-          className="w-full py-3 bg-brand-700 text-white font-semibold rounded-lg hover:bg-brand-600 transition-all shadow-sm"
+          className="w-full py-3 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-400 transition-all shadow-sm"
         >
           Get Started
         </button>
 
-        <p className="text-[10px] text-charcoal-300 mt-4 leading-relaxed">
+        <p className="text-[10px] text-white/30 mt-4 leading-relaxed">
           FINRA 2111 / Reg BI / CFA Institute compliant. AI-powered adaptive questioning with multi-axis scoring across risk tolerance, capacity, behavioral biases, and complexity preference. Results include 7-band portfolio mapping with 32-year backtesting.
         </p>
       </div>
@@ -76,13 +76,13 @@ function LoadingSpinner({ message }: { message: string }) {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="card p-8 text-center">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-50 mb-4">
-          <svg className="animate-spin h-6 w-6 text-brand-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/10 mb-4">
+          <svg className="animate-spin h-6 w-6 text-teal-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>
         </div>
-        <p className="text-sm text-charcoal-500">{message}</p>
+        <p className="text-sm text-white/50">{message}</p>
       </div>
     </div>
   );
@@ -325,31 +325,31 @@ export default function RiskProfilePage() {
   const phaseLabel = phase === 'intro' ? '' : phase === 'intake' ? 'Client Profile' : phase === 'questionnaire' ? 'Risk Assessment' : 'Results';
 
   return (
-    <div className="min-h-screen bg-limestone-50">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-white border-b border-limestone-200 sticky top-0 z-50 no-print">
+      <header className="bg-white/[0.07]/[0.03] border-b border-white/[0.06] backdrop-blur-xl sticky top-0 z-50 no-print">
         <div className="max-w-panel-dashboard mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="text-charcoal-300 hover:text-charcoal-500 transition-colors"
+              className="text-white/30 hover:text-white/50 transition-colors"
               aria-label="Back to tools"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-charcoal-900">Farther Focus</h1>
-              <p className="text-xs text-charcoal-500">
+              <h1 className="text-lg font-bold text-white">Farther Focus</h1>
+              <p className="text-xs text-white/50">
                 {phaseLabel || 'Intelligent Risk Profile Assessment'}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 text-xs text-charcoal-300">
+          <div className="flex items-center gap-3 text-xs text-white/30">
             {phase === 'questionnaire' && (
               <>
                 <span>{answeredCount}/{effectiveTotal} answered</span>
                 {aiMode === 'ai' && (
-                  <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 text-[10px] font-medium">
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-300 text-[10px] font-medium">
                     AI
                   </span>
                 )}
@@ -403,7 +403,7 @@ export default function RiskProfilePage() {
                   <button
                     onClick={handlePrev}
                     disabled={currentIndex === 0 || isLoadingQuestion}
-                    className="px-4 py-2 text-sm font-medium text-charcoal-500 rounded-lg hover:bg-limestone-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                    className="px-4 py-2 text-sm font-medium text-white/50 rounded-lg hover:bg-white/[0.06] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     Previous
@@ -419,12 +419,12 @@ export default function RiskProfilePage() {
                           disabled={i >= questions.length}
                           className={`w-2 h-2 rounded-full transition-all ${
                             i === currentIndex
-                              ? 'bg-brand-700 w-3 h-3'
+                              ? 'bg-teal-500 w-3 h-3'
                               : q && responses.has(q.id)
-                                ? 'bg-brand-300'
+                                ? 'bg-teal-300'
                                 : i < questions.length
-                                  ? 'bg-limestone-300'
-                                  : 'bg-limestone-200'
+                                  ? 'bg-white/[0.10]'
+                                  : 'bg-white/[0.06]'
                           }`}
                           aria-label={`Go to question ${i + 1}`}
                         />
@@ -436,7 +436,7 @@ export default function RiskProfilePage() {
                     <button
                       onClick={handleNext}
                       disabled={currentAnswer === null || isLoadingQuestion}
-                      className="px-4 py-2 text-sm font-medium text-white bg-brand-700 rounded-lg hover:bg-brand-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                      className="px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
                     >
                       {isLoadingQuestion ? (
                         <>
@@ -457,7 +457,7 @@ export default function RiskProfilePage() {
                     <button
                       onClick={handleSubmit}
                       disabled={!allAnswered || isLoadingProfile}
-                      className="px-5 py-2 text-sm font-semibold text-white bg-brand-700 rounded-lg hover:bg-brand-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="px-5 py-2 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {isLoadingProfile ? 'Analyzing...' : 'Submit Assessment'}
                     </button>
@@ -477,7 +477,7 @@ export default function RiskProfilePage() {
                         }
                         setCurrentIndex(questions.length - 1);
                       }}
-                      className="text-xs text-charcoal-300 hover:text-charcoal-500 transition-colors"
+                      className="text-xs text-white/30 hover:text-white/50 transition-colors"
                     >
                       Jump to next unanswered
                     </button>

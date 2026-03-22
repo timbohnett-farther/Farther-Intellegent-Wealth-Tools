@@ -56,9 +56,9 @@ function formatCompact(value: number): string {
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-1.5 text-xs shadow-md">
-      <p className="font-medium text-charcoal-900">{payload[0].payload.name}</p>
-      <p className="tabular-nums text-charcoal-700">{formatCurrency(payload[0].value)}</p>
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-1.5 text-xs shadow-md">
+      <p className="font-medium text-white">{payload[0].payload.name}</p>
+      <p className="tabular-nums text-white/60">{formatCurrency(payload[0].value)}</p>
     </div>
   );
 }
@@ -76,9 +76,9 @@ export function NetWorthWidget({
 
   const chartData = useMemo(
     () => [
-      { name: 'Assets', value: totalAssets, color: '#2E8B57' },
-      { name: 'Liabilities', value: totalLiabilities, color: '#C0392B' },
-      { name: 'Net Worth', value: Math.max(netWorth, 0), color: '#3B5A69' },
+      { name: 'Assets', value: totalAssets, color: '#22c55e' },
+      { name: 'Liabilities', value: totalLiabilities, color: '#ef4444' },
+      { name: 'Net Worth', value: Math.max(netWorth, 0), color: '#1d7682' },
     ],
     [totalAssets, totalLiabilities, netWorth],
   );
@@ -89,7 +89,7 @@ export function NetWorthWidget({
       <div className="space-y-3">
         {/* Total Assets */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
             Total Assets
           </p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-success-500">
@@ -99,7 +99,7 @@ export function NetWorthWidget({
 
         {/* Total Liabilities */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
             Total Liabilities
           </p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-critical-500">
@@ -108,17 +108,17 @@ export function NetWorthWidget({
         </div>
 
         {/* Divider */}
-        <div className="border-t border-limestone-200" />
+        <div className="border-t border-white/[0.06]" />
 
         {/* Net Worth */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-charcoal-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
             Net Worth
           </p>
           <p
             className={cn(
               'mt-0.5 text-2xl font-bold tabular-nums',
-              netWorth >= 0 ? 'text-charcoal-900' : 'text-critical-500',
+              netWorth >= 0 ? 'text-white' : 'text-critical-500',
             )}
           >
             {formatCurrency(netWorth)}
@@ -133,10 +133,10 @@ export function NetWorthWidget({
             data={chartData}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E4DDD4" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 10, fill: '#6B6B6B' }}
+              tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.40)' }}
               axisLine={false}
               tickLine={false}
             />

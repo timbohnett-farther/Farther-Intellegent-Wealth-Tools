@@ -212,7 +212,7 @@ export function StatementUploader({
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       {/* Capture method tabs */}
-      <div className="flex gap-1 rounded-lg bg-limestone-100 p-1">
+      <div className="flex gap-1 rounded-lg bg-white/[0.06] p-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
@@ -225,8 +225,8 @@ export function StatementUploader({
               className={cn(
                 'flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all',
                 isActive
-                  ? 'bg-white text-brand-700 shadow-sm'
-                  : 'text-charcoal-500 hover:text-charcoal-700',
+                  ? 'bg-white/[0.07] text-teal-300 shadow-sm'
+                  : 'text-white/50 hover:text-white/60',
               )}
             >
               <Icon className="h-4 w-4" />
@@ -257,24 +257,24 @@ export function StatementUploader({
               'relative flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-10 transition-colors',
               'cursor-pointer focus-visible:outline-hidden focus-visible:shadow-focus',
               isDragActive
-                ? 'border-brand-700 bg-brand-50'
-                : 'border-limestone-300 bg-limestone-50 hover:border-brand-400 hover:bg-brand-50',
+                ? 'border-teal-500 bg-teal-500/10'
+                : 'border-white/[0.10] bg-transparent hover:border-brand-400 hover:bg-teal-500/10',
             )}
           >
             <Upload
               className={cn(
                 'h-10 w-10',
-                isDragActive ? 'text-brand-700' : 'text-charcoal-300',
+                isDragActive ? 'text-teal-300' : 'text-white/30',
               )}
               aria-hidden="true"
             />
             <div className="text-center">
-              <p className="text-sm font-medium text-charcoal-700">
+              <p className="text-sm font-medium text-white/60">
                 {isDragActive
                   ? 'Drop statements here'
                   : 'Drop brokerage statements here or click to browse'}
               </p>
-              <p className="mt-1 text-xs text-charcoal-500">
+              <p className="mt-1 text-xs text-white/50">
                 PDF, JPG, PNG, TIFF -- up to {MAX_FILES} files, {formatBytes(MAX_SIZE_BYTES)} each
               </p>
             </div>
@@ -295,25 +295,25 @@ export function StatementUploader({
               {uploads.map((upload) => (
                 <li
                   key={upload.id}
-                  className="flex items-center gap-3 rounded-lg border border-limestone-200 bg-white px-4 py-3"
+                  className="flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-3"
                 >
-                  <FileText className="h-5 w-5 shrink-0 text-brand-700" aria-hidden="true" />
+                  <FileText className="h-5 w-5 shrink-0 text-teal-300" aria-hidden="true" />
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="truncate text-sm font-medium text-charcoal-700">
+                      <span className="truncate text-sm font-medium text-white/60">
                         {upload.file.name}
                       </span>
-                      <span className="shrink-0 text-xs text-charcoal-400">
+                      <span className="shrink-0 text-xs text-white/30">
                         {formatBytes(upload.file.size)}
                       </span>
                     </div>
 
                     {/* Progress bar */}
                     {upload.status === 'uploading' && (
-                      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-limestone-100">
+                      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
                         <div
-                          className="h-full rounded-full bg-brand-700 transition-all duration-200"
+                          className="h-full rounded-full bg-teal-500 transition-all duration-200"
                           style={{ width: `${upload.progress}%` }}
                         />
                       </div>
@@ -321,8 +321,8 @@ export function StatementUploader({
 
                     {upload.status === 'scanning' && (
                       <div className="mt-1.5 flex items-center gap-1.5">
-                        <Loader2 className="h-3 w-3 animate-spin text-brand-700" />
-                        <span className="text-xs text-brand-700 font-medium">
+                        <Loader2 className="h-3 w-3 animate-spin text-teal-300" />
+                        <span className="text-xs text-teal-300 font-medium">
                           Scanning document...
                         </span>
                       </div>
@@ -350,7 +350,7 @@ export function StatementUploader({
                   <button
                     type="button"
                     onClick={() => removeUpload(upload.id)}
-                    className="shrink-0 rounded p-1 text-charcoal-300 hover:bg-limestone-100 hover:text-charcoal-700 transition-colors"
+                    className="shrink-0 rounded p-1 text-white/30 hover:bg-white/[0.06] hover:text-white/60 transition-colors"
                     aria-label={`Remove ${upload.file.name}`}
                   >
                     <X className="h-4 w-4" />
@@ -364,17 +364,17 @@ export function StatementUploader({
 
       {/* Custodian Pull tab */}
       {activeTab === 'custodian' && (
-        <div className="rounded-lg border border-limestone-200 bg-white p-8 text-center">
-          <Download className="mx-auto h-10 w-10 text-charcoal-300" />
-          <h3 className="mt-3 text-sm font-semibold text-charcoal-900">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 text-center">
+          <Download className="mx-auto h-10 w-10 text-white/30" />
+          <h3 className="mt-3 text-sm font-semibold text-white">
             Custodian Data Pull
           </h3>
-          <p className="mt-1 text-xs text-charcoal-500">
+          <p className="mt-1 text-xs text-white/50">
             Connect to a custodian to automatically pull the latest account data.
           </p>
           <button
             type="button"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
           >
             Connect Custodian
           </button>
@@ -383,17 +383,17 @@ export function StatementUploader({
 
       {/* Manual Entry tab */}
       {activeTab === 'manual' && (
-        <div className="rounded-lg border border-limestone-200 bg-white p-8 text-center">
-          <Pencil className="mx-auto h-10 w-10 text-charcoal-300" />
-          <h3 className="mt-3 text-sm font-semibold text-charcoal-900">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 text-center">
+          <Pencil className="mx-auto h-10 w-10 text-white/30" />
+          <h3 className="mt-3 text-sm font-semibold text-white">
             Manual Entry
           </h3>
-          <p className="mt-1 text-xs text-charcoal-500">
+          <p className="mt-1 text-xs text-white/50">
             Enter holdings manually in the review table below.
           </p>
           <button
             type="button"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
           >
             Start Manual Entry
           </button>
@@ -403,29 +403,29 @@ export function StatementUploader({
       {/* Existing scan results review */}
       {scans.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-charcoal-900">
+          <h3 className="text-sm font-semibold text-white">
             Scanned Statements ({scans.length})
           </h3>
-          <div className="overflow-x-auto rounded-lg border border-limestone-200">
+          <div className="overflow-x-auto rounded-lg border border-white/[0.06]">
             <table className="w-full text-sm">
-              <thead className="border-b border-limestone-200 bg-limestone-50">
+              <thead className="border-b border-white/[0.06] bg-transparent">
                 <tr>
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                     File
                   </th>
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                     Account
                   </th>
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                     Custodian
                   </th>
-                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-white/50">
                     Holdings
                   </th>
-                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-white/50">
                     Confidence
                   </th>
-                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+                  <th className="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-white/50">
                     Status
                   </th>
                 </tr>
@@ -434,17 +434,17 @@ export function StatementUploader({
                 {scans.map((scan) => {
                   const badge = getConfidenceBadge(scan.confidence);
                   return (
-                    <tr key={scan.scanId} className="hover:bg-limestone-50">
-                      <td className="px-4 py-2.5 text-charcoal-700 font-medium">
+                    <tr key={scan.scanId} className="hover:bg-white/[0.04]">
+                      <td className="px-4 py-2.5 text-white/60 font-medium">
                         {scan.fileName}
                       </td>
-                      <td className="px-4 py-2.5 text-charcoal-600 font-mono text-xs">
+                      <td className="px-4 py-2.5 text-white/50 font-mono text-xs">
                         {scan.accountNumber ?? '--'}
                       </td>
-                      <td className="px-4 py-2.5 text-charcoal-600">
+                      <td className="px-4 py-2.5 text-white/50">
                         {scan.custodian ?? '--'}
                       </td>
-                      <td className="px-4 py-2.5 text-center text-charcoal-600 tabular-nums">
+                      <td className="px-4 py-2.5 text-center text-white/50 tabular-nums">
                         {scan.holdings.length}
                       </td>
                       <td className="px-4 py-2.5 text-center">
@@ -460,7 +460,7 @@ export function StatementUploader({
                       </td>
                       <td className="px-4 py-2.5 text-center">
                         {scan.status === 'PROCESSING' && (
-                          <span className="inline-flex items-center gap-1 text-xs text-brand-700">
+                          <span className="inline-flex items-center gap-1 text-xs text-teal-300">
                             <Loader2 className="h-3 w-3 animate-spin" /> Processing
                           </span>
                         )}
@@ -487,7 +487,7 @@ export function StatementUploader({
             <button
               type="button"
               onClick={() => onScanComplete(scans)}
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-600 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-teal-400 transition-colors"
             >
               <Check className="h-4 w-4" />
               Confirm Scanned Holdings

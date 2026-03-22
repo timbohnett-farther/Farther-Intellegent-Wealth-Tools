@@ -67,7 +67,7 @@ function getScoreColor(score: number): string {
 /** Returns the Tailwind text class for the score color. */
 function getScoreTextClass(score: number): string {
   if (score <= 30) return 'text-success-700';
-  if (score <= 50) return 'text-brand-700';
+  if (score <= 50) return 'text-teal-300';
   if (score <= 70) return 'text-warning-700';
   return 'text-critical-700';
 }
@@ -151,7 +151,7 @@ export function RiskScoreGauge({
       <span
         className={cn(
           config.labelFontSize,
-          'mt-1 font-medium text-charcoal-500 text-center',
+          'mt-1 font-medium text-white/50 text-center',
         )}
       >
         {label}

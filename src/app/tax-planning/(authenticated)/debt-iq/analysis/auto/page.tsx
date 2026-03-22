@@ -26,17 +26,17 @@ function InputField({ label, value, onChange, type = 'number', suffix, step }: {
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-charcoal-500 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-white/50 mb-1">{label}</label>
       <div className="relative">
         <input
           type={type}
           value={value}
           step={step}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-lg border border-limestone-200 bg-white px-3 py-2 text-sm text-charcoal-900 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden"
+          className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-sm text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden"
         />
         {suffix && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-charcoal-400">{suffix}</span>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/30">{suffix}</span>
         )}
       </div>
     </div>
@@ -50,10 +50,10 @@ function ResultCard({ label, value, note, noteColor }: {
   noteColor?: string;
 }) {
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-4">
-      <p className="text-xs font-medium text-charcoal-500 mb-1">{label}</p>
-      <p className="text-lg font-bold text-charcoal-900">{value}</p>
-      {note && <p className={`text-xs mt-1 ${noteColor || 'text-charcoal-400'}`}>{note}</p>}
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4">
+      <p className="text-xs font-medium text-white/50 mb-1">{label}</p>
+      <p className="text-lg font-bold text-white">{value}</p>
+      {note && <p className={`text-xs mt-1 ${noteColor || 'text-white/30'}`}>{note}</p>}
     </div>
   );
 }
@@ -61,8 +61,8 @@ function ResultCard({ label, value, note, noteColor }: {
 function RecommendationBadge({ rec }: { rec: string }) {
   const styles: Record<string, string> = {
     PAY_OFF: 'bg-success-100 text-success-700',
-    INVEST_INSTEAD: 'bg-brand-100 text-brand-700',
-    NEUTRAL: 'bg-limestone-100 text-charcoal-600',
+    INVEST_INSTEAD: 'bg-teal-500/15 text-teal-300',
+    NEUTRAL: 'bg-white/[0.06] text-white/50',
     LEASE: 'bg-info-100 text-info-700',
     BUY: 'bg-success-100 text-success-700',
     DEPENDS: 'bg-warning-100 text-warning-700',
@@ -142,17 +142,17 @@ export default function AutoLoanAnalysisPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Link href="/tax-planning/debt-iq" className="text-sm text-brand-700 hover:text-brand-600">Debt Analysis</Link>
-          <span className="text-charcoal-300">/</span>
-          <span className="text-sm text-charcoal-500">Auto Loan Analyzer</span>
+          <Link href="/tax-planning/debt-iq" className="text-sm text-teal-300 hover:text-teal-300">Debt Analysis</Link>
+          <span className="text-white/30">/</span>
+          <span className="text-sm text-white/50">Auto Loan Analyzer</span>
         </div>
-        <h1 className="text-2xl font-bold text-charcoal-900">Auto Loan Analyzer</h1>
-        <p className="mt-1 text-sm text-charcoal-500">Payoff analysis, opportunity cost, and lease vs. buy comparison</p>
+        <h1 className="text-2xl font-bold text-white">Auto Loan Analyzer</h1>
+        <p className="mt-1 text-sm text-white/50">Payoff analysis, opportunity cost, and lease vs. buy comparison</p>
       </div>
 
       {/* Input Form */}
-      <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm space-y-6">
-        <h3 className="text-sm font-semibold text-charcoal-900">Current Auto Loan</h3>
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-6">
+        <h3 className="text-sm font-semibold text-white">Current Auto Loan</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <InputField label="Vehicle Value" value={vehicleValue} onChange={(v) => setVehicleValue(Number(v))} suffix="$" />
           <InputField label="Loan Balance" value={loanBalance} onChange={(v) => setLoanBalance(Number(v))} suffix="$" />
@@ -170,9 +170,9 @@ export default function AutoLoanAnalysisPage() {
               type="checkbox"
               checked={showLease}
               onChange={(e) => setShowLease(e.target.checked)}
-              className="h-4 w-4 rounded border-limestone-300 text-brand-700 focus:ring-brand-500"
+              className="h-4 w-4 rounded border-white/[0.10] text-teal-300 focus:ring-teal-500"
             />
-            <span className="text-sm font-medium text-charcoal-700">Include Lease vs. Buy Comparison</span>
+            <span className="text-sm font-medium text-white/60">Include Lease vs. Buy Comparison</span>
           </label>
         </div>
 
@@ -192,7 +192,7 @@ export default function AutoLoanAnalysisPage() {
           <button
             onClick={runAnalysis}
             disabled={computing}
-            className="rounded-lg bg-brand-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-600 transition-colors shadow-sm disabled:opacity-50"
+            className="rounded-lg bg-teal-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-teal-400 transition-colors shadow-sm disabled:opacity-50"
           >
             {computing ? 'Analyzing...' : 'Run Analysis'}
           </button>
@@ -203,8 +203,8 @@ export default function AutoLoanAnalysisPage() {
       {result && (
         <>
           {/* Current Status */}
-          <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm">
-            <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-4">Current Status</h3>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+            <h3 className="text-sm font-semibold uppercase text-white/30 mb-4">Current Status</h3>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <ResultCard label="Equity" value={fmt.format(result.currentStatus.equity)}
                 note={result.currentStatus.isUnderwaterFlag ? 'Underwater' : 'Positive equity'}
@@ -218,9 +218,9 @@ export default function AutoLoanAnalysisPage() {
           </div>
 
           {/* Payoff Analysis */}
-          <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold uppercase text-charcoal-400">Pay Off vs. Invest</h3>
+              <h3 className="text-sm font-semibold uppercase text-white/30">Pay Off vs. Invest</h3>
               <RecommendationBadge rec={result.payoffAnalysis.recommendation} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -229,55 +229,55 @@ export default function AutoLoanAnalysisPage() {
                 note="If invested instead" />
               <ResultCard label="Net Advantage" value={fmt.format(result.payoffAnalysis.netAdvantage)}
                 note={result.payoffAnalysis.netAdvantage > 0 ? 'Favors payoff' : 'Favors investing'}
-                noteColor={result.payoffAnalysis.netAdvantage > 0 ? 'text-success-700' : 'text-brand-700'} />
+                noteColor={result.payoffAnalysis.netAdvantage > 0 ? 'text-success-700' : 'text-teal-300'} />
             </div>
           </div>
 
           {/* Lease vs Buy */}
           {result.leaseVsBuyAnalysis && (
-            <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold uppercase text-charcoal-400">Lease vs. Buy</h3>
+                <h3 className="text-sm font-semibold uppercase text-white/30">Lease vs. Buy</h3>
                 <RecommendationBadge rec={result.leaseVsBuyAnalysis.recommendation} />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <h4 className="text-sm font-semibold text-charcoal-700">Lease</h4>
+                  <h4 className="text-sm font-semibold text-white/60">Lease</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Total Outflow</span>
-                      <span className="font-mono font-medium text-charcoal-900">{fmt.format(result.leaseVsBuyAnalysis.totalLeaseOutflow)}</span>
+                      <span className="text-white/50">Total Outflow</span>
+                      <span className="font-mono font-medium text-white">{fmt.format(result.leaseVsBuyAnalysis.totalLeaseOutflow)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Net Cost (nothing retained)</span>
-                      <span className="font-mono font-medium text-charcoal-900">{fmt.format(result.leaseVsBuyAnalysis.netLeaseCost)}</span>
+                      <span className="text-white/50">Net Cost (nothing retained)</span>
+                      <span className="font-mono font-medium text-white">{fmt.format(result.leaseVsBuyAnalysis.netLeaseCost)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Money Factor as APR</span>
-                      <span className="font-mono font-medium text-charcoal-700">{fmtPct.format(result.leaseVsBuyAnalysis.moneyFactorAsAPR)}</span>
+                      <span className="text-white/50">Money Factor as APR</span>
+                      <span className="font-mono font-medium text-white/60">{fmtPct.format(result.leaseVsBuyAnalysis.moneyFactorAsAPR)}</span>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <h4 className="text-sm font-semibold text-charcoal-700">Buy</h4>
+                  <h4 className="text-sm font-semibold text-white/60">Buy</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Total Outflow</span>
-                      <span className="font-mono font-medium text-charcoal-900">{fmt.format(result.leaseVsBuyAnalysis.totalBuyOutflow)}</span>
+                      <span className="text-white/50">Total Outflow</span>
+                      <span className="font-mono font-medium text-white">{fmt.format(result.leaseVsBuyAnalysis.totalBuyOutflow)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Vehicle Value Retained</span>
+                      <span className="text-white/50">Vehicle Value Retained</span>
                       <span className="font-mono font-medium text-success-700">{fmt.format(result.leaseVsBuyAnalysis.vehicleValueRetained)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-charcoal-500">Net Cost</span>
-                      <span className="font-mono font-medium text-charcoal-900">{fmt.format(result.leaseVsBuyAnalysis.netBuyCost)}</span>
+                      <span className="text-white/50">Net Cost</span>
+                      <span className="font-mono font-medium text-white">{fmt.format(result.leaseVsBuyAnalysis.netBuyCost)}</span>
                     </div>
                   </div>
                 </div>
               </div>
               {result.leaseVsBuyAnalysis.taxNote && (
-                <p className="mt-4 pt-4 border-t border-limestone-100 text-xs text-charcoal-500">
+                <p className="mt-4 pt-4 border-t border-limestone-100 text-xs text-white/50">
                   {result.leaseVsBuyAnalysis.taxNote}
                 </p>
               )}

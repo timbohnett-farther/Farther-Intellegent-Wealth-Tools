@@ -34,17 +34,17 @@ export default function ClientPortalLayout({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-limestone-50">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-white border-b border-limestone-200 sticky top-0 z-40">
+      <header className="bg-white/[0.03] border-b border-white/[0.06] backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-500 to-accent-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-teal-500 to-teal-300 flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-sm">F</span>
               </div>
-              <span className="text-lg font-bold text-brand-900 tracking-tight">
+              <span className="text-lg font-bold text-white tracking-tight">
                 Farther
               </span>
             </div>
@@ -65,8 +65,8 @@ export default function ClientPortalLayout({
                     className={cn(
                       'flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                       isActive
-                        ? 'bg-brand-50 text-brand-600'
-                        : 'text-charcoal-500 hover:text-charcoal-900 hover:bg-limestone-100'
+                        ? 'bg-teal-500/10 text-teal-300'
+                        : 'text-white/50 hover:text-white hover:bg-white/[0.06]'
                     )}
                   >
                     <Icon size={16} />
@@ -80,7 +80,7 @@ export default function ClientPortalLayout({
             <div className="flex items-center gap-3">
               <Link
                 href="/client/request-meeting"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-colors"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-colors"
               >
                 <CalendarPlus size={16} />
                 Request a Meeting
@@ -89,7 +89,7 @@ export default function ClientPortalLayout({
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-charcoal-500 hover:bg-limestone-100"
+                className="md:hidden p-2 rounded-lg text-white/50 hover:bg-white/[0.06]"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -99,7 +99,7 @@ export default function ClientPortalLayout({
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-limestone-200 bg-white">
+          <div className="md:hidden border-t border-white/[0.06] bg-[#1a1a1a]">
             <nav className="px-4 py-3 space-y-1">
               {NAV_LINKS.map((link) => {
                 const Icon = link.icon;
@@ -116,8 +116,8 @@ export default function ClientPortalLayout({
                     className={cn(
                       'flex items-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors',
                       isActive
-                        ? 'bg-brand-50 text-brand-600'
-                        : 'text-charcoal-500 hover:bg-limestone-100'
+                        ? 'bg-teal-500/10 text-teal-300'
+                        : 'text-white/50 hover:bg-white/[0.06]'
                     )}
                   >
                     <Icon size={18} />
@@ -128,7 +128,7 @@ export default function ClientPortalLayout({
               <Link
                 href="/client/request-meeting"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-brand-600 rounded-lg hover:bg-brand-50"
+                className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-teal-300 rounded-lg hover:bg-teal-500/10"
               >
                 <CalendarPlus size={18} />
                 Request a Meeting

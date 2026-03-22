@@ -181,13 +181,13 @@ export function IncomeSourceForm({
   const incomeType = watch('type');
 
   return (
-    <div className="flex h-full max-w-lg flex-col border-l border-limestone-200 bg-white shadow-xl">
+    <div className="flex h-full max-w-lg flex-col border-l border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-xl">
       {/* Header */}
-      <div className="border-b border-limestone-200 px-6 py-4">
-        <h2 className="text-lg font-semibold text-charcoal-900">
+      <div className="border-b border-white/[0.06] px-6 py-4">
+        <h2 className="text-lg font-semibold text-white">
           {initialData?.name ? 'Edit Income Source' : 'Add Income Source'}
         </h2>
-        <p className="mt-0.5 text-sm text-charcoal-500">
+        <p className="mt-0.5 text-sm text-white/50">
           Configure income stream details and projections.
         </p>
       </div>
@@ -320,8 +320,8 @@ export function IncomeSourceForm({
 
           {/* ── W-2 / Employment Fields ── */}
           {isEmploymentType(incomeType) && (
-            <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4">
-              <h4 className="mb-3 text-sm font-medium text-charcoal-700">Employment Details</h4>
+            <div className="rounded-lg border border-white/[0.06] bg-transparent p-4">
+              <h4 className="mb-3 text-sm font-medium text-white/60">Employment Details</h4>
               <FormField label="Employer Name" error={errors.employerName?.message}>
                 <Input
                   {...register('employerName')}
@@ -334,8 +334,8 @@ export function IncomeSourceForm({
 
           {/* ── Self-Employment Fields ── */}
           {isSelfEmploymentType(incomeType) && (
-            <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4">
-              <h4 className="mb-3 text-sm font-medium text-charcoal-700">Self-Employment Details</h4>
+            <div className="rounded-lg border border-white/[0.06] bg-transparent p-4">
+              <h4 className="mb-3 text-sm font-medium text-white/60">Self-Employment Details</h4>
               <FormField label="SE Expense Ratio" error={errors.seExpenseRatio?.message}>
                 <Controller
                   control={control}
@@ -354,8 +354,8 @@ export function IncomeSourceForm({
 
           {/* ── Social Security Fields ── */}
           {isSocialSecurityType(incomeType) && (
-            <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-              <h4 className="text-sm font-medium text-charcoal-700">Social Security Details</h4>
+            <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+              <h4 className="text-sm font-medium text-white/60">Social Security Details</h4>
 
               <FormField label="Primary Insurance Amount (PIA)">
                 <Controller
@@ -423,8 +423,8 @@ export function IncomeSourceForm({
 
           {/* ── Pension Fields ── */}
           {isPensionType(incomeType) && (
-            <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-              <h4 className="text-sm font-medium text-charcoal-700">Pension Details</h4>
+            <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+              <h4 className="text-sm font-medium text-white/60">Pension Details</h4>
 
               <FormField label="Pension COLA">
                 <Controller
@@ -457,8 +457,8 @@ export function IncomeSourceForm({
 
           {/* ── Rental Fields ── */}
           {isRentalType(incomeType) && (
-            <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-              <h4 className="text-sm font-medium text-charcoal-700">Rental Details</h4>
+            <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+              <h4 className="text-sm font-medium text-white/60">Rental Details</h4>
 
               <FormField label="Gross Rental Income">
                 <Controller
@@ -507,14 +507,14 @@ export function IncomeSourceForm({
               {...register('notes')}
               rows={3}
               placeholder="Additional notes..."
-              className="w-full rounded-lg border border-limestone-300 bg-white px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:border-brand-500 focus:outline-hidden focus:ring-2 focus:ring-brand-100"
+              className="w-full rounded-lg border border-white/[0.10] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-teal-500 focus:outline-hidden focus:ring-2 focus:ring-teal-100"
             />
           </FormField>
         </form>
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 px-6 py-4">
+      <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] px-6 py-4">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
             Cancel

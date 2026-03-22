@@ -140,25 +140,25 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
           'cursor-pointer focus-visible:outline-hidden focus-visible:shadow-focus',
           disabled && 'cursor-not-allowed opacity-50',
           isDragActive
-            ? 'border-brand-700 bg-brand-50'
-            : 'border-limestone-300 bg-limestone-50 hover:border-brand-400 hover:bg-brand-50',
+            ? 'border-teal-500 bg-teal-500/10'
+            : 'border-white/[0.10] bg-transparent hover:border-brand-400 hover:bg-teal-500/10',
         )}
       >
         <Upload
           className={cn(
             'h-10 w-10',
-            isDragActive ? 'text-brand-700' : 'text-charcoal-300'
+            isDragActive ? 'text-teal-300' : 'text-white/30'
           )}
           aria-hidden="true"
         />
 
         <div className="text-center">
-          <p className="text-sm font-medium text-charcoal-700">
+          <p className="text-sm font-medium text-white/60">
             {isDragActive
               ? 'Drop files here'
               : 'Drop PDF files here or click to browse'}
           </p>
-          <p className="mt-1 text-xs text-charcoal-500">
+          <p className="mt-1 text-xs text-white/50">
             Max {formatBytes(maxSizeBytes)}
           </p>
         </div>
@@ -192,14 +192,14 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
           {selectedFiles.map((file, i) => (
             <li
               key={`${file.name}-${i}`}
-              className="flex items-center justify-between rounded-lg border border-limestone-200 bg-white px-3 py-2"
+              className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2"
             >
               <div className="flex items-center gap-2 min-w-0">
-                <FileText className="h-4 w-4 shrink-0 text-brand-700" aria-hidden="true" />
-                <span className="truncate text-sm text-charcoal-700">
+                <FileText className="h-4 w-4 shrink-0 text-teal-300" aria-hidden="true" />
+                <span className="truncate text-sm text-white/60">
                   {file.name}
                 </span>
-                <span className="shrink-0 text-xs text-charcoal-500">
+                <span className="shrink-0 text-xs text-white/50">
                   {formatBytes(file.size)}
                 </span>
               </div>
@@ -209,7 +209,7 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({
                   e.stopPropagation();
                   removeFile(i);
                 }}
-                className="ml-2 shrink-0 rounded p-1 text-charcoal-300 hover:bg-limestone-100 hover:text-charcoal-700 transition-colors"
+                className="ml-2 shrink-0 rounded p-1 text-white/30 hover:bg-white/[0.06] hover:text-white/60 transition-colors"
                 aria-label={`Remove ${file.name}`}
               >
                 <X className="h-4 w-4" />

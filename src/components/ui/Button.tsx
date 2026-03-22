@@ -14,10 +14,24 @@ const buttonVariants = tv({
   ],
   variants: {
     variant: {
-      primary: "bg-brand-700 text-white rounded-md hover:bg-brand-600 active:bg-brand-800",
-      secondary: "bg-transparent text-brand-700 rounded-md border-[1.5px] border-brand-700 hover:bg-brand-50 active:bg-brand-100",
-      ghost: "bg-transparent text-charcoal-500 rounded-md hover:bg-limestone-50 hover:text-charcoal-900 active:bg-limestone-100",
-      danger: "bg-critical-500 text-white rounded-md hover:bg-[#A93226] active:bg-[#922B21]",
+      primary: [
+        "text-white rounded-md",
+        "bg-gradient-to-br from-teal-500 to-teal-600",
+        "hover:from-teal-400 hover:to-teal-500",
+        "active:from-teal-700 active:to-teal-800",
+      ],
+      secondary: [
+        "rounded-md text-white/80",
+        "bg-white/[0.08] border-[1.5px] border-white/[0.12]",
+        "hover:bg-white/[0.12] hover:text-white",
+        "active:bg-white/[0.06]",
+      ],
+      ghost: [
+        "bg-transparent text-white/60 rounded-md",
+        "hover:bg-white/[0.04] hover:text-white",
+        "active:bg-white/[0.08]",
+      ],
+      danger: "bg-critical-500 text-white rounded-md hover:bg-[#dc2626] active:bg-[#b91c1c]",
     },
     size: {
       sm: "h-8 px-3 text-[13px] rounded",

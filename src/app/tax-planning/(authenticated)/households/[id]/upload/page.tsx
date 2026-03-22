@@ -44,8 +44,8 @@ function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
                   isCompleted
                     ? 'bg-success-500 text-white'
                     : isActive
-                      ? 'bg-brand-700 text-white'
-                      : 'bg-limestone-200 text-charcoal-500'
+                      ? 'bg-teal-500 text-white'
+                      : 'bg-white/[0.06] text-white/50'
                 }`}
               >
                 {isCompleted ? (
@@ -58,7 +58,7 @@ function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               </div>
               <span
                 className={`mt-1.5 text-xs font-medium whitespace-nowrap ${
-                  isActive ? 'text-brand-700' : isCompleted ? 'text-success-700' : 'text-charcoal-400'
+                  isActive ? 'text-teal-300' : isCompleted ? 'text-success-700' : 'text-white/30'
                 }`}
               >
                 {label}
@@ -68,7 +68,7 @@ function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
             {!isLast && (
               <div
                 className={`mx-3 -mt-4.5 h-0.5 w-16 sm:w-24 ${
-                  isCompleted ? 'bg-success-500' : 'bg-limestone-200'
+                  isCompleted ? 'bg-success-500' : 'bg-white/[0.06]'
                 }`}
               />
             )}
@@ -271,14 +271,14 @@ export default function UploadReturnPage() {
           <div className="mt-6 flex items-center justify-center gap-3">
             <Link
               href={`/tax-planning/households/${householdId}`}
-              className="inline-flex items-center gap-2 rounded-lg border border-limestone-200 bg-white px-5 py-2.5 text-sm font-medium text-charcoal-700 shadow-sm transition-colors hover:bg-limestone-50"
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 py-2.5 text-sm font-medium text-white/60 shadow-sm transition-colors hover:bg-white/[0.04]"
             >
               Back to Household
             </Link>
             {uploadedDocId && (
               <Link
                 href={`/tax-planning/households/${householdId}`}
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600"
+                className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400"
               >
                 View Returns
               </Link>
@@ -299,35 +299,35 @@ export default function UploadReturnPage() {
       <nav className="flex items-center gap-1.5 text-sm" aria-label="Breadcrumb">
         <Link
           href="/tax-planning/households"
-          className="text-charcoal-500 transition-colors hover:text-charcoal-700"
+          className="text-white/50 transition-colors hover:text-white/60"
         >
           Households
         </Link>
-        <svg className="h-4 w-4 text-charcoal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="h-4 w-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
         <Link
           href={`/tax-planning/households/${householdId}`}
-          className="text-charcoal-500 transition-colors hover:text-charcoal-700"
+          className="text-white/50 transition-colors hover:text-white/60"
         >
           {loadingHousehold ? '...' : household?.display_name || 'Household'}
         </Link>
-        <svg className="h-4 w-4 text-charcoal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="h-4 w-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
-        <span className="font-medium text-charcoal-900">Upload Return</span>
+        <span className="font-medium text-white">Upload Return</span>
       </nav>
 
       {/* Page Title */}
       <div>
-        <h1 className="text-2xl font-bold text-charcoal-900">Upload Return</h1>
-        <p className="mt-1 text-sm text-charcoal-500">
+        <h1 className="text-2xl font-bold text-white">Upload Return</h1>
+        <p className="mt-1 text-sm text-white/50">
           Upload a tax return document for processing and analysis.
         </p>
       </div>
 
       {/* Step Indicator */}
-      <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
         <StepIndicator
           currentStep={currentStep}
           steps={['Document Type', 'Tax Year', 'Upload File']}
@@ -335,15 +335,15 @@ export default function UploadReturnPage() {
       </div>
 
       {/* Step Content */}
-      <div className="rounded-lg border border-limestone-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
         {/* Step 1: Document Type */}
         {currentStep === 1 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-charcoal-900">
+              <h2 className="text-lg font-semibold text-white">
                 Select Document Type
               </h2>
-              <p className="mt-1 text-sm text-charcoal-500">
+              <p className="mt-1 text-sm text-white/50">
                 Choose the type of document you are uploading.
               </p>
             </div>
@@ -355,10 +355,10 @@ export default function UploadReturnPage() {
         {currentStep === 2 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-charcoal-900">
+              <h2 className="text-lg font-semibold text-white">
                 Select Tax Year
               </h2>
-              <p className="mt-1 text-sm text-charcoal-500">
+              <p className="mt-1 text-sm text-white/50">
                 Choose the tax year this document pertains to.
               </p>
             </div>
@@ -371,8 +371,8 @@ export default function UploadReturnPage() {
                   onClick={() => setTaxYear(String(year))}
                   className={`rounded-lg border-[1.5px] px-4 py-3 text-center text-sm font-medium transition-all ${
                     taxYear === String(year)
-                      ? 'border-brand-700 bg-brand-50 text-brand-700 shadow-sm'
-                      : 'border-limestone-200 bg-white text-charcoal-700 hover:border-brand-300 hover:bg-brand-50/30'
+                      ? 'border-teal-500 bg-teal-500/10 text-teal-300 shadow-sm'
+                      : 'border-white/[0.06] bg-white/[0.07] text-white/60 hover:border-teal-300 hover:bg-teal-500/10/30'
                   }`}
                 >
                   {year}
@@ -386,20 +386,20 @@ export default function UploadReturnPage() {
         {currentStep === 3 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-charcoal-900">
+              <h2 className="text-lg font-semibold text-white">
                 Upload File
               </h2>
-              <p className="mt-1 text-sm text-charcoal-500">
+              <p className="mt-1 text-sm text-white/50">
                 Upload a PDF file (max 50MB). The document will be processed automatically.
               </p>
             </div>
 
             {/* Summary of selections */}
-            <div className="rounded-lg bg-limestone-50 border border-limestone-200 p-4">
+            <div className="rounded-lg bg-transparent border border-white/[0.06] p-4">
               <dl className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
                 <div>
-                  <dt className="text-xs font-medium text-charcoal-500">Document Type</dt>
-                  <dd className="mt-0.5 font-medium text-charcoal-900">
+                  <dt className="text-xs font-medium text-white/50">Document Type</dt>
+                  <dd className="mt-0.5 font-medium text-white">
                     {docType === 'FORM1040_PDF'
                       ? 'Form 1040 PDF'
                       : docType === 'IRS_RETURN_TRANSCRIPT_PDF'
@@ -408,8 +408,8 @@ export default function UploadReturnPage() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-medium text-charcoal-500">Tax Year</dt>
-                  <dd className="mt-0.5 font-medium text-charcoal-900">{taxYear}</dd>
+                  <dt className="text-xs font-medium text-white/50">Tax Year</dt>
+                  <dd className="mt-0.5 font-medium text-white">{taxYear}</dd>
                 </div>
               </dl>
             </div>
@@ -459,7 +459,7 @@ export default function UploadReturnPage() {
           type="button"
           onClick={currentStep === 1 ? () => router.push(`/tax-planning/households/${householdId}`) : handleBack}
           disabled={isUploading}
-          className="inline-flex items-center gap-2 rounded-lg border border-limestone-200 bg-white px-5 py-2.5 text-sm font-medium text-charcoal-700 shadow-sm transition-colors hover:bg-limestone-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 py-2.5 text-sm font-medium text-white/60 shadow-sm transition-colors hover:bg-white/[0.04] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -472,7 +472,7 @@ export default function UploadReturnPage() {
             type="button"
             onClick={handleNext}
             disabled={!canGoNext()}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -484,7 +484,7 @@ export default function UploadReturnPage() {
             type="button"
             onClick={handleUpload}
             disabled={!selectedFile || isUploading}
-            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading ? (
               <>

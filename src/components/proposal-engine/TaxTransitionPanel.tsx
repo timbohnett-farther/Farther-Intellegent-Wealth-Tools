@@ -61,13 +61,13 @@ function StrategyCard({
       className={cn(
         'relative rounded-lg border-2 p-5 shadow-sm transition-all',
         isRecommended
-          ? 'border-brand-700 bg-brand-700/5'
-          : 'border-limestone-200 bg-white',
+          ? 'border-teal-500 bg-teal-500/5'
+          : 'border-white/[0.06] bg-white/[0.07]',
       )}
     >
       {/* Recommended badge */}
       {isRecommended && (
-        <div className="absolute -top-2.5 left-4 inline-flex items-center gap-1 rounded-full bg-brand-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+        <div className="absolute -top-2.5 left-4 inline-flex items-center gap-1 rounded-full bg-teal-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
           <Star className="h-3 w-3" />
           Recommended
         </div>
@@ -75,20 +75,20 @@ function StrategyCard({
 
       {/* Header */}
       <div className="mb-3">
-        <h4 className="text-sm font-semibold text-charcoal-900">
+        <h4 className="text-sm font-semibold text-white">
           {result.label}
         </h4>
-        <p className="mt-1 text-xs text-charcoal-500 leading-relaxed">
+        <p className="mt-1 text-xs text-white/50 leading-relaxed">
           {result.description}
         </p>
       </div>
 
       {/* Key metrics */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-md bg-limestone-50 p-3">
+        <div className="rounded-md bg-transparent p-3">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <DollarSign className="h-3 w-3 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <DollarSign className="h-3 w-3 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Est. Tax Cost
             </span>
           </div>
@@ -96,36 +96,36 @@ function StrategyCard({
             {fmtMoney(result.estimatedTaxCost as MoneyCents)}
           </p>
         </div>
-        <div className="rounded-md bg-limestone-50 p-3">
+        <div className="rounded-md bg-transparent p-3">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <CheckCircle2 className="h-3 w-3 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <CheckCircle2 className="h-3 w-3 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Alignment
             </span>
           </div>
-          <p className="text-sm font-bold tabular-nums text-charcoal-900">
+          <p className="text-sm font-bold tabular-nums text-white">
             {fmtPct(result.alignmentPct ?? 0)}
           </p>
         </div>
-        <div className="rounded-md bg-limestone-50 p-3">
+        <div className="rounded-md bg-transparent p-3">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <Clock className="h-3 w-3 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <Clock className="h-3 w-3 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Timeline
             </span>
           </div>
-          <p className="text-sm font-bold tabular-nums text-charcoal-900">
+          <p className="text-sm font-bold tabular-nums text-white">
             {result.timelineYears ?? 0} yr{(result.timelineYears ?? 0) !== 1 ? 's' : ''}
           </p>
         </div>
-        <div className="rounded-md bg-limestone-50 p-3">
+        <div className="rounded-md bg-transparent p-3">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <DollarSign className="h-3 w-3 text-charcoal-400" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <DollarSign className="h-3 w-3 text-white/30" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Net Proceeds
             </span>
           </div>
-          <p className="text-sm font-bold tabular-nums text-charcoal-900">
+          <p className="text-sm font-bold tabular-nums text-white">
             {fmtMoney((result.netProceeds ?? 0) as MoneyCents)}
           </p>
         </div>
@@ -142,7 +142,7 @@ function StrategyCard({
           </div>
           <ul className="space-y-1">
             {result.pros.map((pro, i) => (
-              <li key={i} className="text-xs text-charcoal-600 leading-relaxed">
+              <li key={i} className="text-xs text-white/50 leading-relaxed">
                 {pro}
               </li>
             ))}
@@ -157,7 +157,7 @@ function StrategyCard({
           </div>
           <ul className="space-y-1">
             {result.cons.map((con, i) => (
-              <li key={i} className="text-xs text-charcoal-600 leading-relaxed">
+              <li key={i} className="text-xs text-white/50 leading-relaxed">
                 {con}
               </li>
             ))}
@@ -176,31 +176,31 @@ export function TaxTransitionPanel({ analysis }: TaxTransitionPanelProps) {
   return (
     <div className="space-y-6">
       {/* Summary of unrealized gains/losses */}
-      <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-4">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-white mb-4">
           Unrealized Gains & Losses Summary
         </h3>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Market Value
             </span>
-            <p className="text-lg font-bold tabular-nums text-charcoal-900">
+            <p className="text-lg font-bold tabular-nums text-white">
               {fmtMoney((analysis.currentMarketValue ?? 0) as MoneyCents)}
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Cost Basis
             </span>
-            <p className="text-lg font-bold tabular-nums text-charcoal-900">
+            <p className="text-lg font-bold tabular-nums text-white">
               {fmtMoney((analysis.totalCostBasis ?? 0) as MoneyCents)}
             </p>
           </div>
           <div>
             <div className="flex items-center gap-1">
               <TrendingUp className="h-3 w-3 text-success-600" />
-              <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+              <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
                 Unrealized Gains
               </span>
             </div>
@@ -211,7 +211,7 @@ export function TaxTransitionPanel({ analysis }: TaxTransitionPanelProps) {
           <div>
             <div className="flex items-center gap-1">
               <TrendingDown className="h-3 w-3 text-critical-600" />
-              <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+              <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
                 Unrealized Losses
               </span>
             </div>
@@ -224,18 +224,18 @@ export function TaxTransitionPanel({ analysis }: TaxTransitionPanelProps) {
         {/* Short vs Long term gains */}
         <div className="mt-4 grid grid-cols-2 gap-4 border-t border-limestone-100 pt-4">
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Short-Term Gains
             </span>
-            <p className="text-sm font-semibold tabular-nums text-charcoal-900">
+            <p className="text-sm font-semibold tabular-nums text-white">
               {fmtMoney((analysis.shortTermGains ?? 0) as MoneyCents)}
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-charcoal-500">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
               Long-Term Gains
             </span>
-            <p className="text-sm font-semibold tabular-nums text-charcoal-900">
+            <p className="text-sm font-semibold tabular-nums text-white">
               {fmtMoney((analysis.longTermGains ?? 0) as MoneyCents)}
             </p>
           </div>
@@ -243,14 +243,14 @@ export function TaxTransitionPanel({ analysis }: TaxTransitionPanelProps) {
       </div>
 
       {/* Recommendation rationale */}
-      <div className="rounded-lg border border-brand-200 bg-brand-700/5 p-4">
+      <div className="rounded-lg border border-brand-200 bg-teal-500/5 p-4">
         <div className="flex items-start gap-2">
-          <Star className="mt-0.5 h-4 w-4 shrink-0 text-brand-700" />
+          <Star className="mt-0.5 h-4 w-4 shrink-0 text-teal-300" />
           <div>
-            <span className="text-xs font-semibold text-brand-700 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-teal-300 uppercase tracking-wide">
               Recommendation Rationale
             </span>
-            <p className="mt-1 text-sm text-charcoal-700 leading-relaxed">
+            <p className="mt-1 text-sm text-white/60 leading-relaxed">
               {analysis.recommendationRationale ?? analysis.recommendationReason ?? ''}
             </p>
           </div>
@@ -259,7 +259,7 @@ export function TaxTransitionPanel({ analysis }: TaxTransitionPanelProps) {
 
       {/* Strategy cards */}
       <div className="space-y-4">
-        <h3 className="text-sm font-semibold text-charcoal-900">
+        <h3 className="text-sm font-semibold text-white">
           Transition Strategies
         </h3>
         {analysis.strategies.map((strat) => (

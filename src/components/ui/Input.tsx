@@ -6,17 +6,18 @@ import { cn } from "@/lib/utils/cn";
 
 const inputVariants = tv({
   base: [
-    "w-full h-10 px-3.5 bg-white rounded-md text-sm text-charcoal-900",
+    "w-full h-10 px-3.5 rounded-md text-sm text-white",
+    "bg-white/[0.06]",
     "outline-hidden transition-all duration-150",
-    "border-[1.5px] border-limestone-200",
-    "placeholder:text-charcoal-300",
-    "hover:border-limestone-400",
-    "focus:border-brand-700 focus:shadow-[0_0_0_3px_rgba(59,90,105,0.15)]",
-    "disabled:bg-limestone-50 disabled:text-charcoal-300 disabled:cursor-not-allowed",
+    "border-[1.5px] border-white/[0.10]",
+    "placeholder:text-white/30",
+    "hover:border-white/20",
+    "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(29,118,130,0.25)]",
+    "disabled:bg-white/[0.03] disabled:text-white/20 disabled:cursor-not-allowed",
   ],
   variants: {
     hasError: {
-      true: "border-critical-500 focus:shadow-[0_0_0_3px_rgba(192,57,43,0.15)]",
+      true: "border-critical-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.25)]",
     },
   },
 });

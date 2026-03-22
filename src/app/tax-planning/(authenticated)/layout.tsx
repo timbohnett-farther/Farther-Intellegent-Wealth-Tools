@@ -143,8 +143,8 @@ export default function AuthenticatedLayout({
     return (
       <div className="flex min-h-screen items-center justify-center bg-canvas">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-700 border-t-transparent" />
-          <p className="text-sm text-charcoal-500">Loading...</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-500 border-t-transparent" />
+          <p className="text-sm text-white/50">Loading...</p>
         </div>
       </div>
     );
@@ -162,7 +162,7 @@ export default function AuthenticatedLayout({
           {/* Mobile sidebar overlay */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-charcoal-900/50 backdrop-blur-xs lg:hidden"
+              className="fixed inset-0 z-40 bg-[#1a1a1a]/50 backdrop-blur-xs lg:hidden"
               onClick={() => setSidebarOpen(false)}
               aria-hidden="true"
             />
@@ -170,13 +170,13 @@ export default function AuthenticatedLayout({
 
           {/* Sidebar */}
           <aside
-            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-charcoal-900 text-white transition-transform lg:translate-x-0 lg:static lg:z-auto ${
+            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-[#1a1a1a] text-white transition-transform lg:translate-x-0 lg:static lg:z-auto ${
               sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
           >
             {/* Logo area */}
-            <div className="flex h-16 items-center gap-3 border-b border-charcoal-800 px-5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-700">
+            <div className="flex h-16 items-center gap-3 border-b border-white/[0.06] px-5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500">
                 <svg
                   className="h-5 w-5 text-white"
                   viewBox="0 0 24 24"
@@ -194,7 +194,7 @@ export default function AuthenticatedLayout({
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">Farther</p>
-                <p className="text-[10px] uppercase tracking-wider text-charcoal-400">
+                <p className="text-[10px] uppercase tracking-wider text-white/30">
                   Tax Planning
                 </p>
               </div>
@@ -215,8 +215,8 @@ export default function AuthenticatedLayout({
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-brand-700/20 text-brand-300'
-                        : 'text-charcoal-300 hover:bg-charcoal-800 hover:text-white'
+                        ? 'bg-teal-500/20 text-teal-300'
+                        : 'text-white/30 hover:bg-[#1a1a1a] hover:text-white'
                     }`}
                   >
                     {item.icon}
@@ -228,9 +228,9 @@ export default function AuthenticatedLayout({
 
             {/* User section */}
             {user && (
-              <div className="border-t border-charcoal-800 px-4 py-4">
+              <div className="border-t border-white/[0.06] px-4 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-charcoal-700 text-sm font-semibold text-white">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2a2a2a] text-sm font-semibold text-white">
                     {user.first_name[0]}
                     {user.last_name[0]}
                   </div>
@@ -238,7 +238,7 @@ export default function AuthenticatedLayout({
                     <p className="truncate text-sm font-medium text-white">
                       {user.first_name} {user.last_name}
                     </p>
-                    <p className="truncate text-xs text-charcoal-400">
+                    <p className="truncate text-xs text-white/30">
                       {user.role}
                     </p>
                   </div>
@@ -246,7 +246,7 @@ export default function AuthenticatedLayout({
                 <button
                   type="button"
                   onClick={logout}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-charcoal-700 px-3 py-1.5 text-xs font-medium text-charcoal-300 transition-colors hover:bg-charcoal-800 hover:text-white"
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs font-medium text-white/30 transition-colors hover:bg-[#1a1a1a] hover:text-white"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -260,12 +260,12 @@ export default function AuthenticatedLayout({
           {/* Main content area */}
           <div className="flex flex-1 flex-col overflow-hidden">
             {/* Top bar */}
-            <header className="flex h-16 items-center gap-4 border-b border-limestone-200 bg-white px-4 lg:px-8">
+            <header className="flex h-16 items-center gap-4 border-b border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 lg:px-8">
               {/* Mobile menu button */}
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-lg p-2 text-charcoal-500 hover:bg-limestone-50 lg:hidden"
+                className="rounded-lg p-2 text-white/50 hover:bg-white/[0.04] lg:hidden"
                 aria-label="Open sidebar"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -278,18 +278,18 @@ export default function AuthenticatedLayout({
                 {breadcrumbs.map((crumb, index) => (
                   <React.Fragment key={crumb.href}>
                     {index > 0 && (
-                      <svg className="h-4 w-4 text-charcoal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                       </svg>
                     )}
                     {index === breadcrumbs.length - 1 ? (
-                      <span className="font-medium text-charcoal-900">
+                      <span className="font-medium text-white">
                         {crumb.label}
                       </span>
                     ) : (
                       <Link
                         href={crumb.href}
-                        className="text-charcoal-500 transition-colors hover:text-charcoal-700"
+                        className="text-white/50 transition-colors hover:text-white/60"
                       >
                         {crumb.label}
                       </Link>
@@ -304,8 +304,8 @@ export default function AuthenticatedLayout({
               {/* User badge in top bar */}
               {user && (
                 <div className="hidden items-center gap-2 sm:flex">
-                  <span className="text-xs text-charcoal-500">{user.email}</span>
-                  <span className="inline-flex items-center rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold text-brand-700">
+                  <span className="text-xs text-white/50">{user.email}</span>
+                  <span className="inline-flex items-center rounded-full bg-teal-500/15 px-2 py-0.5 text-[10px] font-semibold text-teal-300">
                     {user.role}
                   </span>
                 </div>

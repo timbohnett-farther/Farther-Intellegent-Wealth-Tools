@@ -81,21 +81,33 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen bg-white border-r border-limestone-200 flex flex-col transition-all duration-200 z-40',
+        'fixed left-0 top-0 h-screen flex flex-col transition-all duration-200 z-40',
         collapsed ? 'w-sidebar-collapsed' : 'w-sidebar'
       )}
+      style={{
+        background: 'rgba(42, 42, 42, 0.95)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderRight: '1px solid rgba(255, 255, 255, 0.06)',
+      }}
     >
-      {/* Sidebar Header — 64px, border-bottom limestone-200, logo FP in brand-700 */}
-      <div className="h-16 flex items-center gap-3 px-4 border-b border-limestone-200 flex-shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center flex-shrink-0">
+      {/* Sidebar Header */}
+      <div
+        className="h-16 flex items-center gap-3 px-4 flex-shrink-0"
+        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}
+      >
+        <div
+          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+          style={{ background: 'linear-gradient(135deg, #1d7682, #2a9aa8)' }}
+        >
           <span className="text-white font-bold text-sm">FP</span>
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-charcoal-900">
+            <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-white font-serif">
               Farther Prism
             </h1>
-            <p className="text-[10px] text-charcoal-300">Financial Planning</p>
+            <p className="text-[10px] text-white/30">Financial Planning</p>
           </div>
         )}
       </div>
@@ -107,12 +119,14 @@ export function Sidebar() {
             {/* Section label */}
             {section.label && !collapsed && (
               <div className="px-4 pt-4 pb-1.5">
-                <span className="text-[10px] font-semibold text-charcoal-300 uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">
                   {section.label}
                 </span>
               </div>
             )}
-            {section.label && collapsed && <div className="my-2 mx-3 border-t border-limestone-200" />}
+            {section.label && collapsed && (
+              <div className="my-2 mx-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }} />
+            )}
 
             {section.items.map((item) => {
               const isActive = pathname.startsWith(item.href);
@@ -131,16 +145,19 @@ export function Sidebar() {
                     className={cn(
                       'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors relative',
                       isActive
-                        ? 'bg-brand-50 text-brand-700 font-semibold border-l-[3px] border-brand-700 pl-[13px]'
-                        : 'text-charcoal-700 font-medium hover:bg-limestone-50 hover:text-charcoal-900'
+                        ? 'text-white font-semibold'
+                        : 'text-white/50 font-medium hover:text-white hover:bg-white/[0.04]'
                     )}
+                    style={isActive ? {
+                      background: 'linear-gradient(135deg, rgba(29, 118, 130, 0.25), rgba(29, 118, 130, 0.15))',
+                      borderLeft: '3px solid #1d7682',
+                      paddingLeft: '13px',
+                    } : undefined}
                   >
                     <span
                       className={cn(
                         'flex-shrink-0 transition-colors',
-                        isActive
-                          ? 'text-brand-700'
-                          : 'text-charcoal-500 group-hover:text-brand-700'
+                        isActive ? 'text-teal-300' : 'text-white/40'
                       )}
                     >
                       {item.icon}
@@ -157,7 +174,7 @@ export function Sidebar() {
                           <ChevronRight
                             size={14}
                             className={cn(
-                              'transition-transform text-charcoal-300',
+                              'transition-transform text-white/20',
                               isExpanded && 'rotate-90'
                             )}
                           />
@@ -176,8 +193,8 @@ export function Sidebar() {
                           className={cn(
                             'block px-3 py-1.5 text-xs rounded-md transition-colors',
                             pathname === child.href
-                              ? 'text-brand-700 bg-brand-50 font-semibold'
-                              : 'text-charcoal-500 hover:text-charcoal-900 hover:bg-limestone-50'
+                              ? 'text-teal-300 bg-teal-500/15 font-semibold'
+                              : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
                           )}
                         >
                           {child.label}
@@ -192,22 +209,28 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Sidebar Footer — border-top limestone-200, avatar 32px circle brand-100 bg */}
-      <div className="border-t border-limestone-200 px-3 py-3 flex-shrink-0">
+      {/* Sidebar Footer */}
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
         {!collapsed ? (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0">
-              <span className="text-brand-700 text-xs font-semibold">JD</span>
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(29, 118, 130, 0.20)' }}
+            >
+              <span className="text-teal-300 text-xs font-semibold">JD</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-charcoal-900 truncate">John Doe</p>
-              <p className="text-[10px] text-charcoal-500 truncate">Senior Advisor</p>
+              <p className="text-sm font-medium text-white truncate">John Doe</p>
+              <p className="text-[10px] text-white/40 truncate">Senior Advisor</p>
             </div>
           </div>
         ) : (
           <div className="flex justify-center">
-            <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
-              <span className="text-brand-700 text-xs font-semibold">JD</span>
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ background: 'rgba(29, 118, 130, 0.20)' }}
+            >
+              <span className="text-teal-300 text-xs font-semibold">JD</span>
             </div>
           </div>
         )}
@@ -216,7 +239,8 @@ export function Sidebar() {
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center py-3 border-t border-limestone-200 text-charcoal-300 hover:text-charcoal-700 transition-colors"
+        className="flex items-center justify-center py-3 text-white/20 hover:text-white/60 transition-colors"
+        style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}
       >
         {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>

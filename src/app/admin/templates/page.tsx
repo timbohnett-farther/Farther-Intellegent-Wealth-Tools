@@ -57,7 +57,7 @@ export default function TemplatesPage() {
               key={c.key}
               onClick={() => setActiveCategory(c.key)}
               className={`inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                activeCategory === c.key ? 'bg-brand-500 text-white' : 'bg-white text-charcoal-500 border border-limestone-200 hover:bg-limestone-50'
+                activeCategory === c.key ? 'bg-teal-500 text-white' : 'bg-white text-white/50 border border-white/[0.06] hover:bg-white/[0.04]'
               }`}
             >
               <Icon size={14} /> {c.label}
@@ -70,32 +70,32 @@ export default function TemplatesPage() {
       {activeCategory === 'assumptions' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-charcoal-500">Pre-configured assumption sets for new plans</p>
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100">
+            <p className="text-sm text-white/50">Pre-configured assumption sets for new plans</p>
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-teal-300 bg-teal-500/10 rounded-lg hover:bg-teal-500/15">
               <Plus size={14} /> New Template
             </button>
           </div>
           <div className="grid gap-4">
             {ASSUMPTION_TEMPLATES.map((t) => (
-              <div key={t.id} className={`bg-white rounded-xl border shadow-sm p-5 ${t.isDefault ? 'border-brand-300' : 'border-limestone-200'}`}>
+              <div key={t.id} className={`bg-white/[0.07] rounded-xl border shadow-sm p-5 ${t.isDefault ? 'border-teal-300' : 'border-white/[0.06]'}`}>
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-charcoal-900">{t.name}</h3>
-                      {t.isDefault && <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full">Default</span>}
+                      <h3 className="text-sm font-semibold text-white">{t.name}</h3>
+                      {t.isDefault && <span className="text-xs font-medium text-teal-300 bg-teal-500/10 px-2 py-0.5 rounded-full">Default</span>}
                     </div>
-                    <p className="text-xs text-charcoal-500 mt-0.5">{t.desc}</p>
+                    <p className="text-xs text-white/50 mt-0.5">{t.desc}</p>
                   </div>
                   <div className="flex items-center gap-1">
-                    <button className="p-1.5 text-charcoal-300 hover:text-charcoal-500 rounded"><Edit3 size={14} /></button>
-                    <button className="p-1.5 text-charcoal-300 hover:text-critical-500 rounded"><Trash2 size={14} /></button>
+                    <button className="p-1.5 text-white/30 hover:text-white/50 rounded"><Edit3 size={14} /></button>
+                    <button className="p-1.5 text-white/30 hover:text-critical-500 rounded"><Trash2 size={14} /></button>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 mt-3 pt-3 border-t border-limestone-100">
-                  <div><p className="text-xs text-charcoal-500">Equity Return</p><p className="text-sm font-medium text-charcoal-900">{t.equity}</p></div>
-                  <div><p className="text-xs text-charcoal-500">Bond Return</p><p className="text-sm font-medium text-charcoal-900">{t.bond}</p></div>
-                  <div><p className="text-xs text-charcoal-500">Inflation</p><p className="text-sm font-medium text-charcoal-900">{t.inflation}</p></div>
-                  <div><p className="text-xs text-charcoal-500">Monte Carlo</p><p className="text-sm font-medium text-charcoal-900">{t.mc}</p></div>
+                  <div><p className="text-xs text-white/50">Equity Return</p><p className="text-sm font-medium text-white">{t.equity}</p></div>
+                  <div><p className="text-xs text-white/50">Bond Return</p><p className="text-sm font-medium text-white">{t.bond}</p></div>
+                  <div><p className="text-xs text-white/50">Inflation</p><p className="text-sm font-medium text-white">{t.inflation}</p></div>
+                  <div><p className="text-xs text-white/50">Monte Carlo</p><p className="text-sm font-medium text-white">{t.mc}</p></div>
                 </div>
               </div>
             ))}
@@ -105,25 +105,25 @@ export default function TemplatesPage() {
 
       {/* Report Templates */}
       {activeCategory === 'reports' && (
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-limestone-100">
-            <h3 className="text-sm font-semibold text-charcoal-900">Report Templates</h3>
-            <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700"><Plus size={14} /> New Template</button>
+            <h3 className="text-sm font-semibold text-white">Report Templates</h3>
+            <button className="inline-flex items-center gap-1 text-sm font-medium text-teal-300 hover:text-teal-300"><Plus size={14} /> New Template</button>
           </div>
           <table className="w-full text-sm">
             <thead><tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Template</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Sections</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Est. Pages</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Last Used</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Template</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Sections</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Est. Pages</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Last Used</th>
             </tr></thead>
             <tbody>
               {REPORT_TEMPLATES.map((t) => (
-                <tr key={t.id} className="border-b border-limestone-50 hover:bg-limestone-50/50">
-                  <td className="px-5 py-3 font-medium text-charcoal-900">{t.name}</td>
-                  <td className="px-5 py-3 text-charcoal-500 text-right">{t.sections}</td>
-                  <td className="px-5 py-3 text-charcoal-500 text-right">{t.pages}</td>
-                  <td className="px-5 py-3 text-charcoal-500">{t.lastUsed}</td>
+                <tr key={t.id} className="border-b border-limestone-50 hover:bg-white/[0.04]/50">
+                  <td className="px-5 py-3 font-medium text-white">{t.name}</td>
+                  <td className="px-5 py-3 text-white/50 text-right">{t.sections}</td>
+                  <td className="px-5 py-3 text-white/50 text-right">{t.pages}</td>
+                  <td className="px-5 py-3 text-white/50">{t.lastUsed}</td>
                 </tr>
               ))}
             </tbody>
@@ -133,23 +133,23 @@ export default function TemplatesPage() {
 
       {/* Email Templates */}
       {activeCategory === 'emails' && (
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-limestone-100">
-            <h3 className="text-sm font-semibold text-charcoal-900">Email Templates</h3>
-            <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700"><Plus size={14} /> New Template</button>
+            <h3 className="text-sm font-semibold text-white">Email Templates</h3>
+            <button className="inline-flex items-center gap-1 text-sm font-medium text-teal-300 hover:text-teal-300"><Plus size={14} /> New Template</button>
           </div>
           <table className="w-full text-sm">
             <thead><tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Template</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Subject</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Times Used</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Template</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Subject</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Times Used</th>
             </tr></thead>
             <tbody>
               {EMAIL_TEMPLATES.map((t) => (
-                <tr key={t.id} className="border-b border-limestone-50 hover:bg-limestone-50/50">
-                  <td className="px-5 py-3 font-medium text-charcoal-900">{t.name}</td>
-                  <td className="px-5 py-3 text-charcoal-500">{t.subject}</td>
-                  <td className="px-5 py-3 text-charcoal-500 text-right">{t.usage}</td>
+                <tr key={t.id} className="border-b border-limestone-50 hover:bg-white/[0.04]/50">
+                  <td className="px-5 py-3 font-medium text-white">{t.name}</td>
+                  <td className="px-5 py-3 text-white/50">{t.subject}</td>
+                  <td className="px-5 py-3 text-white/50 text-right">{t.usage}</td>
                 </tr>
               ))}
             </tbody>
@@ -159,28 +159,28 @@ export default function TemplatesPage() {
 
       {/* Workflow Templates */}
       {activeCategory === 'workflows' && (
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-limestone-100">
-            <h3 className="text-sm font-semibold text-charcoal-900">Workflow Automation Templates</h3>
-            <button className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-700"><Plus size={14} /> New Workflow</button>
+            <h3 className="text-sm font-semibold text-white">Workflow Automation Templates</h3>
+            <button className="inline-flex items-center gap-1 text-sm font-medium text-teal-300 hover:text-teal-300"><Plus size={14} /> New Workflow</button>
           </div>
           <table className="w-full text-sm">
             <thead><tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Workflow</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Steps</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Trigger</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Executions</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Type</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Workflow</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Steps</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Trigger</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Executions</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Type</th>
             </tr></thead>
             <tbody>
               {WORKFLOW_TEMPLATES.map((t) => (
-                <tr key={t.id} className="border-b border-limestone-50 hover:bg-limestone-50/50">
-                  <td className="px-5 py-3 font-medium text-charcoal-900">{t.name}</td>
-                  <td className="px-5 py-3 text-charcoal-500 text-right">{t.steps}</td>
-                  <td className="px-5 py-3 text-charcoal-500">{t.trigger}</td>
-                  <td className="px-5 py-3 text-charcoal-500 text-right">{t.executions}</td>
+                <tr key={t.id} className="border-b border-limestone-50 hover:bg-white/[0.04]/50">
+                  <td className="px-5 py-3 font-medium text-white">{t.name}</td>
+                  <td className="px-5 py-3 text-white/50 text-right">{t.steps}</td>
+                  <td className="px-5 py-3 text-white/50">{t.trigger}</td>
+                  <td className="px-5 py-3 text-white/50 text-right">{t.executions}</td>
                   <td className="px-5 py-3">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${t.isSystem ? 'bg-brand-50 text-brand-700' : 'bg-limestone-100 text-charcoal-500'}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${t.isSystem ? 'bg-teal-500/10 text-teal-300' : 'bg-white/[0.06] text-white/50'}`}>
                       {t.isSystem ? 'System' : 'Custom'}
                     </span>
                   </td>

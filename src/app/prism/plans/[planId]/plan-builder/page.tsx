@@ -251,22 +251,22 @@ export default function PlanBuilderPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-120px)] bg-limestone-50">
+    <div className="flex h-[calc(100vh-120px)] bg-transparent">
       {/* Left Panel - Chat (70%) */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Chat Header */}
-        <div className="bg-white border-b px-6 py-3 flex items-center justify-between">
+        <div className="bg-white/[0.07] border-b px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-brand-100 flex items-center justify-center">
-              <MessageSquare size={18} className="text-brand-700" />
+            <div className="w-8 h-8 rounded-lg bg-teal-500/15 flex items-center justify-center">
+              <MessageSquare size={18} className="text-teal-300" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-charcoal-900">AI Plan Builder</h2>
-              <p className="text-xs text-charcoal-500">Conversational data intake</p>
+              <h2 className="text-sm font-semibold text-white">AI Plan Builder</h2>
+              <p className="text-xs text-white/50">Conversational data intake</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-charcoal-500">Plan: {planId?.slice(0, 8)}...</span>
+            <span className="text-xs text-white/50">Plan: {planId?.slice(0, 8)}...</span>
           </div>
         </div>
 
@@ -274,18 +274,18 @@ export default function PlanBuilderPage() {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {!sessionStarted ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
-              <div className="w-16 h-16 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
-                <Bot size={32} className="text-brand-700" />
+              <div className="w-16 h-16 rounded-2xl bg-teal-500/15 flex items-center justify-center mb-4">
+                <Bot size={32} className="text-teal-300" />
               </div>
-              <h3 className="text-lg font-semibold text-charcoal-900 mb-2">Plan Builder AI Assistant</h3>
-              <p className="text-sm text-charcoal-500 max-w-md mb-6">
+              <h3 className="text-lg font-semibold text-white mb-2">Plan Builder AI Assistant</h3>
+              <p className="text-sm text-white/50 max-w-md mb-6">
                 Start a conversational intake session to collect client data naturally.
                 The AI will guide you through each section and extract structured data
                 from your responses.
               </p>
               <button
                 onClick={startSession}
-                className="px-6 py-2.5 bg-brand-700 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors flex items-center gap-2"
+                className="px-6 py-2.5 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-500 transition-colors flex items-center gap-2"
               >
                 <Play size={16} />
                 Start Data Collection
@@ -297,7 +297,7 @@ export default function PlanBuilderPage() {
                 ].map((item, i) => (
                   <button
                     key={i}
-                    className="flex items-center gap-2 px-3 py-2 bg-white border border-limestone-200 rounded-lg text-xs text-charcoal-500 hover:bg-limestone-50 transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 bg-white/[0.07] border border-white/[0.06] rounded-lg text-xs text-white/50 hover:bg-white/[0.04] transition-colors"
                   >
                     {item.icon}
                     {item.text}
@@ -314,20 +314,20 @@ export default function PlanBuilderPage() {
                 >
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      msg.role === 'ai' ? 'bg-brand-100' : 'bg-limestone-200'
+                      msg.role === 'ai' ? 'bg-teal-500/15' : 'bg-white/[0.06]'
                     }`}
                   >
                     {msg.role === 'ai' ? (
-                      <Bot size={16} className="text-brand-700" />
+                      <Bot size={16} className="text-teal-300" />
                     ) : (
-                      <User size={16} className="text-charcoal-500" />
+                      <User size={16} className="text-white/50" />
                     )}
                   </div>
                   <div
                     className={`max-w-[70%] rounded-xl px-4 py-3 text-sm ${
                       msg.role === 'ai'
-                        ? 'bg-white border border-limestone-200 text-charcoal-900'
-                        : 'bg-brand-700 text-white'
+                        ? 'bg-white/[0.07] border border-white/[0.06] text-white'
+                        : 'bg-teal-500 text-white'
                     }`}
                   >
                     <div className="whitespace-pre-wrap">
@@ -355,7 +355,7 @@ export default function PlanBuilderPage() {
                   </button>
                   <button
                     onClick={() => setPendingConfirmation(null)}
-                    className="px-4 py-2 bg-white border border-limestone-200 text-charcoal-700 rounded-lg text-sm hover:bg-limestone-50 transition-colors flex items-center gap-1.5"
+                    className="px-4 py-2 bg-white/[0.07] border border-white/[0.06] text-white/60 rounded-lg text-sm hover:bg-white/[0.04] transition-colors flex items-center gap-1.5"
                   >
                     <X size={14} />
                     Edit
@@ -365,11 +365,11 @@ export default function PlanBuilderPage() {
 
               {isProcessing && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
-                    <Bot size={16} className="text-brand-700" />
+                  <div className="w-8 h-8 rounded-full bg-teal-500/15 flex items-center justify-center">
+                    <Bot size={16} className="text-teal-300" />
                   </div>
-                  <div className="bg-white border border-limestone-200 rounded-xl px-4 py-3">
-                    <Loader2 size={16} className="animate-spin text-charcoal-300" />
+                  <div className="bg-white/[0.07] border border-white/[0.06] rounded-xl px-4 py-3">
+                    <Loader2 size={16} className="animate-spin text-white/30" />
                   </div>
                 </div>
               )}
@@ -381,9 +381,9 @@ export default function PlanBuilderPage() {
 
         {/* Input Area */}
         {sessionStarted && (
-          <div className="bg-white border-t px-6 py-4">
+          <div className="bg-white/[0.07] border-t px-6 py-4">
             <div className="flex gap-3">
-              <button className="p-2.5 text-charcoal-300 hover:text-charcoal-500 border border-limestone-200 rounded-lg hover:bg-limestone-50 transition-colors">
+              <button className="p-2.5 text-white/30 hover:text-white/50 border border-white/[0.06] rounded-lg hover:bg-white/[0.04] transition-colors">
                 <Upload size={18} />
               </button>
               <div className="flex-1 relative">
@@ -397,14 +397,14 @@ export default function PlanBuilderPage() {
                       ? 'Press Enter to confirm, or type corrections...'
                       : 'Type your response...'
                   }
-                  className="w-full px-4 py-2.5 border border-limestone-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-700 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-white/[0.06] rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   disabled={isProcessing}
                 />
               </div>
               <button
                 onClick={pendingConfirmation ? confirmData : handleSend}
                 disabled={isProcessing || (!inputValue.trim() && !pendingConfirmation)}
-                className="p-2.5 bg-brand-700 text-white rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2.5 bg-teal-500 text-white rounded-lg hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send size={18} />
               </button>
@@ -414,17 +414,17 @@ export default function PlanBuilderPage() {
       </div>
 
       {/* Right Panel - Completion Tracker (30%) */}
-      <div className="w-80 bg-white border-l flex flex-col">
+      <div className="w-80 bg-white/[0.07] backdrop-blur-xl border-l flex flex-col">
         <div className="px-5 py-4 border-b">
-          <h3 className="text-sm font-semibold text-charcoal-900">Plan Completion</h3>
+          <h3 className="text-sm font-semibold text-white">Plan Completion</h3>
           <div className="mt-3">
-            <div className="flex items-center justify-between text-xs text-charcoal-500 mb-1">
+            <div className="flex items-center justify-between text-xs text-white/50 mb-1">
               <span>Overall Progress</span>
-              <span className="font-medium text-charcoal-900">{completionScore}%</span>
+              <span className="font-medium text-white">{completionScore}%</span>
             </div>
-            <div className="w-full h-2.5 bg-limestone-100 rounded-full overflow-hidden">
+            <div className="w-full h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
               <div
-                className="h-full bg-brand-700 rounded-full transition-all duration-500"
+                className="h-full bg-teal-500 rounded-full transition-all duration-500"
                 style={{ width: `${completionScore}%` }}
               />
             </div>
@@ -457,7 +457,7 @@ export default function PlanBuilderPage() {
                   }
                 }}
                 className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${
-                  isActive ? 'bg-brand-50 border-r-2 border-brand-700' : 'hover:bg-limestone-50'
+                  isActive ? 'bg-teal-500/10 border-r-2 border-teal-500' : 'hover:bg-white/[0.04]'
                 }`}
               >
                 <div
@@ -465,8 +465,8 @@ export default function PlanBuilderPage() {
                     isComplete
                       ? 'bg-success-100 text-success-500'
                       : isActive
-                      ? 'bg-brand-100 text-brand-700'
-                      : 'bg-limestone-100 text-charcoal-300'
+                      ? 'bg-teal-500/15 text-teal-300'
+                      : 'bg-white/[0.06] text-white/30'
                   }`}
                 >
                   {isComplete ? <CheckCircle2 size={14} /> : section.icon}
@@ -475,25 +475,25 @@ export default function PlanBuilderPage() {
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-xs font-medium ${
-                        isActive ? 'text-brand-700' : 'text-charcoal-700'
+                        isActive ? 'text-teal-300' : 'text-white/60'
                       }`}
                     >
                       {section.label}
                     </span>
-                    <span className="text-[10px] text-charcoal-300">
+                    <span className="text-[10px] text-white/30">
                       {section.completedFields}/{section.totalFields}
                     </span>
                   </div>
-                  <div className="w-full h-1 bg-limestone-100 rounded-full mt-1.5 overflow-hidden">
+                  <div className="w-full h-1 bg-white/[0.06] rounded-full mt-1.5 overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-300 ${
-                        isComplete ? 'bg-success-500' : 'bg-brand-700'
+                        isComplete ? 'bg-success-500' : 'bg-teal-500'
                       }`}
                       style={{ width: `${pct}%` }}
                     />
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-charcoal-300 flex-shrink-0" />
+                <ChevronRight size={14} className="text-white/30 flex-shrink-0" />
               </button>
             );
           })}
@@ -501,10 +501,10 @@ export default function PlanBuilderPage() {
 
         {/* Document Upload Section */}
         <div className="border-t px-5 py-4">
-          <h4 className="text-xs font-semibold text-charcoal-700 mb-2">Quick Upload</h4>
-          <div className="border-2 border-dashed border-limestone-200 rounded-lg p-4 text-center hover:border-brand-300 transition-colors cursor-pointer">
-            <Upload size={20} className="mx-auto text-charcoal-300 mb-1" />
-            <p className="text-xs text-charcoal-500">
+          <h4 className="text-xs font-semibold text-white/60 mb-2">Quick Upload</h4>
+          <div className="border-2 border-dashed border-white/[0.06] rounded-lg p-4 text-center hover:border-teal-300 transition-colors cursor-pointer">
+            <Upload size={20} className="mx-auto text-white/30 mb-1" />
+            <p className="text-xs text-white/50">
               Drop SSA statement, tax return, or investment statement
             </p>
           </div>

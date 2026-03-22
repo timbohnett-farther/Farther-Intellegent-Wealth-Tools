@@ -50,24 +50,24 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
           className={cn(
-            'flex items-center gap-2 rounded-lg border border-limestone-200 bg-limestone-50 px-3',
-            'transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100'
+            'flex items-center gap-2 rounded-lg border border-white/[0.06] bg-transparent px-3',
+            'transition-colors focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-100'
           )}
         >
-          <Search className="h-4 w-4 shrink-0 text-charcoal-500" aria-hidden="true" />
+          <Search className="h-4 w-4 shrink-0 text-white/50" aria-hidden="true" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search households..."
-            className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-hidden placeholder:text-charcoal-300 sm:w-64"
+            className="w-full bg-transparent py-2 text-sm text-white outline-hidden placeholder:text-white/30 sm:w-64"
           />
         </div>
 
         <button
           type="button"
           onClick={onCreateNew}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 active:bg-brand-800"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 active:bg-teal-600"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           New Household
@@ -75,17 +75,17 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-limestone-200 bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-limestone-200 bg-limestone-50">
-              <th className="whitespace-nowrap px-4 py-3 font-medium text-charcoal-700">
+            <tr className="border-b border-white/[0.06] bg-transparent">
+              <th className="whitespace-nowrap px-4 py-3 font-medium text-white/60">
                 Name
               </th>
-              <th className="whitespace-nowrap px-4 py-3 font-medium text-charcoal-700">
+              <th className="whitespace-nowrap px-4 py-3 font-medium text-white/60">
                 State
               </th>
-              <th className="whitespace-nowrap px-4 py-3 font-medium text-charcoal-700">
+              <th className="whitespace-nowrap px-4 py-3 font-medium text-white/60">
                 Last Updated
               </th>
               <th className="w-10 px-4 py-3" aria-label="Actions" />
@@ -96,7 +96,7 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
               <tr>
                 <td
                   colSpan={4}
-                  className="px-4 py-12 text-center text-charcoal-500"
+                  className="px-4 py-12 text-center text-white/50"
                 >
                   {households.length === 0
                     ? 'No households yet. Click "New Household" to get started.'
@@ -108,7 +108,7 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
                 <tr
                   key={household.household_id}
                   onClick={() => onSelect(household.household_id)}
-                  className="cursor-pointer border-b border-limestone-100 transition-colors last:border-b-0 hover:bg-limestone-50"
+                  className="cursor-pointer border-b border-limestone-100 transition-colors last:border-b-0 hover:bg-white/[0.04]"
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
@@ -118,21 +118,21 @@ export const HouseholdTable: React.FC<HouseholdTableProps> = ({
                     }
                   }}
                 >
-                  <td className="px-4 py-3 font-medium text-charcoal-900">
+                  <td className="px-4 py-3 font-medium text-white">
                     {household.display_name}
                   </td>
                   <td className="px-4 py-3">
                     {household.primary_state ? (
                       <Badge variant="neutral">{household.primary_state}</Badge>
                     ) : (
-                      <span className="text-charcoal-300">&mdash;</span>
+                      <span className="text-white/30">&mdash;</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-charcoal-500">
+                  <td className="px-4 py-3 text-white/50">
                     {formatDate(household.updated_at)}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <ChevronRight className="inline-block h-4 w-4 text-charcoal-300" aria-hidden="true" />
+                    <ChevronRight className="inline-block h-4 w-4 text-white/30" aria-hidden="true" />
                   </td>
                 </tr>
               ))

@@ -62,11 +62,11 @@ export const ReturnsPanel: React.FC<ReturnsPanelProps> = ({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-charcoal-900">Tax Returns</h3>
+        <h3 className="text-sm font-semibold text-white">Tax Returns</h3>
         <button
           type="button"
           onClick={onUploadNew}
-          className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-brand-700 text-white text-sm font-medium hover:bg-brand-600 transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-teal-500 text-white text-sm font-medium hover:bg-teal-400 transition-colors shadow-sm"
         >
           <Upload className="h-4 w-4" />
           Upload New Return
@@ -74,10 +74,10 @@ export const ReturnsPanel: React.FC<ReturnsPanelProps> = ({
       </div>
 
       {sortedReturns.length === 0 ? (
-        <div className="rounded-lg border border-limestone-200 bg-white px-4 py-12 text-center shadow-sm">
-          <FileText className="mx-auto h-10 w-10 text-charcoal-300 mb-3" />
-          <p className="text-sm text-charcoal-700 font-medium">No tax returns yet</p>
-          <p className="mt-1 text-xs text-charcoal-500">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-12 text-center shadow-sm">
+          <FileText className="mx-auto h-10 w-10 text-white/30 mb-3" />
+          <p className="text-sm text-white/60 font-medium">No tax returns yet</p>
+          <p className="mt-1 text-xs text-white/50">
             Upload a return to start the analysis.
           </p>
         </div>
@@ -88,19 +88,19 @@ export const ReturnsPanel: React.FC<ReturnsPanelProps> = ({
               key={ret.return_id}
               type="button"
               onClick={() => onSelect(ret.return_id)}
-              className="w-full rounded-lg border border-limestone-200 bg-white p-4 shadow-sm hover:border-brand-300 hover:shadow transition-all text-left group"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm hover:border-teal-300 hover:shadow transition-all text-left group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-brand-50 flex-shrink-0">
-                    <span className="text-sm font-bold text-brand-700">
+                  <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-teal-500/10 flex-shrink-0">
+                    <span className="text-sm font-bold text-teal-300">
                       {String(ret.tax_year)}
                     </span>
                   </div>
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-sm font-medium text-charcoal-900">
+                      <span className="text-sm font-medium text-white">
                         Tax Year {String(ret.tax_year)}
                       </span>
                       <Badge variant={filingStatusBadgeVariant(ret.filing_status)}>
@@ -109,14 +109,14 @@ export const ReturnsPanel: React.FC<ReturnsPanelProps> = ({
                     </div>
 
                     {ret.agi_cents != null && (
-                      <p className="text-xs text-charcoal-500">
+                      <p className="text-xs text-white/50">
                         AGI: {formatCurrency(ret.agi_cents as number)}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <ChevronRight className="h-4 w-4 text-charcoal-300 group-hover:text-brand-700 transition-colors flex-shrink-0" />
+                <ChevronRight className="h-4 w-4 text-white/30 group-hover:text-teal-300 transition-colors flex-shrink-0" />
               </div>
             </button>
           ))}

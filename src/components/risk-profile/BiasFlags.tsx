@@ -17,10 +17,10 @@ const BIAS_ICONS: Record<string, string> = {
 };
 
 const SEVERITY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  low: { bg: 'bg-brand-50', text: 'text-brand-700', dot: 'bg-brand-400' },
+  low: { bg: 'bg-teal-500/10', text: 'text-teal-300', dot: 'bg-teal-400' },
   moderate: { bg: 'bg-warning-50', text: 'text-warning-700', dot: 'bg-warning-500' },
   high: { bg: 'bg-critical-50', text: 'text-critical-700', dot: 'bg-critical-500' },
-  info: { bg: 'bg-brand-50', text: 'text-brand-700', dot: 'bg-brand-400' },
+  info: { bg: 'bg-teal-500/10', text: 'text-teal-300', dot: 'bg-teal-400' },
   warning: { bg: 'bg-warning-50', text: 'text-warning-700', dot: 'bg-warning-500' },
   critical: { bg: 'bg-critical-50', text: 'text-critical-700', dot: 'bg-critical-500' },
 };
@@ -29,7 +29,7 @@ export default function BiasFlags({ biases, inconsistencies }: BiasFlagsProps) {
   if (biases.length === 0 && inconsistencies.length === 0) {
     return (
       <div className="card p-6">
-        <h4 className="text-sm font-semibold text-charcoal-700 mb-2">Behavioral Analysis</h4>
+        <h4 className="text-sm font-semibold text-white/60 mb-2">Behavioral Analysis</h4>
         <div className="p-4 bg-success-50 rounded-lg text-sm text-success-700 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           No significant behavioral biases or inconsistencies detected. Responses are internally consistent.
@@ -43,8 +43,8 @@ export default function BiasFlags({ biases, inconsistencies }: BiasFlagsProps) {
       {/* Detected Biases */}
       {biases.length > 0 && (
         <div className="card p-6">
-          <h4 className="text-sm font-semibold text-charcoal-700 mb-1">Detected Behavioral Biases</h4>
-          <p className="text-xs text-charcoal-300 mb-4">
+          <h4 className="text-sm font-semibold text-white/60 mb-1">Detected Behavioral Biases</h4>
+          <p className="text-xs text-white/30 mb-4">
             These patterns may affect investment decision-making. Use the talking points below during client discussions.
           </p>
 
@@ -65,7 +65,7 @@ export default function BiasFlags({ biases, inconsistencies }: BiasFlagsProps) {
                     </span>
                   </div>
                   <p className={`text-xs ${colors.text} mb-2`}>{bias.description}</p>
-                  <div className="text-xs text-charcoal-500 bg-white bg-opacity-60 rounded p-2">
+                  <div className="text-xs text-white/50 bg-white bg-opacity-60 rounded p-2">
                     <strong>Advisor talking point:</strong> {bias.advisorTalkingPoint}
                   </div>
                 </div>
@@ -78,8 +78,8 @@ export default function BiasFlags({ biases, inconsistencies }: BiasFlagsProps) {
       {/* Inconsistencies */}
       {inconsistencies.length > 0 && (
         <div className="card p-6">
-          <h4 className="text-sm font-semibold text-charcoal-700 mb-1">Profile Inconsistencies</h4>
-          <p className="text-xs text-charcoal-300 mb-4">
+          <h4 className="text-sm font-semibold text-white/60 mb-1">Profile Inconsistencies</h4>
+          <p className="text-xs text-white/30 mb-4">
             These flags indicate areas where the client's responses or financial situation may conflict. Address these in the advisory conversation.
           </p>
 
@@ -95,7 +95,7 @@ export default function BiasFlags({ biases, inconsistencies }: BiasFlagsProps) {
                     </span>
                   </div>
                   <p className={`text-xs ${colors.text} mb-1`}>{inc.description}</p>
-                  <p className="text-xs text-charcoal-500">{inc.recommendation}</p>
+                  <p className="text-xs text-white/50">{inc.recommendation}</p>
                 </div>
               );
             })}

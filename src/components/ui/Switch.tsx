@@ -35,7 +35,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
             "border-[1.5px] border-transparent transition-colors duration-200",
             "focus-visible:outline-hidden focus-visible:shadow-focus",
             "disabled:cursor-not-allowed",
-            checked ? "bg-brand-700" : "bg-charcoal-300"
+            checked ? "bg-teal-500" : "bg-white/20"
           )}
         >
           <span
@@ -47,7 +47,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           />
         </button>
         {label && (
-          <span className="text-sm text-charcoal-700">{label}</span>
+          <span className="text-sm text-white/60">{label}</span>
         )}
       </label>
     );

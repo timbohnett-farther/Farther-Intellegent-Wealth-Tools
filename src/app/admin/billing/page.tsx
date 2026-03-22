@@ -42,16 +42,16 @@ export default function BillingPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-6">
         {/* Current plan */}
-        <div className="bg-white rounded-xl border border-brand-200 shadow-sm p-5 col-span-2">
+        <div className="bg-white/[0.07] rounded-xl border border-brand-200 shadow-sm p-5 col-span-2">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-charcoal-900">{PLAN_INFO.tier} Plan</h3>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand-50 text-brand-700">Current</span>
+                <h3 className="text-lg font-bold text-white">{PLAN_INFO.tier} Plan</h3>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-500/10 text-teal-300">Current</span>
               </div>
-              <p className="text-sm text-charcoal-500 mt-0.5">{PLAN_INFO.price} &middot; {PLAN_INFO.billingCycle}</p>
+              <p className="text-sm text-white/50 mt-0.5">{PLAN_INFO.price} &middot; {PLAN_INFO.billingCycle}</p>
             </div>
-            <button className="px-4 py-2 text-sm font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100">Manage Plan</button>
+            <button className="px-4 py-2 text-sm font-medium text-teal-300 bg-teal-500/10 rounded-lg hover:bg-teal-500/15">Manage Plan</button>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
@@ -66,17 +66,17 @@ export default function BillingPage() {
               const Icon = u.icon;
               const pct = typeof u.limit === 'number' ? (u.used / u.limit) * 100 : 0;
               return (
-                <div key={u.label} className="p-3 rounded-lg bg-limestone-50">
+                <div key={u.label} className="p-3 rounded-lg bg-transparent">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-charcoal-500">{u.label}</span>
-                    <Icon size={12} className="text-charcoal-300" />
+                    <span className="text-xs font-medium text-white/50">{u.label}</span>
+                    <Icon size={12} className="text-white/30" />
                   </div>
-                  <p className="text-sm font-bold text-charcoal-900">
-                    {u.used.toLocaleString()} <span className="text-charcoal-300 font-normal">/ {typeof u.limit === 'number' ? u.limit.toLocaleString() : u.limit}</span>
+                  <p className="text-sm font-bold text-white">
+                    {u.used.toLocaleString()} <span className="text-white/30 font-normal">/ {typeof u.limit === 'number' ? u.limit.toLocaleString() : u.limit}</span>
                   </p>
                   {typeof u.limit === 'number' && (
-                    <div className="w-full h-1.5 bg-limestone-200 rounded-full mt-1.5">
-                      <div className={`h-full rounded-full ${pct > 90 ? 'bg-critical-500' : pct > 70 ? 'bg-warning-500' : 'bg-brand-500'}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+                    <div className="w-full h-1.5 bg-white/[0.06] rounded-full mt-1.5">
+                      <div className={`h-full rounded-full ${pct > 90 ? 'bg-critical-500' : pct > 70 ? 'bg-warning-500' : 'bg-teal-500'}`} style={{ width: `${Math.min(pct, 100)}%` }} />
                     </div>
                   )}
                 </div>
@@ -86,11 +86,11 @@ export default function BillingPage() {
         </div>
 
         {/* Features */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Included Features</h3>
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-white mb-3">Included Features</h3>
           <ul className="space-y-2">
             {FEATURES.map((f) => (
-              <li key={f} className="flex items-center gap-2 text-sm text-charcoal-500">
+              <li key={f} className="flex items-center gap-2 text-sm text-white/50">
                 <CheckCircle2 size={14} className="text-success-500 flex-shrink-0" /> {f}
               </li>
             ))}
@@ -99,25 +99,25 @@ export default function BillingPage() {
       </div>
 
       {/* Billing history */}
-      <div className="bg-white rounded-xl border border-limestone-200 shadow-sm">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
         <div className="px-5 py-4 border-b border-limestone-100">
-          <h3 className="text-sm font-semibold text-charcoal-900">Billing History</h3>
+          <h3 className="text-sm font-semibold text-white">Billing History</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Date</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Invoice</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase text-right">Amount</th>
-              <th className="px-5 py-3 text-xs font-medium text-charcoal-500 uppercase">Status</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Date</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Invoice</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Amount</th>
+              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Status</th>
             </tr>
           </thead>
           <tbody>
             {BILLING_HISTORY.map((b) => (
-              <tr key={b.invoice} className="border-b border-limestone-50 hover:bg-limestone-50/50">
-                <td className="px-5 py-3 text-charcoal-500">{b.date}</td>
-                <td className="px-5 py-3 text-brand-600 font-medium">{b.invoice}</td>
-                <td className="px-5 py-3 text-charcoal-900 text-right font-medium">{b.amount}</td>
+              <tr key={b.invoice} className="border-b border-limestone-50 hover:bg-white/[0.04]/50">
+                <td className="px-5 py-3 text-white/50">{b.date}</td>
+                <td className="px-5 py-3 text-teal-300 font-medium">{b.invoice}</td>
+                <td className="px-5 py-3 text-white text-right font-medium">{b.amount}</td>
                 <td className="px-5 py-3">
                   <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-success-50 text-success-700">
                     <CheckCircle2 size={10} /> Paid
@@ -129,7 +129,7 @@ export default function BillingPage() {
         </table>
       </div>
 
-      <p className="text-xs text-charcoal-300 text-center">Next billing date: {PLAN_INFO.nextBilling} &middot; Contact support@farther.com for billing inquiries</p>
+      <p className="text-xs text-white/30 text-center">Next billing date: {PLAN_INFO.nextBilling} &middot; Contact support@farther.com for billing inquiries</p>
     </div>
   );
 }

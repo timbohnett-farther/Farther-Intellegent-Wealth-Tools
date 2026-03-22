@@ -81,13 +81,13 @@ export default function IntegrationsPage() {
       {/* Summary */}
       <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Total Integrations', value: INTEGRATIONS.length, color: 'text-charcoal-900' },
+          { label: 'Total Integrations', value: INTEGRATIONS.length, color: 'text-white' },
           { label: 'Connected', value: connectedCount, color: 'text-success-500' },
           { label: 'Errors', value: errorCount, color: 'text-critical-500' },
-          { label: 'Disconnected', value: INTEGRATIONS.length - connectedCount - errorCount, color: 'text-charcoal-300' },
+          { label: 'Disconnected', value: INTEGRATIONS.length - connectedCount - errorCount, color: 'text-white/30' },
         ].map((k) => (
-          <div key={k.label} className="bg-white rounded-xl border border-limestone-200 shadow-sm p-4">
-            <p className="text-xs font-medium text-charcoal-500 mb-1">{k.label}</p>
+          <div key={k.label} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4">
+            <p className="text-xs font-medium text-white/50 mb-1">{k.label}</p>
             <p className={`text-2xl font-bold ${k.color}`}>{k.value}</p>
           </div>
         ))}
@@ -100,7 +100,7 @@ export default function IntegrationsPage() {
             key={c}
             onClick={() => setFilter(c)}
             className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              filter === c ? 'bg-brand-500 text-white' : 'bg-white text-charcoal-500 border border-limestone-200 hover:bg-limestone-50'
+              filter === c ? 'bg-teal-500 text-white' : 'bg-white text-white/50 border border-white/[0.06] hover:bg-white/[0.04]'
             }`}
           >
             {c === 'all' ? 'All' : CATEGORY_LABELS[c] || c}
@@ -111,28 +111,28 @@ export default function IntegrationsPage() {
       {/* Integration cards */}
       <div className="grid grid-cols-2 gap-4">
         {filtered.map((int) => (
-          <div key={int.id} className={`bg-white rounded-xl border shadow-sm p-5 ${
-            int.status === 'error' ? 'border-critical-100' : int.status === 'connected' ? 'border-limestone-200' : 'border-limestone-100'
+          <div key={int.id} className={`bg-white/[0.07] rounded-xl border shadow-sm p-5 ${
+            int.status === 'error' ? 'border-critical-100' : int.status === 'connected' ? 'border-white/[0.06]' : 'border-limestone-100'
           }`}>
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                   int.status === 'connected' ? 'bg-success-50 text-success-500' :
                   int.status === 'error' ? 'bg-critical-50 text-critical-500' :
-                  'bg-limestone-50 text-charcoal-300'
+                  'bg-transparent text-white/30'
                 }`}>
                   {int.status === 'connected' ? <Wifi size={20} /> : int.status === 'error' ? <WifiOff size={20} /> : <Plug size={20} />}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-charcoal-900">{int.name}</h3>
-                  <span className="text-xs text-charcoal-500">{CATEGORY_LABELS[int.category]}</span>
+                  <h3 className="text-sm font-semibold text-white">{int.name}</h3>
+                  <span className="text-xs text-white/50">{CATEGORY_LABELS[int.category]}</span>
                 </div>
               </div>
               <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${
                 int.status === 'connected' ? 'bg-success-50 text-success-700' :
                 int.status === 'error' ? 'bg-critical-50 text-critical-700' :
-                int.status === 'syncing' ? 'bg-brand-50 text-brand-700' :
-                'bg-limestone-100 text-charcoal-500'
+                int.status === 'syncing' ? 'bg-teal-500/10 text-teal-300' :
+                'bg-white/[0.06] text-white/50'
               }`}>
                 {int.status === 'connected' && <CheckCircle2 size={10} />}
                 {int.status === 'error' && <AlertTriangle size={10} />}
@@ -141,9 +141,9 @@ export default function IntegrationsPage() {
               </span>
             </div>
 
-            <p className="text-sm text-charcoal-500 mb-3">{int.description}</p>
+            <p className="text-sm text-white/50 mb-3">{int.description}</p>
 
-            <div className="flex items-center gap-4 text-xs text-charcoal-500">
+            <div className="flex items-center gap-4 text-xs text-white/50">
               {int.lastSync && (
                 <span className="flex items-center gap-1"><Clock size={11} /> {int.lastSync}</span>
               )}
@@ -161,12 +161,12 @@ export default function IntegrationsPage() {
 
             <div className="flex items-center gap-2 mt-3 pt-3 border-t border-limestone-100">
               {int.status === 'connected' && (
-                <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+                <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
                   <RefreshCw size={11} /> Sync Now
                 </button>
               )}
               {int.status === 'disconnected' && (
-                <button className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
+                <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
                   <Plug size={11} /> Connect
                 </button>
               )}
@@ -175,7 +175,7 @@ export default function IntegrationsPage() {
                   <RefreshCw size={11} /> Retry
                 </button>
               )}
-              <button className="inline-flex items-center gap-1 text-xs font-medium text-charcoal-500 hover:text-charcoal-700 ml-auto">
+              <button className="inline-flex items-center gap-1 text-xs font-medium text-white/50 hover:text-white/60 ml-auto">
                 <Settings size={11} /> Configure
               </button>
             </div>

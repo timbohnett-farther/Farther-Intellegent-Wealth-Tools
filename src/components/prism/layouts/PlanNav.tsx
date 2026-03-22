@@ -39,16 +39,24 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
   const basePath = `/prism/plans/${planId}`;
 
   return (
-    <div className="bg-white border-b-2 border-limestone-200 sticky top-16 z-20">
+    <div
+      className="sticky top-16 z-20"
+      style={{
+        background: 'rgba(255, 255, 255, 0.03)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '2px solid rgba(255, 255, 255, 0.06)',
+      }}
+    >
       {/* Plan header */}
       <div className="px-7 pt-3 pb-2 flex items-center gap-2 text-sm">
-        <Link href="/prism/clients" className="text-charcoal-500 hover:text-brand-700 transition-colors">
+        <Link href="/prism/clients" className="text-white/50 hover:text-teal-300 transition-colors">
           Clients
         </Link>
-        <span className="text-charcoal-300">/</span>
-        <span className="font-semibold text-charcoal-900">{clientName}</span>
-        <span className="text-charcoal-300">&mdash;</span>
-        <span className="text-charcoal-500">{planName}</span>
+        <span className="text-white/20">/</span>
+        <span className="font-semibold text-white">{clientName}</span>
+        <span className="text-white/20">&mdash;</span>
+        <span className="text-white/50">{planName}</span>
       </div>
 
       {/* Tab navigation */}
@@ -67,8 +75,8 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
                 className={cn(
                   'px-5 py-3.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
                   isActive
-                    ? 'border-brand-700 text-brand-700 font-bold'
-                    : 'border-transparent text-charcoal-500 hover:text-charcoal-900 hover:border-limestone-300'
+                    ? 'border-teal-500 text-teal-300 font-bold'
+                    : 'border-transparent text-white/50 hover:text-white hover:border-white/20'
                 )}
               >
                 {tab.label}

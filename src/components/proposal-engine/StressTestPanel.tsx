@@ -51,40 +51,40 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
 
   if (results.length === 0) {
     return (
-      <div className="rounded-lg border border-limestone-200 bg-white p-6 text-center shadow-sm">
-        <TrendingDown className="mx-auto h-8 w-8 text-charcoal-300 mb-2" />
-        <p className="text-sm text-charcoal-500">No stress test results available.</p>
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 text-center shadow-sm">
+        <TrendingDown className="mx-auto h-8 w-8 text-white/30 mb-2" />
+        <p className="text-sm text-white/50">No stress test results available.</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-charcoal-900">
+      <h3 className="text-sm font-semibold text-white">
         Stress Test Scenarios ({results.length})
       </h3>
 
       {/* Table view */}
-      <div className="overflow-x-auto rounded-lg border border-limestone-200 shadow-sm">
+      <div className="overflow-x-auto rounded-lg border border-white/[0.06] shadow-sm">
         <table className="w-full text-sm">
-          <thead className="border-b border-limestone-200 bg-limestone-50">
+          <thead className="border-b border-white/[0.06] bg-transparent">
             <tr>
-              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
                 Scenario
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Portfolio Return
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Benchmark
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Max Drawdown
               </th>
-              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-charcoal-500">
+              <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
                 Recovery
               </th>
-              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-charcoal-500 w-40">
+              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-white/50 w-40">
                 Return Visual
               </th>
             </tr>
@@ -94,7 +94,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
               const barWidth = (Math.abs(result.portfolioReturn) / maxAbsReturn) * 100;
 
               return (
-                <tr key={result.scenario} className="hover:bg-limestone-50 transition-colors">
+                <tr key={result.scenario} className="hover:bg-white/[0.04] transition-colors">
                   {/* Scenario */}
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -105,10 +105,10 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
                             ? 'text-critical-500'
                             : result.portfolioReturn < -0.1
                               ? 'text-warning-500'
-                              : 'text-charcoal-300',
+                              : 'text-white/30',
                         )}
                       />
-                      <span className="font-medium text-charcoal-900">
+                      <span className="font-medium text-white">
                         {result.scenarioLabel}
                       </span>
                     </div>
@@ -141,7 +141,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
 
                   {/* Recovery Months */}
                   <td className="px-4 py-3 text-right">
-                    <div className="inline-flex items-center gap-1 text-charcoal-600">
+                    <div className="inline-flex items-center gap-1 text-white/50">
                       <Clock className="h-3 w-3" />
                       <span className="tabular-nums text-xs">
                         {result.recoveryMonths} mo
@@ -152,7 +152,7 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
                   {/* Visual bar */}
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="relative h-4 flex-1 rounded-full bg-limestone-100 overflow-hidden">
+                      <div className="relative h-4 flex-1 rounded-full bg-white/[0.06] overflow-hidden">
                         <div
                           className={cn(
                             'absolute top-0 h-full rounded-full transition-all duration-500',

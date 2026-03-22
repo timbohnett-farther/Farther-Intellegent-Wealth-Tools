@@ -37,7 +37,7 @@ const SEGMENTS: Segment[] = [
   {
     key: 'equity',
     label: 'Equity',
-    color: 'bg-brand-700',
+    color: 'bg-teal-500',
     textColor: 'text-white',
   },
   {
@@ -56,7 +56,7 @@ const SEGMENTS: Segment[] = [
     key: 'cash',
     label: 'Cash',
     color: 'bg-limestone-400',
-    textColor: 'text-charcoal-900',
+    textColor: 'text-white',
   },
 ];
 
@@ -120,8 +120,8 @@ export function AllocationBar({
 
         {/* Empty state */}
         {activeSegments.length === 0 && (
-          <div className="flex h-full w-full items-center justify-center bg-limestone-100">
-            <span className="text-xs text-charcoal-300">No allocation</span>
+          <div className="flex h-full w-full items-center justify-center bg-white/[0.06]">
+            <span className="text-xs text-white/30">No allocation</span>
           </div>
         )}
       </div>
@@ -139,10 +139,10 @@ export function AllocationBar({
                   className={cn('inline-block h-2.5 w-2.5 rounded-sm', seg.color)}
                   aria-hidden="true"
                 />
-                <span className="text-xs text-charcoal-700">
+                <span className="text-xs text-white/60">
                   {seg.label}
                 </span>
-                <span className="text-xs font-medium tabular-nums text-charcoal-500">
+                <span className="text-xs font-medium tabular-nums text-white/50">
                   {pct.toFixed(1)}%
                 </span>
               </div>

@@ -298,8 +298,8 @@ export function GoalForm({
 
       {/* ── Retirement-Specific Fields ── */}
       {isRetirementGoal(goalType) && (
-        <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-          <h4 className="text-sm font-medium text-charcoal-700">Retirement Details</h4>
+        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-white/60">Retirement Details</h4>
 
           <div className="grid grid-cols-2 gap-4">
             <FormField label="Retirement Age (Client)" error={errors.retirementAgeClient?.message}>
@@ -360,8 +360,8 @@ export function GoalForm({
 
       {/* ── Education-Specific Fields ── */}
       {isEducationGoal(goalType) && (
-        <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-          <h4 className="text-sm font-medium text-charcoal-700">Education Details</h4>
+        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-white/60">Education Details</h4>
 
           <FormField label="School Type" error={errors.educationSchoolType?.message}>
             <Controller
@@ -425,8 +425,8 @@ export function GoalForm({
 
       {/* ── Legacy-Specific Fields ── */}
       {isLegacyGoal(goalType) && (
-        <div className="rounded-lg border border-limestone-200 bg-limestone-50 p-4 space-y-4">
-          <h4 className="text-sm font-medium text-charcoal-700">Legacy Details</h4>
+        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-white/60">Legacy Details</h4>
 
           <FormField label="Legacy Amount" error={errors.legacyAmount?.message}>
             <Controller
@@ -456,12 +456,12 @@ export function GoalForm({
           {...register('notes')}
           rows={3}
           placeholder="Additional notes..."
-          className="w-full rounded-lg border border-limestone-300 bg-white px-3 py-2 text-sm text-charcoal-900 placeholder:text-charcoal-300 focus:border-brand-500 focus:outline-hidden focus:ring-2 focus:ring-brand-100"
+          className="w-full rounded-lg border border-white/[0.10] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-teal-500 focus:outline-hidden focus:ring-2 focus:ring-teal-100"
         />
       </FormField>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 border-t border-limestone-200 pt-5">
+      <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] pt-5">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
             Cancel

@@ -57,8 +57,8 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
     <div className="w-full space-y-3">
       {/* Override cards */}
       {overrides.length === 0 ? (
-        <div className="rounded-lg border border-limestone-200 bg-white px-4 py-8 text-center">
-          <p className="text-sm text-charcoal-500">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-8 text-center">
+          <p className="text-sm text-white/50">
             No overrides configured. Add one to create a what-if scenario.
           </p>
         </div>
@@ -66,12 +66,12 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
         overrides.map((override) => (
           <div
             key={override.override_id}
-            className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm"
+            className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm"
           >
             <div className="flex items-start gap-4 flex-wrap">
               {/* Target line ref */}
               <div className="flex-1 min-w-[200px]">
-                <label className="block text-xs font-medium text-charcoal-500 mb-1">
+                <label className="block text-xs font-medium text-white/50 mb-1">
                   Target Line Reference
                 </label>
                 <input
@@ -81,13 +81,13 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                     handleLineRefChange(override.override_id, e.target.value)
                   }
                   placeholder="e.g., f1040:l1z:wages"
-                  className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white px-3 text-sm font-mono text-charcoal-900 placeholder:text-charcoal-300 focus:outline-hidden focus:border-brand-700 focus:shadow-focus transition-colors"
+                  className="h-9 w-full rounded-lg border-[1.5px] border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 text-sm font-mono text-white placeholder:text-white/30 focus:outline-hidden focus:border-teal-500 focus:shadow-focus transition-colors"
                 />
               </div>
 
               {/* Mode toggle */}
               <div className="flex-shrink-0">
-                <label className="block text-xs font-medium text-charcoal-500 mb-1">
+                <label className="block text-xs font-medium text-white/50 mb-1">
                   Mode
                 </label>
                 <button
@@ -98,7 +98,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                   className={cn(
                     'h-9 rounded-lg px-4 text-sm font-medium transition-colors border-[1.5px]',
                     override.mode === 'ABSOLUTE'
-                      ? 'border-brand-700 bg-brand-50 text-brand-700'
+                      ? 'border-teal-500 bg-teal-500/10 text-teal-300'
                       : 'border-info-500 bg-info-50 text-info-700'
                   )}
                 >
@@ -108,11 +108,11 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
 
               {/* Amount */}
               <div className="flex-shrink-0 w-40">
-                <label className="block text-xs font-medium text-charcoal-500 mb-1">
+                <label className="block text-xs font-medium text-white/50 mb-1">
                   Amount ($)
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-charcoal-400">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/30">
                     $
                   </span>
                   <input
@@ -122,7 +122,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                     onBlur={(e) =>
                       handleAmountChange(override.override_id, e.target.value)
                     }
-                    className="h-9 w-full rounded-lg border-[1.5px] border-limestone-200 bg-white pl-7 pr-3 text-sm text-right tabular-nums text-charcoal-900 focus:outline-hidden focus:border-brand-700 focus:shadow-focus transition-colors"
+                    className="h-9 w-full rounded-lg border-[1.5px] border-white/[0.06] bg-white pl-7 pr-3 text-sm text-right tabular-nums text-white focus:outline-hidden focus:border-teal-500 focus:shadow-focus transition-colors"
                   />
                 </div>
               </div>
@@ -132,7 +132,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
                 <button
                   type="button"
                   onClick={() => onRemove(override.override_id)}
-                  className="rounded p-2 text-charcoal-400 hover:bg-critical-100 hover:text-critical-600 transition-colors"
+                  className="rounded p-2 text-white/30 hover:bg-critical-100 hover:text-critical-600 transition-colors"
                   aria-label={`Remove override ${override.target_tax_line_ref}`}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -147,7 +147,7 @@ export const OverrideGrid: React.FC<OverrideGridProps> = ({
       <button
         type="button"
         onClick={onAdd}
-        className="inline-flex items-center gap-2 h-10 px-5 rounded-lg border-[1.5px] border-dashed border-limestone-300 bg-white text-sm font-medium text-charcoal-700 hover:border-brand-500 hover:text-brand-700 hover:bg-brand-50/30 transition-colors w-full justify-center"
+        className="inline-flex items-center gap-2 h-10 px-5 rounded-lg border-[1.5px] border-dashed border-white/[0.10] bg-white/[0.07] text-sm font-medium text-white/60 hover:border-brand-500 hover:text-teal-300 hover:bg-teal-500/10/30 transition-colors w-full justify-center"
       >
         <Plus className="h-4 w-4" />
         Add Override

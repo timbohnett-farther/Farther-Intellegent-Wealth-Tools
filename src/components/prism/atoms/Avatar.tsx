@@ -35,7 +35,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   return (
     <AvatarPrimitive.Root
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand-100',
+        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-teal-500/15',
         sizeStyles[size],
         className,
       )}
@@ -47,7 +47,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       />
       <AvatarPrimitive.Fallback
         delayMs={src ? 300 : 0}
-        className="flex h-full w-full items-center justify-center bg-brand-100 font-medium text-brand-700"
+        className="flex h-full w-full items-center justify-center bg-teal-500/15 font-medium text-teal-300"
       >
         {initials || alt?.charAt(0)?.toUpperCase() || '?'}
       </AvatarPrimitive.Fallback>

@@ -46,7 +46,7 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
     <div className="mb-3">
       <label className="label" title={tooltip}>{label}</label>
       <div className="relative">
-        <span className="absolute left-3 top-2 text-charcoal-300 text-sm">$</span>
+        <span className="absolute left-3 top-2 text-white/30 text-sm">$</span>
         <input
           type="text"
           className="input-field pl-7"
@@ -85,7 +85,7 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
   return (
     <div className="space-y-4">
       <div className="card p-4">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-3 uppercase tracking-wider">Portfolio & Loan</h3>
+        <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">Portfolio & Loan</h3>
 
         <CurrencyInput
           label="Portfolio Value"
@@ -125,7 +125,7 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
       </div>
 
       <div className="card p-4">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-3 uppercase tracking-wider">Tax Information</h3>
+        <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">Tax Information</h3>
 
         <div className="mb-3">
           <label className="label">Filing Status</label>
@@ -168,13 +168,13 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
       </div>
 
       <div className="card p-4">
-        <h3 className="text-sm font-semibold text-charcoal-900 mb-3 uppercase tracking-wider">Rates</h3>
+        <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">Rates</h3>
 
         <PercentInput label="Box Spread Implied Rate" value={inputs.loan.boxRate} path="loan.boxRate" min={2} max={8} step={0.05} />
         <PercentInput label="Manager/Platform Fee" value={inputs.loan.managerFee} path="loan.managerFee" min={0} max={1.5} step={0.05} />
 
-        <div className="border-t border-limestone-200 mt-3 pt-3">
-          <p className="text-xs text-charcoal-500 mb-2 uppercase tracking-wider">Comparison Rates</p>
+        <div className="border-t border-white/[0.06] mt-3 pt-3">
+          <p className="text-xs text-white/50 mb-2 uppercase tracking-wider">Comparison Rates</p>
           <PercentInput label="Margin Loan Rate" value={inputs.comparison.marginRate} path="comparison.marginRate" min={3} max={15} step={0.1} />
           <PercentInput label="SBLOC Rate" value={inputs.comparison.sblocRate} path="comparison.sblocRate" min={2} max={12} step={0.1} />
           <PercentInput label="HELOC Rate" value={inputs.comparison.helocRate} path="comparison.helocRate" min={3} max={15} step={0.1} />
@@ -183,7 +183,7 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
 
       <div className="card p-4">
         <button
-          className="flex items-center justify-between w-full text-sm font-semibold text-charcoal-900 uppercase tracking-wider"
+          className="flex items-center justify-between w-full text-sm font-semibold text-white uppercase tracking-wider"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
           <span>Advanced Settings</span>
@@ -203,8 +203,8 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
                     key={mt}
                     className={`flex-1 py-1.5 px-3 text-xs rounded-lg border transition-colors ${
                       inputs.loan.marginType === mt
-                        ? 'bg-brand-50 border-brand-700 text-brand-700'
-                        : 'border-limestone-300 text-charcoal-500 hover:bg-limestone-50'
+                        ? 'bg-teal-500/10 border-teal-500 text-teal-300'
+                        : 'border-white/[0.10] text-white/50 hover:bg-white/[0.04]'
                     }`}
                     onClick={() => update('loan.marginType', mt)}
                   >
@@ -230,7 +230,7 @@ export default function InputPanel({ inputs, onChange }: InputPanelProps) {
         )}
       </div>
 
-      <div className="text-[10px] text-charcoal-300 leading-tight px-1">
+      <div className="text-[10px] text-white/30 leading-tight px-1">
         This tool is for educational and illustrative purposes only and does not constitute investment, tax, or legal advice.
       </div>
     </div>

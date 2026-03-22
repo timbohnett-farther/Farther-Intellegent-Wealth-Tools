@@ -27,7 +27,7 @@ const TOOLS: ToolCard[] = [
         <path d="M2 12l10 5 10-5" />
       </svg>
     ),
-    color: 'from-brand-700 to-brand-900',
+    color: 'from-teal-500 to-teal-800',
     tags: ['Financial Planning', 'Tax', 'Retirement', 'Estate', 'Goals'],
   },
   {
@@ -106,24 +106,24 @@ const TOOLS: ToolCard[] = [
         <path d="m19 9-5 5-4-4-3 3" />
       </svg>
     ),
-    color: 'from-brand-500 to-brand-700',
+    color: 'from-teal-500 to-brand-700',
     tags: ['Margin', 'Risk', 'Optimization'],
   },
 ];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-limestone-50">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-white border-b border-limestone-200">
+      <header className="bg-white/[0.07]/[0.03] border-b border-white/[0.06] backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-brand-700 to-brand-900 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-teal-500 to-teal-800 flex items-center justify-center">
               <span className="text-white font-bold text-lg">F</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-charcoal-900 tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
-              <p className="text-xs text-charcoal-500">Investment Lending Tools</p>
+              <h1 className="text-xl font-bold text-white tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
+              <p className="text-xs text-white/50">Investment Lending Tools</p>
             </div>
           </div>
         </div>
@@ -135,10 +135,10 @@ export default function HomePage() {
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl">
             Intelligent tools for modern wealth management
           </h2>
-          <p className="mt-4 text-lg text-brand-300 max-w-xl leading-relaxed">
+          <p className="mt-4 text-lg text-teal-300 max-w-xl leading-relaxed">
             Empower your client conversations with institutional-grade calculators, comparison engines, and risk analytics — built for advisors who serve UHNW and HNW families.
           </p>
-          <div className="mt-6 flex items-center gap-4 text-sm text-brand-400">
+          <div className="mt-6 flex items-center gap-4 text-sm text-teal-300">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-success-500"></span>
               {TOOLS.filter(t => t.status === 'live').length} tool{TOOLS.filter(t => t.status === 'live').length !== 1 ? 's' : ''} live
@@ -153,7 +153,7 @@ export default function HomePage() {
 
       {/* Tools Grid */}
       <section className="max-w-6xl mx-auto px-6 py-12">
-        <h3 className="text-sm font-semibold text-charcoal-500 uppercase tracking-wider mb-6">Available Tools</h3>
+        <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-6">Available Tools</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {TOOLS.map((tool) => {
             const isLive = tool.status === 'live';
@@ -173,7 +173,7 @@ export default function HomePage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-charcoal-900 group-hover:text-brand-700 transition-colors">
+                      <h4 className="font-semibold text-white group-hover:text-teal-300 transition-colors">
                         {tool.title}
                       </h4>
                       {isLive ? (
@@ -181,19 +181,19 @@ export default function HomePage() {
                           LIVE
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-charcoal-50 text-charcoal-500">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/[0.04] text-white/50">
                           COMING SOON
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-charcoal-500 leading-relaxed">{tool.description}</p>
+                    <p className="text-sm text-white/50 leading-relaxed">{tool.description}</p>
 
                     {/* Tags */}
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {tool.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-block px-2 py-0.5 rounded-md bg-limestone-100 text-[11px] font-medium text-charcoal-500"
+                          className="inline-block px-2 py-0.5 rounded-md bg-white/[0.06] text-[11px] font-medium text-white/50"
                         >
                           {tag}
                         </span>
@@ -202,7 +202,7 @@ export default function HomePage() {
 
                     {/* CTA */}
                     {isLive && (
-                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-brand-700 group-hover:text-brand-700">
+                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-teal-300 group-hover:text-teal-300">
                         Open tool
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                       </div>
@@ -225,8 +225,8 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-limestone-200 bg-white mt-8">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-charcoal-300">
+      <footer className="border-t border-white/[0.06] bg-white/[0.07] backdrop-blur-xl mt-8">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
           <p>Farther Intelligent Wealth Advisor Platform. For authorized advisor use only.</p>
           <p>Tools are for educational and illustrative purposes and do not constitute investment advice.</p>
         </div>

@@ -16,23 +16,23 @@ function TableSkeleton() {
   return (
     <div className="w-full animate-pulse">
       <div className="mb-4 flex items-center justify-between">
-        <div className="h-10 w-64 rounded-lg bg-limestone-200" />
-        <div className="h-10 w-40 rounded-lg bg-limestone-200" />
+        <div className="h-10 w-64 rounded-lg bg-white/[0.06]" />
+        <div className="h-10 w-40 rounded-lg bg-white/[0.06]" />
       </div>
-      <div className="overflow-hidden rounded-lg border border-limestone-200 bg-white shadow-sm">
-        <div className="border-b border-limestone-200 bg-limestone-50 px-4 py-3">
+      <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm">
+        <div className="border-b border-white/[0.06] bg-transparent px-4 py-3">
           <div className="flex gap-8">
-            <div className="h-4 w-24 rounded bg-limestone-200" />
-            <div className="h-4 w-16 rounded bg-limestone-200" />
-            <div className="h-4 w-28 rounded bg-limestone-200" />
+            <div className="h-4 w-24 rounded bg-white/[0.06]" />
+            <div className="h-4 w-16 rounded bg-white/[0.06]" />
+            <div className="h-4 w-28 rounded bg-white/[0.06]" />
           </div>
         </div>
         {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="border-b border-limestone-100 px-4 py-4 last:border-b-0">
             <div className="flex items-center gap-8">
-              <div className="h-4 w-40 rounded bg-limestone-200" />
-              <div className="h-4 w-10 rounded bg-limestone-200" />
-              <div className="h-4 w-24 rounded bg-limestone-200" />
+              <div className="h-4 w-40 rounded bg-white/[0.06]" />
+              <div className="h-4 w-10 rounded bg-white/[0.06]" />
+              <div className="h-4 w-24 rounded bg-white/[0.06]" />
             </div>
           </div>
         ))}
@@ -139,15 +139,15 @@ export default function HouseholdsPage() {
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Households</h1>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <h1 className="text-2xl font-bold text-white">Households</h1>
+          <p className="mt-1 text-sm text-white/50">
             Manage tax planning households and their associated returns.
           </p>
         </div>
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600 active:bg-brand-800"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 active:bg-teal-600"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -157,8 +157,8 @@ export default function HouseholdsPage() {
       </div>
 
       {/* Search */}
-      <div className="flex items-center gap-2 rounded-lg border border-limestone-200 bg-limestone-50 px-3 transition-colors focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100 sm:max-w-sm">
-        <svg className="h-4 w-4 shrink-0 text-charcoal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-transparent px-3 transition-colors focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-100 sm:max-w-sm">
+        <svg className="h-4 w-4 shrink-0 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
         <input
@@ -166,7 +166,7 @@ export default function HouseholdsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search households..."
-          className="w-full bg-transparent py-2 text-sm text-charcoal-900 outline-hidden placeholder:text-charcoal-300"
+          className="w-full bg-transparent py-2 text-sm text-white outline-hidden placeholder:text-white/30"
         />
       </div>
 
@@ -182,24 +182,24 @@ export default function HouseholdsPage() {
           <button
             type="button"
             onClick={fetchHouseholds}
-            className="mt-3 text-sm font-medium text-brand-700 hover:text-brand-600"
+            className="mt-3 text-sm font-medium text-teal-300 hover:text-teal-300"
           >
             Try again
           </button>
         </div>
       ) : filteredHouseholds.length === 0 && households.length === 0 ? (
-        <div className="rounded-lg border border-limestone-200 bg-white p-12 text-center shadow-sm">
-          <svg className="mx-auto h-12 w-12 text-charcoal-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-12 text-center shadow-sm">
+          <svg className="mx-auto h-12 w-12 text-white/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
           </svg>
-          <p className="text-lg font-medium text-charcoal-900">No households found</p>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <p className="text-lg font-medium text-white">No households found</p>
+          <p className="mt-1 text-sm text-white/50">
             Get started by creating your first household.
           </p>
           <button
             type="button"
             onClick={() => setModalOpen(true)}
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-600"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

@@ -91,8 +91,8 @@ export function PercentInput({
         'flex items-center rounded-input border bg-white transition-colors',
         error
           ? 'border-critical-500 focus-within:ring-2 focus-within:ring-critical-100'
-          : 'border-limestone-200 focus-within:border-brand-700 focus-within:ring-2 focus-within:ring-brand-100',
-        disabled && 'cursor-not-allowed bg-limestone-50 opacity-60',
+          : 'border-white/[0.06] focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-100',
+        disabled && 'cursor-not-allowed bg-transparent opacity-60',
         className,
       )}
     >
@@ -106,13 +106,13 @@ export function PercentInput({
         placeholder={placeholder}
         disabled={disabled}
         className={cn(
-          'w-full bg-transparent py-2 pl-3 pr-1 text-sm font-mono text-charcoal-900 outline-hidden',
-          'tabular-nums placeholder:text-charcoal-300',
+          'w-full bg-transparent py-2 pl-3 pr-1 text-sm font-mono text-white outline-hidden',
+          'tabular-nums placeholder:text-white/30',
           disabled && 'cursor-not-allowed',
         )}
         aria-invalid={error || undefined}
       />
-      <span className="select-none pr-3 text-sm text-charcoal-500">%</span>
+      <span className="select-none pr-3 text-sm text-white/50">%</span>
     </div>
   );
 }

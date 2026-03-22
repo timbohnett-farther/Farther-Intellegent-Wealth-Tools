@@ -206,7 +206,7 @@ function getPipelineStageColor(status: PipelineStageStatus): string {
     case 'passed': return 'bg-success-500';
     case 'failed': return 'bg-critical-500';
     case 'running': return 'bg-info-500 animate-pulse';
-    case 'pending': return 'bg-limestone-300';
+    case 'pending': return 'bg-white/[0.10]';
   }
 }
 
@@ -216,12 +216,12 @@ function getPipelineStageColor(status: PipelineStageStatus): string {
 
 function HeroSkeleton() {
   return (
-    <div className="rounded-xl border border-limestone-200 bg-white p-8 shadow-sm animate-pulse">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm animate-pulse">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-5 w-52 rounded bg-limestone-200" />
-        <div className="h-32 w-32 rounded-full bg-limestone-200" />
-        <div className="h-6 w-24 rounded-full bg-limestone-200" />
-        <div className="h-3 w-36 rounded bg-limestone-200" />
+        <div className="h-5 w-52 rounded bg-white/[0.06]" />
+        <div className="h-32 w-32 rounded-full bg-white/[0.06]" />
+        <div className="h-6 w-24 rounded-full bg-white/[0.06]" />
+        <div className="h-3 w-36 rounded bg-white/[0.06]" />
       </div>
     </div>
   );
@@ -229,10 +229,10 @@ function HeroSkeleton() {
 
 function CardSkeleton() {
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm animate-pulse">
-      <div className="h-3 w-24 rounded bg-limestone-200 mb-3" />
-      <div className="h-8 w-28 rounded bg-limestone-200 mb-2" />
-      <div className="h-2 w-full rounded bg-limestone-200" />
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm animate-pulse">
+      <div className="h-3 w-24 rounded bg-white/[0.06] mb-3" />
+      <div className="h-8 w-28 rounded bg-white/[0.06] mb-2" />
+      <div className="h-2 w-full rounded bg-white/[0.06]" />
     </div>
   );
 }
@@ -242,10 +242,10 @@ function TableSkeleton() {
     <div className="space-y-3 animate-pulse">
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 py-3 border-b border-limestone-100">
-          <div className="h-5 w-16 rounded-full bg-limestone-200" />
-          <div className="h-4 w-24 rounded bg-limestone-200" />
-          <div className="h-4 flex-1 rounded bg-limestone-200" />
-          <div className="h-4 w-20 rounded bg-limestone-200" />
+          <div className="h-5 w-16 rounded-full bg-white/[0.06]" />
+          <div className="h-4 w-24 rounded bg-white/[0.06]" />
+          <div className="h-4 flex-1 rounded bg-white/[0.06]" />
+          <div className="h-4 w-20 rounded bg-white/[0.06]" />
         </div>
       ))}
     </div>
@@ -263,9 +263,9 @@ function CircularScore({ score }: { score: number }) {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
   const strokeColor =
-    status === 'healthy' ? '#2E8B57' :
-    status === 'degraded' ? '#D4860B' :
-    '#C0392B';
+    status === 'healthy' ? '#22c55e' :
+    status === 'degraded' ? '#f59e0b' :
+    '#ef4444';
 
   return (
     <div className="relative inline-flex items-center justify-center">
@@ -273,7 +273,7 @@ function CircularScore({ score }: { score: number }) {
         <circle
           cx="64" cy="64" r={radius}
           fill="none"
-          stroke="#E4DDD4"
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth="10"
         />
         <circle
@@ -288,8 +288,8 @@ function CircularScore({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-4xl font-bold text-charcoal-900">{score}</span>
-        <span className="text-xs font-medium text-charcoal-500">/ 100</span>
+        <span className="text-4xl font-bold text-white">{score}</span>
+        <span className="text-xs font-medium text-white/50">/ 100</span>
       </div>
     </div>
   );
@@ -307,7 +307,7 @@ function Sparkline({ data, width = 56, height = 20 }: { data: number[]; width?: 
   }).join(' ');
 
   const lastScore = data[data.length - 1];
-  const color = lastScore >= 90 ? '#2E8B57' : lastScore >= 70 ? '#D4860B' : '#C0392B';
+  const color = lastScore >= 90 ? '#22c55e' : lastScore >= 70 ? '#f59e0b' : '#ef4444';
 
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
@@ -328,19 +328,19 @@ function TestSuiteCard({ suite }: { suite: TestSuiteResult }) {
   const barColor = getPassRateColor(suite.passed, suite.total);
 
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-charcoal-500 mb-1">{suite.label}</p>
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <p className="text-sm font-medium text-white/50 mb-1">{suite.label}</p>
       <div className="flex items-baseline gap-1.5 mb-3">
-        <span className="text-2xl font-bold text-charcoal-900">{suite.passed}</span>
-        <span className="text-sm text-charcoal-400">/ {suite.total}</span>
+        <span className="text-2xl font-bold text-white">{suite.passed}</span>
+        <span className="text-sm text-white/30">/ {suite.total}</span>
       </div>
-      <div className="w-full h-1.5 rounded-full bg-limestone-100 overflow-hidden">
+      <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${barColor}`}
           style={{ width: `${rate}%` }}
         />
       </div>
-      <p className="text-xs text-charcoal-400 mt-1.5">{rate.toFixed(1)}% pass rate</p>
+      <p className="text-xs text-white/30 mt-1.5">{rate.toFixed(1)}% pass rate</p>
     </div>
   );
 }
@@ -350,17 +350,17 @@ function CoverageCard({ metric }: { metric: CoverageMetric }) {
   const barColor = pct >= 90 ? 'bg-success-500' : pct >= 80 ? 'bg-warning-500' : 'bg-critical-500';
 
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-1">
-        <p className="text-sm font-medium text-charcoal-500">{metric.label}</p>
+        <p className="text-sm font-medium text-white/50">{metric.label}</p>
         {metric.requiredLabel && (
           <span className="text-[10px] font-semibold uppercase tracking-wide text-success-700 bg-success-50 px-2 py-0.5 rounded-full">
             {metric.requiredLabel}
           </span>
         )}
       </div>
-      <p className="text-2xl font-bold text-charcoal-900 mb-3">{metric.value.toFixed(1)}%</p>
-      <div className="w-full h-1.5 rounded-full bg-limestone-100 overflow-hidden">
+      <p className="text-2xl font-bold text-white mb-3">{metric.value.toFixed(1)}%</p>
+      <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${barColor}`}
           style={{ width: `${pct}%` }}
@@ -376,19 +376,19 @@ function ModuleCard({ module }: { module: ModuleHealth }) {
   const scoreColor = getScoreColor(module.score);
 
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className={`h-2 w-2 rounded-full ${dotColor}`} />
-          <p className="text-sm font-semibold text-charcoal-900">{module.name}</p>
+          <p className="text-sm font-semibold text-white">{module.name}</p>
         </div>
         <Sparkline data={module.trend} />
       </div>
       <div className="flex items-baseline gap-1">
         <span className={`text-xl font-bold ${scoreColor}`}>{module.score}</span>
-        <span className="text-xs text-charcoal-400">/ 100</span>
+        <span className="text-xs text-white/30">/ 100</span>
       </div>
-      <p className="text-xs text-charcoal-400 mt-0.5 capitalize">
+      <p className="text-xs text-white/30 mt-0.5 capitalize">
         {getStatusStyles(status).label}
       </p>
     </div>
@@ -465,8 +465,8 @@ export default function SentinelDashboardPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Quality Dashboard</h1>
-          <p className="mt-1 text-sm text-charcoal-500">FP-Sentinel — System Quality & Health Monitor</p>
+          <h1 className="text-2xl font-bold text-white">Quality Dashboard</h1>
+          <p className="mt-1 text-sm text-white/50">FP-Sentinel — System Quality & Health Monitor</p>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
           <p className="text-sm font-medium text-critical-700 mb-3">{error}</p>
@@ -492,15 +492,15 @@ export default function SentinelDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Quality Dashboard</h1>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <h1 className="text-2xl font-bold text-white">Quality Dashboard</h1>
+          <p className="mt-1 text-sm text-white/50">
             FP-Sentinel — System Quality & Health Monitor
           </p>
         </div>
         <button
           onClick={fetchData}
           disabled={loading}
-          className="rounded-lg border border-limestone-200 bg-white px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors disabled:opacity-50"
+          className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-2 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors disabled:opacity-50"
         >
           {loading ? 'Refreshing...' : 'Refresh'}
         </button>
@@ -510,16 +510,16 @@ export default function SentinelDashboardPage() {
       {loading ? (
         <HeroSkeleton />
       ) : data ? (
-        <div className="rounded-xl border border-limestone-200 bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm">
           <div className="flex flex-col items-center gap-3">
-            <h2 className="text-sm font-semibold tracking-wide uppercase text-charcoal-500">
+            <h2 className="text-sm font-semibold tracking-wide uppercase text-white/50">
               System Health Score
             </h2>
             <CircularScore score={data.overallScore} />
             <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${overallStyles.badge}`}>
               {overallStyles.label}
             </span>
-            <p className="text-xs text-charcoal-400">
+            <p className="text-xs text-white/30">
               Last updated: {new Date(data.lastUpdated).toLocaleString()}
             </p>
           </div>
@@ -528,7 +528,7 @@ export default function SentinelDashboardPage() {
 
       {/* 2. Test Suite Status Cards */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">Test Suites</h3>
+        <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">Test Suites</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
@@ -540,7 +540,7 @@ export default function SentinelDashboardPage() {
 
       {/* 3. Coverage Metrics */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">Coverage Metrics</h3>
+        <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">Coverage Metrics</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {loading
             ? Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} />)
@@ -552,7 +552,7 @@ export default function SentinelDashboardPage() {
 
       {/* 4. Module Health Grid */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">Module Health</h3>
+        <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">Module Health</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {loading
             ? Array.from({ length: 12 }).map((_, i) => <CardSkeleton key={i} />)
@@ -564,27 +564,27 @@ export default function SentinelDashboardPage() {
 
       {/* 5. Design Compliance */}
       {loading ? (
-        <div className="rounded-xl border border-limestone-200 bg-white p-6 shadow-sm animate-pulse">
-          <div className="h-5 w-40 rounded bg-limestone-200 mb-4" />
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm animate-pulse">
+          <div className="h-5 w-40 rounded bg-white/[0.06] mb-4" />
           <div className="space-y-3">
-            <div className="h-4 w-full rounded bg-limestone-200" />
-            <div className="h-4 w-3/4 rounded bg-limestone-200" />
+            <div className="h-4 w-full rounded bg-white/[0.06]" />
+            <div className="h-4 w-3/4 rounded bg-white/[0.06]" />
           </div>
         </div>
       ) : data ? (
-        <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-limestone-100">
-            <h3 className="text-base font-semibold text-charcoal-900">Design Compliance</h3>
+            <h3 className="text-base font-semibold text-white">Design Compliance</h3>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-xs text-charcoal-400">Violations</p>
+                <p className="text-xs text-white/30">Violations</p>
                 <p className={`text-lg font-bold ${data.designCompliance.violations === 0 ? 'text-success-700' : 'text-warning-700'}`}>
                   {data.designCompliance.violations}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-charcoal-400">Design Score</p>
-                <p className="text-lg font-bold text-charcoal-900">{data.designCompliance.score}</p>
+                <p className="text-xs text-white/30">Design Score</p>
+                <p className="text-lg font-bold text-white">{data.designCompliance.score}</p>
               </div>
             </div>
           </div>
@@ -595,52 +595,52 @@ export default function SentinelDashboardPage() {
                   <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${getSeverityStyles(v.severity)}`}>
                     {v.severity}
                   </span>
-                  <span className="text-sm font-medium text-charcoal-900">{v.component}</span>
-                  <span className="text-sm text-charcoal-600 flex-1">{v.rule}</span>
+                  <span className="text-sm font-medium text-white">{v.component}</span>
+                  <span className="text-sm text-white/50 flex-1">{v.rule}</span>
                 </div>
               ))}
             </div>
           ) : (
             <div className="px-6 py-8 text-center">
-              <p className="text-sm text-charcoal-500">No design violations detected.</p>
+              <p className="text-sm text-white/50">No design violations detected.</p>
             </div>
           )}
         </div>
       ) : null}
 
       {/* 6. Recent Alerts Table */}
-      <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-limestone-100">
-          <h3 className="text-base font-semibold text-charcoal-900">Recent Alerts</h3>
+          <h3 className="text-base font-semibold text-white">Recent Alerts</h3>
         </div>
         <div className="overflow-x-auto">
           {loading ? (
             <div className="p-6"><TableSkeleton /></div>
           ) : sortedAlerts.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-sm text-charcoal-500">No recent alerts.</p>
+              <p className="text-sm text-white/50">No recent alerts.</p>
             </div>
           ) : (
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-limestone-100 bg-limestone-50/50">
+                <tr className="border-b border-limestone-100 bg-transparent/50">
                   <th
-                    className="px-6 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none"
+                    className="px-6 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none"
                     onClick={() => toggleAlertSort('severity')}
                   >
                     Severity{sortIcon('severity')}
                   </th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none"
                     onClick={() => toggleAlertSort('module')}
                   >
                     Module{sortIcon('module')}
                   </th>
-                  <th className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400">
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-white/30">
                     Message
                   </th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 text-right cursor-pointer select-none"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 text-right cursor-pointer select-none"
                     onClick={() => toggleAlertSort('time')}
                   >
                     Time{sortIcon('time')}
@@ -649,15 +649,15 @@ export default function SentinelDashboardPage() {
               </thead>
               <tbody className="divide-y divide-limestone-100">
                 {sortedAlerts.map((alert) => (
-                  <tr key={alert.id} className="hover:bg-limestone-50/50 transition-colors">
+                  <tr key={alert.id} className="hover:bg-white/[0.04]/50 transition-colors">
                     <td className="px-6 py-3">
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getSeverityStyles(alert.severity)}`}>
                         {alert.severity}
                       </span>
                     </td>
-                    <td className="px-3 py-3 font-medium text-charcoal-900">{alert.module}</td>
-                    <td className="px-3 py-3 text-charcoal-600">{alert.message}</td>
-                    <td className="px-3 py-3 text-right text-charcoal-400">{alert.time}</td>
+                    <td className="px-3 py-3 font-medium text-white">{alert.module}</td>
+                    <td className="px-3 py-3 text-white/50">{alert.message}</td>
+                    <td className="px-3 py-3 text-right text-white/30">{alert.time}</td>
                   </tr>
                 ))}
               </tbody>
@@ -668,15 +668,15 @@ export default function SentinelDashboardPage() {
 
       {/* 7. CI/CD Pipeline Status */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">CI/CD Pipelines</h3>
+        <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">CI/CD Pipelines</h3>
         {loading ? (
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm animate-pulse">
-                <div className="h-4 w-48 rounded bg-limestone-200 mb-3" />
+              <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm animate-pulse">
+                <div className="h-4 w-48 rounded bg-white/[0.06] mb-3" />
                 <div className="flex gap-2">
                   {Array.from({ length: 6 }).map((_, j) => (
-                    <div key={j} className="h-3 w-20 rounded bg-limestone-200" />
+                    <div key={j} className="h-3 w-20 rounded bg-white/[0.06]" />
                   ))}
                 </div>
               </div>
@@ -685,7 +685,7 @@ export default function SentinelDashboardPage() {
         ) : (
           <div className="space-y-4">
             {data?.pipelines.map((pipeline) => (
-              <div key={pipeline.id} className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
+              <div key={pipeline.id} className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
                 {/* Pipeline header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -698,10 +698,10 @@ export default function SentinelDashboardPage() {
                     >
                       {pipeline.status === 'passed' ? 'Passed' : 'Failed'}
                     </span>
-                    <span className="text-sm font-semibold text-charcoal-900">{pipeline.branch}</span>
-                    <span className="text-xs font-mono text-charcoal-400">{pipeline.commit}</span>
+                    <span className="text-sm font-semibold text-white">{pipeline.branch}</span>
+                    <span className="text-xs font-mono text-white/30">{pipeline.commit}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-charcoal-400">
+                  <div className="flex items-center gap-3 text-xs text-white/30">
                     <span>{pipeline.duration}</span>
                     <span>{pipeline.time}</span>
                   </div>
@@ -713,12 +713,12 @@ export default function SentinelDashboardPage() {
                     <React.Fragment key={stage.name}>
                       <div className="flex flex-col items-center gap-1 flex-1">
                         <div className={`h-2 w-full rounded-full ${getPipelineStageColor(stage.status)}`} />
-                        <span className="text-[10px] text-charcoal-400 text-center leading-tight">
+                        <span className="text-[10px] text-white/30 text-center leading-tight">
                           {stage.name}
                         </span>
                       </div>
                       {idx < pipeline.stages.length - 1 && (
-                        <svg className="h-3 w-3 text-charcoal-300 flex-shrink-0 mt-[-10px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="h-3 w-3 text-white/30 flex-shrink-0 mt-[-10px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                       )}

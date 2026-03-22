@@ -27,22 +27,22 @@ export default function QuestionCard({
       {/* Question header */}
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
-          <span className="inline-block px-2 py-0.5 rounded-md bg-brand-50 text-[11px] font-semibold text-brand-700 uppercase tracking-wide">
+          <span className="inline-block px-2 py-0.5 rounded-md bg-teal-500/10 text-[11px] font-semibold text-teal-300 uppercase tracking-wide">
             {categoryLabel}
           </span>
           {axisLabel && (
-            <span className="inline-block px-2 py-0.5 rounded-md bg-limestone-100 text-[10px] font-medium text-charcoal-500">
+            <span className="inline-block px-2 py-0.5 rounded-md bg-white/[0.06] text-[10px] font-medium text-white/50">
               {axisLabel}
             </span>
           )}
         </div>
-        <span className="text-xs text-charcoal-300">
+        <span className="text-xs text-white/30">
           {questionNumber} of {totalQuestions}
         </span>
       </div>
 
       {/* Question text */}
-      <h3 className="text-lg font-semibold text-charcoal-900 mt-3 mb-6 leading-relaxed">
+      <h3 className="text-lg font-semibold text-white mt-3 mb-6 leading-relaxed">
         {question.questionText}
       </h3>
 
@@ -57,16 +57,16 @@ export default function QuestionCard({
               onClick={() => onSelect(option.value)}
               className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all duration-150 ${
                 isSelected
-                  ? 'border-brand-700 bg-brand-50 ring-1 shadow-focus'
-                  : 'border-limestone-200 bg-white hover:border-limestone-300 hover:bg-limestone-50'
+                  ? 'border-teal-500 bg-teal-500/10 ring-1 shadow-focus'
+                  : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10] hover:bg-white/[0.04]'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                     isSelected
-                      ? 'border-brand-700 bg-brand-700'
-                      : 'border-limestone-300'
+                      ? 'border-teal-500 bg-teal-500'
+                      : 'border-white/[0.10]'
                   }`}
                 >
                   {isSelected && (
@@ -75,7 +75,7 @@ export default function QuestionCard({
                 </div>
                 <span
                   className={`text-sm ${
-                    isSelected ? 'text-brand-900 font-medium' : 'text-charcoal-700'
+                    isSelected ? 'text-white font-medium' : 'text-white/60'
                   }`}
                 >
                   {option.label}

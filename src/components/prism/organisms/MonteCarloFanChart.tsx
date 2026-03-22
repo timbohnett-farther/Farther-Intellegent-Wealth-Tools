@@ -88,14 +88,14 @@ function FanTooltip({
   ];
 
   return (
-    <div className="rounded-lg border border-[#E4DDD4] bg-white px-3 py-2 text-xs shadow-md">
-      <p className="mb-1.5 font-semibold text-charcoal-900">Year {label}</p>
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-white">Year {label}</p>
       <table className="w-full">
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
-              <td className="pr-3 text-charcoal-500">{row.label}</td>
-              <td className="text-right tabular-nums font-medium text-charcoal-900">
+              <td className="pr-3 text-white/50">{row.label}</td>
+              <td className="text-right tabular-nums font-medium text-white">
                 {formatCurrency(row.value)}
               </td>
             </tr>
@@ -126,18 +126,18 @@ export function MonteCarloFanChart({
     <div className={className}>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart data={data} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
 
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
-            axisLine={{ stroke: '#E4DDD4' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
+            axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
             tickLine={false}
           />
 
           <YAxis
             tickFormatter={formatMillions}
-            tick={{ fontSize: 11, fill: '#6B6B6B' }}
+            tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.40)' }}
             axisLine={false}
             tickLine={false}
             domain={[0, yMax]}
@@ -151,7 +151,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p95"
             stroke="none"
-            fill="rgba(59,90,105,0.08)"
+            fill="rgba(29,118,130,0.08)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -160,7 +160,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p5"
             stroke="none"
-            fill="rgba(59,90,105,0.08)"
+            fill="rgba(29,118,130,0.08)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -171,7 +171,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p90"
             stroke="none"
-            fill="rgba(59,90,105,0.15)"
+            fill="rgba(29,118,130,0.15)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -180,7 +180,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p10"
             stroke="none"
-            fill="rgba(59,90,105,0.15)"
+            fill="rgba(29,118,130,0.15)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -191,7 +191,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p75"
             stroke="none"
-            fill="rgba(59,90,105,0.30)"
+            fill="rgba(29,118,130,0.30)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -200,7 +200,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p25"
             stroke="none"
-            fill="rgba(59,90,105,0.30)"
+            fill="rgba(29,118,130,0.30)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -210,10 +210,10 @@ export function MonteCarloFanChart({
           <Area
             type="monotone"
             dataKey="p50"
-            stroke="#3B5A69"
+            stroke="#1d7682"
             strokeWidth={2.5}
             fill="none"
-            activeDot={{ r: 4, fill: '#3B5A69' }}
+            activeDot={{ r: 4, fill: '#1d7682' }}
             isAnimationActive={false}
           />
 
@@ -221,12 +221,12 @@ export function MonteCarloFanChart({
           {retirementYear != null && (
             <ReferenceLine
               x={retirementYear}
-              stroke="#9E9E9E"
+              stroke="rgba(255,255,255,0.30)"
               strokeDasharray="6 4"
               label={{
                 value: 'Retirement',
                 position: 'top',
-                fill: '#6B6B6B',
+                fill: 'rgba(255,255,255,0.40)',
                 fontSize: 11,
               }}
             />

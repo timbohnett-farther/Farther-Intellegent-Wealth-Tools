@@ -13,7 +13,7 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         role="separator"
         aria-orientation={orientation}
         className={cn(
-          "shrink-0 bg-limestone-200",
+          "shrink-0 bg-white/[0.06]",
           orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
           className
         )}

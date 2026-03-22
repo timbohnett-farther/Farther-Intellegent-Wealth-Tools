@@ -51,7 +51,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center font-medium transition-colors',
           'focus-visible:outline-hidden focus-visible:shadow-focus',
           'disabled:pointer-events-none disabled:opacity-45',
-          'bg-transparent text-charcoal-500 hover:bg-limestone-50 hover:text-charcoal-700',
+          'bg-transparent text-white/50 hover:bg-white/[0.04] hover:text-white/60',
           iconOnlySizeStyles[size],
           className,
         )

@@ -52,30 +52,30 @@ interface OpportunityCard {
 const SCORE_LABELS: Record<DebtScoreLabel, { color: string; bg: string }> = {
   DEBT_FREE: { color: 'text-success-700', bg: 'bg-success-50' },
   EXCELLENT: { color: 'text-success-700', bg: 'bg-success-50' },
-  GOOD: { color: 'text-brand-700', bg: 'bg-brand-50' },
+  GOOD: { color: 'text-teal-300', bg: 'bg-teal-500/10' },
   FAIR: { color: 'text-warning-700', bg: 'bg-warning-50' },
   CONCERNING: { color: 'text-critical-700', bg: 'bg-critical-50' },
   CRITICAL: { color: 'text-critical-700', bg: 'bg-critical-50' },
 };
 
 const CATEGORY_COLORS: Record<DebtCategory, string> = {
-  MORTGAGE: 'bg-charcoal-100 text-charcoal-700',
+  MORTGAGE: 'bg-charcoal-100 text-white/60',
   HELOC: 'bg-warning-100 text-warning-700',
   STUDENT_LOAN: 'bg-info-100 text-info-700',
   AUTO_LOAN: 'bg-success-100 text-success-700',
   CREDIT_CARD: 'bg-critical-100 text-critical-700',
   PERSONAL_LOAN: 'bg-purple-100 text-purple-700',
-  SBLOC: 'bg-brand-100 text-brand-700',
-  MARGIN_LOAN: 'bg-brand-100 text-brand-700',
-  BUSINESS_LOAN: 'bg-charcoal-100 text-charcoal-700',
-  OTHER: 'bg-limestone-100 text-charcoal-500',
+  SBLOC: 'bg-teal-500/15 text-teal-300',
+  MARGIN_LOAN: 'bg-teal-500/15 text-teal-300',
+  BUSINESS_LOAN: 'bg-charcoal-100 text-white/60',
+  OTHER: 'bg-white/[0.06] text-white/50',
 };
 
 const URGENCY_STYLES: Record<OpportunityUrgency, { dot: string; label: string }> = {
   IMMEDIATE: { dot: 'bg-critical-500', label: 'High Priority' },
   '6_MONTHS': { dot: 'bg-warning-500', label: 'Medium Priority' },
   '1_YEAR': { dot: 'bg-info-500', label: 'Planning' },
-  PLANNING_HORIZON: { dot: 'bg-charcoal-300', label: 'Long-Term' },
+  PLANNING_HORIZON: { dot: 'bg-white/20', label: 'Long-Term' },
 };
 
 const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -87,17 +87,17 @@ const fmtPct = new Intl.NumberFormat('en-US', { style: 'percent', minimumFractio
 
 function ScoreSkeleton() {
   return (
-    <div className="rounded-xl border border-limestone-200 bg-white p-8 shadow-sm animate-pulse">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm animate-pulse">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-5 w-40 rounded bg-limestone-200" />
-        <div className="h-16 w-32 rounded bg-limestone-200" />
-        <div className="h-3 w-full rounded bg-limestone-200" />
+        <div className="h-5 w-40 rounded bg-white/[0.06]" />
+        <div className="h-16 w-32 rounded bg-white/[0.06]" />
+        <div className="h-3 w-full rounded bg-white/[0.06]" />
         <div className="space-y-3 w-full mt-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="h-3 w-20 rounded bg-limestone-200" />
-              <div className="h-3 flex-1 rounded bg-limestone-200" />
-              <div className="h-3 w-10 rounded bg-limestone-200" />
+              <div className="h-3 w-20 rounded bg-white/[0.06]" />
+              <div className="h-3 flex-1 rounded bg-white/[0.06]" />
+              <div className="h-3 w-10 rounded bg-white/[0.06]" />
             </div>
           ))}
         </div>
@@ -108,9 +108,9 @@ function ScoreSkeleton() {
 
 function StatCardSkeleton() {
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm animate-pulse">
-      <div className="h-3 w-24 rounded bg-limestone-200 mb-3" />
-      <div className="h-8 w-28 rounded bg-limestone-200" />
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm animate-pulse">
+      <div className="h-3 w-24 rounded bg-white/[0.06] mb-3" />
+      <div className="h-8 w-28 rounded bg-white/[0.06]" />
     </div>
   );
 }
@@ -120,12 +120,12 @@ function TableSkeleton() {
     <div className="space-y-3 animate-pulse">
       {Array.from({ length: 6 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 py-3 border-b border-limestone-100">
-          <div className="h-4 w-32 rounded bg-limestone-200" />
-          <div className="h-5 w-20 rounded-full bg-limestone-200" />
-          <div className="h-4 w-20 rounded bg-limestone-200" />
-          <div className="h-4 w-16 rounded bg-limestone-200" />
-          <div className="h-4 w-24 rounded bg-limestone-200 flex-1" />
-          <div className="h-4 w-16 rounded bg-limestone-200" />
+          <div className="h-4 w-32 rounded bg-white/[0.06]" />
+          <div className="h-5 w-20 rounded-full bg-white/[0.06]" />
+          <div className="h-4 w-20 rounded bg-white/[0.06]" />
+          <div className="h-4 w-16 rounded bg-white/[0.06]" />
+          <div className="h-4 w-24 rounded bg-white/[0.06] flex-1" />
+          <div className="h-4 w-16 rounded bg-white/[0.06]" />
         </div>
       ))}
     </div>
@@ -140,17 +140,17 @@ function DimensionBar({ label, score }: { label: string; score: number }) {
   const pct = Math.min(100, Math.max(0, score));
   const barColor =
     pct >= 80 ? 'bg-success-500' :
-    pct >= 60 ? 'bg-brand-500' :
+    pct >= 60 ? 'bg-teal-500' :
     pct >= 40 ? 'bg-warning-500' :
     'bg-critical-500';
 
   return (
     <div className="flex items-center gap-3">
-      <span className="w-20 text-xs font-medium text-charcoal-500 text-right">{label}</span>
-      <div className="flex-1 h-2.5 rounded-full bg-limestone-100 overflow-hidden">
+      <span className="w-20 text-xs font-medium text-white/50 text-right">{label}</span>
+      <div className="flex-1 h-2.5 rounded-full bg-white/[0.06] overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-500 ${barColor}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="w-10 text-xs font-semibold text-charcoal-700 text-right">{score}</span>
+      <span className="w-10 text-xs font-semibold text-white/60 text-right">{score}</span>
     </div>
   );
 }
@@ -161,14 +161,14 @@ function DebtScoreHero({ score }: { score: FartherDebtScore }) {
   const changePrefix = score.scoreChange > 0 ? '+' : '';
 
   return (
-    <div className="rounded-xl border border-limestone-200 bg-white p-8 shadow-sm">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm">
       <div className="flex flex-col items-center gap-2 mb-6">
-        <h2 className="text-sm font-semibold tracking-wide uppercase text-charcoal-500">
+        <h2 className="text-sm font-semibold tracking-wide uppercase text-white/50">
           Farther Debt Score
         </h2>
         <div className="flex items-baseline gap-2">
-          <span className="text-5xl font-bold text-charcoal-900">{score.score}</span>
-          <span className="text-lg text-charcoal-400">/ 850</span>
+          <span className="text-5xl font-bold text-white">{score.score}</span>
+          <span className="text-lg text-white/30">/ 850</span>
         </div>
         <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${style.color} ${style.bg}`}>
           {score.label.replace(/_/g, ' ')}
@@ -181,7 +181,7 @@ function DebtScoreHero({ score }: { score: FartherDebtScore }) {
       </div>
 
       {/* Score bar */}
-      <div className="w-full h-3 rounded-full bg-limestone-100 overflow-hidden mb-6">
+      <div className="w-full h-3 rounded-full bg-white/[0.06] overflow-hidden mb-6">
         <div
           className="h-full rounded-full bg-linear-to-r from-critical-500 via-warning-500 via-brand-500 to-success-500 transition-all duration-700"
           style={{ width: `${pct}%` }}
@@ -200,11 +200,11 @@ function DebtScoreHero({ score }: { score: FartherDebtScore }) {
       {/* Key drivers */}
       {score.keyDrivers.length > 0 && (
         <div className="mt-6 pt-4 border-t border-limestone-100">
-          <p className="text-xs font-semibold uppercase text-charcoal-400 mb-2">Key Drivers</p>
+          <p className="text-xs font-semibold uppercase text-white/30 mb-2">Key Drivers</p>
           <ul className="space-y-1">
             {score.keyDrivers.map((driver, i) => (
-              <li key={i} className="text-sm text-charcoal-600 flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-500 flex-shrink-0" />
+              <li key={i} className="text-sm text-white/50 flex items-start gap-2">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-teal-500 flex-shrink-0" />
                 {driver}
               </li>
             ))}
@@ -222,11 +222,11 @@ function StatCard({ label, value, subtext, subtextColor }: {
   subtextColor?: string;
 }) {
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-charcoal-500 mb-1">{label}</p>
-      <p className="text-2xl font-bold text-charcoal-900">{value}</p>
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <p className="text-sm font-medium text-white/50 mb-1">{label}</p>
+      <p className="text-2xl font-bold text-white">{value}</p>
       {subtext && (
-        <p className={`text-xs mt-1 font-medium ${subtextColor || 'text-charcoal-400'}`}>{subtext}</p>
+        <p className={`text-xs mt-1 font-medium ${subtextColor || 'text-white/30'}`}>{subtext}</p>
       )}
     </div>
   );
@@ -235,20 +235,20 @@ function StatCard({ label, value, subtext, subtextColor }: {
 function OpportunityCardComponent({ opp }: { opp: OpportunityCard }) {
   const urgencyStyle = URGENCY_STYLES[opp.urgency];
   return (
-    <div className="rounded-lg border border-limestone-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center gap-2 mb-2">
         <span className={`h-2.5 w-2.5 rounded-full ${urgencyStyle.dot}`} />
-        <span className="text-xs font-semibold uppercase text-charcoal-400">{urgencyStyle.label}</span>
+        <span className="text-xs font-semibold uppercase text-white/30">{urgencyStyle.label}</span>
       </div>
-      <h4 className="text-sm font-semibold text-charcoal-900 mb-1">{opp.type}</h4>
-      <p className="text-sm text-charcoal-600 mb-3">{opp.action}</p>
+      <h4 className="text-sm font-semibold text-white mb-1">{opp.type}</h4>
+      <p className="text-sm text-white/50 mb-3">{opp.action}</p>
       <div className="flex items-center justify-between">
         <span className="text-sm font-bold text-success-700">
           {fmt.format(opp.annualSavings)}/yr savings
         </span>
         <Link
           href={opp.link}
-          className="text-sm font-medium text-brand-700 hover:text-brand-600 transition-colors"
+          className="text-sm font-medium text-teal-300 hover:text-teal-300 transition-colors"
         >
           Analyze &rarr;
         </Link>
@@ -330,14 +330,14 @@ export default function DebtIQDashboardPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Debt Analysis</h1>
-          <p className="mt-1 text-sm text-charcoal-500">FP-DebtIQ — Intelligent Debt Analysis Engine</p>
+          <h1 className="text-2xl font-bold text-white">Debt Analysis</h1>
+          <p className="mt-1 text-sm text-white/50">FP-DebtIQ — Intelligent Debt Analysis Engine</p>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
           <p className="text-sm font-medium text-critical-700 mb-3">{error}</p>
           <button
             onClick={fetchDashboardData}
-            className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
+            className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
           >
             Retry
           </button>
@@ -354,21 +354,21 @@ export default function DebtIQDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-charcoal-900">Debt Analysis</h1>
-          <p className="mt-1 text-sm text-charcoal-500">
+          <h1 className="text-2xl font-bold text-white">Debt Analysis</h1>
+          <p className="mt-1 text-sm text-white/50">
             FP-DebtIQ — Intelligent Debt Analysis Engine
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/tax-planning/debt-iq/strategy"
-            className="rounded-lg border border-limestone-200 bg-white px-4 py-2 text-sm font-medium text-charcoal-700 hover:bg-limestone-50 transition-colors"
+            className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-2 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
           >
             Payoff Optimizer
           </Link>
           <Link
             href="/tax-planning/debt-iq/analysis/mortgage"
-            className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors shadow-sm"
+            className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400 transition-colors shadow-sm"
           >
             Run Analysis
           </Link>
@@ -380,9 +380,9 @@ export default function DebtIQDashboardPage() {
         {/* Debt Score — left column */}
         <div className="lg:col-span-1">
           {loading ? <ScoreSkeleton /> : debtScore ? <DebtScoreHero score={debtScore} /> : (
-            <div className="rounded-xl border border-limestone-200 bg-white p-8 shadow-sm text-center">
-              <p className="text-sm text-charcoal-500">No debt score available yet.</p>
-              <p className="text-xs text-charcoal-400 mt-1">Add debts to calculate your score.</p>
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 shadow-sm text-center">
+              <p className="text-sm text-white/50">No debt score available yet.</p>
+              <p className="text-xs text-white/30 mt-1">Add debts to calculate your score.</p>
             </div>
           )}
         </div>
@@ -421,7 +421,7 @@ export default function DebtIQDashboardPage() {
           {/* Opportunities */}
           {!loading && opportunities.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">
+              <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">
                 Top Opportunities
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -435,12 +435,12 @@ export default function DebtIQDashboardPage() {
       </div>
 
       {/* Debt Breakdown Table */}
-      <div className="rounded-xl border border-limestone-200 bg-white shadow-sm overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-6 py-4 border-b border-limestone-100">
-          <h3 className="text-base font-semibold text-charcoal-900">All Debts</h3>
+          <h3 className="text-base font-semibold text-white">All Debts</h3>
           <Link
             href="/tax-planning/debt-iq/strategy"
-            className="text-sm font-medium text-brand-700 hover:text-brand-600 transition-colors"
+            className="text-sm font-medium text-teal-300 hover:text-teal-300 transition-colors"
           >
             View Strategy &rarr;
           </Link>
@@ -450,69 +450,69 @@ export default function DebtIQDashboardPage() {
             <div className="p-6"><TableSkeleton /></div>
           ) : debts.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-sm text-charcoal-500">No debts recorded for this household.</p>
-              <p className="text-xs text-charcoal-400 mt-1">Add debts to see your full liability profile.</p>
+              <p className="text-sm text-white/50">No debts recorded for this household.</p>
+              <p className="text-xs text-white/30 mt-1">Add debts to see your full liability profile.</p>
             </div>
           ) : (
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-limestone-100 bg-limestone-50/50">
-                  <th className="px-6 py-3 text-xs font-semibold uppercase text-charcoal-400">Debt</th>
-                  <th className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400">Type</th>
+                <tr className="border-b border-limestone-100 bg-transparent/50">
+                  <th className="px-6 py-3 text-xs font-semibold uppercase text-white/30">Debt</th>
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-white/30">Type</th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none text-right"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none text-right"
                     onClick={() => toggleSort('balance')}
                   >
                     Balance{sortIcon('balance')}
                   </th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none text-right"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none text-right"
                     onClick={() => toggleSort('rate')}
                   >
                     Rate{sortIcon('rate')}
                   </th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none text-right"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none text-right"
                     onClick={() => toggleSort('monthlyPayment')}
                   >
                     Mo. Payment{sortIcon('monthlyPayment')}
                   </th>
                   <th
-                    className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 cursor-pointer select-none text-right"
+                    className="px-3 py-3 text-xs font-semibold uppercase text-white/30 cursor-pointer select-none text-right"
                     onClick={() => toggleSort('afterTaxRate')}
                   >
                     After-Tax{sortIcon('afterTaxRate')}
                   </th>
-                  <th className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400 text-right">Payoff</th>
-                  <th className="px-3 py-3 text-xs font-semibold uppercase text-charcoal-400">Type</th>
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-white/30 text-right">Payoff</th>
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-white/30">Type</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-limestone-100">
                 {sortedDebts.map((debt) => (
-                  <tr key={debt.id} className="hover:bg-limestone-50/50 transition-colors">
-                    <td className="px-6 py-3 font-medium text-charcoal-900">{debt.name}</td>
+                  <tr key={debt.id} className="hover:bg-white/[0.04]/50 transition-colors">
+                    <td className="px-6 py-3 font-medium text-white">{debt.name}</td>
                     <td className="px-3 py-3">
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${CATEGORY_COLORS[debt.category]}`}>
                         {debt.category.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-right font-mono text-charcoal-900">{fmt.format(debt.balance)}</td>
-                    <td className="px-3 py-3 text-right font-mono text-charcoal-700">{fmtPct.format(debt.rate)}</td>
-                    <td className="px-3 py-3 text-right font-mono text-charcoal-700">{fmt.format(debt.monthlyPayment)}</td>
-                    <td className="px-3 py-3 text-right font-mono text-charcoal-700">{fmtPct.format(debt.afterTaxRate)}</td>
-                    <td className="px-3 py-3 text-right text-charcoal-600">{debt.payoffDate}</td>
-                    <td className="px-3 py-3 text-charcoal-500">{debt.rateType}</td>
+                    <td className="px-3 py-3 text-right font-mono text-white">{fmt.format(debt.balance)}</td>
+                    <td className="px-3 py-3 text-right font-mono text-white/60">{fmtPct.format(debt.rate)}</td>
+                    <td className="px-3 py-3 text-right font-mono text-white/60">{fmt.format(debt.monthlyPayment)}</td>
+                    <td className="px-3 py-3 text-right font-mono text-white/60">{fmtPct.format(debt.afterTaxRate)}</td>
+                    <td className="px-3 py-3 text-right text-white/50">{debt.payoffDate}</td>
+                    <td className="px-3 py-3 text-white/50">{debt.rateType}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-limestone-200 bg-limestone-50/50 font-semibold">
-                  <td className="px-6 py-3 text-charcoal-900">Totals</td>
+                <tr className="border-t-2 border-white/[0.06] bg-transparent/50 font-semibold">
+                  <td className="px-6 py-3 text-white">Totals</td>
                   <td className="px-3 py-3" />
-                  <td className="px-3 py-3 text-right font-mono text-charcoal-900">
+                  <td className="px-3 py-3 text-right font-mono text-white">
                     {fmt.format(debts.reduce((s, d) => s + d.balance, 0))}
                   </td>
-                  <td className="px-3 py-3 text-right font-mono text-charcoal-700">
+                  <td className="px-3 py-3 text-right font-mono text-white/60">
                     {debts.length > 0
                       ? fmtPct.format(
                           debts.reduce((s, d) => s + d.rate * d.balance, 0) /
@@ -520,7 +520,7 @@ export default function DebtIQDashboardPage() {
                         )
                       : '0.00%'}
                   </td>
-                  <td className="px-3 py-3 text-right font-mono text-charcoal-900">
+                  <td className="px-3 py-3 text-right font-mono text-white">
                     {fmt.format(debts.reduce((s, d) => s + d.monthlyPayment, 0))}
                   </td>
                   <td className="px-3 py-3" colSpan={3} />
@@ -533,7 +533,7 @@ export default function DebtIQDashboardPage() {
 
       {/* Analysis Tools Quick Links */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-charcoal-400 mb-3">Analysis Tools</h3>
+        <h3 className="text-sm font-semibold uppercase text-white/30 mb-3">Analysis Tools</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
             { label: 'Mortgage', href: '/tax-planning/debt-iq/analysis/mortgage', icon: '\uD83C\uDFE0' },
@@ -546,10 +546,10 @@ export default function DebtIQDashboardPage() {
             <Link
               key={tool.label}
               href={tool.href}
-              className="flex flex-col items-center gap-2 rounded-lg border border-limestone-200 bg-white p-4 text-center hover:bg-limestone-50 hover:shadow-sm transition-all"
+              className="flex flex-col items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 text-center hover:bg-white/[0.04] hover:shadow-sm transition-all"
             >
               <span className="text-2xl">{tool.icon}</span>
-              <span className="text-xs font-semibold text-charcoal-700">{tool.label}</span>
+              <span className="text-xs font-semibold text-white/60">{tool.label}</span>
             </Link>
           ))}
         </div>

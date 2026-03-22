@@ -147,13 +147,13 @@ type TabKey = (typeof TABS)[number]['key'];
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string | number }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-md border border-limestone-200 bg-white px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1 font-semibold text-charcoal-900">{label}</p>
+    <div className="rounded-xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-lg">
+      <p className="mb-1 font-semibold text-white">{label}</p>
       {payload.map((e) => (
         <div key={e.name} className="flex items-center gap-1.5">
           <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: e.color }} />
-          <span className="text-charcoal-500">{e.name}:</span>
-          <span className="font-medium tabular-nums text-charcoal-900">{fmtCompact(e.value)}</span>
+          <span className="text-white/50">{e.name}:</span>
+          <span className="font-medium tabular-nums text-white">{fmtCompact(e.value)}</span>
         </div>
       ))}
     </div>
@@ -169,73 +169,73 @@ function OverviewTab() {
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-limestone-200 p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="h-8 w-8 rounded-lg bg-pink-50 flex items-center justify-center">
               <Heart size={16} className="text-pink-600" />
             </div>
-            <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Total Annual Giving</span>
+            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Annual Giving</span>
           </div>
-          <p className="text-2xl font-bold text-charcoal-900 tabular-nums">{fmt$(TOTAL_GIVING)}</p>
-          <p className="text-xs text-charcoal-500 mt-1">Current year total</p>
+          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_GIVING)}</p>
+          <p className="text-xs text-white/50 mt-1">Current year total</p>
         </div>
-        <div className="bg-white rounded-xl border border-limestone-200 p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="h-8 w-8 rounded-lg bg-emerald-50 flex items-center justify-center">
               <DollarSign size={16} className="text-emerald-600" />
             </div>
-            <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Tax Deductions</span>
+            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Tax Deductions</span>
           </div>
-          <p className="text-2xl font-bold text-charcoal-900 tabular-nums">{fmt$(TOTAL_DEDUCTION)}</p>
-          <p className="text-xs text-charcoal-500 mt-1">Deductions generated</p>
+          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_DEDUCTION)}</p>
+          <p className="text-xs text-white/50 mt-1">Deductions generated</p>
         </div>
-        <div className="bg-white rounded-xl border border-limestone-200 p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-8 w-8 rounded-lg bg-brand-50 flex items-center justify-center">
-              <ArrowDownRight size={16} className="text-brand-700" />
+            <div className="h-8 w-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+              <ArrowDownRight size={16} className="text-teal-300" />
             </div>
-            <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Net Cost of Giving</span>
+            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Net Cost of Giving</span>
           </div>
-          <p className="text-2xl font-bold text-charcoal-900 tabular-nums">{fmt$(NET_COST)}</p>
-          <p className="text-xs text-charcoal-500 mt-1">After tax savings at 37%</p>
+          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(NET_COST)}</p>
+          <p className="text-xs text-white/50 mt-1">After tax savings at 37%</p>
         </div>
-        <div className="bg-white rounded-xl border border-limestone-200 p-5">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-8 w-8 rounded-lg bg-brand-50 flex items-center justify-center">
-              <Landmark size={16} className="text-brand-700" />
+            <div className="h-8 w-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+              <Landmark size={16} className="text-teal-300" />
             </div>
-            <span className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">DAF Balance</span>
+            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">DAF Balance</span>
           </div>
-          <p className="text-2xl font-bold text-charcoal-900 tabular-nums">{fmt$(DAF_BALANCE)}</p>
-          <p className="text-xs text-charcoal-500 mt-1">Available for grants</p>
+          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(DAF_BALANCE)}</p>
+          <p className="text-xs text-white/50 mt-1">Available for grants</p>
         </div>
       </div>
 
       {/* Giving History Table */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">Giving History</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">Giving History</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-limestone-200">
-                <th className="text-left py-2 pr-4 font-medium text-charcoal-500">Year</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Cash Gifts</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Non-Cash</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">QCDs</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">DAF Grants</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Total</th>
-                <th className="text-right py-2 pl-3 font-medium text-charcoal-500">Deduction</th>
+              <tr className="border-b border-white/[0.06]">
+                <th className="text-left py-2 pr-4 font-medium text-white/50">Year</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Cash Gifts</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Non-Cash</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">QCDs</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">DAF Grants</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Total</th>
+                <th className="text-right py-2 pl-3 font-medium text-white/50">Deduction</th>
               </tr>
             </thead>
             <tbody>
               {GIVING_HISTORY.map((r) => (
-                <tr key={r.year} className="border-b border-limestone-100 hover:bg-limestone-50">
-                  <td className="py-2.5 pr-4 font-medium text-charcoal-900">{r.year}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-700">{fmt$(r.cash)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-700">{fmt$(r.nonCash)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-700">{fmt$(r.qcds)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-700">{fmt$(r.dafGrants)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-900 font-medium">{fmt$(r.total)}</td>
+                <tr key={r.year} className="border-b border-limestone-100 hover:bg-white/[0.04]">
+                  <td className="py-2.5 pr-4 font-medium text-white">{r.year}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.cash)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.nonCash)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.qcds)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.dafGrants)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(r.total)}</td>
                   <td className="py-2.5 pl-3 text-right tabular-nums font-medium text-emerald-600">{fmt$(r.deduction)}</td>
                 </tr>
               ))}
@@ -245,21 +245,21 @@ function OverviewTab() {
       </div>
 
       {/* Annual Giving Chart */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Annual Giving Over Time</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Breakdown by giving method</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Annual Giving Over Time</h2>
+        <p className="text-xs text-white/50 mb-4">Breakdown by giving method</p>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={GIVING_HISTORY}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
               <XAxis dataKey="year" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} tickFormatter={fmtCompact} />
               <Tooltip content={<ChartTooltip />} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Bar dataKey="cash" name="Cash Gifts" stackId="a" fill="#6366F1" />
               <Bar dataKey="nonCash" name="Non-Cash" stackId="a" fill="#7B68EE" />
-              <Bar dataKey="qcds" name="QCDs" stackId="a" fill="#2E8B57" />
-              <Bar dataKey="dafGrants" name="DAF Grants" stackId="a" fill="#D4860B" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="qcds" name="QCDs" stackId="a" fill="#22c55e" />
+              <Bar dataKey="dafGrants" name="DAF Grants" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -286,42 +286,42 @@ function DafTab() {
   return (
     <div className="space-y-6">
       {/* DAF Details */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">DAF Account Details</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">DAF Account Details</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Institution</span>
-            <p className="text-sm font-semibold text-charcoal-900 mt-1">Fidelity Charitable</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Institution</span>
+            <p className="text-sm font-semibold text-white mt-1">Fidelity Charitable</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Current Balance</span>
-            <p className="text-sm font-semibold text-charcoal-900 mt-1 tabular-nums">{fmt$(DAF_BALANCE)}</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Current Balance</span>
+            <p className="text-sm font-semibold text-white mt-1 tabular-nums">{fmt$(DAF_BALANCE)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Annual Grants (2025)</span>
-            <p className="text-sm font-semibold text-charcoal-900 mt-1 tabular-nums">{fmt$(40_000)}</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Annual Grants (2025)</span>
+            <p className="text-sm font-semibold text-white mt-1 tabular-nums">{fmt$(40_000)}</p>
           </div>
         </div>
       </div>
 
       {/* Funding Strategy Comparison */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Funding Strategy Comparison</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Compare methods for funding your DAF (assuming $100,000 contribution)</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Funding Strategy Comparison</h2>
+        <p className="text-xs text-white/50 mb-4">Compare methods for funding your DAF (assuming $100,000 contribution)</p>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Option A: Cash */}
-          <div className="rounded-xl border border-limestone-200 p-5">
+          <div className="rounded-xl border border-white/[0.06] p-5">
             <div className="flex items-center gap-2 mb-3">
-              <span className="h-6 w-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">A</span>
-              <h3 className="text-sm font-semibold text-charcoal-900">Fund with Cash</h3>
+              <span className="h-6 w-6 rounded-full bg-teal-500/15 text-teal-300 flex items-center justify-center text-xs font-bold">A</span>
+              <h3 className="text-sm font-semibold text-white">Fund with Cash</h3>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-charcoal-500">Contribution</span><span className="font-medium text-charcoal-900">$100,000</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Deduction</span><span className="font-medium text-emerald-600">$100,000</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">AGI Limit</span><span className="font-medium text-charcoal-900">60% ({fmt$(cashDeductionLimit)})</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">CG Tax Avoided</span><span className="font-medium text-charcoal-700">$0</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Tax Savings (37%)</span><span className="font-medium text-emerald-600">$37,000</span></div>
-              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-charcoal-900">Net Cost</span><span className="font-bold text-charcoal-900">$63,000</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Contribution</span><span className="font-medium text-white">$100,000</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Deduction</span><span className="font-medium text-emerald-600">$100,000</span></div>
+              <div className="flex justify-between"><span className="text-white/50">AGI Limit</span><span className="font-medium text-white">60% ({fmt$(cashDeductionLimit)})</span></div>
+              <div className="flex justify-between"><span className="text-white/50">CG Tax Avoided</span><span className="font-medium text-white/60">$0</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Tax Savings (37%)</span><span className="font-medium text-emerald-600">$37,000</span></div>
+              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-white">Net Cost</span><span className="font-bold text-white">$63,000</span></div>
             </div>
           </div>
 
@@ -329,53 +329,53 @@ function DafTab() {
           <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50/30 p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="h-6 w-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">B</span>
-              <h3 className="text-sm font-semibold text-charcoal-900">Fund with Appreciated Stock</h3>
+              <h3 className="text-sm font-semibold text-white">Fund with Appreciated Stock</h3>
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium ml-auto">Recommended</span>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-charcoal-500">Contribution (FMV)</span><span className="font-medium text-charcoal-900">$100,000</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Deduction (FMV)</span><span className="font-medium text-emerald-600">$100,000</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">AGI Limit</span><span className="font-medium text-charcoal-900">30% ({fmt$(stockDeductionLimit)})</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">CG Tax Avoided</span><span className="font-medium text-emerald-600">$19,040</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Tax Savings (37%)</span><span className="font-medium text-emerald-600">$37,000</span></div>
-              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-charcoal-900">Net Cost</span><span className="font-bold text-emerald-700">$43,960</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Contribution (FMV)</span><span className="font-medium text-white">$100,000</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Deduction (FMV)</span><span className="font-medium text-emerald-600">$100,000</span></div>
+              <div className="flex justify-between"><span className="text-white/50">AGI Limit</span><span className="font-medium text-white">30% ({fmt$(stockDeductionLimit)})</span></div>
+              <div className="flex justify-between"><span className="text-white/50">CG Tax Avoided</span><span className="font-medium text-emerald-600">$19,040</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Tax Savings (37%)</span><span className="font-medium text-emerald-600">$37,000</span></div>
+              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-white">Net Cost</span><span className="font-bold text-emerald-700">$43,960</span></div>
             </div>
           </div>
 
           {/* Option C: Bunching */}
-          <div className="rounded-xl border border-limestone-200 p-5">
+          <div className="rounded-xl border border-white/[0.06] p-5">
             <div className="flex items-center gap-2 mb-3">
-              <span className="h-6 w-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">C</span>
-              <h3 className="text-sm font-semibold text-charcoal-900">Bunching Strategy</h3>
+              <span className="h-6 w-6 rounded-full bg-teal-500/15 text-teal-300 flex items-center justify-center text-xs font-bold">C</span>
+              <h3 className="text-sm font-semibold text-white">Bunching Strategy</h3>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-charcoal-500">Annual Budget</span><span className="font-medium text-charcoal-900">{fmt$(BUNCHING_ANNUAL_BUDGET)}/yr</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Bunch 3 Years</span><span className="font-medium text-charcoal-900">{fmt$(BUNCHING_ANNUAL_BUDGET * 3)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Itemize Year 1</span><span className="font-medium text-emerald-600">{fmt$(BUNCHING_ANNUAL_BUDGET * 3 + 25_000)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Std Ded Years 2-3</span><span className="font-medium text-charcoal-900">{fmt$(BUNCHING_STD_DEDUCTION)} x 2</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">3yr Total Deductions</span><span className="font-medium text-emerald-600">{fmt$(bunchingTotalDeductions)}</span></div>
-              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-charcoal-900">Extra Tax Savings</span><span className="font-bold text-emerald-700">{fmt$(bunchingSavings > 0 ? bunchingSavings : 0)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Annual Budget</span><span className="font-medium text-white">{fmt$(BUNCHING_ANNUAL_BUDGET)}/yr</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Bunch 3 Years</span><span className="font-medium text-white">{fmt$(BUNCHING_ANNUAL_BUDGET * 3)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Itemize Year 1</span><span className="font-medium text-emerald-600">{fmt$(BUNCHING_ANNUAL_BUDGET * 3 + 25_000)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Std Ded Years 2-3</span><span className="font-medium text-white">{fmt$(BUNCHING_STD_DEDUCTION)} x 2</span></div>
+              <div className="flex justify-between"><span className="text-white/50">3yr Total Deductions</span><span className="font-medium text-emerald-600">{fmt$(bunchingTotalDeductions)}</span></div>
+              <div className="flex justify-between border-t border-limestone-100 pt-2 mt-2"><span className="font-semibold text-white">Extra Tax Savings</span><span className="font-bold text-emerald-700">{fmt$(bunchingSavings > 0 ? bunchingSavings : 0)}</span></div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Bunching Optimizer */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Bunching Optimizer</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Adjust the bunching interval to find the optimal tax savings</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Bunching Optimizer</h2>
+        <p className="text-xs text-white/50 mb-4">Adjust the bunching interval to find the optimal tax savings</p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Annual Giving Budget</label>
-              <input type="text" readOnly value={fmt$(BUNCHING_ANNUAL_BUDGET)} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm bg-limestone-50 tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Annual Giving Budget</label>
+              <input type="text" readOnly value={fmt$(BUNCHING_ANNUAL_BUDGET)} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm bg-transparent tabular-nums" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Standard Deduction (MFJ)</label>
-              <input type="text" readOnly value={fmt$(BUNCHING_STD_DEDUCTION)} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm bg-limestone-50 tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Standard Deduction (MFJ)</label>
+              <input type="text" readOnly value={fmt$(BUNCHING_STD_DEDUCTION)} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm bg-transparent tabular-nums" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Bunching Interval (Years)</label>
+              <label className="block text-xs font-medium text-white/60 mb-1">Bunching Interval (Years)</label>
               <div className="flex items-center gap-3">
                 {[2, 3, 4, 5].map((n) => (
                   <button
@@ -383,8 +383,8 @@ function DafTab() {
                     onClick={() => setBunchingYears(n)}
                     className={`px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       bunchingYears === n
-                        ? 'border-brand-500 bg-brand-50 text-brand-700'
-                        : 'border-limestone-300 text-charcoal-700 hover:bg-limestone-50'
+                        ? 'border-brand-500 bg-teal-500/10 text-teal-300'
+                        : 'border-white/[0.10] text-white/60 hover:bg-white/[0.04]'
                     }`}
                   >
                     {n} Years
@@ -393,15 +393,15 @@ function DafTab() {
               </div>
             </div>
           </div>
-          <div className="rounded-xl border border-limestone-100 bg-limestone-50 p-5">
-            <h3 className="text-xs font-semibold text-charcoal-900 uppercase tracking-wide mb-3">Results</h3>
+          <div className="rounded-xl border border-limestone-100 bg-transparent p-5">
+            <h3 className="text-xs font-semibold text-white uppercase tracking-wide mb-3">Results</h3>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-charcoal-500">Total Giving (bunched)</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(bunchingTotal)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Itemized Deduction (Year 1)</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(bunchingItemized)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Std Deduction (Years 2-{bunchingYears})</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(BUNCHING_STD_DEDUCTION)} x {bunchingStdYears}</span></div>
-              <div className="flex justify-between border-t border-limestone-200 pt-2 mt-2"><span className="text-charcoal-500">{bunchingYears}-Year Total Deductions (Bunching)</span><span className="font-bold text-charcoal-900 tabular-nums">{fmt$(bunchingTotalDeductions)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">{bunchingYears}-Year Total Deductions (No Bunching)</span><span className="font-medium text-charcoal-700 tabular-nums">{fmt$(noBunchingTotalDeductions)}</span></div>
-              <div className="flex justify-between border-t border-limestone-200 pt-2 mt-2"><span className="font-semibold text-charcoal-900">Incremental Tax Savings</span><span className="font-bold text-emerald-700 tabular-nums">{fmt$(bunchingSavings > 0 ? bunchingSavings : 0)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Total Giving (bunched)</span><span className="font-medium text-white tabular-nums">{fmt$(bunchingTotal)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Itemized Deduction (Year 1)</span><span className="font-medium text-white tabular-nums">{fmt$(bunchingItemized)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Std Deduction (Years 2-{bunchingYears})</span><span className="font-medium text-white tabular-nums">{fmt$(BUNCHING_STD_DEDUCTION)} x {bunchingStdYears}</span></div>
+              <div className="flex justify-between border-t border-white/[0.06] pt-2 mt-2"><span className="text-white/50">{bunchingYears}-Year Total Deductions (Bunching)</span><span className="font-bold text-white tabular-nums">{fmt$(bunchingTotalDeductions)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">{bunchingYears}-Year Total Deductions (No Bunching)</span><span className="font-medium text-white/60 tabular-nums">{fmt$(noBunchingTotalDeductions)}</span></div>
+              <div className="flex justify-between border-t border-white/[0.06] pt-2 mt-2"><span className="font-semibold text-white">Incremental Tax Savings</span><span className="font-bold text-emerald-700 tabular-nums">{fmt$(bunchingSavings > 0 ? bunchingSavings : 0)}</span></div>
             </div>
           </div>
         </div>
@@ -432,24 +432,24 @@ function QcdTab() {
       </div>
 
       {/* QCD vs Cash Comparison */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">QCD vs Cash Giving Comparison</h2>
-        <p className="text-xs text-charcoal-500 mb-4">For a {fmt$(RMD_AMOUNT)} charitable gift using full RMD amount</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">QCD vs Cash Giving Comparison</h2>
+        <p className="text-xs text-white/50 mb-4">For a {fmt$(RMD_AMOUNT)} charitable gift using full RMD amount</p>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-limestone-200">
-                <th className="text-left py-2 pr-4 font-medium text-charcoal-500">Metric</th>
+              <tr className="border-b border-white/[0.06]">
+                <th className="text-left py-2 pr-4 font-medium text-white/50">Metric</th>
                 <th className="text-left py-2 px-3 font-medium text-emerald-600">QCD</th>
-                <th className="text-left py-2 pl-3 font-medium text-charcoal-500">Cash Gift</th>
+                <th className="text-left py-2 pl-3 font-medium text-white/50">Cash Gift</th>
               </tr>
             </thead>
             <tbody>
               {QCD_COMPARISON.map((row) => (
                 <tr key={row.metric} className="border-b border-limestone-100">
-                  <td className="py-2.5 pr-4 font-medium text-charcoal-900">{row.metric}</td>
+                  <td className="py-2.5 pr-4 font-medium text-white">{row.metric}</td>
                   <td className="py-2.5 px-3 text-emerald-700">{row.qcd}</td>
-                  <td className="py-2.5 pl-3 text-charcoal-700">{row.cash}</td>
+                  <td className="py-2.5 pl-3 text-white/60">{row.cash}</td>
                 </tr>
               ))}
             </tbody>
@@ -458,71 +458,71 @@ function QcdTab() {
       </div>
 
       {/* Use QCD for Full RMD */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-sm font-semibold text-charcoal-900">Use QCD for Full RMD</h2>
-            <p className="text-xs text-charcoal-500 mt-0.5">Direct your entire RMD of {fmt$(RMD_AMOUNT)} to qualified charities via QCD</p>
+            <h2 className="text-sm font-semibold text-white">Use QCD for Full RMD</h2>
+            <p className="text-xs text-white/50 mt-0.5">Direct your entire RMD of {fmt$(RMD_AMOUNT)} to qualified charities via QCD</p>
           </div>
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-brand-500 text-white rounded-lg hover:bg-brand-600 transition-colors">
+          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
             <Gift size={16} />
             Apply QCD to RMD
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">RMD Amount</span>
-            <p className="text-sm font-bold text-charcoal-900 mt-1 tabular-nums">{fmt$(RMD_AMOUNT)}</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">RMD Amount</span>
+            <p className="text-sm font-bold text-white mt-1 tabular-nums">{fmt$(RMD_AMOUNT)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">AGI Reduction</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">AGI Reduction</span>
             <p className="text-sm font-bold text-emerald-600 mt-1 tabular-nums">-{fmt$(RMD_AMOUNT)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Tax Savings (37%)</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Tax Savings (37%)</span>
             <p className="text-sm font-bold text-emerald-600 mt-1 tabular-nums">{fmt$(Math.round(RMD_AMOUNT * 0.37))}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Additional IRMAA Savings</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Additional IRMAA Savings</span>
             <p className="text-sm font-bold text-emerald-600 mt-1 tabular-nums">{fmt$(3_360)}</p>
           </div>
         </div>
       </div>
 
       {/* Provisional Income / IRMAA Impact */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">Impact on Provisional Income & IRMAA</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">Impact on Provisional Income & IRMAA</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-xs font-semibold text-charcoal-700 uppercase tracking-wide mb-3">Provisional Income</h3>
+            <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-3">Provisional Income</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-limestone-50 px-4 py-3">
-                <span className="text-xs text-charcoal-500">Before QCD</span>
-                <span className="text-sm font-bold text-charcoal-900 tabular-nums">{fmt$(Math.round(provisionalIncomeBefore))}</span>
+              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
+                <span className="text-xs text-white/50">Before QCD</span>
+                <span className="text-sm font-bold text-white tabular-nums">{fmt$(Math.round(provisionalIncomeBefore))}</span>
               </div>
               <div className="flex items-center justify-between rounded-lg border border-emerald-100 bg-emerald-50 px-4 py-3">
                 <span className="text-xs text-emerald-700">After QCD</span>
                 <span className="text-sm font-bold text-emerald-700 tabular-nums">{fmt$(Math.round(provisionalIncomeAfter))}</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-limestone-50 px-4 py-3">
-                <span className="text-xs text-charcoal-500">Reduction</span>
+              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
+                <span className="text-xs text-white/50">Reduction</span>
                 <span className="text-sm font-bold text-emerald-600 tabular-nums">-{fmt$(Math.round(provisionalIncomeBefore - provisionalIncomeAfter))}</span>
               </div>
             </div>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-charcoal-700 uppercase tracking-wide mb-3">IRMAA Bracket Impact</h3>
+            <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-3">IRMAA Bracket Impact</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between rounded-lg border border-warning-100 bg-warning-50 px-4 py-3">
                 <span className="text-xs text-warning-700">Current MAGI Bracket</span>
                 <span className="text-sm font-bold text-warning-700">Tier 4 (&gt;$750K)</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-limestone-50 px-4 py-3">
-                <span className="text-xs text-charcoal-500">Monthly Part B Surcharge</span>
-                <span className="text-sm font-bold text-charcoal-900 tabular-nums">$384.90/person</span>
+              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
+                <span className="text-xs text-white/50">Monthly Part B Surcharge</span>
+                <span className="text-sm font-bold text-white tabular-nums">$384.90/person</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-limestone-50 px-4 py-3">
-                <span className="text-xs text-charcoal-500">Annual IRMAA Cost (2 persons)</span>
+              <div className="flex items-center justify-between rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
+                <span className="text-xs text-white/50">Annual IRMAA Cost (2 persons)</span>
                 <span className="text-sm font-bold text-critical-500 tabular-nums">{fmt$(Math.round(384.9 * 12 * 2))}</span>
               </div>
             </div>
@@ -558,48 +558,48 @@ function TrustsTab() {
   return (
     <div className="space-y-6">
       {/* CRT Section */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Charitable Remainder Trust (CRT)</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Transfer appreciated assets, receive income stream, avoid capital gains, charitable deduction for remainder</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Charitable Remainder Trust (CRT)</h2>
+        <p className="text-xs text-white/50 mb-4">Transfer appreciated assets, receive income stream, avoid capital gains, charitable deduction for remainder</p>
 
-        <div className="flex items-center gap-2 rounded-lg bg-brand-50 border border-brand-100 px-4 py-3 mb-4">
-          <Info size={16} className="text-brand-700 flex-shrink-0" />
-          <p className="text-xs text-brand-700">CRT sells contributed assets without triggering capital gains tax. You receive annual payouts, and the remainder passes to charity at the end of the term.</p>
+        <div className="flex items-center gap-2 rounded-lg bg-teal-500/10 border border-brand-100 px-4 py-3 mb-4">
+          <Info size={16} className="text-teal-300 flex-shrink-0" />
+          <p className="text-xs text-teal-300">CRT sells contributed assets without triggering capital gains tax. You receive annual payouts, and the remainder passes to charity at the end of the term.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Calculator Inputs */}
           <div className="space-y-4">
-            <h3 className="text-xs font-semibold text-charcoal-700 uppercase tracking-wide">Calculator Inputs</h3>
+            <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wide">Calculator Inputs</h3>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Asset Value</label>
-              <input type="number" value={crtAssetValue} onChange={(e) => setCrtAssetValue(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Asset Value</label>
+              <input type="number" value={crtAssetValue} onChange={(e) => setCrtAssetValue(Number(e.target.value))} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden tabular-nums" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Payout Rate (%)</label>
-              <input type="number" step="0.1" value={crtPayoutRate} onChange={(e) => setCrtPayoutRate(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Payout Rate (%)</label>
+              <input type="number" step="0.1" value={crtPayoutRate} onChange={(e) => setCrtPayoutRate(Number(e.target.value))} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden tabular-nums" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Term (Years)</label>
-              <input type="number" value={crtTerm} onChange={(e) => setCrtTerm(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Term (Years)</label>
+              <input type="number" value={crtTerm} onChange={(e) => setCrtTerm(Number(e.target.value))} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden tabular-nums" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-charcoal-700 mb-1">Section 7520 Rate (%)</label>
-              <input type="number" step="0.1" value={crtRate7520} onChange={(e) => setCrtRate7520(Number(e.target.value))} className="w-full rounded-lg border border-limestone-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-hidden tabular-nums" />
+              <label className="block text-xs font-medium text-white/60 mb-1">Section 7520 Rate (%)</label>
+              <input type="number" step="0.1" value={crtRate7520} onChange={(e) => setCrtRate7520(Number(e.target.value))} className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden tabular-nums" />
             </div>
           </div>
 
           {/* Calculator Results */}
-          <div className="rounded-xl border border-limestone-100 bg-limestone-50 p-5">
-            <h3 className="text-xs font-semibold text-charcoal-900 uppercase tracking-wide mb-4">CRT Results</h3>
+          <div className="rounded-xl border border-limestone-100 bg-transparent p-5">
+            <h3 className="text-xs font-semibold text-white uppercase tracking-wide mb-4">CRT Results</h3>
             <div className="space-y-3 text-xs">
-              <div className="flex justify-between"><span className="text-charcoal-500">Annual Income</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(crtAnnualIncome)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Total Income ({crtTerm} years)</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(crtAnnualIncome * crtTerm)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Charitable Deduction</span><span className="font-medium text-emerald-600 tabular-nums">{fmt$(crtDeduction)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">Capital Gains Tax Avoided</span><span className="font-medium text-emerald-600 tabular-nums">{fmt$(crtCapitalGainAvoided)}</span></div>
-              <div className="flex justify-between"><span className="text-charcoal-500">PV of Remainder to Charity</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(crtPvRemainder)}</span></div>
-              <div className="flex justify-between border-t border-limestone-200 pt-3 mt-3">
-                <span className="font-semibold text-charcoal-900">Tax Savings (Ded + CG Avoided)</span>
+              <div className="flex justify-between"><span className="text-white/50">Annual Income</span><span className="font-medium text-white tabular-nums">{fmt$(crtAnnualIncome)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Total Income ({crtTerm} years)</span><span className="font-medium text-white tabular-nums">{fmt$(crtAnnualIncome * crtTerm)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Charitable Deduction</span><span className="font-medium text-emerald-600 tabular-nums">{fmt$(crtDeduction)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">Capital Gains Tax Avoided</span><span className="font-medium text-emerald-600 tabular-nums">{fmt$(crtCapitalGainAvoided)}</span></div>
+              <div className="flex justify-between"><span className="text-white/50">PV of Remainder to Charity</span><span className="font-medium text-white tabular-nums">{fmt$(crtPvRemainder)}</span></div>
+              <div className="flex justify-between border-t border-white/[0.06] pt-3 mt-3">
+                <span className="font-semibold text-white">Tax Savings (Ded + CG Avoided)</span>
                 <span className="font-bold text-emerald-700 tabular-nums">{fmt$(Math.round(crtDeduction * 0.37) + crtCapitalGainAvoided)}</span>
               </div>
             </div>
@@ -608,37 +608,37 @@ function TrustsTab() {
       </div>
 
       {/* CLT Section */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Charitable Lead Trust (CLT)</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Charity receives annual payments during the term; remainder passes to heirs at reduced gift/estate tax</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Charitable Lead Trust (CLT)</h2>
+        <p className="text-xs text-white/50 mb-4">Charity receives annual payments during the term; remainder passes to heirs at reduced gift/estate tax</p>
 
-        <div className="flex items-center gap-2 rounded-lg bg-brand-50 border border-brand-100 px-4 py-3 mb-4">
-          <Info size={16} className="text-brand-700 flex-shrink-0" />
-          <p className="text-xs text-brand-700">A CLT is ideal for transferring wealth to heirs while supporting charities. If assets grow faster than the Section 7520 rate, the excess passes to heirs free of gift/estate tax.</p>
+        <div className="flex items-center gap-2 rounded-lg bg-teal-500/10 border border-brand-100 px-4 py-3 mb-4">
+          <Info size={16} className="text-teal-300 flex-shrink-0" />
+          <p className="text-xs text-teal-300">A CLT is ideal for transferring wealth to heirs while supporting charities. If assets grow faster than the Section 7520 rate, the excess passes to heirs free of gift/estate tax.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Asset Value</span>
-            <p className="text-sm font-bold text-charcoal-900 mt-1 tabular-nums">{fmt$(cltAssetValue)}</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Asset Value</span>
+            <p className="text-sm font-bold text-white mt-1 tabular-nums">{fmt$(cltAssetValue)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Annuity Rate / Term</span>
-            <p className="text-sm font-bold text-charcoal-900 mt-1 tabular-nums">{fmtPct(cltAnnuityRate)} / {cltTerm} years</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Annuity Rate / Term</span>
+            <p className="text-sm font-bold text-white mt-1 tabular-nums">{fmtPct(cltAnnuityRate)} / {cltTerm} years</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Annual Payment to Charity</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Annual Payment to Charity</span>
             <p className="text-sm font-bold text-emerald-600 mt-1 tabular-nums">{fmt$(cltAnnualPayment)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Total to Charity</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Total to Charity</span>
             <p className="text-sm font-bold text-emerald-600 mt-1 tabular-nums">{fmt$(cltTotalToCharity)}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <div className="rounded-lg border border-brand-100 bg-brand-50 p-4">
-            <span className="text-xs text-brand-700">Projected Portfolio Value at End of Term (7% growth)</span>
-            <p className="text-lg font-bold text-brand-900 mt-1 tabular-nums">{fmt$(cltProjectedValue)}</p>
+          <div className="rounded-lg border border-brand-100 bg-teal-500/10 p-4">
+            <span className="text-xs text-teal-300">Projected Portfolio Value at End of Term (7% growth)</span>
+            <p className="text-lg font-bold text-white mt-1 tabular-nums">{fmt$(cltProjectedValue)}</p>
           </div>
           <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
             <span className="text-xs text-emerald-700">Estimated Remainder to Heirs</span>
@@ -654,25 +654,25 @@ function FoundationTab() {
   return (
     <div className="space-y-6">
       {/* Foundation Overview */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Private Foundation Overview</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Establish and manage a private family foundation for long-term philanthropic impact</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Private Foundation Overview</h2>
+        <p className="text-xs text-white/50 mb-4">Establish and manage a private family foundation for long-term philanthropic impact</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Foundation Assets</span>
-            <p className="text-sm font-bold text-charcoal-900 mt-1 tabular-nums">{fmt$(2_500_000)}</p>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Foundation Assets</span>
+            <p className="text-sm font-bold text-white mt-1 tabular-nums">{fmt$(2_500_000)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Annual Distribution Req. (5%)</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Annual Distribution Req. (5%)</span>
             <p className="text-sm font-bold text-warning-500 mt-1 tabular-nums">{fmt$(125_000)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Annual Admin Costs</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Annual Admin Costs</span>
             <p className="text-sm font-bold text-critical-500 mt-1 tabular-nums">{fmt$(35_000)}</p>
           </div>
-          <div className="rounded-lg border border-limestone-100 bg-limestone-50 p-4">
-            <span className="text-xs text-charcoal-500">Excise Tax (1.39%)</span>
+          <div className="rounded-lg border border-limestone-100 bg-transparent p-4">
+            <span className="text-xs text-white/50">Excise Tax (1.39%)</span>
             <p className="text-sm font-bold text-critical-500 mt-1 tabular-nums">{fmt$(34_750)}</p>
           </div>
         </div>
@@ -684,36 +684,36 @@ function FoundationTab() {
         </div>
 
         {/* Admin Costs */}
-        <div className="rounded-xl border border-limestone-200 p-5">
-          <h3 className="text-sm font-semibold text-charcoal-900 mb-3">Administrative Costs & Compliance</h3>
+        <div className="rounded-xl border border-white/[0.06] p-5">
+          <h3 className="text-sm font-semibold text-white mb-3">Administrative Costs & Compliance</h3>
           <div className="space-y-2 text-xs">
-            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-charcoal-500">Legal & Accounting</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(15_000)}</span></div>
-            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-charcoal-500">Investment Management</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(12_500)}</span></div>
-            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-charcoal-500">Insurance & Filing</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(5_000)}</span></div>
-            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-charcoal-500">Office & Misc</span><span className="font-medium text-charcoal-900 tabular-nums">{fmt$(2_500)}</span></div>
-            <div className="flex justify-between py-2 font-semibold"><span className="text-charcoal-900">Total Annual Admin</span><span className="text-charcoal-900 tabular-nums">{fmt$(35_000)}</span></div>
+            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-white/50">Legal & Accounting</span><span className="font-medium text-white tabular-nums">{fmt$(15_000)}</span></div>
+            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-white/50">Investment Management</span><span className="font-medium text-white tabular-nums">{fmt$(12_500)}</span></div>
+            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-white/50">Insurance & Filing</span><span className="font-medium text-white tabular-nums">{fmt$(5_000)}</span></div>
+            <div className="flex justify-between py-2 border-b border-limestone-100"><span className="text-white/50">Office & Misc</span><span className="font-medium text-white tabular-nums">{fmt$(2_500)}</span></div>
+            <div className="flex justify-between py-2 font-semibold"><span className="text-white">Total Annual Admin</span><span className="text-white tabular-nums">{fmt$(35_000)}</span></div>
           </div>
         </div>
       </div>
 
       {/* DAF vs Foundation Comparison */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">DAF vs Private Foundation Comparison</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">DAF vs Private Foundation Comparison</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-limestone-200">
-                <th className="text-left py-2 pr-4 font-medium text-charcoal-500">Feature</th>
-                <th className="text-left py-2 px-3 font-medium text-brand-700">DAF</th>
-                <th className="text-left py-2 pl-3 font-medium text-brand-700">Private Foundation</th>
+              <tr className="border-b border-white/[0.06]">
+                <th className="text-left py-2 pr-4 font-medium text-white/50">Feature</th>
+                <th className="text-left py-2 px-3 font-medium text-teal-300">DAF</th>
+                <th className="text-left py-2 pl-3 font-medium text-teal-300">Private Foundation</th>
               </tr>
             </thead>
             <tbody>
               {DAF_VS_FOUNDATION.map((row) => (
                 <tr key={row.feature} className="border-b border-limestone-100">
-                  <td className="py-2.5 pr-4 font-medium text-charcoal-900">{row.feature}</td>
-                  <td className="py-2.5 px-3 text-charcoal-700">{row.daf}</td>
-                  <td className="py-2.5 pl-3 text-charcoal-700">{row.foundation}</td>
+                  <td className="py-2.5 pr-4 font-medium text-white">{row.feature}</td>
+                  <td className="py-2.5 px-3 text-white/60">{row.daf}</td>
+                  <td className="py-2.5 pl-3 text-white/60">{row.foundation}</td>
                 </tr>
               ))}
             </tbody>
@@ -743,35 +743,35 @@ function OptimizerTab() {
       </div>
 
       {/* Comparison Table */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Charitable Giving Method Comparison</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Side-by-side analysis for a $50,000 equivalent charitable gift (37% marginal rate, 23.8% LTCG rate)</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Charitable Giving Method Comparison</h2>
+        <p className="text-xs text-white/50 mb-4">Side-by-side analysis for a $50,000 equivalent charitable gift (37% marginal rate, 23.8% LTCG rate)</p>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-limestone-200">
-                <th className="text-left py-2 pr-4 font-medium text-charcoal-500">Method</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Deduction</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Tax Savings</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">CG Avoided</th>
-                <th className="text-left py-2 px-3 font-medium text-charcoal-500">AGI Impact</th>
-                <th className="text-right py-2 pl-3 font-medium text-charcoal-500">Net Cost</th>
+              <tr className="border-b border-white/[0.06]">
+                <th className="text-left py-2 pr-4 font-medium text-white/50">Method</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Deduction</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Tax Savings</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">CG Avoided</th>
+                <th className="text-left py-2 px-3 font-medium text-white/50">AGI Impact</th>
+                <th className="text-right py-2 pl-3 font-medium text-white/50">Net Cost</th>
               </tr>
             </thead>
             <tbody>
               {GIVING_METHODS.map((m) => (
-                <tr key={m.method} className={`border-b border-limestone-100 hover:bg-limestone-50 ${m.method === bestMethod.method ? 'bg-emerald-50/50' : ''}`}>
-                  <td className="py-2.5 pr-4 font-medium text-charcoal-900">
+                <tr key={m.method} className={`border-b border-limestone-100 hover:bg-white/[0.04] ${m.method === bestMethod.method ? 'bg-emerald-50/50' : ''}`}>
+                  <td className="py-2.5 pr-4 font-medium text-white">
                     <div className="flex items-center gap-2">
                       {m.method}
                       {m.method === bestMethod.method && <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">Best</span>}
                     </div>
                   </td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-700">{fmt$(m.deduction)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(m.deduction)}</td>
                   <td className="py-2.5 px-3 text-right tabular-nums text-emerald-600 font-medium">{fmt$(m.taxSavings)}</td>
                   <td className="py-2.5 px-3 text-right tabular-nums text-emerald-600 font-medium">{fmt$(m.cgAvoided)}</td>
-                  <td className="py-2.5 px-3 text-charcoal-700">{m.agiImpact}</td>
-                  <td className={`py-2.5 pl-3 text-right tabular-nums font-bold ${m.netCost < 0 ? 'text-emerald-600' : 'text-charcoal-900'}`}>{fmt$(m.netCost)}</td>
+                  <td className="py-2.5 px-3 text-white/60">{m.agiImpact}</td>
+                  <td className={`py-2.5 pl-3 text-right tabular-nums font-bold ${m.netCost < 0 ? 'text-emerald-600' : 'text-white'}`}>{fmt$(m.netCost)}</td>
                 </tr>
               ))}
             </tbody>
@@ -780,19 +780,19 @@ function OptimizerTab() {
       </div>
 
       {/* Visual Comparison */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Net Cost Comparison</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Lower net cost = more tax-efficient giving method</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Net Cost Comparison</h2>
+        <p className="text-xs text-white/50 mb-4">Lower net cost = more tax-efficient giving method</p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={GIVING_METHODS} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
               <XAxis type="number" tick={{ fontSize: 11 }} tickFormatter={fmtCompact} />
               <YAxis type="category" dataKey="method" tick={{ fontSize: 11 }} width={120} />
               <Tooltip formatter={(v: number) => fmt$(v)} />
               <Bar dataKey="netCost" name="Net Cost" radius={[0, 4, 4, 0]}>
                 {GIVING_METHODS.map((entry, i) => (
-                  <Cell key={i} fill={entry.netCost < 0 ? '#2E8B57' : entry.method === bestMethod.method ? '#2E8B57' : '#6366F1'} />
+                  <Cell key={i} fill={entry.netCost < 0 ? '#22c55e' : entry.method === bestMethod.method ? '#22c55e' : '#6366F1'} />
                 ))}
               </Bar>
             </BarChart>
@@ -807,53 +807,53 @@ function StrategyTab() {
   return (
     <div className="space-y-6">
       {/* Annual Giving Plan */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">Annual Giving Plan (2025)</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">Annual Giving Plan (2025)</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-limestone-200">
-                <th className="text-left py-2 pr-4 font-medium text-charcoal-500">Action</th>
-                <th className="text-left py-2 px-3 font-medium text-charcoal-500">Method</th>
-                <th className="text-right py-2 px-3 font-medium text-charcoal-500">Amount</th>
-                <th className="text-left py-2 px-3 font-medium text-charcoal-500">Timing</th>
-                <th className="text-right py-2 pl-3 font-medium text-charcoal-500">Tax Benefit</th>
+              <tr className="border-b border-white/[0.06]">
+                <th className="text-left py-2 pr-4 font-medium text-white/50">Action</th>
+                <th className="text-left py-2 px-3 font-medium text-white/50">Method</th>
+                <th className="text-right py-2 px-3 font-medium text-white/50">Amount</th>
+                <th className="text-left py-2 px-3 font-medium text-white/50">Timing</th>
+                <th className="text-right py-2 pl-3 font-medium text-white/50">Tax Benefit</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-limestone-100 hover:bg-limestone-50">
-                <td className="py-2.5 pr-4 font-medium text-charcoal-900">Direct IRA RMD to charity</td>
-                <td className="py-2.5 px-3 text-charcoal-700">QCD</td>
-                <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-900">{fmt$(48_000)}</td>
-                <td className="py-2.5 px-3 text-charcoal-700">Q1 2025</td>
+              <tr className="border-b border-limestone-100 hover:bg-white/[0.04]">
+                <td className="py-2.5 pr-4 font-medium text-white">Direct IRA RMD to charity</td>
+                <td className="py-2.5 px-3 text-white/60">QCD</td>
+                <td className="py-2.5 px-3 text-right tabular-nums text-white">{fmt$(48_000)}</td>
+                <td className="py-2.5 px-3 text-white/60">Q1 2025</td>
                 <td className="py-2.5 pl-3 text-right tabular-nums text-emerald-600 font-medium">{fmt$(21_120)}</td>
               </tr>
-              <tr className="border-b border-limestone-100 hover:bg-limestone-50">
-                <td className="py-2.5 pr-4 font-medium text-charcoal-900">Fund DAF with appreciated AAPL stock</td>
-                <td className="py-2.5 px-3 text-charcoal-700">DAF (Stock)</td>
-                <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-900">{fmt$(50_000)}</td>
-                <td className="py-2.5 px-3 text-charcoal-700">Q4 2025</td>
+              <tr className="border-b border-limestone-100 hover:bg-white/[0.04]">
+                <td className="py-2.5 pr-4 font-medium text-white">Fund DAF with appreciated AAPL stock</td>
+                <td className="py-2.5 px-3 text-white/60">DAF (Stock)</td>
+                <td className="py-2.5 px-3 text-right tabular-nums text-white">{fmt$(50_000)}</td>
+                <td className="py-2.5 px-3 text-white/60">Q4 2025</td>
                 <td className="py-2.5 pl-3 text-right tabular-nums text-emerald-600 font-medium">{fmt$(28_020)}</td>
               </tr>
-              <tr className="border-b border-limestone-100 hover:bg-limestone-50">
-                <td className="py-2.5 pr-4 font-medium text-charcoal-900">DAF grants to operating charities</td>
-                <td className="py-2.5 px-3 text-charcoal-700">DAF Grant</td>
-                <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-900">{fmt$(40_000)}</td>
-                <td className="py-2.5 px-3 text-charcoal-700">Throughout year</td>
-                <td className="py-2.5 pl-3 text-right tabular-nums text-charcoal-500">Deducted at funding</td>
+              <tr className="border-b border-limestone-100 hover:bg-white/[0.04]">
+                <td className="py-2.5 pr-4 font-medium text-white">DAF grants to operating charities</td>
+                <td className="py-2.5 px-3 text-white/60">DAF Grant</td>
+                <td className="py-2.5 px-3 text-right tabular-nums text-white">{fmt$(40_000)}</td>
+                <td className="py-2.5 px-3 text-white/60">Throughout year</td>
+                <td className="py-2.5 pl-3 text-right tabular-nums text-white/50">Deducted at funding</td>
               </tr>
-              <tr className="border-b border-limestone-100 hover:bg-limestone-50">
-                <td className="py-2.5 pr-4 font-medium text-charcoal-900">Explore CRT for rental property</td>
-                <td className="py-2.5 px-3 text-charcoal-700">CRT</td>
-                <td className="py-2.5 px-3 text-right tabular-nums text-charcoal-900">TBD</td>
-                <td className="py-2.5 px-3 text-charcoal-700">Q2 2025 (evaluate)</td>
-                <td className="py-2.5 pl-3 text-right tabular-nums text-charcoal-500">Significant potential</td>
+              <tr className="border-b border-limestone-100 hover:bg-white/[0.04]">
+                <td className="py-2.5 pr-4 font-medium text-white">Explore CRT for rental property</td>
+                <td className="py-2.5 px-3 text-white/60">CRT</td>
+                <td className="py-2.5 px-3 text-right tabular-nums text-white">TBD</td>
+                <td className="py-2.5 px-3 text-white/60">Q2 2025 (evaluate)</td>
+                <td className="py-2.5 pl-3 text-right tabular-nums text-white/50">Significant potential</td>
               </tr>
             </tbody>
             <tfoot>
-              <tr className="border-t border-limestone-200">
-                <td className="py-2.5 font-semibold text-charcoal-900" colSpan={2}>Total Planned Giving</td>
-                <td className="py-2.5 px-3 text-right tabular-nums font-bold text-charcoal-900">{fmt$(138_000)}</td>
+              <tr className="border-t border-white/[0.06]">
+                <td className="py-2.5 font-semibold text-white" colSpan={2}>Total Planned Giving</td>
+                <td className="py-2.5 px-3 text-right tabular-nums font-bold text-white">{fmt$(138_000)}</td>
                 <td></td>
                 <td className="py-2.5 pl-3 text-right tabular-nums font-bold text-emerald-600">{fmt$(49_140)}</td>
               </tr>
@@ -863,58 +863,58 @@ function StrategyTab() {
       </div>
 
       {/* Recommended Strategy Narrative */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-3">Recommended Strategy</h2>
-        <div className="space-y-3 text-xs text-charcoal-700 leading-relaxed">
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-3">Recommended Strategy</h2>
+        <div className="space-y-3 text-xs text-white/60 leading-relaxed">
           <p>
-            <strong className="text-charcoal-900">1. Maximize QCD usage:</strong> At age {CLIENT_AGE}, direct the full RMD of {fmt$(RMD_AMOUNT)} via QCD to reduce AGI, lower provisional income for Social Security taxation, and potentially avoid higher IRMAA brackets. This is the single most tax-efficient giving strategy available.
+            <strong className="text-white">1. Maximize QCD usage:</strong> At age {CLIENT_AGE}, direct the full RMD of {fmt$(RMD_AMOUNT)} via QCD to reduce AGI, lower provisional income for Social Security taxation, and potentially avoid higher IRMAA brackets. This is the single most tax-efficient giving strategy available.
           </p>
           <p>
-            <strong className="text-charcoal-900">2. Fund DAF with appreciated stock:</strong> Contribute highly appreciated securities (AAPL, MSFT) to the DAF rather than cash. This provides a full FMV deduction while avoiding capital gains tax on the appreciation. Target {fmt$(50_000)} contribution in Q4.
+            <strong className="text-white">2. Fund DAF with appreciated stock:</strong> Contribute highly appreciated securities (AAPL, MSFT) to the DAF rather than cash. This provides a full FMV deduction while avoiding capital gains tax on the appreciation. Target {fmt$(50_000)} contribution in Q4.
           </p>
           <p>
-            <strong className="text-charcoal-900">3. Evaluate CRT for concentrated position:</strong> The rental property with significant unrealized gains is an excellent CRT candidate. Transferring to a CRT would eliminate capital gains on the sale, provide a charitable deduction, and generate an annual income stream of approximately 5% of the initial value.
+            <strong className="text-white">3. Evaluate CRT for concentrated position:</strong> The rental property with significant unrealized gains is an excellent CRT candidate. Transferring to a CRT would eliminate capital gains on the sale, provide a charitable deduction, and generate an annual income stream of approximately 5% of the initial value.
           </p>
           <p>
-            <strong className="text-charcoal-900">4. Consider bunching in 2026:</strong> If itemized deductions are close to the standard deduction threshold, consider accelerating 2026-2027 giving into a single DAF contribution in 2026 to maximize itemization benefit.
+            <strong className="text-white">4. Consider bunching in 2026:</strong> If itemized deductions are close to the standard deduction threshold, consider accelerating 2026-2027 giving into a single DAF contribution in 2026 to maximize itemization benefit.
           </p>
         </div>
       </div>
 
       {/* Multi-Year Projection */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-1">Multi-Year Giving & Tax Impact Projection</h2>
-        <p className="text-xs text-charcoal-500 mb-4">Projected annual giving and associated tax savings over the next 5 years</p>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-1">Multi-Year Giving & Tax Impact Projection</h2>
+        <p className="text-xs text-white/50 mb-4">Projected annual giving and associated tax savings over the next 5 years</p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr className="border-b border-limestone-200">
-                  <th className="text-left py-2 pr-3 font-medium text-charcoal-500">Year</th>
-                  <th className="text-right py-2 px-2 font-medium text-charcoal-500">Giving</th>
-                  <th className="text-right py-2 px-2 font-medium text-charcoal-500">Deduction</th>
-                  <th className="text-right py-2 px-2 font-medium text-charcoal-500">Tax Savings</th>
-                  <th className="text-right py-2 pl-2 font-medium text-charcoal-500">Net Cost</th>
+                <tr className="border-b border-white/[0.06]">
+                  <th className="text-left py-2 pr-3 font-medium text-white/50">Year</th>
+                  <th className="text-right py-2 px-2 font-medium text-white/50">Giving</th>
+                  <th className="text-right py-2 px-2 font-medium text-white/50">Deduction</th>
+                  <th className="text-right py-2 px-2 font-medium text-white/50">Tax Savings</th>
+                  <th className="text-right py-2 pl-2 font-medium text-white/50">Net Cost</th>
                 </tr>
               </thead>
               <tbody>
                 {MULTI_YEAR_PROJECTION.map((r) => (
                   <tr key={r.year} className="border-b border-limestone-100">
-                    <td className="py-2.5 pr-3 font-medium text-charcoal-900">{r.year}</td>
-                    <td className="py-2.5 px-2 text-right tabular-nums text-charcoal-700">{fmt$(r.giving)}</td>
-                    <td className="py-2.5 px-2 text-right tabular-nums text-charcoal-700">{fmt$(r.deduction)}</td>
+                    <td className="py-2.5 pr-3 font-medium text-white">{r.year}</td>
+                    <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(r.giving)}</td>
+                    <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(r.deduction)}</td>
                     <td className="py-2.5 px-2 text-right tabular-nums text-emerald-600 font-medium">{fmt$(r.taxSavings)}</td>
-                    <td className="py-2.5 pl-2 text-right tabular-nums text-charcoal-900 font-medium">{fmt$(r.netCost)}</td>
+                    <td className="py-2.5 pl-2 text-right tabular-nums text-white font-medium">{fmt$(r.netCost)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-limestone-200">
-                  <td className="py-2.5 font-semibold text-charcoal-900">Total</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums font-bold text-charcoal-900">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.giving, 0))}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums font-bold text-charcoal-900">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.deduction, 0))}</td>
+                <tr className="border-t border-white/[0.06]">
+                  <td className="py-2.5 font-semibold text-white">Total</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.giving, 0))}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.deduction, 0))}</td>
                   <td className="py-2.5 px-2 text-right tabular-nums font-bold text-emerald-600">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.taxSavings, 0))}</td>
-                  <td className="py-2.5 pl-2 text-right tabular-nums font-bold text-charcoal-900">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.netCost, 0))}</td>
+                  <td className="py-2.5 pl-2 text-right tabular-nums font-bold text-white">{fmt$(MULTI_YEAR_PROJECTION.reduce((s, r) => s + r.netCost, 0))}</td>
                 </tr>
               </tfoot>
             </table>
@@ -922,14 +922,14 @@ function StrategyTab() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={MULTI_YEAR_PROJECTION}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E4DDD4" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                 <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} tickFormatter={fmtCompact} />
                 <Tooltip content={<ChartTooltip />} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line type="monotone" dataKey="giving" name="Total Giving" stroke="#6366F1" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="taxSavings" name="Tax Savings" stroke="#2E8B57" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="netCost" name="Net Cost" stroke="#D4860B" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="taxSavings" name="Tax Savings" stroke="#22c55e" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="netCost" name="Net Cost" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -937,8 +937,8 @@ function StrategyTab() {
       </div>
 
       {/* Action Items */}
-      <div className="bg-white rounded-xl border border-limestone-200 p-6">
-        <h2 className="text-sm font-semibold text-charcoal-900 mb-4">Action Items</h2>
+      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">Action Items</h2>
         <div className="space-y-3">
           {[
             { priority: 'High', action: 'Execute QCD for full RMD amount before April 1, 2025', status: 'Pending' },
@@ -948,15 +948,15 @@ function StrategyTab() {
             { priority: 'Low', action: 'Model 2026 bunching scenario with updated income projections', status: 'Pending' },
             { priority: 'Low', action: 'Evaluate private foundation vs expanded DAF for long-term strategy', status: 'Pending' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-lg border border-limestone-100 bg-limestone-50 px-4 py-3">
+            <div key={i} className="flex items-center gap-3 rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
                 item.priority === 'High' ? 'bg-critical-100 text-critical-700' :
                 item.priority === 'Medium' ? 'bg-warning-100 text-warning-700' :
-                'bg-limestone-100 text-charcoal-500'
+                'bg-white/[0.06] text-white/50'
               }`}>{item.priority}</span>
-              <span className="text-xs text-charcoal-900 flex-1">{item.action}</span>
+              <span className="text-xs text-white flex-1">{item.action}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
-                item.status === 'In Progress' ? 'bg-brand-100 text-brand-700' : 'bg-limestone-100 text-charcoal-500'
+                item.status === 'In Progress' ? 'bg-teal-500/15 text-teal-300' : 'bg-white/[0.06] text-white/50'
               }`}>{item.status}</span>
             </div>
           ))}
@@ -996,23 +996,23 @@ export default function CharitablePage() {
         planName="Comprehensive Financial Plan"
       />
 
-      <div className="min-h-screen bg-limestone-50">
+      <div className="min-h-screen bg-transparent">
         <div className="max-w-content mx-auto px-6 py-6">
           {/* Module header */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Heart size={20} className="text-brand-500" />
-                <h1 className="text-xl font-bold text-charcoal-900">Charitable Planning</h1>
+                <Heart size={20} className="text-teal-300" />
+                <h1 className="text-xl font-bold text-white">Charitable Planning</h1>
               </div>
-              <p className="text-sm text-charcoal-500">
+              <p className="text-sm text-white/50">
                 Plan charitable giving strategies including DAFs, CRTs, QCDs, and private foundations.
               </p>
             </div>
           </div>
 
           {/* Tab Navigation */}
-          <div className="mb-6 border-b border-limestone-200">
+          <div className="mb-6 border-b border-white/[0.06]">
             <nav className="-mb-px flex gap-1 overflow-x-auto" aria-label="Tabs">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
@@ -1023,8 +1023,8 @@ export default function CharitablePage() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`inline-flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-xs font-medium transition-colors ${
                       isActive
-                        ? 'border-brand-500 text-brand-600'
-                        : 'border-transparent text-charcoal-500 hover:text-charcoal-700 hover:border-limestone-300'
+                        ? 'border-brand-500 text-teal-300'
+                        : 'border-transparent text-white/50 hover:text-white/60 hover:border-white/[0.10]'
                     }`}
                   >
                     <Icon size={14} />

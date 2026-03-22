@@ -61,9 +61,9 @@ const PRIORITY_BADGE: Record<GoalPriority, { label: string; variant: 'info' | 'w
 };
 
 const STATUS_COLOR: Record<GoalFundingStatus, string> = {
-  funded: '#2E8B57',
+  funded: '#22c55e',
   partial: '#E8A838',
-  at_risk: '#C0392B',
+  at_risk: '#ef4444',
 };
 
 const STATUS_LABEL: Record<GoalFundingStatus, string> = {
@@ -95,8 +95,8 @@ export function GoalCard({
       {/* Top row: name + type badge + priority */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <Target className="h-4 w-4 shrink-0 text-brand-700" aria-hidden="true" />
-          <h3 className="text-sm font-semibold text-charcoal-900 truncate">{name}</h3>
+          <Target className="h-4 w-4 shrink-0 text-teal-300" aria-hidden="true" />
+          <h3 className="text-sm font-semibold text-white truncate">{name}</h3>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <Badge variant={priorityCfg.variant}>{priorityCfg.label}</Badge>
@@ -107,12 +107,12 @@ export function GoalCard({
       <div className="mt-1.5 flex items-center gap-2">
         <Badge variant="neutral">{formatGoalType(type)}</Badge>
         {targetYear !== null && (
-          <span className="text-xs text-charcoal-300">Target {targetYear}</span>
+          <span className="text-xs text-white/30">Target {targetYear}</span>
         )}
       </div>
 
       {/* Target amount */}
-      <p className="mt-3 text-xl font-bold tabular-nums text-charcoal-900">
+      <p className="mt-3 text-xl font-bold tabular-nums text-white">
         {formatCurrency(targetAmount)}
       </p>
 
@@ -129,11 +129,11 @@ export function GoalCard({
       {/* Funded ratio + status */}
       <div className="mt-2 flex items-center justify-between">
         {fundedRatio !== null ? (
-          <span className="text-xs tabular-nums text-charcoal-500">
+          <span className="text-xs tabular-nums text-white/50">
             {Math.round(fundedRatio)}% funded
           </span>
         ) : (
-          <span className="text-xs text-charcoal-300">--</span>
+          <span className="text-xs text-white/30">--</span>
         )}
         {status && (
           <span

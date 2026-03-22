@@ -24,41 +24,41 @@ export default function StressTestSection({ data }: Props) {
       {/* Margin Safety Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">Initial Margin</p>
+          <p className="text-xs text-white/50">Initial Margin</p>
           <p className="text-lg font-bold">{formatPercent(data.initialMarginPct)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">Maintenance Margin</p>
+          <p className="text-xs text-white/50">Maintenance Margin</p>
           <p className="text-lg font-bold">{formatPercent(data.maintenanceMarginPct)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">Max Decline to MC</p>
+          <p className="text-xs text-white/50">Max Decline to MC</p>
           <p className={`text-lg font-bold ${data.declineToMarginCall > 0.5 ? 'text-safe' : data.declineToMarginCall > 0.3 ? 'text-warning' : 'text-danger'}`}>
             {formatPercent(data.declineToMarginCall)}
           </p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-charcoal-500">MC Trigger Value</p>
+          <p className="text-xs text-white/50">MC Trigger Value</p>
           <p className="text-lg font-bold text-danger">{formatCurrency(data.marginCallPortfolioValue)}</p>
         </div>
       </div>
 
       {/* Stress Test Scenarios Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
+        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
           <h3 className="font-semibold text-sm">Market Decline Stress Test</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-limestone-50 border-b">
-                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Decline</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Portfolio Value</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Box Obligation</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Equity</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Equity %</th>
-                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Status</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Excess Equity</th>
+              <tr className="bg-transparent border-b">
+                <th className="text-left px-3 py-2 font-medium text-white/50">Decline</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Portfolio Value</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Box Obligation</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Equity</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Equity %</th>
+                <th className="text-center px-3 py-2 font-medium text-white/50">Status</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Excess Equity</th>
               </tr>
             </thead>
             <tbody>
@@ -90,17 +90,17 @@ export default function StressTestSection({ data }: Props) {
 
       {/* Historical Drawdown Overlay */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-limestone-200 bg-limestone-50">
+        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
           <h3 className="font-semibold text-sm">Historical Drawdown Overlay</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-limestone-50 border-b">
-                <th className="text-left px-3 py-2 font-medium text-charcoal-500">Event</th>
-                <th className="text-right px-3 py-2 font-medium text-charcoal-500">Decline</th>
-                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Duration</th>
-                <th className="text-center px-3 py-2 font-medium text-charcoal-500">Margin Call?</th>
+              <tr className="bg-transparent border-b">
+                <th className="text-left px-3 py-2 font-medium text-white/50">Event</th>
+                <th className="text-right px-3 py-2 font-medium text-white/50">Decline</th>
+                <th className="text-center px-3 py-2 font-medium text-white/50">Duration</th>
+                <th className="text-center px-3 py-2 font-medium text-white/50">Margin Call?</th>
               </tr>
             </thead>
             <tbody>

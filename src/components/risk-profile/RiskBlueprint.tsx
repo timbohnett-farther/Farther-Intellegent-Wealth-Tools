@@ -14,9 +14,9 @@ interface RiskBlueprintProps {
 }
 
 const BAND_COLORS: Record<RiskBand, { bg: string; text: string; bar: string }> = {
-  1: { bg: 'bg-brand-100', text: 'text-brand-700', bar: 'from-brand-400 to-brand-700' },
+  1: { bg: 'bg-teal-500/15', text: 'text-teal-300', bar: 'from-brand-400 to-brand-700' },
   2: { bg: 'bg-cyan-100', text: 'text-cyan-800', bar: 'from-cyan-400 to-cyan-500' },
-  3: { bg: 'bg-brand-100', text: 'text-brand-700', bar: 'from-brand-400 to-brand-700' },
+  3: { bg: 'bg-teal-500/15', text: 'text-teal-300', bar: 'from-brand-400 to-brand-700' },
   4: { bg: 'bg-warning-100', text: 'text-warning-700', bar: 'from-warning-500 to-warning-700' },
   5: { bg: 'bg-orange-100', text: 'text-orange-800', bar: 'from-orange-400 to-orange-500' },
   6: { bg: 'bg-critical-100', text: 'text-critical-700', bar: 'from-critical-500 to-critical-700' },
@@ -26,14 +26,14 @@ const BAND_COLORS: Record<RiskBand, { bg: string; text: string; bar: string }> =
 function AxisBar({ label, score }: { label: string; score: number }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-charcoal-500 w-28 text-right flex-shrink-0">{label}</span>
-      <div className="flex-1 h-3 bg-limestone-100 rounded-full overflow-hidden">
+      <span className="text-xs text-white/50 w-28 text-right flex-shrink-0">{label}</span>
+      <div className="flex-1 h-3 bg-white/[0.06] rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-700 transition-all duration-700 ease-out"
+          className="h-full rounded-full bg-linear-to-r from-brand-400 to-brand-700 transition-all duration-700 ease-out"
           style={{ width: `${score}%` }}
         />
       </div>
-      <span className="text-xs font-semibold text-charcoal-900 w-10">{score}</span>
+      <span className="text-xs font-semibold text-white w-10">{score}</span>
     </div>
   );
 }
@@ -57,8 +57,8 @@ function GoalFeasibilityRow({ goal }: { goal: GoalFeasibility }) {
   return (
     <div className={`flex items-center justify-between p-3 rounded-lg ${goal.feasible ? 'bg-success-50' : 'bg-warning-50'}`}>
       <div>
-        <span className="text-sm font-medium text-charcoal-900">{goal.goalName}</span>
-        <span className="text-xs text-charcoal-500 ml-2">
+        <span className="text-sm font-medium text-white">{goal.goalName}</span>
+        <span className="text-xs text-white/50 ml-2">
           needs {(goal.requiredReturn * 100).toFixed(1)}% return
         </span>
       </div>
@@ -86,9 +86,9 @@ export default function RiskBlueprint({ profile }: RiskBlueprintProps) {
     <div className="space-y-6">
       {/* Primary Result */}
       <div className="card p-8 text-center">
-        <p className="text-sm text-charcoal-500 mb-3">Recommended Risk Band</p>
+        <p className="text-sm text-white/50 mb-3">Recommended Risk Band</p>
         <BandBadge band={recommendedBand} />
-        <p className="text-sm text-charcoal-500 mt-4 max-w-md mx-auto leading-relaxed">
+        <p className="text-sm text-white/50 mt-4 max-w-md mx-auto leading-relaxed">
           {RISK_BAND_DESCRIPTIONS[recommendedBand]}
         </p>
 
@@ -101,19 +101,19 @@ export default function RiskBlueprint({ profile }: RiskBlueprintProps) {
 
       {/* Multi-Axis Scores */}
       <div className="card p-6">
-        <h4 className="text-sm font-semibold text-charcoal-700 mb-4">Risk Profile Axes</h4>
+        <h4 className="text-sm font-semibold text-white/60 mb-4">Risk Profile Axes</h4>
         <div className="space-y-3">
           <AxisBar label={AXIS_LABELS.tolerance} score={Math.round(axisScores.tolerance)} />
           <AxisBar label={AXIS_LABELS.capacity} score={Math.round(axisScores.capacity)} />
           <AxisBar label={AXIS_LABELS.complexity} score={Math.round(axisScores.complexity)} />
         </div>
         <div className="mt-4 pt-4 border-t border-limestone-100 flex items-center justify-between">
-          <span className="text-xs text-charcoal-500">Required Return to Meet Goals</span>
-          <span className="text-sm font-bold text-charcoal-900">{(axisScores.need * 100).toFixed(1)}%</span>
+          <span className="text-xs text-white/50">Required Return to Meet Goals</span>
+          <span className="text-sm font-bold text-white">{(axisScores.need * 100).toFixed(1)}%</span>
         </div>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-xs text-charcoal-500">Behavioral Bias Index</span>
-          <span className={`text-sm font-bold ${axisScores.biasIndex > 60 ? 'text-warning-500' : axisScores.biasIndex > 30 ? 'text-charcoal-500' : 'text-success-500'}`}>
+          <span className="text-xs text-white/50">Behavioral Bias Index</span>
+          <span className={`text-sm font-bold ${axisScores.biasIndex > 60 ? 'text-warning-500' : axisScores.biasIndex > 30 ? 'text-white/50' : 'text-success-500'}`}>
             {Math.round(axisScores.biasIndex)} / 100
           </span>
         </div>
@@ -122,7 +122,7 @@ export default function RiskBlueprint({ profile }: RiskBlueprintProps) {
       {/* Goal Feasibility */}
       {profile.goalFeasibility.length > 0 && (
         <div className="card p-6">
-          <h4 className="text-sm font-semibold text-charcoal-700 mb-3">Goal Feasibility</h4>
+          <h4 className="text-sm font-semibold text-white/60 mb-3">Goal Feasibility</h4>
           <div className="space-y-2">
             {profile.goalFeasibility.map((g, i) => (
               <GoalFeasibilityRow key={i} goal={g} />
@@ -139,14 +139,14 @@ export default function RiskBlueprint({ profile }: RiskBlueprintProps) {
       {/* Confidence */}
       <div className="card p-6">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-charcoal-500">Assessment Confidence</span>
-          <span className={`text-sm font-bold ${profile.confidence >= 80 ? 'text-success-500' : profile.confidence >= 60 ? 'text-brand-700' : 'text-warning-500'}`}>
+          <span className="text-xs text-white/50">Assessment Confidence</span>
+          <span className={`text-sm font-bold ${profile.confidence >= 80 ? 'text-success-500' : profile.confidence >= 60 ? 'text-teal-300' : 'text-warning-500'}`}>
             {profile.confidence}%
           </span>
         </div>
-        <div className="h-2 bg-limestone-100 rounded-full overflow-hidden">
+        <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
           <div
-            className={`h-full rounded-full bg-gradient-to-r ${profile.confidence >= 80 ? 'from-success-500 to-success-700' : profile.confidence >= 60 ? 'from-brand-400 to-brand-700' : 'from-warning-500 to-warning-700'} transition-all duration-700`}
+            className={`h-full rounded-full bg-linear-to-r ${profile.confidence >= 80 ? 'from-success-500 to-success-700' : profile.confidence >= 60 ? 'from-brand-400 to-brand-700' : 'from-warning-500 to-warning-700'} transition-all duration-700`}
             style={{ width: `${profile.confidence}%` }}
           />
         </div>

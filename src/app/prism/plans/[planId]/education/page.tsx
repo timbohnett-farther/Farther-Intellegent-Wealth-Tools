@@ -22,23 +22,23 @@ export default function EducationPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <GraduationCap size={20} className="text-brand-500" />
-              <h1 className="text-xl font-bold text-charcoal-900">Education Planning</h1>
+              <GraduationCap size={20} className="text-teal-300" />
+              <h1 className="text-xl font-bold text-white">Education Planning</h1>
             </div>
-            <p className="text-sm text-charcoal-500">
+            <p className="text-sm text-white/50">
               Plan for education costs including 529 plans and financial aid strategies.
             </p>
           </div>
         </div>
 
         {/* Stage 3 placeholder */}
-        <div className="bg-white rounded-xl border border-limestone-200 shadow-sm p-8">
+        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-8">
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-4">
               <Clock size={24} className="text-orange-400" />
             </div>
-            <h3 className="text-sm font-semibold text-charcoal-900 mb-1">Coming in Stage 3</h3>
-            <p className="text-sm text-charcoal-500 max-w-sm">
+            <h3 className="text-sm font-semibold text-white mb-1">Coming in Stage 3</h3>
+            <p className="text-sm text-white/50 max-w-sm">
               Education planning will be available in Stage 3.
             </p>
           </div>
