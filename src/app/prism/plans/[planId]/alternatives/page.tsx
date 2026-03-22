@@ -228,7 +228,7 @@ function AddFundModal({ open, onClose }: { open: boolean; onClose: () => void })
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="w-full max-w-lg rounded-xl bg-white/[0.07] backdrop-blur-xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Add PE/VC Fund</h3>
+          <h3 className="font-serif text-lg text-white">Add PE/VC Fund</h3>
           <button onClick={onClose} className="p-1 rounded hover:bg-white/[0.06]"><X size={18} className="text-white/50" /></button>
         </div>
         <div className="space-y-4">
@@ -321,7 +321,7 @@ function SummaryTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Alts AUM</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_ALTS_AUM)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(TOTAL_ALTS_AUM)}</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
@@ -330,7 +330,7 @@ function SummaryTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Unfunded Commitments</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(UNFUNDED_TOTAL)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(UNFUNDED_TOTAL)}</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
@@ -339,7 +339,7 @@ function SummaryTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Weighted IRR</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmtPct(weightedIrr)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmtPct(weightedIrr)}</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-3">
@@ -348,7 +348,7 @@ function SummaryTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Weighted TVPI</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmtX(weightedTvpi)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmtX(weightedTvpi)}</p>
         </div>
       </div>
 
@@ -783,7 +783,7 @@ function LiquidityTab() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Available Liquid Assets</span>
-          <p className="text-2xl font-bold text-white tabular-nums mt-2">{fmt$(LIQUID_ASSETS)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums mt-2">{fmt$(LIQUID_ASSETS)}</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
           <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Unfunded Commitments</span>

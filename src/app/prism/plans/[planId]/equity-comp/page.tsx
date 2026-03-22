@@ -444,7 +444,7 @@ export default function EquityCompPage() {
                   <DollarSign size={16} className="text-teal-300" />
                   <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Equity Value</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{fmt$(totalEquityValue)}</p>
+                <p className="font-serif text-3xl text-white tracking-wide">{fmt$(totalEquityValue)}</p>
                 <p className="text-xs text-success-500 mt-1 flex items-center gap-1">
                   <ArrowUpRight size={12} /> +12.4% YTD
                 </p>
@@ -462,7 +462,7 @@ export default function EquityCompPage() {
                   <PieChartIcon size={16} className="text-indigo-500" />
                   <span className="text-xs font-medium text-white/50 uppercase tracking-wide">% of Portfolio</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{fmtPct(equityPctOfPortfolio)}</p>
+                <p className="font-serif text-3xl text-white tracking-wide">{fmtPct(equityPctOfPortfolio)}</p>
                 <p className="text-xs text-white/50 mt-1">Portfolio: {fmt$(portfolioValue)}</p>
                 {equityPctOfPortfolio > 20 && (
                   <p className="text-xs text-warning-500 mt-1 flex items-center gap-1">

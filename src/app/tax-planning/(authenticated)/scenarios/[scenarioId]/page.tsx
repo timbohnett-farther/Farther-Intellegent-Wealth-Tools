@@ -458,7 +458,7 @@ export default function ScenarioBuilderPage() {
             <button
               type="button"
               onClick={() => setEditingName(true)}
-              className="text-2xl font-bold text-white hover:text-teal-300 transition-colors text-left"
+              className="font-serif text-3xl text-white tracking-wide hover:text-teal-300 transition-colors text-left"
               title="Click to edit scenario name"
             >
               {scenario.name}
@@ -475,7 +475,7 @@ export default function ScenarioBuilderPage() {
         {/* Middle section: Overrides */}
         <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Overrides</h2>
+            <h2 className="font-serif text-lg text-white">Overrides</h2>
             {overrides.length > 0 && (
               <button
                 type="button"

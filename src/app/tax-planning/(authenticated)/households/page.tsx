@@ -139,7 +139,7 @@ export default function HouseholdsPage() {
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Households</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Households</h1>
           <p className="mt-1 text-sm text-white/50">
             Manage tax planning households and their associated returns.
           </p>

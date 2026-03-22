@@ -13,7 +13,7 @@ const SETTINGS_SECTIONS = [
 export default function SettingsPage() {
   return (
     <div className="max-w-content mx-auto px-6 py-6">
-      <h1 className="text-2xl font-bold text-white mb-2">Settings</h1>
+      <h1 className="font-serif text-3xl text-white tracking-wide mb-2">Settings</h1>
       <p className="text-sm text-white/50 mb-8">Configure your Farther Prism platform settings.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {SETTINGS_SECTIONS.map((section) => (
@@ -23,7 +23,7 @@ export default function SettingsPage() {
                 {section.icon}
               </div>
               <div>
-                <h3 className="font-semibold text-white">{section.title}</h3>
+                <h3 className="font-serif font-semibold text-white">{section.title}</h3>
                 <span className="text-[10px] text-white/30 font-medium">COMING SOON</span>
               </div>
             </div>

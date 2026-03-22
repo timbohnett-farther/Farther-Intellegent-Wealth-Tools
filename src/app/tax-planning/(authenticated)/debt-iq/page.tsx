@@ -224,7 +224,7 @@ function StatCard({ label, value, subtext, subtextColor }: {
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
       <p className="text-sm font-medium text-white/50 mb-1">{label}</p>
-      <p className="text-2xl font-bold text-white">{value}</p>
+      <p className="font-serif text-3xl text-white tracking-wide">{value}</p>
       {subtext && (
         <p className={`text-xs mt-1 font-medium ${subtextColor || 'text-white/30'}`}>{subtext}</p>
       )}
@@ -330,7 +330,7 @@ export default function DebtIQDashboardPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Debt Analysis</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Debt Analysis</h1>
           <p className="mt-1 text-sm text-white/50">FP-DebtIQ — Intelligent Debt Analysis Engine</p>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
@@ -354,7 +354,7 @@ export default function DebtIQDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Debt Analysis</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Debt Analysis</h1>
           <p className="mt-1 text-sm text-white/50">
             FP-DebtIQ — Intelligent Debt Analysis Engine
           </p>

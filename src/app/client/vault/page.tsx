@@ -109,7 +109,7 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white/[0.07] rounded-modal shadow-xl w-full max-w-lg mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="font-serif text-lg text-white">
             Upload Document
           </h3>
           <button
@@ -188,7 +188,7 @@ export default function ClientVaultPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Document Vault</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Document Vault</h1>
         <button
           onClick={() => setShowUpload(true)}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-colors"

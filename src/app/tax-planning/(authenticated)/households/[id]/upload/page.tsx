@@ -320,7 +320,7 @@ export default function UploadReturnPage() {
 
       {/* Page Title */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Upload Return</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Upload Return</h1>
         <p className="mt-1 text-sm text-white/50">
           Upload a tax return document for processing and analysis.
         </p>
@@ -340,7 +340,7 @@ export default function UploadReturnPage() {
         {currentStep === 1 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="font-serif text-lg text-white">
                 Select Document Type
               </h2>
               <p className="mt-1 text-sm text-white/50">
@@ -355,7 +355,7 @@ export default function UploadReturnPage() {
         {currentStep === 2 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="font-serif text-lg text-white">
                 Select Tax Year
               </h2>
               <p className="mt-1 text-sm text-white/50">
@@ -386,7 +386,7 @@ export default function UploadReturnPage() {
         {currentStep === 3 && (
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="font-serif text-lg text-white">
                 Upload File
               </h2>
               <p className="mt-1 text-sm text-white/50">

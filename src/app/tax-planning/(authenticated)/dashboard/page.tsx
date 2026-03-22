@@ -68,7 +68,7 @@ function StatCard({ label, value, icon, color }: StatCardProps) {
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-sm font-medium text-white/50">{label}</p>
+        <p className="text-xs text-white/40 uppercase tracking-wider">{label}</p>
         <div className={`flex items-center justify-center h-10 w-10 rounded-lg ${color}`}>
           {icon}
         </div>
@@ -267,7 +267,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="font-serif text-3xl text-white tracking-wide">
           Welcome back, {user?.first_name || 'there'}
         </h1>
         <p className="mt-1 text-sm text-white/50">
@@ -345,7 +345,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Quick Actions */}
         <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
+          <h2 className="font-serif text-lg text-white mb-4">Quick Actions</h2>
           <div className="space-y-3">
             <button
               type="button"
@@ -402,7 +402,7 @@ export default function DashboardPage() {
 
         {/* Recent Activity */}
         <div className="lg:col-span-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-white mb-4">Recent Activity</h2>
+          <h2 className="font-serif text-lg text-white mb-4">Recent Activity</h2>
 
           {loading ? (
             <ActivitySkeleton />

@@ -589,7 +589,7 @@ export default function CreditCardsPage() {
           <span>/</span>
           <span className="text-white/60">Credit Card Optimizer</span>
         </nav>
-        <h1 className="text-2xl font-bold text-white">Credit Card Optimizer</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Credit Card Optimizer</h1>
         <p className="mt-1 text-sm text-white/50">Payoff strategies, balance transfers, and utilization optimization</p>
       </div>
 

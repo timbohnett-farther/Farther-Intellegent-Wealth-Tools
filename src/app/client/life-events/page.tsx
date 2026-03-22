@@ -188,7 +188,7 @@ function EventWizard({
             <Icon size={20} />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-white">
+            <h3 className="font-serif text-lg text-white">
               {event.label}
             </h3>
             <p className="text-xs text-white/50">{event.description}</p>
@@ -302,7 +302,7 @@ export default function ClientLifeEventsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Life Events</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Life Events</h1>
         <p className="text-sm text-white/50 mt-1">
           Had a big life change? Let your advisor know so they can update your
           financial plan accordingly.
@@ -346,7 +346,7 @@ export default function ClientLifeEventsPage() {
       {/* ── Submitted Events ── */}
       {submitted.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4">
+          <h2 className="font-serif text-lg text-white mb-4">
             Submitted Events
           </h2>
           <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">

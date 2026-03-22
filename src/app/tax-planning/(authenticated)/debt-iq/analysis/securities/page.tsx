@@ -531,7 +531,7 @@ export default function SecuritiesLendingPage() {
           <span>/</span>
           <span className="text-white/60">Securities-Backed Lending</span>
         </nav>
-        <h1 className="text-2xl font-bold text-white">Securities-Backed Lending</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Securities-Backed Lending</h1>
         <p className="mt-1 text-sm text-white/50">SBLOC analysis, margin call risk, and cost comparison tools</p>
       </div>
 

@@ -331,7 +331,7 @@ function TestSuiteCard({ suite }: { suite: TestSuiteResult }) {
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
       <p className="text-sm font-medium text-white/50 mb-1">{suite.label}</p>
       <div className="flex items-baseline gap-1.5 mb-3">
-        <span className="text-2xl font-bold text-white">{suite.passed}</span>
+        <span className="font-serif text-3xl text-white tracking-wide">{suite.passed}</span>
         <span className="text-sm text-white/30">/ {suite.total}</span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
@@ -359,7 +359,7 @@ function CoverageCard({ metric }: { metric: CoverageMetric }) {
           </span>
         )}
       </div>
-      <p className="text-2xl font-bold text-white mb-3">{metric.value.toFixed(1)}%</p>
+      <p className="font-serif text-3xl text-white tracking-wide mb-3">{metric.value.toFixed(1)}%</p>
       <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${barColor}`}
@@ -465,7 +465,7 @@ export default function SentinelDashboardPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Quality Dashboard</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Quality Dashboard</h1>
           <p className="mt-1 text-sm text-white/50">FP-Sentinel — System Quality & Health Monitor</p>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
@@ -492,7 +492,7 @@ export default function SentinelDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Quality Dashboard</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Quality Dashboard</h1>
           <p className="mt-1 text-sm text-white/50">
             FP-Sentinel — System Quality & Health Monitor
           </p>

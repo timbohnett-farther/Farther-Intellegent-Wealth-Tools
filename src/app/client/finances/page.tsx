@@ -159,7 +159,7 @@ export default function ClientFinancesPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-white">My Finances</h1>
+      <h1 className="font-serif text-3xl text-white tracking-wide">My Finances</h1>
 
       {/* ── Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -168,7 +168,7 @@ export default function ClientFinancesPage() {
             <TrendingUp size={16} className="text-goal-funded" />
             Total Assets
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {formatCurrency(totalAssets)}
           </p>
         </div>
@@ -177,7 +177,7 @@ export default function ClientFinancesPage() {
             <TrendingDown size={16} className="text-goal-at-risk" />
             Total Liabilities
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {formatCurrency(totalLiabilities)}
           </p>
         </div>
@@ -186,7 +186,7 @@ export default function ClientFinancesPage() {
             <BarChart3 size={16} className="text-teal-300" />
             Net Worth
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {formatCurrency(netWorth)}
           </p>
         </div>
@@ -194,7 +194,7 @@ export default function ClientFinancesPage() {
 
       {/* ── Net Worth Chart ── */}
       <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="font-serif text-lg text-white mb-4">
           Net Worth Trend
         </h2>
         <NetWorthChart data={NET_WORTH_HISTORY} />
@@ -203,7 +203,7 @@ export default function ClientFinancesPage() {
       {/* ── Accounts ── */}
       <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
         <div className="px-6 py-4 border-b border-limestone-100">
-          <h2 className="text-lg font-semibold text-white">Accounts</h2>
+          <h2 className="font-serif text-lg text-white">Accounts</h2>
         </div>
         <div className="divide-y divide-gray-100">
           {ACCOUNTS.map((account) => (
@@ -254,7 +254,7 @@ export default function ClientFinancesPage() {
 
       {/* ── Asset Allocation ── */}
       <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-6">
+        <h2 className="font-serif text-lg text-white mb-6">
           Asset Allocation
         </h2>
         <AllocationChart data={ALLOCATION} />

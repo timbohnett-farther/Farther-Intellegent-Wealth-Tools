@@ -174,7 +174,7 @@ export default function ProposalsDashboardPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Portfolio Proposals</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Portfolio Proposals</h1>
           <p className="mt-1 text-sm text-white/50">Create, manage, and track portfolio proposals for your clients.</p>
         </div>
         <button
@@ -387,7 +387,7 @@ export default function ProposalsDashboardPage() {
           {!loading && proposals.length > 0 && (
             <div className="mt-6 border-t border-white/[0.06] pt-4">
               <p className="text-xs text-white/50 mb-1">Overall Conversion</p>
-              <p className="text-2xl font-bold text-white tabular-nums">
+              <p className="font-serif text-3xl text-white tracking-wide tabular-nums">
                 {proposals.length > 0
                   ? fmtPct.format(proposals.filter((p) => p.status === 'ACCEPTED').length / proposals.length)
                   : '0%'}

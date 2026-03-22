@@ -441,7 +441,7 @@ export default function TaxPage() {
                 </div>
                 <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Est. Federal Tax</span>
               </div>
-              <p className="text-2xl font-bold text-white tabular-nums">
+              <p className="font-serif text-3xl text-white tracking-wide tabular-nums">
                 {currentYear ? fmt$(currentYear.federalTax) : '--'}
               </p>
               <p className="text-xs text-white/50 mt-1">
@@ -457,7 +457,7 @@ export default function TaxPage() {
                 </div>
                 <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Est. State Tax</span>
               </div>
-              <p className="text-2xl font-bold text-white tabular-nums">
+              <p className="font-serif text-3xl text-white tracking-wide tabular-nums">
                 {currentYear ? fmt$(currentYear.stateTax) : '--'}
               </p>
               <p className="text-xs text-white/50 mt-1">
@@ -474,7 +474,7 @@ export default function TaxPage() {
                 <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Marginal Rate</span>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-2xl font-bold text-white tabular-nums">
+                <p className="font-serif text-3xl text-white tracking-wide tabular-nums">
                   {fmtPct(currentBracket.rate)}
                 </p>
                 <span
@@ -495,7 +495,7 @@ export default function TaxPage() {
                 </div>
                 <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Bracket Headroom</span>
               </div>
-              <p className="text-2xl font-bold text-white tabular-nums">
+              <p className="font-serif text-3xl text-white tracking-wide tabular-nums">
                 {fmt$(headroom)}
               </p>
               <p className="text-xs text-white/50 mt-1">

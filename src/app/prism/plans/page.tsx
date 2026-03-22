@@ -36,7 +36,7 @@ export default function PlansPage() {
   return (
     <div className="max-w-content mx-auto px-6 py-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-white">Plans</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Plans</h1>
         <Link
           href="/prism/plans?new=true"
           className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-400 transition-colors"
@@ -80,7 +80,7 @@ export default function PlansPage() {
               </div>
               <ChevronRight size={14} className="text-white/30 group-hover:text-teal-300" />
             </div>
-            <h3 className="font-semibold text-white mb-0.5 group-hover:text-teal-300 transition-colors">{plan.planName}</h3>
+            <h3 className="font-serif font-semibold text-white mb-0.5 group-hover:text-teal-300 transition-colors">{plan.planName}</h3>
             <p className="text-sm text-white/50 mb-3">{plan.clientName}</p>
 
             <div className="flex items-center justify-between text-xs">

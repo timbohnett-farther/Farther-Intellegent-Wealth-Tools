@@ -146,7 +146,7 @@ export default function AutoLoanAnalysisPage() {
           <span className="text-white/30">/</span>
           <span className="text-sm text-white/50">Auto Loan Analyzer</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">Auto Loan Analyzer</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Auto Loan Analyzer</h1>
         <p className="mt-1 text-sm text-white/50">Payoff analysis, opportunity cost, and lease vs. buy comparison</p>
       </div>
 

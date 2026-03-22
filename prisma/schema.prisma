@@ -1350,3 +1350,88 @@ model TaxTable {
   @@unique([taxYear, tableType, filingStatus])
   @@map("tax_tables")
 }
+
+// ==================== RISK PROFILE ====================
+model RiskProfile {
+  id                    String   @id @default(cuid())
+  clientId              String?  @map("client_id")
+  version               Int      @default(1)
+  status                String   @default("active") // draft | active | superseded | archived
+  scores                String   // JSON: tolerance, capacity, need, complexity, bias scores
+  composite             String   // JSON: recommended_band, label, derivation
+  assetClassEligibility String   @map("asset_class_eligibility") // JSON: boolean map of eligible asset classes
+  createdBySessionId    String?  @map("created_by_session_id")
+  advisorOverride       Boolean  @default(false) @map("advisor_override")
+  advisorOverrideReason String?  @map("advisor_override_reason")
+  effectiveDate         DateTime @default(now()) @map("effective_date")
+  expiryDate            DateTime? @map("expiry_date")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  session               QuestionnaireSession? @relation(fields: [createdBySessionId], references: [id])
+  versions              ProfileVersion[]
+
+  @@index([clientId])
+  @@map("risk_profiles")
+}
+
+model QuestionnaireSession {
+  id              String   @id @default(cuid())
+  clientId        String?  @map("client_id")
+  profileId       String?  @map("profile_id")
+  sessionType     String   @default("full") @map("session_type") // full | annual_check_in | life_event
+  status          String   @default("in_progress") // in_progress | completed | abandoned
+  wealthTier      String   @map("wealth_tier")
+  catEngineState  String?  @map("cat_engine_state") // JSON: theta, SE, convergence
+  aiContext       String?  @map("ai_context") // JSON: model, rephrasing, probes
+  totalQuestions  Int      @default(15) @map("total_questions")
+  completionPct   Float    @default(0) @map("completion_pct")
+  startedAt       DateTime @default(now()) @map("started_at")
+  completedAt     DateTime? @map("completed_at")
+  durationSeconds Int?     @map("duration_seconds")
+
+  responses       SessionResponse[]
+  profile         RiskProfile[]
+
+  @@map("questionnaire_sessions")
+}
+
+model SessionResponse {
+  id              String   @id @default(cuid())
+  sessionId       String   @map("session_id")
+  questionItemId  Int      @map("question_item_id")
+  sequenceNumber  Int      @map("sequence_number")
+  presentedStem   String   @map("presented_stem")
+  responseValue   Int      @map("response_value")
+  responseLabel   String?  @map("response_label")
+  scoring         String?  // JSON: dimension, rawScore, irtInfo
+  aiAnalysis      String?  @map("ai_analysis") // JSON: consistency, bias, followUp
+  timeToAnswerMs  Int?     @map("time_to_answer_ms")
+  presentedAt     DateTime @default(now()) @map("presented_at")
+  answeredAt      DateTime? @map("answered_at")
+
+  session         QuestionnaireSession @relation(fields: [sessionId], references: [id])
+
+  @@map("session_responses")
+}
+
+model ProfileVersion {
+  id              String   @id @default(cuid())
+  profileId       String   @map("profile_id")
+  version         Int
+  changeType      String   @map("change_type") // initial | annual_review | life_event | advisor_adjustment
+  trigger         String?
+  previousScores  String?  @map("previous_scores") // JSON snapshot
+  newScores       String   @map("new_scores") // JSON snapshot
+  materialChange  Boolean  @default(false) @map("material_change")
+  complianceNote  String?  @map("compliance_note")
+  advisorAcked    Boolean  @default(false) @map("advisor_acked")
+  advisorAckedAt  DateTime? @map("advisor_acked_at")
+  changedAt       DateTime @default(now()) @map("changed_at")
+  changedBy       String?  @map("changed_by")
+
+  profile         RiskProfile @relation(fields: [profileId], references: [id])
+
+  @@index([profileId])
+  @@map("profile_versions")
+}

@@ -545,7 +545,7 @@ export default function SocialSecurityPage() {
                   <div className="space-y-3">
                     <div>
                       <p className="text-xs text-white/50">Monthly Benefit</p>
-                      <p className="text-2xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>
+                      <p className="font-serif text-3xl text-white tracking-wide" style={{ fontFeatureSettings: '"tnum"' }}>
                         {formatCurrency(s.monthlyBenefit)}
                         <span className="text-sm font-normal text-white/30">/mo</span>
                       </p>

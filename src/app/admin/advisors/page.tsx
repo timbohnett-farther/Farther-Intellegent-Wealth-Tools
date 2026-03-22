@@ -49,14 +49,14 @@ export default function AdvisorsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Advisor</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Role</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Clients</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Plans</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Avg Success</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">MFA</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Status</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Last Active</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Advisor</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Role</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider text-right">Clients</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider text-right">Plans</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider text-right">Avg Success</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider">MFA</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Status</th>
+              <th className="px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Last Active</th>
             </tr>
           </thead>
           <tbody>

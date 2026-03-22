@@ -122,7 +122,7 @@ export default function HomePage() {
               <span className="text-white font-bold text-lg">F</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
+              <h1 className="text-xl font-bold text-white tracking-wide">Farther Intelligent Wealth Advisor Platform</h1>
               <p className="text-xs text-white/50">Investment Lending Tools</p>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="bg-linear-to-br from-brand-900 via-brand-800 to-brand-700 text-white">
         <div className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-wide max-w-2xl">
             Intelligent tools for modern wealth management
           </h2>
           <p className="mt-4 text-lg text-teal-300 max-w-xl leading-relaxed">
@@ -153,7 +153,7 @@ export default function HomePage() {
 
       {/* Tools Grid */}
       <section className="max-w-6xl mx-auto px-6 py-12">
-        <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-6">Available Tools</h3>
+        <h3 className="text-[10px] font-medium text-white/30 uppercase tracking-[0.15em] mb-6">Available Tools</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {TOOLS.map((tool) => {
             const isLive = tool.status === 'live';
@@ -173,7 +173,7 @@ export default function HomePage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-white group-hover:text-teal-300 transition-colors">
+                      <h4 className="font-serif font-semibold text-white group-hover:text-teal-300 transition-colors">
                         {tool.title}
                       </h4>
                       {isLive ? (

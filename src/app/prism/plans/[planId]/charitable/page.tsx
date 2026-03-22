@@ -176,7 +176,7 @@ function OverviewTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Annual Giving</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_GIVING)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(TOTAL_GIVING)}</p>
           <p className="text-xs text-white/50 mt-1">Current year total</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
@@ -186,7 +186,7 @@ function OverviewTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Tax Deductions</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_DEDUCTION)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(TOTAL_DEDUCTION)}</p>
           <p className="text-xs text-white/50 mt-1">Deductions generated</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
@@ -196,7 +196,7 @@ function OverviewTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Net Cost of Giving</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(NET_COST)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(NET_COST)}</p>
           <p className="text-xs text-white/50 mt-1">After tax savings at 37%</p>
         </div>
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
@@ -206,7 +206,7 @@ function OverviewTab() {
             </div>
             <span className="text-xs font-medium text-white/50 uppercase tracking-wide">DAF Balance</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(DAF_BALANCE)}</p>
+          <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{fmt$(DAF_BALANCE)}</p>
           <p className="text-xs text-white/50 mt-1">Available for grants</p>
         </div>
       </div>

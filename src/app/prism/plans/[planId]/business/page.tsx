@@ -604,7 +604,7 @@ function OwnerCompTab() {
           <div>
             <div className="text-center mb-4">
               <p className="text-xs text-white/50">Total Compensation</p>
-              <p className="text-2xl font-bold text-white">{fmt$(totalComp)}</p>
+              <p className="font-serif text-3xl text-white tracking-wide">{fmt$(totalComp)}</p>
             </div>
             <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">

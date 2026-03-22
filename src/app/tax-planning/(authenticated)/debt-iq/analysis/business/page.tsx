@@ -176,7 +176,7 @@ export default function BusinessDebtAnalysisPage() {
           <span className="text-white/30">/</span>
           <span className="text-sm text-white/50">Business Debt Analyzer</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">Business Debt Analyzer</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Business Debt Analyzer</h1>
         <p className="mt-1 text-sm text-white/50">Leverage metrics, personal exposure, and Section 163(j) analysis</p>
       </div>
 

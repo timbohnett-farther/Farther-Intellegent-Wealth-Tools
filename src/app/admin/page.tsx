@@ -126,7 +126,7 @@ export default function AdminOverviewPage() {
           return (
             <div key={kpi.label} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-white/50">{kpi.label}</p>
+                <p className="text-xs text-white/40 uppercase tracking-wider">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
               <p className="text-xl font-bold text-white">{kpi.value}</p>
@@ -139,7 +139,7 @@ export default function AdminOverviewPage() {
       <div className="grid grid-cols-2 gap-6">
         {/* Monthly activity */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-4">Monthly Activity</h3>
+          <h3 className="font-serif text-lg text-white mb-4">Monthly Activity</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={MONTHLY_ACTIVITY}>
@@ -158,7 +158,7 @@ export default function AdminOverviewPage() {
 
         {/* Success rate distribution */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-4">Plan Success Rate Distribution</h3>
+          <h3 className="font-serif text-lg text-white mb-4">Plan Success Rate Distribution</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={SUCCESS_DISTRIBUTION}>
@@ -180,15 +180,15 @@ export default function AdminOverviewPage() {
       <div className="grid grid-cols-3 gap-6">
         {/* Top advisors */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 col-span-2">
-          <h3 className="text-sm font-semibold text-white mb-3">Advisor Performance</h3>
+          <h3 className="font-serif text-lg text-white mb-3">Advisor Performance</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-limestone-100 text-left">
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Advisor</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Clients</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Plans</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Avg Success</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Last Active</th>
+                <th className="pb-2 text-xs text-white/40 uppercase tracking-wider">Advisor</th>
+                <th className="pb-2 text-xs text-white/40 uppercase tracking-wider text-right">Clients</th>
+                <th className="pb-2 text-xs text-white/40 uppercase tracking-wider text-right">Plans</th>
+                <th className="pb-2 text-xs text-white/40 uppercase tracking-wider text-right">Avg Success</th>
+                <th className="pb-2 text-xs text-white/40 uppercase tracking-wider">Last Active</th>
               </tr>
             </thead>
             <tbody>
@@ -211,7 +211,7 @@ export default function AdminOverviewPage() {
 
         {/* Client distribution */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-3">Clients by Wealth Tier</h3>
+          <h3 className="font-serif text-lg text-white mb-3">Clients by Wealth Tier</h3>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -239,7 +239,7 @@ export default function AdminOverviewPage() {
       {/* Integration status */}
       <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-white">Integration Status</h3>
+          <h3 className="font-serif text-lg text-white">Integration Status</h3>
           <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
             <RefreshCw size={12} /> Sync All
           </button>
@@ -272,7 +272,7 @@ export default function AdminOverviewPage() {
 
       {/* Plans needing review */}
       <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-white mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
+        <h3 className="font-serif text-lg text-white mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
         <div className="space-y-2">
           {[
             { client: 'Robert Johnson', advisor: 'James Wilson', lastReview: '14 months ago', successRate: 64, reason: 'Success rate below 70%' },

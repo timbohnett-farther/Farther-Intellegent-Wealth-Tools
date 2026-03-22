@@ -120,7 +120,7 @@ export default function ClientPlanPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">My Plan</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">My Plan</h1>
         <span
           className={`text-xs font-medium px-3 py-1 rounded-full ${statusBadge(PLAN_OVERVIEW.planStatus)}`}
         >
@@ -135,7 +135,7 @@ export default function ClientPlanPage() {
             <Target size={16} />
             Success Rate
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {PLAN_OVERVIEW.successRate}%
           </p>
         </div>
@@ -144,7 +144,7 @@ export default function ClientPlanPage() {
             <CalendarDays size={16} />
             Years to Retirement
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {PLAN_OVERVIEW.yearsToRetirement}
           </p>
           <p className="text-xs text-white/50 mt-0.5">
@@ -156,7 +156,7 @@ export default function ClientPlanPage() {
             <DollarSign size={16} />
             Retirement Income
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {formatCurrency(PLAN_OVERVIEW.estimatedAnnualRetirementIncome)}
           </p>
           <p className="text-xs text-white/50 mt-0.5">per year (projected)</p>
@@ -166,7 +166,7 @@ export default function ClientPlanPage() {
             <ShieldCheck size={16} />
             Social Security
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="font-serif text-3xl text-white tracking-wide">
             {formatCurrency(PLAN_OVERVIEW.estimatedSocialSecurity)}
           </p>
           <p className="text-xs text-white/50 mt-0.5">estimated annual</p>
@@ -175,7 +175,7 @@ export default function ClientPlanPage() {
 
       {/* ── Retirement Projection Chart ── */}
       <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-1">
+        <h2 className="font-serif text-lg text-white mb-1">
           Retirement Projection
         </h2>
         <p className="text-sm text-white/50 mb-6">
@@ -186,7 +186,7 @@ export default function ClientPlanPage() {
 
       {/* ── Goals ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="font-serif text-lg text-white mb-4">
           Goal Progress
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -234,7 +234,7 @@ export default function ClientPlanPage() {
 
       {/* ── Tax Summary (Simplified) ── */}
       <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="font-serif text-lg text-white mb-4">
           Tax Summary
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">

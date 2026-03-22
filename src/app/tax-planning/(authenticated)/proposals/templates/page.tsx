@@ -93,7 +93,7 @@ export default function ModelsLibraryPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Investment Models</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Investment Models</h1>
           <p className="mt-1 text-sm text-white/50">Browse and manage investment model templates.</p>
         </div>
         <button

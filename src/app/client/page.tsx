@@ -142,7 +142,7 @@ export default function ClientHomePage() {
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="font-serif text-3xl text-white tracking-wide">
             Hello, {CLIENT.firstName}
           </h1>
           <p className="text-sm text-white/50 mt-1">
@@ -221,7 +221,7 @@ export default function ClientHomePage() {
 
       {/* ── Plan Health Summary ── */}
       <div className="bg-linear-to-r from-brand-50 to-white border border-brand-100 rounded-card p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">
+        <h2 className="font-serif text-lg text-white mb-2">
           Plan Health Summary
         </h2>
         <p className="text-white/60 leading-relaxed">
@@ -239,7 +239,7 @@ export default function ClientHomePage() {
 
       {/* ── Action Items ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="font-serif text-lg text-white mb-4">
           Recommended Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -279,7 +279,7 @@ export default function ClientHomePage() {
 
       {/* ── Goals Progress ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="font-serif text-lg text-white mb-4">
           Goals Progress
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

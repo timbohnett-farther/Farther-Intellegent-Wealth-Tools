@@ -88,17 +88,17 @@ export function Sidebar() {
         background: 'rgba(42, 42, 42, 0.95)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderRight: '1px solid rgba(255, 255, 255, 0.06)',
+        borderRight: '1px solid rgba(255, 255, 255, 0.12)',
       }}
     >
       {/* Sidebar Header */}
       <div
-        className="h-16 flex items-center gap-3 px-4 flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}
+        className="h-20 flex items-center gap-3 px-4 flex-shrink-0"
+        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}
       >
         <div
           className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #1d7682, #2a9aa8)' }}
+          style={{ background: 'linear-gradient(135deg, #1d7682, #28a1af)' }}
         >
           <span className="text-white font-bold text-sm">FP</span>
         </div>
@@ -107,7 +107,7 @@ export function Sidebar() {
             <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-white font-serif">
               Farther Prism
             </h1>
-            <p className="text-[10px] text-white/30">Financial Planning</p>
+            <p className="text-[10px] text-ice-200/60 tracking-[0.2em] uppercase">Financial Planning</p>
           </div>
         )}
       </div>
@@ -119,13 +119,13 @@ export function Sidebar() {
             {/* Section label */}
             {section.label && !collapsed && (
               <div className="px-4 pt-4 pb-1.5">
-                <span className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+                <span className="text-[10px] font-medium text-white/30 uppercase tracking-[0.15em]">
                   {section.label}
                 </span>
               </div>
             )}
             {section.label && collapsed && (
-              <div className="my-2 mx-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }} />
+              <div className="my-2 mx-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.12)' }} />
             )}
 
             {section.items.map((item) => {
@@ -145,19 +145,23 @@ export function Sidebar() {
                     className={cn(
                       'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors relative',
                       isActive
-                        ? 'text-white font-semibold'
+                        ? 'text-white font-semibold bg-white/[0.08]'
                         : 'text-white/50 font-medium hover:text-white hover:bg-white/[0.04]'
                     )}
                     style={isActive ? {
-                      background: 'linear-gradient(135deg, rgba(29, 118, 130, 0.25), rgba(29, 118, 130, 0.15))',
-                      borderLeft: '3px solid #1d7682',
                       paddingLeft: '13px',
                     } : undefined}
                   >
+                    {isActive && (
+                      <span
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-full"
+                        style={{ background: 'linear-gradient(180deg, #28a1af, #186068)' }}
+                      />
+                    )}
                     <span
                       className={cn(
                         'flex-shrink-0 transition-colors',
-                        isActive ? 'text-teal-300' : 'text-white/40'
+                        isActive ? 'text-teal-400' : 'text-white/30'
                       )}
                     >
                       {item.icon}
@@ -210,7 +214,7 @@ export function Sidebar() {
       </nav>
 
       {/* Sidebar Footer */}
-      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
         {!collapsed ? (
           <div className="flex items-center gap-3">
             <div
@@ -240,7 +244,7 @@ export function Sidebar() {
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="flex items-center justify-center py-3 text-white/20 hover:text-white/60 transition-colors"
-        style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}
+        style={{ borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}
       >
         {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>

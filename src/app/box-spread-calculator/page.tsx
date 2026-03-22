@@ -152,7 +152,7 @@ export default function BoxSpreadCalculatorPage() {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-white">Box Spread Lending Calculator</h1>
+              <h1 className="font-serif text-lg font-bold text-white">Box Spread Lending Calculator</h1>
               <p className="text-xs text-white/50">Portfolio-Based Liquidity Planning</p>
             </div>
           </div>

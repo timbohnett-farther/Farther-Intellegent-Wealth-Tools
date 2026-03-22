@@ -59,7 +59,7 @@ export default function ClientsPage() {
     <div className="max-w-content mx-auto px-6 py-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-white">Clients</h1>
+        <h1 className="font-serif text-3xl text-white tracking-wide">Clients</h1>
         <Link
           href="/prism/clients?new=true"
           className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-400 transition-colors"
@@ -111,15 +111,15 @@ export default function ClientsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/[0.06] bg-transparent">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Client</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Household</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Tier</th>
-                <th className="text-right px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">AUM</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Plan Status</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Last Review</th>
-                <th className="text-right px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Success Rate</th>
-                <th className="text-left px-3 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Advisor</th>
-                <th className="text-right px-5 py-3 text-xs font-semibold text-white/50 uppercase tracking-wider">Actions</th>
+                <th className="text-left px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Client</th>
+                <th className="text-left px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Household</th>
+                <th className="text-left px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Tier</th>
+                <th className="text-right px-3 py-3 text-xs text-white/40 uppercase tracking-wider">AUM</th>
+                <th className="text-left px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Plan Status</th>
+                <th className="text-left px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Last Review</th>
+                <th className="text-right px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Success Rate</th>
+                <th className="text-left px-3 py-3 text-xs text-white/40 uppercase tracking-wider">Advisor</th>
+                <th className="text-right px-5 py-3 text-xs text-white/40 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-limestone-100">

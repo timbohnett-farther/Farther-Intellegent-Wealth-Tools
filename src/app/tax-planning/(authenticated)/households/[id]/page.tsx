@@ -91,7 +91,7 @@ function OverviewTab({ household, personsCount, returnsCount, docsCount }: Overv
           </div>
           <h3 className="text-sm font-semibold text-white">Primary State</h3>
         </div>
-        <p className="text-2xl font-bold text-white">
+        <p className="font-serif text-3xl text-white tracking-wide">
           {household.primary_state || 'Not set'}
         </p>
         <p className="mt-1 text-xs text-white/50">State of primary residence</p>
@@ -106,7 +106,7 @@ function OverviewTab({ household, personsCount, returnsCount, docsCount }: Overv
           </div>
           <h3 className="text-sm font-semibold text-white">Total Returns</h3>
         </div>
-        <p className="text-2xl font-bold text-white tabular-nums">{returnsCount}</p>
+        <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{returnsCount}</p>
         <p className="mt-1 text-xs text-white/50">
           Tax returns on file
         </p>
@@ -121,7 +121,7 @@ function OverviewTab({ household, personsCount, returnsCount, docsCount }: Overv
           </div>
           <h3 className="text-sm font-semibold text-white">People</h3>
         </div>
-        <p className="text-2xl font-bold text-white tabular-nums">{personsCount}</p>
+        <p className="font-serif text-3xl text-white tracking-wide tabular-nums">{personsCount}</p>
         <p className="mt-1 text-xs text-white/50">
           Household members
         </p>

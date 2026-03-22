@@ -118,7 +118,7 @@ export default function StatementScannerPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Statement Scanner</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Statement Scanner</h1>
           <p className="mt-1 text-sm text-white/50">Upload brokerage statements to extract holdings using AI.</p>
         </div>
         <div className="flex items-center gap-3">

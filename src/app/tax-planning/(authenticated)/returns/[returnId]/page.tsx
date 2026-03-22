@@ -230,7 +230,7 @@ export default function ReturnOverviewPage() {
     <div className="space-y-6 bg-canvas">
       {/* Page title */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="font-serif text-3xl text-white tracking-wide">
           {taxReturn.tax_year} Tax Return &ndash;{' '}
           {FILING_STATUS_LABELS[taxReturn.filing_status] ?? taxReturn.filing_status}
         </h1>

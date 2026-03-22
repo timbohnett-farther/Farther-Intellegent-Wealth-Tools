@@ -628,7 +628,7 @@ export default function MortgageAnalysisPage() {
             <span>/</span>
             <span className="text-white/60">Mortgage Analysis</span>
           </nav>
-          <h1 className="text-2xl font-bold text-white">Mortgage Analysis</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Mortgage Analysis</h1>
           <p className="mt-1 text-sm text-white/50">Refinance, equity access, payoff-vs-invest, and PMI optimization</p>
         </div>
       </div>

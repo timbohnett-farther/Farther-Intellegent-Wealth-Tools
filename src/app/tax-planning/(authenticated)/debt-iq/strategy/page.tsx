@@ -387,7 +387,7 @@ export default function DebtPayoffStrategyPage() {
     return (
       <div className="mx-auto max-w-7xl space-y-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Payoff Strategy Optimizer</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Payoff Strategy Optimizer</h1>
         </div>
         <div className="rounded-lg border border-critical-200 bg-critical-50 p-6 text-center">
           <p className="text-sm font-medium text-critical-700 mb-3">{error}</p>
@@ -417,7 +417,7 @@ export default function DebtPayoffStrategyPage() {
             <span className="text-white/30">/</span>
             <span className="text-sm text-white/50">Strategy</span>
           </div>
-          <h1 className="text-2xl font-bold text-white">Multi-Debt Payoff Optimizer</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Multi-Debt Payoff Optimizer</h1>
           <p className="mt-1 text-sm text-white/50">
             Compare 8 strategies simultaneously and find the optimal payoff path
           </p>

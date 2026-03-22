@@ -197,7 +197,7 @@ export default function ReportPreviewPage() {
       </button>
 
       {/* Page title */}
-      <h1 className="text-2xl font-bold text-white">Scenario Report</h1>
+      <h1 className="font-serif text-3xl text-white tracking-wide">Scenario Report</h1>
 
       {/* Info banner */}
       <div className="flex items-center gap-3 rounded-lg border border-info-300 bg-info-50 px-4 py-3">

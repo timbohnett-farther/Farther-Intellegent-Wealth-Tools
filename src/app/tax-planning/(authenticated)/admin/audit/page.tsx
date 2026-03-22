@@ -284,7 +284,7 @@ export default function AuditLogPage() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Audit Log</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Audit Log</h1>
           <p className="mt-1 text-sm text-white/50">
             {totalEvents.toLocaleString()} total event{totalEvents !== 1 ? 's' : ''}
           </p>

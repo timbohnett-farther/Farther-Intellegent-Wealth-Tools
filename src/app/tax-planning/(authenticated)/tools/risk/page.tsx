@@ -174,7 +174,7 @@ export default function RiskAssessmentToolPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Risk Assessment</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Risk Assessment</h1>
           <p className="mt-1 text-sm text-white/50">Complete the questionnaire to determine a client&apos;s risk profile and recommended allocation.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -255,14 +255,14 @@ export default function RiskAssessmentToolPage() {
             </>
           ) : (
             <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-6">
-              <h2 className="text-lg font-semibold text-white">Assessment Results</h2>
+              <h2 className="font-serif text-lg text-white">Assessment Results</h2>
 
               {/* 3D Risk Profile Display */}
               <div className="text-center">
                 <div className="inline-flex h-24 w-24 items-center justify-center rounded-full bg-teal-500/10 mb-3">
                   <span className="text-3xl font-bold text-teal-300">{computedScore}</span>
                 </div>
-                <p className="text-lg font-semibold text-white">{riskLabel.replace(/_/g, ' ')}</p>
+                <p className="font-serif text-lg text-white">{riskLabel.replace(/_/g, ' ')}</p>
               </div>
 
               <div className="grid grid-cols-3 gap-4">

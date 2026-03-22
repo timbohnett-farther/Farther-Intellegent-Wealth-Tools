@@ -169,7 +169,7 @@ export default function ComplianceArchivePage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Compliance Archive</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Compliance Archive</h1>
           <p className="mt-1 text-sm text-white/50">
             Monitor IPS and Reg BI document status across all proposals.
           </p>

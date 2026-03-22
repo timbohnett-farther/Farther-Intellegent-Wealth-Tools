@@ -180,7 +180,7 @@ export default function ProposalDetailPage() {
           </Link>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-white">{proposal.clientName}</h1>
+              <h1 className="font-serif text-3xl text-white tracking-wide">{proposal.clientName}</h1>
               <ProposalStatusBadge status={proposal.status} />
             </div>
             <p className="mt-0.5 text-sm text-white/50">
@@ -259,7 +259,7 @@ export default function ProposalDetailPage() {
         {/* ---- Overview ---- */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Proposal Overview</h2>
+            <h2 className="font-serif text-lg text-white">Proposal Overview</h2>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Key Details */}
               <div className="space-y-4">
@@ -333,7 +333,7 @@ export default function ProposalDetailPage() {
         {/* ---- Portfolio ---- */}
         {activeTab === 'portfolio' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Current Portfolio</h2>
+            <h2 className="font-serif text-lg text-white">Current Portfolio</h2>
             {proposal.currentPortfolio ? (
               <>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -400,7 +400,7 @@ export default function ProposalDetailPage() {
         {/* ---- Risk ---- */}
         {activeTab === 'risk' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Risk Profile</h2>
+            <h2 className="font-serif text-lg text-white">Risk Profile</h2>
             {proposal.riskProfile ? (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Gauges */}
@@ -473,7 +473,7 @@ export default function ProposalDetailPage() {
         {/* ---- Analysis ---- */}
         {activeTab === 'analysis' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Analysis</h2>
+            <h2 className="font-serif text-lg text-white">Analysis</h2>
             {proposal.analytics.current || proposal.analytics.proposed ? (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {/* Analytics Comparison */}
@@ -608,7 +608,7 @@ export default function ProposalDetailPage() {
         {/* ---- Output ---- */}
         {activeTab === 'output' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Output</h2>
+            <h2 className="font-serif text-lg text-white">Output</h2>
 
             {/* Sections List */}
             <div>
@@ -699,7 +699,7 @@ export default function ProposalDetailPage() {
         {/* ---- Tracking ---- */}
         {activeTab === 'tracking' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-white">Tracking</h2>
+            <h2 className="font-serif text-lg text-white">Tracking</h2>
             {proposal.tracking ? (
               <div className="space-y-6">
                 {/* Delivery Info */}

@@ -61,7 +61,7 @@ export default function DashboardPage() {
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Dashboard</h1>
           <p className="text-sm text-white/50 mt-0.5">Welcome back, John. Here&apos;s your practice overview.</p>
         </div>
         <Link
@@ -85,7 +85,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <p className="text-2xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>{stat.value}</p>
-            <p className="text-xs text-white/50 mt-0.5">{stat.label}</p>
+            <p className="text-xs text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
         {/* Recent Activity (2/3 width) */}
         <div className="lg:col-span-2 bg-white/[0.07] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-sm">
           <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
-            <h3 className="font-semibold text-white">Recent Activity</h3>
+            <h3 className="font-serif text-lg text-white">Recent Activity</h3>
             <Link href="/prism/insights" className="text-xs text-teal-300 hover:text-teal-300 font-medium">
               View all
             </Link>
@@ -122,7 +122,7 @@ export default function DashboardPage() {
         {/* Quick Actions (1/3 width) */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="px-5 py-4 border-b border-limestone-100">
-            <h3 className="font-semibold text-white">Quick Actions</h3>
+            <h3 className="font-serif text-lg text-white">Quick Actions</h3>
           </div>
           <div className="p-4 space-y-2">
             <Link
@@ -166,16 +166,16 @@ export default function DashboardPage() {
         {/* Clients needing attention */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="px-5 py-4 border-b border-limestone-100">
-            <h3 className="font-semibold text-white">Clients Needing Attention</h3>
+            <h3 className="font-serif text-lg text-white">Clients Needing Attention</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-limestone-100">
-                  <th className="text-left px-5 py-2 text-xs font-medium text-white/50">Name</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/50">Last Review</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/50">Status</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/50">Risk</th>
+                  <th className="text-left px-5 py-2 text-xs text-white/40 uppercase tracking-wider">Name</th>
+                  <th className="text-left px-3 py-2 text-xs text-white/40 uppercase tracking-wider">Last Review</th>
+                  <th className="text-left px-3 py-2 text-xs text-white/40 uppercase tracking-wider">Status</th>
+                  <th className="text-left px-3 py-2 text-xs text-white/40 uppercase tracking-wider">Risk</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -199,7 +199,7 @@ export default function DashboardPage() {
         {/* Upcoming reviews */}
         <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
           <div className="px-5 py-4 border-b border-limestone-100">
-            <h3 className="font-semibold text-white">Upcoming Reviews</h3>
+            <h3 className="font-serif text-lg text-white">Upcoming Reviews</h3>
           </div>
           <div className="divide-y divide-gray-50">
             {UPCOMING_REVIEWS.map((review, i) => (

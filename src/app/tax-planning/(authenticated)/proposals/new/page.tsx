@@ -440,7 +440,7 @@ export default function CreateProposalWizardPage() {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Create Proposal</h1>
+          <h1 className="font-serif text-3xl text-white tracking-wide">Create Proposal</h1>
           <p className="mt-1 text-sm text-white/50">Build a comprehensive investment proposal in 6 steps.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -470,7 +470,7 @@ export default function CreateProposalWizardPage() {
       {step === 1 && (
         <div className="space-y-6">
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white mb-4">Proposal Type</h2>
+            <h2 className="font-serif text-lg text-white mb-4">Proposal Type</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PROPOSAL_TYPES.map((pt) => (
                 <button
@@ -491,7 +491,7 @@ export default function CreateProposalWizardPage() {
           </div>
 
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white mb-4">Client Information</h2>
+            <h2 className="font-serif text-lg text-white mb-4">Client Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-white/60 mb-1">Client Name *</label>
@@ -721,7 +721,7 @@ export default function CreateProposalWizardPage() {
         <div className="space-y-6">
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white">Risk Assessment Questionnaire</h2>
+              <h2 className="font-serif text-lg text-white">Risk Assessment Questionnaire</h2>
               <div className="text-right">
                 <p className="text-xs text-white/50">Progress</p>
                 <p className="text-sm font-bold text-white">
@@ -799,7 +799,7 @@ export default function CreateProposalWizardPage() {
         <div className="space-y-6">
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Select Investment Model</h2>
+              <h2 className="font-serif text-lg text-white">Select Investment Model</h2>
               <div className="relative w-64">
                 <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -1066,7 +1066,7 @@ export default function CreateProposalWizardPage() {
         <div className="space-y-6">
           {/* Template Style */}
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white mb-4">Proposal Template</h2>
+            <h2 className="font-serif text-lg text-white mb-4">Proposal Template</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {([
                 { id: 'standard' as const, label: 'Standard', desc: 'Clean and professional layout' },
@@ -1092,7 +1092,7 @@ export default function CreateProposalWizardPage() {
 
           {/* Section Builder */}
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white mb-4">Proposal Sections</h2>
+            <h2 className="font-serif text-lg text-white mb-4">Proposal Sections</h2>
             <div className="space-y-2">
               {sections
                 .sort((a, b) => a.order - b.order)
@@ -1127,7 +1127,7 @@ export default function CreateProposalWizardPage() {
 
           {/* Summary */}
           <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-white mb-4">Proposal Summary</h2>
+            <h2 className="font-serif text-lg text-white mb-4">Proposal Summary</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
               <div>
                 <p className="text-xs text-white/50">Client</p>

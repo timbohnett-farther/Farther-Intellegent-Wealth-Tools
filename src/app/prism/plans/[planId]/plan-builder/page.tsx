@@ -277,7 +277,7 @@ export default function PlanBuilderPage() {
               <div className="w-16 h-16 rounded-2xl bg-teal-500/15 flex items-center justify-center mb-4">
                 <Bot size={32} className="text-teal-300" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Plan Builder AI Assistant</h3>
+              <h3 className="font-serif text-lg text-white mb-2">Plan Builder AI Assistant</h3>
               <p className="text-sm text-white/50 max-w-md mb-6">
                 Start a conversational intake session to collect client data naturally.
                 The AI will guide you through each section and extract structured data
