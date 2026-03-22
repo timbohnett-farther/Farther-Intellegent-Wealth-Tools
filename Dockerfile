@@ -51,20 +51,10 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/src/generated ./src/generated
 
-# Copy native modules that standalone tracing may miss
-COPY --from=builder /app/node_modules/@libsql ./node_modules/@libsql
-COPY --from=builder /app/node_modules/better-sqlite3 ./node_modules/better-sqlite3
-COPY --from=builder /app/node_modules/bindings ./node_modules/bindings
-COPY --from=builder /app/node_modules/file-uri-to-path ./node_modules/file-uri-to-path
-COPY --from=builder /app/node_modules/prebuild-install ./node_modules/prebuild-install
-
-# Copy Prisma CLI and engines for db push at startup
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/@prisma/engines ./node_modules/@prisma/engines
-COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
-
-# Copy dotenv (required by prisma.config.ts)
-COPY --from=builder /app/node_modules/dotenv ./node_modules/dotenv
+# Copy full node_modules for prisma db push and native module support.
+# The standalone output handles JS bundling; node_modules is needed only
+# for prisma CLI (with its deep transitive deps) and native addons.
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy startup script
 COPY start.sh ./start.sh
