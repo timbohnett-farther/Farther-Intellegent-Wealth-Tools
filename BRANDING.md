@@ -6,14 +6,17 @@
 
 ## Core Brand Colors
 
+All colors are tuned for readability on dark backgrounds. Minimum 4.5:1 contrast ratio for text.
+
 | Token | Hex | Usage |
 |-------|-----|-------|
-| **Teal** (primary) | `#1d7682` | Buttons, links, active states, brand accent |
-| **Teal Dark** | `#155961` | Hover states, pressed states |
-| **Teal Light** | `#28a1af` | Secondary accent, badges, chart highlight |
-| **Charcoal** | `#333333` | Text on light backgrounds |
-| **Cream** | `#FAF7F2` | Light background, text on dark backgrounds |
-| **Slate** | `#5b6a71` | Secondary text, muted elements |
+| **Teal** (primary) | `#2bb8c4` | Buttons, links, active states, brand accent |
+| **Teal Dark** | `#1d7682` | Hover/pressed on light surfaces, original brand reference |
+| **Teal Light** | `#5dd8e4` | Badges, secondary accents, chart highlights |
+| **Teal Glow** | `#28a1af` | Mid-tone for gradients and glows |
+| **Charcoal** | `#333333` | Text on light backgrounds (light mode only) |
+| **Cream** | `#FAF7F2` | Text on dark backgrounds, light mode background |
+| **Slate** | `#8a9aa2` | Secondary text on dark backgrounds |
 | **Ice** | `#b6d0ed` | Tertiary accent, chart fills, cool highlights |
 | **White** | `#ffffff` | Cards on light backgrounds |
 | **Black** | `#000000` | Deepest background |
@@ -31,10 +34,10 @@ All Farther apps use a dark theme. These are the surface and text colors:
 | **Card Hover** | `rgba(255,255,255,0.10)` | Card hover state |
 | **Border** | `rgba(255,255,255,0.12)` | Card/section borders |
 | **Border Subtle** | `rgba(255,255,255,0.08)` | Table row dividers |
-| **Text Primary** | `#FAF7F2` / `rgba(255,255,255,0.9)` | Main text (cream) |
-| **Text Secondary** | `rgba(255,255,255,0.6)` | Supporting text |
-| **Text Muted** | `rgba(255,255,255,0.4)` | Labels, placeholders |
-| **Text Tertiary** | `rgba(255,255,255,0.3)` | Least emphasis |
+| **Text Primary** | `rgba(255,255,255,0.92)` | Main body text (bright cream) |
+| **Text Secondary** | `rgba(255,255,255,0.7)` | Supporting text |
+| **Text Muted** | `rgba(255,255,255,0.5)` | Labels, captions |
+| **Text Tertiary** | `rgba(255,255,255,0.35)` | Least emphasis, decorative |
 
 ## Table Row Striping
 
@@ -42,33 +45,35 @@ All Farther apps use a dark theme. These are the surface and text colors:
 |-----|------------|
 | Even rows | `rgba(255,255,255,0.03)` |
 | Odd rows | `rgba(255,255,255,0.06)` |
-| Hover | `rgba(29,118,130,0.12)` (teal glow) |
+| Hover | `rgba(43,184,196,0.15)` (teal glow) |
 
 ## Status Colors
 
+Brightened for dark backgrounds:
+
 | Status | Color | Dark BG |
 |--------|-------|---------|
-| **Success** | `#4CAF50` | `#1a2e1c` |
-| **Warning** | `#FFB74D` | `#2e2518` |
-| **Error / Danger** | `#EF5350` | `#2e1a1a` |
-| **Info** | `#42A5F5` | `#1a2530` |
+| **Success** | `#4ade80` | `#1a2e1c` |
+| **Warning** | `#fbbf24` | `#2e2518` |
+| **Error / Danger** | `#f87171` | `#2e1a1a` |
+| **Info** | `#60a5fa` | `#1a2530` |
 
 ## Market / Financial Colors
 
 | Token | Color | Usage |
 |-------|-------|-------|
-| Bull / Gain | `#10b981` | Positive returns, inflows |
-| Bear / Loss | `#ef4444` | Negative returns, outflows |
-| Neutral | `#6b7280` | No change |
+| Bull / Gain | `#34d399` | Positive returns, inflows |
+| Bear / Loss | `#f87171` | Negative returns, outflows |
+| Neutral | `#94a3b8` | No change |
 
 ## Tier Colors
 
 | Tier | Color |
 |------|-------|
-| Platinum | `#e0e7ff` |
-| Gold | `#f59e0b` |
-| Silver | `#94a3b8` |
-| Bronze | `#d97706` |
+| Platinum | `#c7d2fe` |
+| Gold | `#fbbf24` |
+| Silver | `#cbd5e1` |
+| Bronze | `#f59e0b` |
 
 ## Typography
 
@@ -135,20 +140,41 @@ All Farther apps use a dark theme. These are the surface and text colors:
 | md | `0 8px 32px rgba(0,0,0,0.36)` |
 | lg | `0 12px 40px rgba(0,0,0,0.45)` |
 | xl | `0 16px 48px rgba(0,0,0,0.55)` |
-| Glow (teal) | `0 0 20px rgba(29,118,130,0.3)` |
-| Glow (ice) | `0 0 20px rgba(182,208,237,0.2)` |
+| Glow (teal) | `0 0 24px rgba(43,184,196,0.35)` |
+| Glow (ice) | `0 0 20px rgba(182,208,237,0.25)` |
+
+## Button Styles
+
+Primary buttons use a gradient for visibility on dark backgrounds:
+
+```
+background: linear-gradient(135deg, #2bb8c4, #5dd8e4)
+color: #ffffff
+font-weight: 600
+box-shadow: 0 4px 16px rgba(43,184,196,0.3)
+border-radius: 8px
+```
+
+Secondary (outline):
+```
+background: transparent
+color: #2bb8c4
+border: 1px solid #2bb8c4
+```
 
 ## Chart Color Palette
 
-Use this sequence for Recharts / any multi-series charts:
+Brightened for contrast on dark chart backgrounds:
 
 ```
-#1d7682  (teal)
-#28a1af  (teal light)
+#2bb8c4  (teal — primary series)
+#5dd8e4  (teal light — secondary series)
 #b6d0ed  (ice)
 #88cbd3  (teal-ice blend)
-#5b6a71  (slate)
-#8a9aa2  (slate light)
+#8a9aa2  (slate)
+#a8b8c0  (slate light)
+#34d399  (success green — for positive series)
+#fbbf24  (gold — for highlight series)
 ```
 
 ## Glass Card Style
@@ -190,3 +216,15 @@ Each repo implements these tokens differently based on its styling approach:
 | Wealth Tools | Tailwind v4 + `@theme` in globals.css | `src/app/globals.css` |
 
 **The hex values and design intent must be identical.** Only the delivery mechanism differs.
+
+---
+
+## Light Mode (Future)
+
+All apps will support a light/dark toggle. Light mode uses:
+- Page background: `#FAF7F2` (cream)
+- Card background: `#ffffff`
+- Text primary: `#333333` (charcoal)
+- Text secondary: `#5b6a71` (slate)
+- Teal stays `#2bb8c4` for buttons/links (darkened to `#1d7682` for text on light bg)
+- Status colors shift to their darker variants for contrast on light surfaces
