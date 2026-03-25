@@ -1,0 +1,208 @@
+{
+  "$schema": "farther-brand-system/1.0",
+  "name": "Farther Platform Brand System",
+  "description": "Single source of truth for all Farther platform sites. Import into Tailwind, CSS, Figma, or any design tool.",
+  "updated": "2026-03-25",
+
+  "palette": {
+    "steel":    { "500": "#4E7082" },
+    "graphite": { "600": "#374E59" },
+    "slate":    { "600": "#405B69" },
+    "ivory":    { "50":  "#FFFEF4" },
+    "linen":    { "100": "#F7F4F0" },
+    "mist":     { "100": "#D4DFE5" },
+    "sky":      { "300": "#99B6C3" },
+    "aqua":     { "300": "#A8CED3" },
+    "terra":    { "500": "#8A5C4F" },
+    "graycool": { "400": "#888888", "600": "#595959" }
+  },
+
+  "paletteRGB": {
+    "steel-500":    "78 112 130",
+    "graphite-600": "55 78 89",
+    "slate-600":    "64 91 105",
+    "ivory-50":     "255 254 244",
+    "linen-100":    "247 244 240",
+    "mist-100":     "212 223 229",
+    "sky-300":      "153 182 195",
+    "aqua-300":     "168 206 211",
+    "terra-500":    "138 92 79",
+    "graycool-400": "136 136 136",
+    "graycool-600": "89 89 89"
+  },
+
+  "semantic": {
+    "text": {
+      "default":  "rgb(var(--color-text) / <alpha-value>)",
+      "subtle":   "rgb(var(--color-text-subtle) / <alpha-value>)",
+      "muted":    "rgb(var(--color-text-muted) / <alpha-value>)",
+      "onBrand":  "rgb(var(--color-text-on-brand) / <alpha-value>)"
+    },
+    "surface": {
+      "default":  "rgb(var(--color-surface) / <alpha-value>)",
+      "soft":     "rgb(var(--color-surface-soft) / <alpha-value>)",
+      "strong":   "rgb(var(--color-surface-strong) / <alpha-value>)",
+      "brand":    "rgb(var(--color-surface-brand) / <alpha-value>)",
+      "subtle":   "rgb(var(--color-surface-subtle) / <alpha-value>)"
+    },
+    "border": {
+      "subtle":   "rgb(var(--color-border-subtle) / <alpha-value>)",
+      "strong":   "rgb(var(--color-border-strong) / <alpha-value>)",
+      "brand":    "rgb(var(--color-border-brand) / <alpha-value>)"
+    },
+    "accent": {
+      "primary":     "rgb(var(--color-accent-primary) / <alpha-value>)",
+      "primarySoft": "rgb(var(--color-accent-primary-soft) / <alpha-value>)",
+      "secondary":   "rgb(var(--color-accent-secondary) / <alpha-value>)",
+      "luxury":      "rgb(var(--color-accent-luxury) / <alpha-value>)"
+    }
+  },
+
+  "cssVariables": {
+    "light": {
+      "--color-text":                "55 78 89",
+      "--color-text-subtle":         "89 89 89",
+      "--color-text-muted":          "136 136 136",
+      "--color-text-on-brand":       "255 254 244",
+      "--color-surface":             "255 254 244",
+      "--color-surface-soft":        "247 244 240",
+      "--color-surface-strong":      "212 223 229",
+      "--color-surface-brand":       "78 112 130",
+      "--color-surface-subtle":      "212 223 229",
+      "--color-border-subtle":       "57 78 89",
+      "--color-border-strong":       "78 112 130",
+      "--color-border-brand":        "168 206 211",
+      "--color-accent-primary":      "78 112 130",
+      "--color-accent-primary-soft": "168 206 211",
+      "--color-accent-secondary":    "153 182 195",
+      "--color-accent-luxury":       "138 92 79"
+    },
+    "dark": {
+      "--color-text":                "255 254 244",
+      "--color-text-subtle":         "212 223 229",
+      "--color-text-muted":          "169 177 185",
+      "--color-text-on-brand":       "255 254 244",
+      "--color-surface":             "17 17 17",
+      "--color-surface-soft":        "26 26 26",
+      "--color-surface-strong":      "32 40 48",
+      "--color-surface-brand":       "55 78 89",
+      "--color-surface-subtle":      "36 46 55",
+      "--color-border-subtle":       "212 223 229",
+      "--color-border-strong":       "153 182 195",
+      "--color-border-brand":        "168 206 211",
+      "--color-accent-primary":      "78 112 130",
+      "--color-accent-primary-soft": "168 206 211",
+      "--color-accent-secondary":    "153 182 195",
+      "--color-accent-luxury":       "138 92 79"
+    }
+  },
+
+  "status": {
+    "success":  { "light": "#10b981", "dark": "#34d399" },
+    "warning":  { "light": "#f59e0b", "dark": "#fbbf24" },
+    "danger":   { "light": "#ef4444", "dark": "#f87171" },
+    "info":     { "light": "#3b82f6", "dark": "#60a5fa" }
+  },
+
+  "charts": {
+    "seriesOrder": ["#4E7082", "#A8CED3", "#99B6C3", "#D4DFE5", "#405B69", "#8A5C4F"],
+    "areaGradientOpacity": { "start": 0.45, "end": 0 },
+    "axes": {
+      "light": {
+        "gridStroke":  "rgba(89, 89, 89, 0.20)",
+        "labelColor":  "rgba(55, 78, 89, 0.75)"
+      },
+      "dark": {
+        "gridStroke":  "rgba(212, 223, 229, 0.16)",
+        "labelColor":  "rgba(255, 254, 244, 0.60)"
+      }
+    },
+    "tooltip": {
+      "light": {
+        "background": "rgba(255, 254, 244, 0.96)",
+        "border":     "1px solid rgba(57, 78, 89, 0.10)",
+        "text":       "#374E59",
+        "radius":     "12px"
+      },
+      "dark": {
+        "background": "rgba(23, 31, 39, 0.95)",
+        "border":     "1px solid rgba(212, 223, 229, 0.16)",
+        "text":       "#FFFEF4",
+        "radius":     "12px"
+      }
+    }
+  },
+
+  "avatars": {
+    "executive": { "from": "#8A5C4F", "to": "#A8CED3" },
+    "brand":     { "from": "#4E7082", "to": "#A8CED3" },
+    "soft":      { "from": "#99B6C3", "to": "#D4DFE5" }
+  },
+
+  "tiers": {
+    "platinum":  "#c7d2fe",
+    "gold":      "#fbbf24",
+    "silver":    "#cbd5e1",
+    "bronze":    "#f59e0b"
+  },
+
+  "shadows": {
+    "glass":      "0 8px 32px rgba(0, 0, 0, 0.36)",
+    "glassHover": "0 12px 40px rgba(0, 0, 0, 0.45)",
+    "glassSm":    "0 4px 16px rgba(0, 0, 0, 0.25)",
+    "glowAccent": "0 0 20px rgba(78, 112, 130, 0.35)",
+    "glowAqua":   "0 0 18px rgba(168, 206, 211, 0.50)",
+    "cardLight":  "0 8px 24px rgba(55, 78, 89, 0.10)",
+    "cardDark":   "0 8px 32px rgba(0, 0, 0, 0.60)"
+  },
+
+  "gradients": {
+    "bodyLight":        "linear-gradient(165deg, #FFFEF4 0%, #F7F4F0 40%, #D4DFE5 100%)",
+    "bodyDark":         "linear-gradient(165deg, #111111 0%, #1A1A1A 40%, #202830 100%)",
+    "brandPrimary":     "linear-gradient(135deg, #4E7082, #A8CED3)",
+    "brandHover":       "linear-gradient(135deg, #374E59, #4E7082)",
+    "kpiBar":           "linear-gradient(90deg, #4E7082, #A8CED3)",
+    "navActiveItem":    "linear-gradient(135deg, rgba(78,112,130,0.32), rgba(168,206,211,0.24))",
+    "glassLight":       "linear-gradient(135deg, rgba(255,254,244,0.09), rgba(212,223,229,0.05))",
+    "glassDark":        "linear-gradient(135deg, rgba(23,31,39,0.80), rgba(32,40,48,0.60))"
+  },
+
+  "typography": {
+    "fontSerif":  "'ABC Arizona Text', Georgia, 'Times New Roman', serif",
+    "fontSans":   "'Fakt', system-ui, sans-serif",
+    "fontMono":   "'SF Mono', 'Fira Code', monospace",
+    "weights": {
+      "light":    300,
+      "regular":  400,
+      "medium":   500,
+      "semibold": 600
+    }
+  },
+
+  "spacing": {
+    "xs":  "0.25rem",
+    "sm":  "0.5rem",
+    "md":  "1rem",
+    "lg":  "1.5rem",
+    "xl":  "2rem",
+    "2xl": "3rem",
+    "3xl": "4rem"
+  },
+
+  "borderRadius": {
+    "sm":   "6px",
+    "md":   "8px",
+    "lg":   "12px",
+    "xl":   "16px",
+    "2xl":  "20px",
+    "full": "9999px"
+  },
+
+  "breakpoints": {
+    "sm":  "640px",
+    "md":  "768px",
+    "lg":  "1024px",
+    "xl":  "1280px",
+    "2xl": "1536px"
+  }
+}

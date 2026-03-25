@@ -146,22 +146,22 @@ export const componentStandards = {
     legendPosition: 'top' as const,
     // Financial data visualization colors — consistent across ALL charts
     assetClass: {
-      equityDomestic:       colors.steelBlue[700],
-      equityInternational:  colors.steelBlue[500],
+      equityDomestic:       colors.steelBlue[700],    // Steel #4E7082
+      equityInternational:  colors.steelBlue[500],    // Sky #99B6C3
       fixedIncome:          colors.success[500],
       alternatives:         colors.chart.accent2,
       cash:                 colors.charcoal[300],
-      realEstate:           colors.chart.accent3,
+      realEstate:           colors.chart.accent3,      // Terra #8A5C4F
       commodities:          colors.chart.accent1,
     },
     // Series colors used in order for multi-series charts
     series: [
-      colors.steelBlue[700],
+      colors.steelBlue[700],    // Steel #4E7082
+      colors.steelBlue[400],    // Aqua #A8CED3
+      colors.steelBlue[500],    // Sky #99B6C3
+      colors.chart.accent2,
       colors.success[500],
       colors.warning[500],
-      colors.chart.accent2,
-      colors.critical[500],
-      colors.info[500],
     ],
   },
 

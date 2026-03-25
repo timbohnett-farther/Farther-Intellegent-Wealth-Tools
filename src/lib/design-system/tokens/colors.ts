@@ -13,21 +13,21 @@ export const colors = {
   },
 
   steelBlue: {
-    900: '#1E3642',   // Deepest — dark mode headings
-    800: '#2B4A58',   // Active state on primary buttons
-    700: '#3B5A69',   // PRIMARY BRAND — buttons, links, active nav
-    600: '#4D6E7E',   // Hover state on primary
-    500: '#6189A0',   // Subtle accents, info badges
-    400: '#7EA4B8',   // Light accents, chart secondary
-    300: '#A3BFC9',   // Chart grid lines, background accents
-    200: '#C5D8DF',   // Focus rings
-    100: '#E0EAED',   // Chip/tag backgrounds
-    50:  '#F0F5F7',   // Lightest tint — alternate sections
+    900: '#374E59',   // Graphite — deepest text
+    800: '#405B69',   // Slate — supporting
+    700: '#4E7082',   // Steel — PRIMARY BRAND — buttons, links, active nav
+    600: '#5C8395',   // Hover state on primary
+    500: '#99B6C3',   // Sky — subtle accents, info badges
+    400: '#A8CED3',   // Aqua — light accents, chart secondary
+    300: '#D4DFE5',   // Mist — chart grid lines, background accents, tags/chips
+    200: '#E2EAED',   // Focus rings
+    100: '#F0F5F7',   // Chip/tag backgrounds
+    50:  '#F7F9FA',   // Lightest tint — alternate sections
   },
 
   limestone: {
-    50:  '#F8F4F0',   // PRIMARY CANVAS — page background
-    100: '#F0EBE3',   // Card alt backgrounds, sidebar
+    50:  '#FFFEF4',   // Ivory — text on dark
+    100: '#F7F4F0',   // Linen — card backgrounds
     200: '#E4DDD4',   // Borders, input borders
     300: '#D4CCC2',   // Deeper borders, dividers
     400: '#BDB4A8',   // Muted text on dark backgrounds
@@ -64,18 +64,18 @@ export const colors = {
 
   // ─── DATA VISUALIZATION PALETTE ─────────────────────────────────────
   chart: {
-    primary:    '#3B5A69',
-    secondary:  '#6189A0',
-    tertiary:   '#A3BFC9',
+    primary:    '#4E7082',    // Steel
+    secondary:  '#A8CED3',    // Aqua
+    tertiary:   '#99B6C3',    // Sky
     positive:   '#2E8B57',
     negative:   '#C0392B',
     neutral:    '#9E9E9E',
     accent1:    '#E8A838',
     accent2:    '#7B68EE',
-    accent3:    '#E07B54',
+    accent3:    '#8A5C4F',    // Terra — luxury accent
     gridLine:   '#E4DDD4',
     axisLabel:  '#6B6B6B',
-    background: '#F8F4F0',
+    background: '#F7F4F0',    // Linen
   },
 
   white: '#FFFFFF',

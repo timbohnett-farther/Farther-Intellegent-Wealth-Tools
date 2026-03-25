@@ -2,10 +2,10 @@
 
 export const chartConfig = {
   backgroundColor:  '#111111',
-  gridColor:        'rgba(255, 255, 255, 0.06)',
-  axisColor:        'rgba(255, 255, 255, 0.10)',
-  axisLabelColor:   'rgba(255, 255, 255, 0.40)',
-  legendColor:      'rgba(255, 255, 255, 0.60)',
+  gridColor:        'rgba(212, 223, 229, 0.16)',
+  axisColor:        'rgba(212, 223, 229, 0.16)',
+  axisLabelColor:   'rgba(255, 254, 244, 0.60)',
+  legendColor:      'rgba(255, 254, 244, 0.60)',
   fontFamily:       '"Fakt", sans-serif',
   axisFontSize:     12,
   legendFontSize:   12,
@@ -13,14 +13,14 @@ export const chartConfig = {
 
   tooltip: {
     background:   'rgba(26, 26, 26, 0.95)',
-    border:       '1px solid rgba(255, 255, 255, 0.12)',
+    border:       '1px solid rgba(212, 223, 229, 0.16)',
     borderRadius: '12px',
     boxShadow:    '0 8px 32px rgba(0, 0, 0, 0.4)',
     padding:      '12px 16px',
     titleColor:   '#ffffff',
     titleSize:    '13px',
     titleWeight:  700,
-    valueColor:   'rgba(255, 255, 255, 0.80)',
+    valueColor:   'rgba(255, 254, 244, 0.80)',
     valueSize:    '14px',
     fontFamily:   '"JetBrains Mono", monospace',
   },
@@ -31,20 +31,20 @@ export const chartConfig = {
   },
 
   colors: {
-    primary:   '#1d7682',
-    secondary: '#b6d0ed',
-    tertiary:  '#2a9aa8',
+    primary:   '#4E7082',
+    secondary: '#A8CED3',
+    tertiary:  '#99B6C3',
     positive:  '#22c55e',
     negative:  '#ef4444',
-    neutral:   'rgba(255, 255, 255, 0.40)',
+    neutral:   'rgba(212, 223, 229, 0.40)',
     goal:      '#f59e0b',
     estate:    '#8b5cf6',
     tax:       '#f97316',
 
-    mcP50:     '#1d7682',
-    mcP25_75:  'rgba(29, 118, 130, 0.30)',
-    mcP10_90:  'rgba(29, 118, 130, 0.15)',
-    mcP5_95:   'rgba(29, 118, 130, 0.08)',
+    mcP50:     '#4E7082',
+    mcP25_75:  'rgba(78, 112, 130, 0.30)',
+    mcP10_90:  'rgba(78, 112, 130, 0.15)',
+    mcP5_95:   'rgba(78, 112, 130, 0.08)',
   },
 
   barChart: {
@@ -72,7 +72,7 @@ export const projectionChartConfig = {
   yAxisLabel:  'Portfolio Value',
   yAxisFormat: (value: number) => `$${(value / 1_000_000).toFixed(1)}M`,
   referenceLines: {
-    retirement: { stroke: '#1d7682', strokeDasharray: '6 4', label: 'Retirement' },
+    retirement: { stroke: '#4E7082', strokeDasharray: '6 4', label: 'Retirement' },
     zero:       { stroke: '#ef4444', strokeDasharray: '4 4', label: 'Portfolio Depleted' },
   },
   height: 380,
@@ -81,10 +81,10 @@ export const projectionChartConfig = {
 
 export const monteCarloConfig = {
   bands: [
-    { key: 'p5_p95',  fillColor: 'rgba(29, 118, 130, 0.07)',  label: '90th Percentile Range' },
-    { key: 'p10_p90', fillColor: 'rgba(29, 118, 130, 0.12)',  label: '80th Percentile Range' },
-    { key: 'p25_p75', fillColor: 'rgba(29, 118, 130, 0.22)',  label: '50th Percentile Range' },
-    { key: 'p50',     strokeColor: '#1d7682', strokeWidth: 2.5, label: 'Median (P50)' },
+    { key: 'p5_p95',  fillColor: 'rgba(78, 112, 130, 0.07)',  label: '90th Percentile Range' },
+    { key: 'p10_p90', fillColor: 'rgba(78, 112, 130, 0.12)',  label: '80th Percentile Range' },
+    { key: 'p25_p75', fillColor: 'rgba(78, 112, 130, 0.22)',  label: '50th Percentile Range' },
+    { key: 'p50',     strokeColor: '#4E7082', strokeWidth: 2.5, label: 'Median (P50)' },
   ],
   height: 400,
 } as const;
