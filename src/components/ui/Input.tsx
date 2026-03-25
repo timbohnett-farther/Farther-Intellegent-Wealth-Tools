@@ -12,7 +12,7 @@ const inputVariants = tv({
     "border-[1.5px] border-white/[0.10]",
     "placeholder:text-white/30",
     "hover:border-white/20",
-    "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(29,118,130,0.25)]",
+    "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(78,112,130,0.25)]",
     "disabled:bg-white/[0.03] disabled:text-white/20 disabled:cursor-not-allowed",
   ],
   variants: {

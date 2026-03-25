@@ -189,7 +189,7 @@ export function TaxProjectionChart({
             dataKey="federalTax"
             name="Federal Tax"
             stackId="tax"
-            fill="#1d7682"
+            fill="#4E7082"
             maxBarSize={24}
           />
           <Bar
@@ -205,7 +205,7 @@ export function TaxProjectionChart({
             dataKey="seTax"
             name="SE Tax"
             stackId="tax"
-            fill="#2a9aa8"
+            fill="#A8CED3"
             maxBarSize={24}
           />
           <Bar

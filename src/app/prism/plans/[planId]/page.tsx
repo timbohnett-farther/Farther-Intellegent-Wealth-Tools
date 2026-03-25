@@ -362,7 +362,7 @@ export default function PlanOverviewPage() {
                     <YAxis tickFormatter={formatAxisCurrency} tick={{ fontSize: 11 }} />
                     <Tooltip formatter={(v: number) => formatCurrency(v)} />
                     <Legend />
-                    <Bar dataKey="totalGrossIncome" name="Income" fill="#1d7682" stackId="a" />
+                    <Bar dataKey="totalGrossIncome" name="Income" fill="#4E7082" stackId="a" />
                     <Bar dataKey="totalExpenses" name="Expenses" fill="#f59e0b" stackId="b" />
                     <Bar dataKey="totalTax" name="Taxes" fill="#ef4444" stackId="b" />
                     <Line type="monotone" dataKey="netCashFlow" name="Net" stroke="#22c55e" strokeWidth={2} dot={false} />
@@ -429,7 +429,7 @@ export default function PlanOverviewPage() {
                   {retirementYear && (
                     <ReferenceLine x={retirementYear} stroke="#A09888" strokeDasharray="5 5" label="Retirement" />
                   )}
-                  <Area type="monotone" dataKey="totalAssets" name="Total Assets" fill="#1d7682" fillOpacity={0.2} stroke="#1d7682" />
+                  <Area type="monotone" dataKey="totalAssets" name="Total Assets" fill="#4E7082" fillOpacity={0.2} stroke="#4E7082" />
                   <Area type="monotone" dataKey="netWorth" name="Net Worth" fill="#0A1628" fillOpacity={0.1} stroke="#0A1628" strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>

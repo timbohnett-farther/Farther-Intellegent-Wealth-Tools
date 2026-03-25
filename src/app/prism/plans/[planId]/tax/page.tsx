@@ -83,7 +83,7 @@ const FEDERAL_BRACKETS = [
   { rate: 22, floor: 96_950, ceiling: 206_700, color: '#BFDBFE' },  // blue-200
   { rate: 24, floor: 206_700, ceiling: 394_600, color: '#93C5FD' }, // blue-300
   { rate: 32, floor: 394_600, ceiling: 501_050, color: '#60A5FA' }, // blue-400
-  { rate: 35, floor: 501_050, ceiling: 751_600, color: '#1d7682' }, // blue-500
+  { rate: 35, floor: 501_050, ceiling: 751_600, color: '#4E7082' }, // blue-500
   { rate: 37, floor: 751_600, ceiling: 1_200_000, color: '#ef4444' }, // red-500
 ];
 

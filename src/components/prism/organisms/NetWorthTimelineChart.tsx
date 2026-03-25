@@ -76,9 +76,9 @@ function TimelineTooltip({
   ).payload;
 
   const rows: Array<{ label: string; value: number; color: string }> = [
-    { label: 'Total Assets', value: dataPoint.totalAssets, color: '#2a9aa8' },
+    { label: 'Total Assets', value: dataPoint.totalAssets, color: '#A8CED3' },
     { label: 'Total Liabilities', value: dataPoint.totalLiabilities, color: '#ef4444' },
-    { label: 'Net Worth', value: dataPoint.netWorth, color: '#1d7682' },
+    { label: 'Net Worth', value: dataPoint.netWorth, color: '#4E7082' },
   ];
 
   // Add portfolio breakdown if available
@@ -181,9 +181,9 @@ export function NetWorthTimelineChart({
             type="monotone"
             dataKey="totalAssets"
             name="Total Assets"
-            stroke="#2a9aa8"
+            stroke="#A8CED3"
             strokeWidth={1.5}
-            fill="#2a9aa8"
+            fill="#A8CED3"
             fillOpacity={0.3}
             activeDot={false}
             isAnimationActive={false}
@@ -207,10 +207,10 @@ export function NetWorthTimelineChart({
             type="monotone"
             dataKey="netWorth"
             name="Net Worth"
-            stroke="#1d7682"
+            stroke="#4E7082"
             strokeWidth={2.5}
             fill="none"
-            activeDot={{ r: 4, fill: '#1d7682' }}
+            activeDot={{ r: 4, fill: '#4E7082' }}
             isAnimationActive={false}
           />
 

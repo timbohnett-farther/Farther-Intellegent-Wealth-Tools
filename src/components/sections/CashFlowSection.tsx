@@ -13,7 +13,7 @@ interface Props {
 
 export default function CashFlowSection({ data }: Props) {
   const comparisonData = [
-    { name: 'Box Spread', payment: data.monthlyPaymentComparison.box, fill: '#1d7682' },
+    { name: 'Box Spread', payment: data.monthlyPaymentComparison.box, fill: '#4E7082' },
     { name: 'Margin', payment: data.monthlyPaymentComparison.margin, fill: '#6B7280' },
     { name: 'SBLOC', payment: data.monthlyPaymentComparison.sbloc, fill: '#F97316' },
     { name: 'HELOC', payment: data.monthlyPaymentComparison.heloc, fill: '#8B5CF6' },

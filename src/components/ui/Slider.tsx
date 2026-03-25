@@ -70,7 +70,7 @@ function Slider({
             "disabled:opacity-50 disabled:cursor-not-allowed",
           )}
           style={{
-            background: `linear-gradient(to right, #1d7682 0%, #1d7682 ${percentage}%, rgba(255,255,255,0.10) ${percentage}%, rgba(255,255,255,0.10) 100%)`,
+            background: `linear-gradient(to right, #4E7082 0%, #4E7082 ${percentage}%, rgba(255,255,255,0.10) ${percentage}%, rgba(255,255,255,0.10) 100%)`,
           }}
         />
       </div>

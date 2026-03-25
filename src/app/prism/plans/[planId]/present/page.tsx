@@ -60,9 +60,9 @@ const CASH_FLOW_DATA = Array.from({ length: 15 }, (_, i) => ({
 }));
 
 const ALLOCATION_DATA = [
-  { name: 'US Equity', value: 45, color: '#1d7682' },
+  { name: 'US Equity', value: 45, color: '#4E7082' },
   { name: 'Int\'l Equity', value: 15, color: '#7B68EE' },
-  { name: 'Fixed Income', value: 25, color: '#2a9aa8' },
+  { name: 'Fixed Income', value: 25, color: '#A8CED3' },
   { name: 'Alternatives', value: 10, color: '#22c55e' },
   { name: 'Cash', value: 5, color: '#f59e0b' },
 ];
@@ -217,8 +217,8 @@ export default function PresentationPage() {
                   <AreaChart data={NET_WORTH_DATA}>
                     <defs>
                       <linearGradient id="colorNW" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#1d7682" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#1d7682" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#4E7082" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#4E7082" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -229,7 +229,7 @@ export default function PresentationPage() {
                       labelStyle={{ color: '#A09888' }}
                       formatter={(value: number) => [`$${(value / 1000000).toFixed(2)}M`]}
                     />
-                    <Area type="monotone" dataKey="netWorth" stroke="#1d7682" fill="url(#colorNW)" strokeWidth={2} name="Net Worth" />
+                    <Area type="monotone" dataKey="netWorth" stroke="#4E7082" fill="url(#colorNW)" strokeWidth={2} name="Net Worth" />
                     <Area type="monotone" dataKey="assets" stroke="#22c55e" fill="none" strokeWidth={1} strokeDasharray="5 5" name="Assets" />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -277,7 +277,7 @@ export default function PresentationPage() {
                     contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
                     formatter={(value: number) => [`$${(value / 1000).toFixed(0)}K`]}
                   />
-                  <Bar dataKey="income" fill="#1d7682" radius={[4, 4, 0, 0]} name="Income" />
+                  <Bar dataKey="income" fill="#4E7082" radius={[4, 4, 0, 0]} name="Income" />
                   <Bar dataKey="expenses" fill="#E07B54" radius={[4, 4, 0, 0]} name="Expenses" />
                   <Bar dataKey="taxes" fill="#ef4444" radius={[4, 4, 0, 0]} name="Taxes" />
                   <Line type="monotone" dataKey="net" stroke="#22c55e" strokeWidth={2} dot={false} name="Net" />

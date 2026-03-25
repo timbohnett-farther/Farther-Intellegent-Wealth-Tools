@@ -52,7 +52,7 @@ export default function OpportunityCostSection({ data }: Props) {
             <Tooltip formatter={(v: number) => formatCurrency(v)} />
             <Legend />
             <Line type="monotone" dataKey="Sell Assets" stroke="#EF4444" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Box Spread" stroke="#1d7682" strokeWidth={2.5} dot={false} />
+            <Line type="monotone" dataKey="Box Spread" stroke="#4E7082" strokeWidth={2.5} dot={false} />
             <Line type="monotone" dataKey="Margin Loan" stroke="#6B7280" strokeWidth={2} dot={false} strokeDasharray="5 5" />
           </LineChart>
         </ResponsiveContainer>

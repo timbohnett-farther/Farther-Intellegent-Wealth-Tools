@@ -199,7 +199,7 @@ export function CashFlowBarChart({
               dataKey="salaryIncome"
               name="Salary"
               stackId="income"
-              fill="#1d7682"
+              fill="#4E7082"
               radius={[0, 0, 0, 0]}
               maxBarSize={24}
             />
@@ -209,7 +209,7 @@ export function CashFlowBarChart({
               dataKey="socialSecurityClientGross"
               name="Social Security"
               stackId="income"
-              fill="#2a9aa8"
+              fill="#A8CED3"
               maxBarSize={24}
             />
           )}
@@ -218,7 +218,7 @@ export function CashFlowBarChart({
               dataKey="pensionIncome"
               name="Pension"
               stackId="income"
-              fill="#A3BFC9"
+              fill="#99B6C3"
               maxBarSize={24}
             />
           )}
@@ -251,7 +251,7 @@ export function CashFlowBarChart({
                 dataKey="totalGrossIncome"
                 name="Total Income"
                 stackId="income"
-                fill="#1d7682"
+                fill="#4E7082"
                 radius={[4, 4, 0, 0]}
                 maxBarSize={24}
               />

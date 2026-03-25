@@ -16,9 +16,9 @@ export type ChartColorName =
   | "cyan";
 
 export const chartColors: Record<ChartColorName, string> = {
-  brand: "#1d7682",
-  "brand-light": "#b6d0ed",
-  "brand-dark": "#0d3538",
+  brand: "#4E7082",
+  "brand-light": "#A8CED3",
+  "brand-dark": "#374E59",
   charcoal: "rgba(255, 255, 255, 0.40)",
   limestone: "rgba(255, 255, 255, 0.10)",
   success: "#22c55e",

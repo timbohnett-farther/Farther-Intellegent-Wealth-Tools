@@ -151,7 +151,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p95"
             stroke="none"
-            fill="rgba(29,118,130,0.08)"
+            fill="rgba(78,112,130,0.08)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -160,7 +160,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p5"
             stroke="none"
-            fill="rgba(29,118,130,0.08)"
+            fill="rgba(78,112,130,0.08)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -171,7 +171,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p90"
             stroke="none"
-            fill="rgba(29,118,130,0.15)"
+            fill="rgba(78,112,130,0.15)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -180,7 +180,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p10"
             stroke="none"
-            fill="rgba(29,118,130,0.15)"
+            fill="rgba(78,112,130,0.15)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -191,7 +191,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p75"
             stroke="none"
-            fill="rgba(29,118,130,0.30)"
+            fill="rgba(78,112,130,0.30)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -200,7 +200,7 @@ export function MonteCarloFanChart({
             type="monotone"
             dataKey="p25"
             stroke="none"
-            fill="rgba(29,118,130,0.30)"
+            fill="rgba(78,112,130,0.30)"
             fillOpacity={1}
             activeDot={false}
             isAnimationActive={false}
@@ -210,10 +210,10 @@ export function MonteCarloFanChart({
           <Area
             type="monotone"
             dataKey="p50"
-            stroke="#1d7682"
+            stroke="#4E7082"
             strokeWidth={2.5}
             fill="none"
-            activeDot={{ r: 4, fill: '#1d7682' }}
+            activeDot={{ r: 4, fill: '#4E7082' }}
             isAnimationActive={false}
           />
 

@@ -98,7 +98,7 @@ export function Sidebar() {
       >
         <div
           className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #1d7682, #2a9aa8)' }}
+          style={{ background: 'linear-gradient(135deg, #4E7082, #A8CED3)' }}
         >
           <span className="text-white font-bold text-sm">FP</span>
         </div>
@@ -149,8 +149,8 @@ export function Sidebar() {
                         : 'text-white/50 font-medium hover:text-white hover:bg-white/[0.04]'
                     )}
                     style={isActive ? {
-                      background: 'linear-gradient(135deg, rgba(29, 118, 130, 0.25), rgba(29, 118, 130, 0.15))',
-                      borderLeft: '3px solid #1d7682',
+                      background: 'linear-gradient(135deg, rgba(78, 112, 130, 0.25), rgba(78, 112, 130, 0.15))',
+                      borderLeft: '3px solid #4E7082',
                       paddingLeft: '13px',
                     } : undefined}
                   >
@@ -215,7 +215,7 @@ export function Sidebar() {
           <div className="flex items-center gap-3">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(29, 118, 130, 0.20)' }}
+              style={{ background: 'rgba(78, 112, 130, 0.20)' }}
             >
               <span className="text-teal-300 text-xs font-semibold">JD</span>
             </div>
@@ -228,7 +228,7 @@ export function Sidebar() {
           <div className="flex justify-center">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(29, 118, 130, 0.20)' }}
+              style={{ background: 'rgba(78, 112, 130, 0.20)' }}
             >
               <span className="text-teal-300 text-xs font-semibold">JD</span>
             </div>

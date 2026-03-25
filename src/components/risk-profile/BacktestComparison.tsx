@@ -16,8 +16,8 @@ interface BacktestComparisonProps {
 }
 
 const ALLOC_COLORS: Record<keyof ModelAllocation, { color: string; label: string }> = {
-  usEquity: { color: '#1d7682', label: 'US Equity' },
-  intlEquity: { color: '#186068', label: "Int'l Equity" },
+  usEquity: { color: '#4E7082', label: 'US Equity' },
+  intlEquity: { color: '#374E59', label: "Int'l Equity" },
   emEquity: { color: '#8B5CF6', label: 'EM Equity' },
   govBonds: { color: '#10B981', label: 'Gov Bonds' },
   corpBonds: { color: '#14B8A6', label: 'Corp Bonds' },
@@ -134,7 +134,7 @@ function ReturnChart({ backtests }: { backtests: BacktestResult[] }) {
   const minR = Math.min(...allReturns, -5);
   const range = maxR - minR;
 
-  const colors = ['#10B981', '#1d7682', '#F59E0B'];
+  const colors = ['#10B981', '#4E7082', '#F59E0B'];
   const labels = ['-1 Band', 'Recommended', '+1 Band'];
 
   const chartWidth = Math.max(years.length * 22, 600);

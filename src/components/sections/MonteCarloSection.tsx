@@ -81,10 +81,10 @@ export default function MonteCarloSection({ data }: Props) {
             <Area type="monotone" dataKey="p95" stackId="1" stroke="none" fill="#E0EAED" fillOpacity={0.5} name="95th %ile" />
             <Area type="monotone" dataKey="p5" stackId="2" stroke="none" fill="white" fillOpacity={1} name="5th %ile" />
             {/* P25-P75 band */}
-            <Area type="monotone" dataKey="p75" stackId="3" stroke="none" fill="#A3BFC9" fillOpacity={0.4} name="75th %ile" />
+            <Area type="monotone" dataKey="p75" stackId="3" stroke="none" fill="#99B6C3" fillOpacity={0.4} name="75th %ile" />
             <Area type="monotone" dataKey="p25" stackId="4" stroke="none" fill="white" fillOpacity={1} name="25th %ile" />
             {/* Median line */}
-            <Area type="monotone" dataKey="p50" stroke="#1d7682" strokeWidth={2.5} fill="none" name="Median" />
+            <Area type="monotone" dataKey="p50" stroke="#4E7082" strokeWidth={2.5} fill="none" name="Median" />
             {/* Margin call line */}
             <Area type="monotone" dataKey="marginCallLine" stroke="#EF4444" strokeWidth={2} strokeDasharray="6 4" fill="#F8D7DA" fillOpacity={0.3} name="Margin Call Zone" />
           </AreaChart>

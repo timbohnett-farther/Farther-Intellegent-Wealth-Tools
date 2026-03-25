@@ -32,7 +32,7 @@ const ACCOUNTS = [
 ];
 
 const ALLOCATION = [
-  { label: 'US Equities', pct: 42, color: '#1d7682' },
+  { label: 'US Equities', pct: 42, color: '#4E7082' },
   { label: 'International Equities', pct: 18, color: '#0EA5E9' },
   { label: 'Fixed Income', pct: 22, color: '#22c55e' },
   { label: 'Real Estate', pct: 8, color: '#f59e0b' },

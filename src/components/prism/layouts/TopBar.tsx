@@ -78,7 +78,7 @@ export function TopBar({ title, breadcrumbs }: TopBarProps) {
         {/* + New Plan button */}
         <button
           className="flex items-center gap-1.5 h-9 px-4 text-white rounded-md text-sm font-semibold transition-colors"
-          style={{ background: 'linear-gradient(135deg, #1d7682, #186068)' }}
+          style={{ background: 'linear-gradient(135deg, #4E7082, #374E59)' }}
         >
           <Plus size={16} />
           <span>New Plan</span>
@@ -88,7 +88,7 @@ export function TopBar({ title, breadcrumbs }: TopBarProps) {
         <div className="flex items-center gap-2 pl-3" style={{ borderLeft: '1px solid rgba(255, 255, 255, 0.06)' }}>
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center"
-            style={{ background: 'rgba(29, 118, 130, 0.20)' }}
+            style={{ background: 'rgba(78, 112, 130, 0.20)' }}
           >
             <span className="text-teal-300 text-xs font-semibold">JD</span>
           </div>

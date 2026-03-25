@@ -15,7 +15,7 @@ interface Props {
 
 export default function CostComparisonSection({ data, config }: Props) {
   const barData = [
-    { name: 'Box Spread', interest: data.boxSpread.totalInterest, fill: '#1d7682' },
+    { name: 'Box Spread', interest: data.boxSpread.totalInterest, fill: '#4E7082' },
     { name: 'Margin Loan', interest: data.marginLoan.totalInterest, fill: '#6B7280' },
     { name: 'SBLOC', interest: data.sbloc.totalInterest, fill: '#F97316' },
     { name: 'HELOC', interest: data.heloc.totalInterest, fill: '#8B5CF6' },

@@ -162,7 +162,7 @@ export default function ReportsPage() {
   const [expandedType, setExpandedType] = useState<string | null>(null);
 
   // Branding
-  const [brandColor, setBrandColor] = useState('#1d7682');
+  const [brandColor, setBrandColor] = useState('#4E7082');
   const [includeDisclosures, setIncludeDisclosures] = useState(true);
 
   function selectReportType(typeId: string) {

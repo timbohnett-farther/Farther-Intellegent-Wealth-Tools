@@ -82,7 +82,7 @@ const MONTHLY_ACTIVITY = [
 ];
 
 const WEALTH_TIER_DIST = [
-  { name: 'Mass Affluent', value: 95, color: '#1d7682' },
+  { name: 'Mass Affluent', value: 95, color: '#4E7082' },
   { name: 'HNW', value: 128, color: '#22c55e' },
   { name: 'UHNW', value: 48, color: '#f59e0b' },
   { name: 'Ultra UHNW', value: 13, color: '#ef4444' },
@@ -148,7 +148,7 @@ export default function AdminOverviewPage() {
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="plans" fill="#1d7682" name="Plans Created" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="plans" fill="#4E7082" name="Plans Created" radius={[3, 3, 0, 0]} />
                 <Bar dataKey="reports" fill="#22c55e" name="Reports Generated" radius={[3, 3, 0, 0]} />
                 <Bar dataKey="meetings" fill="#f59e0b" name="Client Meetings" radius={[3, 3, 0, 0]} />
               </BarChart>

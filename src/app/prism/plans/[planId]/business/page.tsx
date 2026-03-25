@@ -134,7 +134,7 @@ const KEY_PERSON_RISKS = [
   { person: 'David Park', role: 'CTO', revenueAtRisk: 0.30, insuranceCoverage: 0, gap: 750_000 },
 ];
 
-const PIE_COLORS = ['#1d7682', '#22c55e', '#f59e0b', '#ef4444', '#7B68EE'];
+const PIE_COLORS = ['#4E7082', '#22c55e', '#f59e0b', '#ef4444', '#7B68EE'];
 
 // ---------------------------------------------------------------------------
 // Component
@@ -243,7 +243,7 @@ function OverviewTab() {
               <YAxis tickFormatter={(v: number) => fmtCompact(v)} tick={{ fontSize: 12 }} />
               <Tooltip formatter={(v: number) => fmt$(v)} />
               <Legend />
-              <Bar dataKey="revenue" fill="#1d7682" name="Revenue" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="revenue" fill="#4E7082" name="Revenue" radius={[4, 4, 0, 0]} />
               <Bar dataKey="ebitda" fill="#22c55e" name="EBITDA" radius={[4, 4, 0, 0]} />
               <Bar dataKey="netIncome" fill="#f59e0b" name="Net Income" radius={[4, 4, 0, 0]} />
             </BarChart>
@@ -351,7 +351,7 @@ function ValuationTab() {
               <Tooltip formatter={(v: number) => fmt$(v)} />
               <Bar dataKey="value" name="Business Value" radius={[4, 4, 0, 0]}>
                 {[3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0].map((m, i) => (
-                  <Cell key={i} fill={m === 4.5 ? '#1d7682' : '#A3BFC9'} />
+                  <Cell key={i} fill={m === 4.5 ? '#4E7082' : '#99B6C3'} />
                 ))}
               </Bar>
             </BarChart>
@@ -381,7 +381,7 @@ function ExitTab() {
               <YAxis tickFormatter={(v: number) => fmtCompact(v)} tick={{ fontSize: 12 }} />
               <Tooltip formatter={(v: number) => fmt$(v)} />
               <Legend />
-              <Bar dataKey="netProceeds" fill="#1d7682" name="Net Proceeds" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="netProceeds" fill="#4E7082" name="Net Proceeds" radius={[4, 4, 0, 0]} />
               <Bar dataKey="taxes" fill="#ef4444" name="Taxes" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

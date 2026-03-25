@@ -64,7 +64,7 @@ function fmtCompact(v: number): string {
 // Mock Data
 // ---------------------------------------------------------------------------
 
-const ALTS_COLORS = ['#6366F1', '#7B68EE', '#EC4899', '#f59e0b', '#22c55e', '#1d7682'];
+const ALTS_COLORS = ['#6366F1', '#7B68EE', '#EC4899', '#f59e0b', '#22c55e', '#4E7082'];
 
 const ALLOCATION_DATA = [
   { name: 'Private Equity', value: 2_800_000, color: '#6366F1' },
@@ -72,7 +72,7 @@ const ALLOCATION_DATA = [
   { name: 'Real Estate', value: 3_500_000, color: '#EC4899' },
   { name: 'Hedge Funds', value: 1_800_000, color: '#f59e0b' },
   { name: 'Private Credit', value: 1_500_000, color: '#22c55e' },
-  { name: 'Other', value: 700_000, color: '#1d7682' },
+  { name: 'Other', value: 700_000, color: '#4E7082' },
 ];
 
 const TOTAL_ALTS_AUM = ALLOCATION_DATA.reduce((s, d) => s + d.value, 0);

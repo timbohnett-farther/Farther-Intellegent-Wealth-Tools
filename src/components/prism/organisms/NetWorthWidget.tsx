@@ -78,7 +78,7 @@ export function NetWorthWidget({
     () => [
       { name: 'Assets', value: totalAssets, color: '#22c55e' },
       { name: 'Liabilities', value: totalLiabilities, color: '#ef4444' },
-      { name: 'Net Worth', value: Math.max(netWorth, 0), color: '#1d7682' },
+      { name: 'Net Worth', value: Math.max(netWorth, 0), color: '#4E7082' },
     ],
     [totalAssets, totalLiabilities, netWorth],
   );

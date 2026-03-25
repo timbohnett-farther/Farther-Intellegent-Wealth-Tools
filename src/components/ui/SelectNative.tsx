@@ -21,7 +21,7 @@ const SelectNative = React.forwardRef<HTMLSelectElement, SelectNativeProps>(
             "outline-hidden transition-all duration-150 appearance-none",
             "border-[1.5px] border-white/[0.10]",
             "hover:border-white/20",
-            "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(29,118,130,0.25)]",
+            "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(78,112,130,0.25)]",
             "disabled:bg-white/[0.03] disabled:text-white/20 disabled:cursor-not-allowed",
             hasError && "border-critical-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.25)]",
             className
