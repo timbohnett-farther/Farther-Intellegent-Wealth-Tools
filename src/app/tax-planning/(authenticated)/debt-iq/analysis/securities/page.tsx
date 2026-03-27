@@ -471,7 +471,7 @@ function MarginLoanTab({ token }: { token: string | null }) {
             <div className="relative">
               <div className="h-4 rounded-full bg-linear-to-r from-critical-500 via-warning-500 to-success-500 overflow-hidden" />
               <div
-                className="absolute top-0 h-4 w-1 bg-[#1a1a1a] rounded"
+                className="absolute top-0 h-4 w-1 bg-[#3D5A6A] rounded"
                 style={{ left: `${Math.min(100, Math.max(0, Math.abs(result.portfolioDropToCall) * 200))}%` }}
                 title={`Drop tolerance: ${fmtPct.format(result.portfolioDropToCall)}`}
               />

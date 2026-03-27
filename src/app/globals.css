@@ -66,8 +66,8 @@
   --color-charcoal-100: rgba(255, 255, 255, 0.06);
   --color-charcoal-300: rgba(255, 255, 255, 0.20);
   --color-charcoal-500: rgba(255, 255, 255, 0.40);
-  --color-charcoal-700: #2a2a2a;
-  --color-charcoal-900: #1a1a1a;
+  --color-charcoal-700: #456878;
+  --color-charcoal-900: #3D5A6A;
 
   /* ── Steel Blue → Steel mapping ── */
   --color-steel-blue-50: rgba(78, 112, 130, 0.06);
@@ -89,7 +89,7 @@
   --color-limestone-400: rgba(255, 255, 255, 0.15);
 
   /* ── Canvas ── */
-  --color-canvas: #111111;
+  --color-canvas: #3D5A6A;
 
   /* ── Steel Scale ── */
   --color-teal-50: rgba(78, 112, 130, 0.06);
@@ -654,7 +654,7 @@
 /* ── CSS CUSTOM PROPERTIES ─────────────────────────────────────────── */
 :root {
   /* Canvas & Cards */
-  --color-canvas: #111111;
+  --color-canvas: #3D5A6A;
   --color-card: rgba(255, 255, 255, 0.07);
   --color-card-alt: rgba(255, 255, 255, 0.04);
   --color-border: rgba(255, 255, 255, 0.06);
@@ -705,7 +705,7 @@
   }
 
   body {
-    background: linear-gradient(135deg, #111111 0%, #1A1A1A 40%, #202830 100%);
+    background: linear-gradient(135deg, #3D5A6A 0%, #3D5A6A 40%, #4E7082 100%);
     background-attachment: fixed;
     color: #ffffff;
     font-family: 'Fakt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

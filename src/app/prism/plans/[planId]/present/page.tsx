@@ -138,9 +138,9 @@ export default function PresentationPage() {
   const section = SECTIONS[currentSection];
 
   return (
-    <div className={`bg-[#1a1a1a] text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`bg-[#3D5A6A] text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Top Bar */}
-      <div className="bg-[#1a1a1a]/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
+      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button onClick={exitPresentation} className="text-white/30 hover:text-white transition-colors">
             <X size={20} />
@@ -171,7 +171,7 @@ export default function PresentationPage() {
       </div>
 
       {/* Section Navigation Pills */}
-      <div className="bg-[#1a1a1a]/50 px-6 py-2 flex items-center gap-1 overflow-x-auto">
+      <div className="bg-[#3D5A6A]/50 px-6 py-2 flex items-center gap-1 overflow-x-auto">
         {SECTIONS.map((s, i) => (
           <button
             key={s.id}
@@ -336,7 +336,7 @@ export default function PresentationPage() {
                     step={step}
                     value={sliders[key]}
                     onChange={(e) => handleSliderChange(key, parseFloat(e.target.value))}
-                    className="w-full h-1.5 rounded-full bg-[#2a2a2a] appearance-none cursor-pointer accent-brand-700"
+                    className="w-full h-1.5 rounded-full bg-[#456878] appearance-none cursor-pointer accent-brand-700"
                   />
                   <div className="flex justify-between text-[10px] text-white/50 mt-0.5">
                     <span>{format(min)}</span>
@@ -607,7 +607,7 @@ export default function PresentationPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="bg-[#1a1a1a]/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
+      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
         <button
           onClick={goPrev}
           disabled={currentSection === 0}

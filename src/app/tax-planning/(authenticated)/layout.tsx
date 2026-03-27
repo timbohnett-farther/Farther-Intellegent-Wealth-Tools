@@ -162,7 +162,7 @@ export default function AuthenticatedLayout({
           {/* Mobile sidebar overlay */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-[#1a1a1a]/50 backdrop-blur-xs lg:hidden"
+              className="fixed inset-0 z-40 bg-[#3D5A6A]/50 backdrop-blur-xs lg:hidden"
               onClick={() => setSidebarOpen(false)}
               aria-hidden="true"
             />
@@ -170,7 +170,7 @@ export default function AuthenticatedLayout({
 
           {/* Sidebar */}
           <aside
-            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-[#1a1a1a] text-white transition-transform lg:translate-x-0 lg:static lg:z-auto ${
+            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-[#3D5A6A] text-white transition-transform lg:translate-x-0 lg:static lg:z-auto ${
               sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
           >
@@ -216,7 +216,7 @@ export default function AuthenticatedLayout({
                     className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       isActive
                         ? 'bg-teal-500/20 text-teal-300'
-                        : 'text-white/30 hover:bg-[#1a1a1a] hover:text-white'
+                        : 'text-white/30 hover:bg-[#456878] hover:text-white'
                     }`}
                   >
                     {item.icon}
@@ -230,7 +230,7 @@ export default function AuthenticatedLayout({
             {user && (
               <div className="border-t border-white/[0.06] px-4 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2a2a2a] text-sm font-semibold text-white">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#456878] text-sm font-semibold text-white">
                     {user.first_name[0]}
                     {user.last_name[0]}
                   </div>
@@ -246,7 +246,7 @@ export default function AuthenticatedLayout({
                 <button
                   type="button"
                   onClick={logout}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs font-medium text-white/30 transition-colors hover:bg-[#1a1a1a] hover:text-white"
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs font-medium text-white/30 transition-colors hover:bg-[#456878] hover:text-white"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />

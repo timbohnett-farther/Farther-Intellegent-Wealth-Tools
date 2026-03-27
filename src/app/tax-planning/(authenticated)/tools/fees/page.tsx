@@ -420,7 +420,7 @@ export default function FeeAnalyzerPage() {
             <h2 className="text-sm font-semibold text-white mb-4">Year-by-Year Projection</h2>
             <div className="overflow-x-auto max-h-64">
               <table className="min-w-full text-sm">
-                <thead className="sticky top-0 bg-[#1a1a1a]">
+                <thead className="sticky top-0 bg-[#3D5A6A]">
                   <tr className="border-b border-white/[0.06]">
                     <th className="py-2 text-left text-xs font-semibold uppercase text-white/50">Year</th>
                     <th className="py-2 text-right text-xs font-semibold uppercase text-white/50">Current</th>

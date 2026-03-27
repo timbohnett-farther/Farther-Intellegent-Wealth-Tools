@@ -281,7 +281,7 @@ export default function ReportPreviewPage() {
             </svg>
             Download PDF
           </button>
-          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden rounded-lg bg-[#1a1a1a] px-3 py-1.5 text-xs text-white shadow-lg group-hover:block whitespace-nowrap">
+          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden rounded-lg bg-[#3D5A6A] px-3 py-1.5 text-xs text-white shadow-lg group-hover:block whitespace-nowrap">
             Coming in Stage 2
           </span>
         </div>

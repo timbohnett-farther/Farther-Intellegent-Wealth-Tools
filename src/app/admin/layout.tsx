@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-transparent">
       {/* Top nav */}
-      <header className="sticky top-0 z-30 bg-[#1a1a1a] text-white">
+      <header className="sticky top-0 z-30 bg-[#3D5A6A] text-white">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-4">
             <Link href="/prism/dashboard" className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white">

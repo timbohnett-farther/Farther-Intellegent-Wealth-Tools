@@ -99,7 +99,7 @@ export default function ClientPortalLayout({
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/[0.06] bg-[#1a1a1a]">
+          <div className="md:hidden border-t border-white/[0.06] bg-[#3D5A6A]">
             <nav className="px-4 py-3 space-y-1">
               {NAV_LINKS.map((link) => {
                 const Icon = link.icon;
