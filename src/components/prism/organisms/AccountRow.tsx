@@ -94,18 +94,18 @@ const TAX_BUCKET_CONFIG: Record<TaxBucket, { label: string; variant: 'warning' |
 function AccountIcon({ accountType }: { accountType: string }) {
   const t = accountType.toLowerCase();
   if (t.includes('checking') || t.includes('savings') || t.includes('money_market') || t.includes('cd'))
-    return <Landmark className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <Landmark className="h-4 w-4 text-text-faint" aria-hidden="true" />;
   if (t.includes('brokerage') || t.includes('crypto') || t.includes('hedge') || t.includes('private'))
-    return <Wallet className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <Wallet className="h-4 w-4 text-text-faint" aria-hidden="true" />;
   if (t.includes('ira') || t.includes('401k') || t.includes('403b') || t.includes('457') || t.includes('pension') || t.includes('roth'))
-    return <PiggyBank className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <PiggyBank className="h-4 w-4 text-text-faint" aria-hidden="true" />;
   if (t.includes('insurance') || t.includes('hsa') || t.includes('529'))
-    return <ShieldCheck className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <ShieldCheck className="h-4 w-4 text-text-faint" aria-hidden="true" />;
   if (t.includes('real_estate') || t.includes('mortgage') || t.includes('heloc'))
-    return <Home className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <Home className="h-4 w-4 text-text-faint" aria-hidden="true" />;
   if (t.includes('credit_card') || t.includes('loan') || t.includes('sbloc') || t.includes('margin'))
-    return <CreditCard className="h-4 w-4 text-white/30" aria-hidden="true" />;
-  return <Wallet className="h-4 w-4 text-white/30" aria-hidden="true" />;
+    return <CreditCard className="h-4 w-4 text-text-faint" aria-hidden="true" />;
+  return <Wallet className="h-4 w-4 text-text-faint" aria-hidden="true" />;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,20 +129,20 @@ export function AccountRow({
     <div
       onClick={onClick}
       className={cn(
-        'flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 py-3 transition-colors',
-        onClick && 'cursor-pointer hover:bg-white/[0.04]',
+        'flex items-center gap-4 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-4 py-3 transition-colors',
+        onClick && 'cursor-pointer hover:bg-surface-subtle',
         className,
       )}
     >
       {/* Icon */}
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06]">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-subtle">
         <AccountIcon accountType={accountType} />
       </div>
 
       {/* Name + institution + type */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-white truncate">{name}</p>
-        <div className="mt-0.5 flex items-center gap-2 text-xs text-white/30">
+        <p className="text-sm font-semibold text-text truncate">{name}</p>
+        <div className="mt-0.5 flex items-center gap-2 text-xs text-text-faint">
           <span className="truncate">{formatAccountType(accountType)}</span>
           {institution && (
             <>
@@ -162,7 +162,7 @@ export function AccountRow({
       <p
         className={cn(
           'text-sm font-bold tabular-nums shrink-0 w-28 text-right',
-          balance < 0 ? 'text-[#ef4444]' : 'text-white',
+          balance < 0 ? 'text-[#ef4444]' : 'text-text',
         )}
       >
         {formatCurrency(balance)}
@@ -170,9 +170,9 @@ export function AccountRow({
 
       {/* Sync info */}
       <div className="hidden sm:flex flex-col items-end shrink-0 w-24">
-        <span className="text-[10px] text-white/30 truncate">{dataSource}</span>
+        <span className="text-[10px] text-text-faint truncate">{dataSource}</span>
         {lastSync && (
-          <span className="flex items-center gap-1 text-[10px] text-white/30">
+          <span className="flex items-center gap-1 text-[10px] text-text-faint">
             <RefreshCw className="h-2.5 w-2.5" aria-hidden="true" />
             {relativeTime(lastSync)}
           </span>

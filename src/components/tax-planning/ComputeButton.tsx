@@ -47,11 +47,11 @@ export const ComputeButton: React.FC<ComputeButtonProps> = ({
           'inline-flex items-center gap-2 h-10 px-5 rounded-lg text-sm font-medium transition-colors shadow-sm',
           'focus-visible:outline-hidden focus-visible:shadow-focus',
           'disabled:pointer-events-none disabled:opacity-45',
-          'bg-teal-500 text-white hover:bg-teal-400 active:bg-teal-600'
+          'bg-accent-primary text-text hover:bg-brand-400 active:bg-brand-600'
         )}
       >
         {loading ? (
-          <Spinner size="sm" className="text-white" />
+          <Spinner size="sm" className="text-text" />
         ) : (
           <Calculator className="h-4 w-4" />
         )}

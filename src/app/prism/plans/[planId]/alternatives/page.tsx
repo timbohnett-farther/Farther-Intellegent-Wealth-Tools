@@ -205,13 +205,13 @@ type TabKey = (typeof TABS)[number]['key'];
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string | number }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1 font-semibold text-white">{label}</p>
+    <div className="rounded-xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-3 py-2 text-xs shadow-lg">
+      <p className="mb-1 font-semibold text-text">{label}</p>
       {payload.map((e) => (
         <div key={e.name} className="flex items-center gap-1.5">
           <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: e.color }} />
-          <span className="text-white/50">{e.name}:</span>
-          <span className="font-medium tabular-nums text-white">{fmtCompact(e.value)}</span>
+          <span className="text-text-muted">{e.name}:</span>
+          <span className="font-medium tabular-nums text-text">{fmtCompact(e.value)}</span>
         </div>
       ))}
     </div>
@@ -226,24 +226,24 @@ function AddFundModal({ open, onClose }: { open: boolean; onClose: () => void })
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-lg rounded-xl bg-white/[0.07] backdrop-blur-xl p-6 shadow-2xl">
+      <div className="w-full max-w-lg rounded-xl bg-surface-soft backdrop-blur-xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Add PE/VC Fund</h3>
-          <button onClick={onClose} className="p-1 rounded hover:bg-white/[0.06]"><X size={18} className="text-white/50" /></button>
+          <h3 className="text-lg font-semibold text-text">Add PE/VC Fund</h3>
+          <button onClick={onClose} className="p-1 rounded hover:bg-surface-subtle"><X size={18} className="text-text-muted" /></button>
         </div>
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-white/60 mb-1">Fund Name</label>
-            <input className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="e.g. Andreessen Horowitz Fund VII" />
+            <label className="block text-xs font-medium text-text-muted mb-1">Fund Name</label>
+            <input className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="e.g. Andreessen Horowitz Fund VII" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Vintage Year</label>
-              <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="2024" />
+              <label className="block text-xs font-medium text-text-muted mb-1">Vintage Year</label>
+              <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="2024" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Asset Class</label>
-              <select className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden">
+              <label className="block text-xs font-medium text-text-muted mb-1">Asset Class</label>
+              <select className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden">
                 <option>PE Buyout</option>
                 <option>Venture Capital</option>
                 <option>Growth Equity</option>
@@ -253,32 +253,32 @@ function AddFundModal({ open, onClose }: { open: boolean; onClose: () => void })
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Committed Capital</label>
-              <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="1,000,000" />
+              <label className="block text-xs font-medium text-text-muted mb-1">Committed Capital</label>
+              <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="1,000,000" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Called Capital</label>
-              <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="500,000" />
+              <label className="block text-xs font-medium text-text-muted mb-1">Called Capital</label>
+              <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="500,000" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Distributions</label>
-              <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="0" />
+              <label className="block text-xs font-medium text-text-muted mb-1">Distributions</label>
+              <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="0" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/60 mb-1">Current NAV</label>
-              <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="0" />
+              <label className="block text-xs font-medium text-text-muted mb-1">Current NAV</label>
+              <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="0" />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-white/60 mb-1">Expected Exit Year</label>
-            <input type="number" className="w-full rounded-lg border border-white/[0.10] px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-hidden" placeholder="2030" />
+            <label className="block text-xs font-medium text-text-muted mb-1">Expected Exit Year</label>
+            <input type="number" className="w-full rounded-lg border border-border-subtle px-3 py-2 text-sm focus:border-accent-primary focus:ring-1 focus:ring-accent-primary outline-hidden" placeholder="2030" />
           </div>
         </div>
         <div className="flex justify-end gap-3 mt-6">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-white/60 rounded-lg border border-white/[0.10] hover:bg-white/[0.04]">Cancel</button>
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400">Add Fund</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-text-muted rounded-lg border border-border-subtle hover:bg-surface-subtle">Cancel</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-text bg-accent-primary rounded-lg hover:bg-accent-primary/80">Add Fund</button>
         </div>
       </div>
     </div>
@@ -314,48 +314,48 @@ function SummaryTab() {
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-8 w-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
-              <DollarSign size={16} className="text-teal-300" />
+            <div className="h-8 w-8 rounded-lg bg-accent-primary/10 flex items-center justify-center">
+              <DollarSign size={16} className="text-accent-primarySoft" />
             </div>
-            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Alts AUM</span>
+            <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Total Alts AUM</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(TOTAL_ALTS_AUM)}</p>
+          <p className="text-2xl font-bold text-text tabular-nums">{fmt$(TOTAL_ALTS_AUM)}</p>
         </div>
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="h-8 w-8 rounded-lg bg-warning-50 flex items-center justify-center">
               <AlertTriangle size={16} className="text-warning-500" />
             </div>
-            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Unfunded Commitments</span>
+            <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Unfunded Commitments</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmt$(UNFUNDED_TOTAL)}</p>
+          <p className="text-2xl font-bold text-text tabular-nums">{fmt$(UNFUNDED_TOTAL)}</p>
         </div>
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
           <div className="flex items-center gap-2 mb-3">
             <div className="h-8 w-8 rounded-lg bg-emerald-50 flex items-center justify-center">
               <Percent size={16} className="text-emerald-600" />
             </div>
-            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Weighted IRR</span>
+            <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Weighted IRR</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmtPct(weightedIrr)}</p>
+          <p className="text-2xl font-bold text-text tabular-nums">{fmtPct(weightedIrr)}</p>
         </div>
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-8 w-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
-              <ArrowUpRight size={16} className="text-teal-300" />
+            <div className="h-8 w-8 rounded-lg bg-accent-primary/10 flex items-center justify-center">
+              <ArrowUpRight size={16} className="text-accent-primarySoft" />
             </div>
-            <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Weighted TVPI</span>
+            <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Weighted TVPI</span>
           </div>
-          <p className="text-2xl font-bold text-white tabular-nums">{fmtX(weightedTvpi)}</p>
+          <p className="text-2xl font-bold text-text tabular-nums">{fmtX(weightedTvpi)}</p>
         </div>
       </div>
 
       {/* Allocation Pie Chart */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-1">Allocation by Asset Class</h2>
-        <p className="text-xs text-white/50 mb-4">Current NAV distribution across alternative asset classes</p>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-1">Allocation by Asset Class</h2>
+        <p className="text-xs text-text-muted mb-4">Current NAV distribution across alternative asset classes</p>
         <div className="flex flex-col lg:flex-row items-center gap-8">
           <div className="w-64 h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -373,8 +373,8 @@ function SummaryTab() {
             {ALLOCATION_DATA.map((d) => (
               <div key={d.name} className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-xs text-white/50">{d.name}</span>
-                <span className="text-xs font-medium text-white ml-auto tabular-nums">{fmt$(d.value)}</span>
+                <span className="text-xs text-text-muted">{d.name}</span>
+                <span className="text-xs font-medium text-text ml-auto tabular-nums">{fmt$(d.value)}</span>
               </div>
             ))}
           </div>
@@ -382,36 +382,36 @@ function SummaryTab() {
       </div>
 
       {/* Summary Table */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">All Alternative Investments</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">All Alternative Investments</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Fund Name</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Vintage</th>
-                <th className="text-left py-2 px-3 font-medium text-white/50">Type</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Committed</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Called</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">NAV</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Dist.</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">TVPI</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">DPI</th>
-                <th className="text-right py-2 pl-3 font-medium text-white/50">IRR</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Fund Name</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Vintage</th>
+                <th className="text-left py-2 px-3 font-medium text-text-muted">Type</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Committed</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Called</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">NAV</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Dist.</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">TVPI</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">DPI</th>
+                <th className="text-right py-2 pl-3 font-medium text-text-muted">IRR</th>
               </tr>
             </thead>
             <tbody>
               {SUMMARY_FUNDS.map((f) => (
-                <tr key={f.name} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-4 font-medium text-white">{f.name}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{f.vintage}</td>
-                  <td className="py-2.5 px-3 text-white/60">{f.type}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(f.committed)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(f.called)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(f.nav)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(f.distributions)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtX(f.tvpi)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtX(f.dpi)}</td>
+                <tr key={f.name} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-4 font-medium text-text">{f.name}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{f.vintage}</td>
+                  <td className="py-2.5 px-3 text-text-muted">{f.type}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(f.committed)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(f.called)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text font-medium">{fmt$(f.nav)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(f.distributions)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtX(f.tvpi)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtX(f.dpi)}</td>
                   <td className="py-2.5 pl-3 text-right tabular-nums font-medium text-emerald-600">{fmtPct(f.irr)}</td>
                 </tr>
               ))}
@@ -428,8 +428,8 @@ function PeVcTab() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-white">Private Equity & Venture Capital Funds</h2>
-        <button onClick={() => setShowModal(true)} className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
+        <h2 className="text-sm font-semibold text-text">Private Equity & Venture Capital Funds</h2>
+        <button onClick={() => setShowModal(true)} className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 transition-colors">
           <Plus size={16} />
           Add PE/VC Fund
         </button>
@@ -439,34 +439,34 @@ function PeVcTab() {
       {/* Fund Detail Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {PE_FUNDS.map((f) => (
-          <div key={f.name} className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
+          <div key={f.name} className="bg-surface-soft rounded-xl border border-border-subtle p-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-white">{f.name}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-300 font-medium">{f.assetClass}</span>
+              <h3 className="text-sm font-semibold text-text">{f.name}</h3>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-accent-primary/10 text-accent-primarySoft font-medium">{f.assetClass}</span>
             </div>
             <div className="grid grid-cols-3 gap-3 text-xs">
-              <div><span className="text-white/50">Vintage</span><p className="font-medium text-white tabular-nums">{f.vintage}</p></div>
-              <div><span className="text-white/50">Committed</span><p className="font-medium text-white tabular-nums">{fmt$(f.committed)}</p></div>
-              <div><span className="text-white/50">Called</span><p className="font-medium text-white tabular-nums">{fmt$(f.called)}</p></div>
-              <div><span className="text-white/50">Distributions</span><p className="font-medium text-white tabular-nums">{fmt$(f.distributions)}</p></div>
-              <div><span className="text-white/50">NAV</span><p className="font-medium text-white tabular-nums">{fmt$(f.nav)}</p></div>
-              <div><span className="text-white/50">IRR</span><p className="font-medium text-emerald-600 tabular-nums">{fmtPct(f.irr)}</p></div>
-              <div><span className="text-white/50">TVPI</span><p className="font-medium text-white tabular-nums">{fmtX(f.tvpi)}</p></div>
-              <div><span className="text-white/50">DPI</span><p className="font-medium text-white tabular-nums">{fmtX(f.dpi)}</p></div>
-              <div><span className="text-white/50">RVPI</span><p className="font-medium text-white tabular-nums">{fmtX(f.rvpi)}</p></div>
+              <div><span className="text-text-muted">Vintage</span><p className="font-medium text-text tabular-nums">{f.vintage}</p></div>
+              <div><span className="text-text-muted">Committed</span><p className="font-medium text-text tabular-nums">{fmt$(f.committed)}</p></div>
+              <div><span className="text-text-muted">Called</span><p className="font-medium text-text tabular-nums">{fmt$(f.called)}</p></div>
+              <div><span className="text-text-muted">Distributions</span><p className="font-medium text-text tabular-nums">{fmt$(f.distributions)}</p></div>
+              <div><span className="text-text-muted">NAV</span><p className="font-medium text-text tabular-nums">{fmt$(f.nav)}</p></div>
+              <div><span className="text-text-muted">IRR</span><p className="font-medium text-emerald-600 tabular-nums">{fmtPct(f.irr)}</p></div>
+              <div><span className="text-text-muted">TVPI</span><p className="font-medium text-text tabular-nums">{fmtX(f.tvpi)}</p></div>
+              <div><span className="text-text-muted">DPI</span><p className="font-medium text-text tabular-nums">{fmtX(f.dpi)}</p></div>
+              <div><span className="text-text-muted">RVPI</span><p className="font-medium text-text tabular-nums">{fmtX(f.rvpi)}</p></div>
             </div>
             <div className="mt-3 pt-3 border-t border-limestone-100 flex items-center justify-between text-xs">
-              <span className="text-white/50">Expected Exit</span>
-              <span className="font-medium text-white">{f.expectedExit}</span>
+              <span className="text-text-muted">Expected Exit</span>
+              <span className="font-medium text-text">{f.expectedExit}</span>
             </div>
           </div>
         ))}
       </div>
 
       {/* J-Curve */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-1">J-Curve Visualization</h2>
-        <p className="text-xs text-white/50 mb-4">Cumulative cash flow over fund life (aggregate PE/VC portfolio)</p>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-1">J-Curve Visualization</h2>
+        <p className="text-xs text-text-muted mb-4">Cumulative cash flow over fund life (aggregate PE/VC portfolio)</p>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={J_CURVE_DATA}>
@@ -489,33 +489,33 @@ function RealEstateTab() {
   const [selected, setSelected] = useState<number | null>(null);
   return (
     <div className="space-y-6">
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Investment Properties</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Investment Properties</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Property</th>
-                <th className="text-left py-2 px-3 font-medium text-white/50">Type</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Value</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">NOI</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Cap Rate</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Leveraged Return</th>
-                <th className="text-left py-2 pl-3 font-medium text-white/50">Location</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Property</th>
+                <th className="text-left py-2 px-3 font-medium text-text-muted">Type</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Value</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">NOI</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Cap Rate</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Leveraged Return</th>
+                <th className="text-left py-2 pl-3 font-medium text-text-muted">Location</th>
                 <th className="py-2 pl-3"></th>
               </tr>
             </thead>
             <tbody>
               {REAL_ESTATE.map((p, i) => (
-                <tr key={p.property} className="border-b border-limestone-100 hover:bg-white/[0.04] cursor-pointer" onClick={() => setSelected(selected === i ? null : i)}>
-                  <td className="py-2.5 pr-4 font-medium text-white">{p.property}</td>
-                  <td className="py-2.5 px-3 text-white/60">{p.type}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(p.value)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(p.noi)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtPct(p.capRate)}</td>
+                <tr key={p.property} className="border-b border-limestone-100 hover:bg-surface-subtle cursor-pointer" onClick={() => setSelected(selected === i ? null : i)}>
+                  <td className="py-2.5 pr-4 font-medium text-text">{p.property}</td>
+                  <td className="py-2.5 px-3 text-text-muted">{p.type}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text font-medium">{fmt$(p.value)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(p.noi)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtPct(p.capRate)}</td>
                   <td className="py-2.5 px-3 text-right tabular-nums text-emerald-600 font-medium">{fmtPct(p.leveragedReturn)}</td>
-                  <td className="py-2.5 pl-3 text-white/60">{p.location}</td>
-                  <td className="py-2.5 pl-3"><ChevronRight size={14} className={`text-white/30 transition-transform ${selected === i ? 'rotate-90' : ''}`} /></td>
+                  <td className="py-2.5 pl-3 text-text-muted">{p.location}</td>
+                  <td className="py-2.5 pl-3"><ChevronRight size={14} className={`text-text-faint transition-transform ${selected === i ? 'rotate-90' : ''}`} /></td>
                 </tr>
               ))}
             </tbody>
@@ -525,40 +525,40 @@ function RealEstateTab() {
 
       {/* Detail Panel */}
       {selected !== null && (
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-          <h3 className="text-sm font-semibold text-white mb-4">{REAL_ESTATE[selected].property} - Income/Expense Breakdown</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+          <h3 className="text-sm font-semibold text-text mb-4">{REAL_ESTATE[selected].property} - Income/Expense Breakdown</h3>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Gross Rental Income</span>
-              <p className="text-sm font-bold text-white tabular-nums mt-1">{fmt$(Math.round(REAL_ESTATE[selected].noi * 1.35))}</p>
+              <span className="text-text-muted">Gross Rental Income</span>
+              <p className="text-sm font-bold text-text tabular-nums mt-1">{fmt$(Math.round(REAL_ESTATE[selected].noi * 1.35))}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Operating Expenses</span>
+              <span className="text-text-muted">Operating Expenses</span>
               <p className="text-sm font-bold text-critical-500 tabular-nums mt-1">-{fmt$(Math.round(REAL_ESTATE[selected].noi * 0.25))}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Property Taxes</span>
+              <span className="text-text-muted">Property Taxes</span>
               <p className="text-sm font-bold text-critical-500 tabular-nums mt-1">-{fmt$(Math.round(REAL_ESTATE[selected].value * 0.012))}</p>
             </div>
             <div className="rounded-lg bg-emerald-50 p-3">
-              <span className="text-white/50">Net Operating Income</span>
+              <span className="text-text-muted">Net Operating Income</span>
               <p className="text-sm font-bold text-emerald-700 tabular-nums mt-1">{fmt$(REAL_ESTATE[selected].noi)}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Mortgage Payment</span>
+              <span className="text-text-muted">Mortgage Payment</span>
               <p className="text-sm font-bold text-critical-500 tabular-nums mt-1">-{fmt$(Math.round(REAL_ESTATE[selected].value * 0.04))}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Insurance</span>
+              <span className="text-text-muted">Insurance</span>
               <p className="text-sm font-bold text-critical-500 tabular-nums mt-1">-{fmt$(Math.round(REAL_ESTATE[selected].value * 0.005))}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Depreciation</span>
-              <p className="text-sm font-bold text-teal-300 tabular-nums mt-1">{fmt$(Math.round(REAL_ESTATE[selected].value * 0.036))}</p>
+              <span className="text-text-muted">Depreciation</span>
+              <p className="text-sm font-bold text-accent-primarySoft tabular-nums mt-1">{fmt$(Math.round(REAL_ESTATE[selected].value * 0.036))}</p>
             </div>
             <div className="rounded-lg bg-transparent p-3">
-              <span className="text-white/50">Cash-on-Cash Return</span>
-              <p className="text-sm font-bold text-white tabular-nums mt-1">{fmtPct(REAL_ESTATE[selected].leveragedReturn)}</p>
+              <span className="text-text-muted">Cash-on-Cash Return</span>
+              <p className="text-sm font-bold text-text tabular-nums mt-1">{fmtPct(REAL_ESTATE[selected].leveragedReturn)}</p>
             </div>
           </div>
         </div>
@@ -570,33 +570,33 @@ function RealEstateTab() {
 function HedgeFundsTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Hedge Fund Investments</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Hedge Fund Investments</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Fund Name</th>
-                <th className="text-left py-2 px-3 font-medium text-white/50">Strategy</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">AUM Invested</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">YTD Return</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">3yr Return</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Mgmt Fee</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Perf Fee</th>
-                <th className="text-left py-2 pl-3 font-medium text-white/50">Liquidity</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Fund Name</th>
+                <th className="text-left py-2 px-3 font-medium text-text-muted">Strategy</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">AUM Invested</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">YTD Return</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">3yr Return</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Mgmt Fee</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Perf Fee</th>
+                <th className="text-left py-2 pl-3 font-medium text-text-muted">Liquidity</th>
               </tr>
             </thead>
             <tbody>
               {HEDGE_FUNDS.map((h) => (
-                <tr key={h.name} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-4 font-medium text-white">{h.name}</td>
-                  <td className="py-2.5 px-3 text-white/60">{h.strategy}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(h.aum)}</td>
+                <tr key={h.name} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-4 font-medium text-text">{h.name}</td>
+                  <td className="py-2.5 px-3 text-text-muted">{h.strategy}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text font-medium">{fmt$(h.aum)}</td>
                   <td className={`py-2.5 px-3 text-right tabular-nums font-medium ${h.ytd >= 0 ? 'text-emerald-600' : 'text-critical-500'}`}>{fmtPct(h.ytd)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtPct(h.threeYr)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtPct(h.mgmtFee)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtPct(h.perfFee)}</td>
-                  <td className="py-2.5 pl-3 text-white/50 max-w-[180px] truncate">{h.liquidity}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtPct(h.threeYr)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtPct(h.mgmtFee)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtPct(h.perfFee)}</td>
+                  <td className="py-2.5 pl-3 text-text-muted max-w-[180px] truncate">{h.liquidity}</td>
                 </tr>
               ))}
             </tbody>
@@ -605,9 +605,9 @@ function HedgeFundsTab() {
       </div>
 
       {/* Performance Chart */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-1">Monthly Performance (YTD)</h2>
-        <p className="text-xs text-white/50 mb-4">Cumulative monthly return by fund</p>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-1">Monthly Performance (YTD)</h2>
+        <p className="text-xs text-text-muted mb-4">Cumulative monthly return by fund</p>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={HEDGE_PERF}>
@@ -630,28 +630,28 @@ function HedgeFundsTab() {
 function PrivateCreditTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Private Credit Investments</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Private Credit Investments</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Fund / Note</th>
-                <th className="text-left py-2 px-3 font-medium text-white/50">Type</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Amount</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Yield</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Maturity</th>
-                <th className="text-left py-2 pl-3 font-medium text-white/50">Rating</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Fund / Note</th>
+                <th className="text-left py-2 px-3 font-medium text-text-muted">Type</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Amount</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Yield</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Maturity</th>
+                <th className="text-left py-2 pl-3 font-medium text-text-muted">Rating</th>
               </tr>
             </thead>
             <tbody>
               {CREDIT_INVESTMENTS.map((c) => (
-                <tr key={c.name} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-4 font-medium text-white">{c.name}</td>
-                  <td className="py-2.5 px-3 text-white/60">{c.type}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(c.amount)}</td>
+                <tr key={c.name} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-4 font-medium text-text">{c.name}</td>
+                  <td className="py-2.5 px-3 text-text-muted">{c.type}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text font-medium">{fmt$(c.amount)}</td>
                   <td className="py-2.5 px-3 text-right tabular-nums text-emerald-600 font-medium">{fmtPct(c.yield)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{c.maturity}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{c.maturity}</td>
                   <td className="py-2.5 pl-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c.rating.startsWith('BBB') || c.rating.startsWith('BB') ? 'bg-warning-50 text-warning-700' : 'bg-critical-50 text-critical-700'}`}>{c.rating}</span>
                   </td>
@@ -663,26 +663,26 @@ function PrivateCreditTab() {
       </div>
 
       {/* Income Projection */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Income Projection</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Income Projection</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Year</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Direct Lending</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Senior Secured</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Mezzanine</th>
-                <th className="text-right py-2 pl-3 font-medium text-white/50">Total Income</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Year</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Direct Lending</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Senior Secured</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Mezzanine</th>
+                <th className="text-right py-2 pl-3 font-medium text-text-muted">Total Income</th>
               </tr>
             </thead>
             <tbody>
               {CREDIT_INCOME.map((r) => (
-                <tr key={r.year} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-4 font-medium text-white">{r.year}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.directLending)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.senior)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.mezzanine)}</td>
+                <tr key={r.year} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-4 font-medium text-text">{r.year}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(r.directLending)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(r.senior)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(r.mezzanine)}</td>
                   <td className="py-2.5 pl-3 text-right tabular-nums font-medium text-emerald-600">{fmt$(r.total)}</td>
                 </tr>
               ))}
@@ -697,41 +697,41 @@ function PrivateCreditTab() {
 function CommoditiesTab() {
   return (
     <div className="space-y-6">
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Commodities, Collectibles & Other Holdings</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Commodities, Collectibles & Other Holdings</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Name</th>
-                <th className="text-left py-2 px-3 font-medium text-white/50">Type</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Current Value</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Allocation</th>
-                <th className="text-right py-2 pl-3 font-medium text-white/50">YTD Return</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Name</th>
+                <th className="text-left py-2 px-3 font-medium text-text-muted">Type</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Current Value</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Allocation</th>
+                <th className="text-right py-2 pl-3 font-medium text-text-muted">YTD Return</th>
               </tr>
             </thead>
             <tbody>
               {COMMODITIES.map((c) => (
-                <tr key={c.name} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-4 font-medium text-white">{c.name}</td>
+                <tr key={c.name} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-4 font-medium text-text">{c.name}</td>
                   <td className="py-2.5 px-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                       c.type === 'Cryptocurrency' ? 'bg-orange-50 text-orange-700' :
-                      c.type === 'Collectible' ? 'bg-teal-500/10 text-teal-300' :
-                      'bg-teal-500/10 text-teal-300'
+                      c.type === 'Collectible' ? 'bg-accent-primary/10 text-accent-primarySoft' :
+                      'bg-accent-primary/10 text-accent-primarySoft'
                     }`}>{c.type}</span>
                   </td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white font-medium">{fmt$(c.value)}</td>
-                  <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmtPct(c.allocation)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text font-medium">{fmt$(c.value)}</td>
+                  <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmtPct(c.allocation)}</td>
                   <td className={`py-2.5 pl-3 text-right tabular-nums font-medium ${c.ytd >= 0 ? 'text-emerald-600' : 'text-critical-500'}`}>{fmtPct(c.ytd)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-white/[0.06]">
-                <td className="py-2.5 pr-4 font-semibold text-white" colSpan={2}>Total</td>
-                <td className="py-2.5 px-3 text-right tabular-nums font-bold text-white">{fmt$(COMMODITIES.reduce((s, c) => s + c.value, 0))}</td>
-                <td className="py-2.5 px-3 text-right tabular-nums font-medium text-white/60">{fmtPct(COMMODITIES.reduce((s, c) => s + c.allocation, 0))}</td>
+              <tr className="border-t border-border-subtle">
+                <td className="py-2.5 pr-4 font-semibold text-text" colSpan={2}>Total</td>
+                <td className="py-2.5 px-3 text-right tabular-nums font-bold text-text">{fmt$(COMMODITIES.reduce((s, c) => s + c.value, 0))}</td>
+                <td className="py-2.5 px-3 text-right tabular-nums font-medium text-text-muted">{fmtPct(COMMODITIES.reduce((s, c) => s + c.allocation, 0))}</td>
                 <td></td>
               </tr>
             </tfoot>
@@ -740,20 +740,20 @@ function CommoditiesTab() {
       </div>
 
       {/* Valuation Tracking */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Valuation Tracking Notes</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Valuation Tracking Notes</h2>
         <div className="space-y-3">
           {COMMODITIES.map((c) => (
             <div key={c.name} className="flex items-center justify-between rounded-lg border border-limestone-100 bg-transparent px-4 py-3">
               <div>
-                <p className="text-xs font-medium text-white">{c.name}</p>
-                <p className="text-xs text-white/50 mt-0.5">
+                <p className="text-xs font-medium text-text">{c.name}</p>
+                <p className="text-xs text-text-muted mt-0.5">
                   {c.type === 'Commodity ETF' ? 'Market-priced daily via exchange' :
                    c.type === 'Cryptocurrency' ? 'Market-priced 24/7 via exchange' :
                    'Appraised annually - last appraisal Jan 2025'}
                 </p>
               </div>
-              <span className="text-xs font-medium tabular-nums text-white">{fmt$(c.value)}</span>
+              <span className="text-xs font-medium tabular-nums text-text">{fmt$(c.value)}</span>
             </div>
           ))}
         </div>
@@ -781,32 +781,32 @@ function LiquidityTab() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
-          <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Available Liquid Assets</span>
-          <p className="text-2xl font-bold text-white tabular-nums mt-2">{fmt$(LIQUID_ASSETS)}</p>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
+          <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Available Liquid Assets</span>
+          <p className="text-2xl font-bold text-text tabular-nums mt-2">{fmt$(LIQUID_ASSETS)}</p>
         </div>
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-5">
-          <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Unfunded Commitments</span>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle p-5">
+          <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Total Unfunded Commitments</span>
           <p className="text-2xl font-bold text-warning-500 tabular-nums mt-2">{fmt$(UNFUNDED_TOTAL)}</p>
         </div>
-        <div className={`bg-white/[0.07] rounded-xl border p-5 ${hasShortfall ? 'border-critical-100' : 'border-white/[0.06]'}`}>
-          <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Net Liquidity Buffer</span>
+        <div className={`bg-surface-soft rounded-xl border p-5 ${hasShortfall ? 'border-critical-100' : 'border-border-subtle'}`}>
+          <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Net Liquidity Buffer</span>
           <p className={`text-2xl font-bold tabular-nums mt-2 ${hasShortfall ? 'text-critical-500' : 'text-emerald-600'}`}>{fmt$(shortfall)}</p>
         </div>
       </div>
 
       {/* Capital Call Schedule Table */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Projected Capital Call Schedule</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Projected Capital Call Schedule</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Year</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Projected Calls</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Cumulative</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Remaining Liquidity</th>
-                <th className="text-left py-2 pl-3 font-medium text-white/50">Status</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Year</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Projected Calls</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Cumulative</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Remaining Liquidity</th>
+                <th className="text-left py-2 pl-3 font-medium text-text-muted">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -815,10 +815,10 @@ function LiquidityTab() {
                 const warning = remaining < 200_000;
                 const danger = remaining < 0;
                 return (
-                  <tr key={r.year} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                    <td className="py-2.5 pr-4 font-medium text-white">{r.year}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.projected)}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white/60">{fmt$(r.cumulative)}</td>
+                  <tr key={r.year} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                    <td className="py-2.5 pr-4 font-medium text-text">{r.year}</td>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(r.projected)}</td>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(r.cumulative)}</td>
                     <td className={`py-2.5 px-3 text-right tabular-nums font-medium ${danger ? 'text-critical-500' : warning ? 'text-warning-500' : 'text-emerald-600'}`}>{fmt$(remaining)}</td>
                     <td className="py-2.5 pl-3">
                       {danger ? (
@@ -838,9 +838,9 @@ function LiquidityTab() {
       </div>
 
       {/* Liquidity Waterfall Chart */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-1">Liquidity Waterfall</h2>
-        <p className="text-xs text-white/50 mb-4">Projected capital calls vs available liquidity by year</p>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-1">Liquidity Waterfall</h2>
+        <p className="text-xs text-text-muted mb-4">Projected capital calls vs available liquidity by year</p>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={LIQUIDITY_CALLS}>
@@ -885,48 +885,48 @@ function K1Tab() {
       )}
 
       {/* K-1 Income Table */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">K-1 Income by Entity (Current Year)</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">K-1 Income by Entity (Current Year)</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-3 font-medium text-white/50">Entity Name</th>
-                <th className="text-left py-2 px-2 font-medium text-white/50">Type</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">Own %</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">Ordinary</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">LTCG</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">SE Inc</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">Tax-Exempt</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">QBI</th>
-                <th className="text-right py-2 px-2 font-medium text-white/50">UBTI</th>
-                <th className="text-left py-2 pl-2 font-medium text-white/50">State</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-3 font-medium text-text-muted">Entity Name</th>
+                <th className="text-left py-2 px-2 font-medium text-text-muted">Type</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">Own %</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">Ordinary</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">LTCG</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">SE Inc</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">Tax-Exempt</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">QBI</th>
+                <th className="text-right py-2 px-2 font-medium text-text-muted">UBTI</th>
+                <th className="text-left py-2 pl-2 font-medium text-text-muted">State</th>
               </tr>
             </thead>
             <tbody>
               {K1_ENTITIES.map((e) => (
-                <tr key={e.entity} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                  <td className="py-2.5 pr-3 font-medium text-white">{e.entity}</td>
-                  <td className="py-2.5 px-2 text-white/60">{e.type}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmtPct(e.ownership * 100)}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(e.ordinary)}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(e.ltcg)}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(e.seIncome)}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(e.taxExempt)}</td>
-                  <td className="py-2.5 px-2 text-right tabular-nums text-white/60">{fmt$(e.qbi)}</td>
-                  <td className={`py-2.5 px-2 text-right tabular-nums font-medium ${e.ubti > 0 ? 'text-warning-500' : 'text-white/60'}`}>{fmt$(e.ubti)}</td>
-                  <td className="py-2.5 pl-2 text-white/60">{e.state}</td>
+                <tr key={e.entity} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                  <td className="py-2.5 pr-3 font-medium text-text">{e.entity}</td>
+                  <td className="py-2.5 px-2 text-text-muted">{e.type}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmtPct(e.ownership * 100)}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmt$(e.ordinary)}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmt$(e.ltcg)}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmt$(e.seIncome)}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmt$(e.taxExempt)}</td>
+                  <td className="py-2.5 px-2 text-right tabular-nums text-text-muted">{fmt$(e.qbi)}</td>
+                  <td className={`py-2.5 px-2 text-right tabular-nums font-medium ${e.ubti > 0 ? 'text-warning-500' : 'text-text-muted'}`}>{fmt$(e.ubti)}</td>
+                  <td className="py-2.5 pl-2 text-text-muted">{e.state}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-white/[0.06]">
-                <td className="py-2.5 pr-3 font-semibold text-white" colSpan={3}>Total</td>
-                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.ordinary, 0))}</td>
-                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.ltcg, 0))}</td>
-                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.seIncome, 0))}</td>
-                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.taxExempt, 0))}</td>
-                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-white">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.qbi, 0))}</td>
+              <tr className="border-t border-border-subtle">
+                <td className="py-2.5 pr-3 font-semibold text-text" colSpan={3}>Total</td>
+                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-text">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.ordinary, 0))}</td>
+                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-text">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.ltcg, 0))}</td>
+                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-text">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.seIncome, 0))}</td>
+                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-text">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.taxExempt, 0))}</td>
+                <td className="py-2.5 px-2 text-right tabular-nums font-bold text-text">{fmt$(K1_ENTITIES.reduce((s, e) => s + e.qbi, 0))}</td>
                 <td className="py-2.5 px-2 text-right tabular-nums font-bold text-warning-500">{fmt$(totalUbti)}</td>
                 <td></td>
               </tr>
@@ -936,19 +936,19 @@ function K1Tab() {
       </div>
 
       {/* Prior Year Comparison */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Prior Year Comparison</h2>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle p-6">
+        <h2 className="text-sm font-semibold text-text mb-4">Prior Year Comparison</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="text-left py-2 pr-4 font-medium text-white/50">Entity</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Prior Ordinary</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Current Ordinary</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Change</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Prior LTCG</th>
-                <th className="text-right py-2 px-3 font-medium text-white/50">Current LTCG</th>
-                <th className="text-right py-2 pl-3 font-medium text-white/50">Change</th>
+              <tr className="border-b border-border-subtle">
+                <th className="text-left py-2 pr-4 font-medium text-text-muted">Entity</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Prior Ordinary</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Current Ordinary</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Change</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Prior LTCG</th>
+                <th className="text-right py-2 px-3 font-medium text-text-muted">Current LTCG</th>
+                <th className="text-right py-2 pl-3 font-medium text-text-muted">Change</th>
               </tr>
             </thead>
             <tbody>
@@ -957,16 +957,16 @@ function K1Tab() {
                 const ordDiff = e.ordinary - prior.ordinary;
                 const ltcgDiff = e.ltcg - prior.ltcg;
                 return (
-                  <tr key={e.entity} className="border-b border-limestone-100 hover:bg-white/[0.04]">
-                    <td className="py-2.5 pr-4 font-medium text-white">{e.entity}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white/50">{fmt$(prior.ordinary)}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white">{fmt$(e.ordinary)}</td>
-                    <td className={`py-2.5 px-3 text-right tabular-nums font-medium ${ordDiff > 0 ? 'text-critical-500' : ordDiff < 0 ? 'text-emerald-600' : 'text-white/50'}`}>
+                  <tr key={e.entity} className="border-b border-limestone-100 hover:bg-surface-subtle">
+                    <td className="py-2.5 pr-4 font-medium text-text">{e.entity}</td>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(prior.ordinary)}</td>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text">{fmt$(e.ordinary)}</td>
+                    <td className={`py-2.5 px-3 text-right tabular-nums font-medium ${ordDiff > 0 ? 'text-critical-500' : ordDiff < 0 ? 'text-emerald-600' : 'text-text-muted'}`}>
                       {ordDiff > 0 ? '+' : ''}{fmt$(ordDiff)}
                     </td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white/50">{fmt$(prior.ltcg)}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums text-white">{fmt$(e.ltcg)}</td>
-                    <td className={`py-2.5 pl-3 text-right tabular-nums font-medium ${ltcgDiff > 0 ? 'text-critical-500' : ltcgDiff < 0 ? 'text-emerald-600' : 'text-white/50'}`}>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text-muted">{fmt$(prior.ltcg)}</td>
+                    <td className="py-2.5 px-3 text-right tabular-nums text-text">{fmt$(e.ltcg)}</td>
+                    <td className={`py-2.5 pl-3 text-right tabular-nums font-medium ${ltcgDiff > 0 ? 'text-critical-500' : ltcgDiff < 0 ? 'text-emerald-600' : 'text-text-muted'}`}>
                       {ltcgDiff > 0 ? '+' : ''}{fmt$(ltcgDiff)}
                     </td>
                   </tr>
@@ -1017,17 +1017,17 @@ export default function AlternativesPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Layers size={20} className="text-teal-300" />
-                <h1 className="text-xl font-bold text-white">Alternative Investments</h1>
+                <Layers size={20} className="text-accent-primarySoft" />
+                <h1 className="text-xl font-bold text-text">Alternative Investments</h1>
               </div>
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-text-muted">
                 Track private equity, venture capital, real estate, hedge funds, credit, and other alternative holdings.
               </p>
             </div>
           </div>
 
           {/* Tab Navigation */}
-          <div className="mb-6 border-b border-white/[0.06]">
+          <div className="mb-6 border-b border-border-subtle">
             <nav className="-mb-px flex gap-1 overflow-x-auto" aria-label="Tabs">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
@@ -1038,8 +1038,8 @@ export default function AlternativesPage() {
                     onClick={() => setActiveTab(tab.key)}
                     className={`inline-flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-xs font-medium transition-colors ${
                       isActive
-                        ? 'border-brand-500 text-teal-300'
-                        : 'border-transparent text-white/50 hover:text-white/60 hover:border-white/[0.10]'
+                        ? 'border-brand-500 text-accent-primarySoft'
+                        : 'border-transparent text-text-muted hover:text-text-muted hover:border-border-subtle'
                     }`}
                   >
                     <Icon size={14} />

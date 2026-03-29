@@ -251,7 +251,7 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
 
     return (
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">$</span>
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-faint text-sm">$</span>
         <input
           id={id}
           type="text"
@@ -278,20 +278,20 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
               i === step
-                ? 'bg-teal-500 text-white'
+                ? 'bg-accent-primary text-text'
                 : i < step
-                  ? 'bg-teal-500/15 text-teal-300'
-                  : 'bg-white/[0.06] text-white/30'
+                  ? 'bg-accent-primary/15 text-accent-primarySoft'
+                  : 'bg-surface-subtle text-text-faint'
             }`}
           >
             {i + 1}
           </div>
           {i < totalSteps - 1 && (
-            <div className={`w-8 h-0.5 ${i < step ? 'bg-teal-400' : 'bg-white/[0.06]'}`} />
+            <div className={`w-8 h-0.5 ${i < step ? 'bg-brand-400' : 'bg-surface-subtle'}`} />
           )}
         </div>
       ))}
-      <span className="ml-3 text-xs text-white/30">
+      <span className="ml-3 text-xs text-text-faint">
         Step {step + 1} of {totalSteps}
       </span>
     </div>
@@ -314,14 +314,14 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
                 onClick={() => setIntake((prev) => ({ ...prev, wealthTier: tier }))}
                 className={`text-left p-4 rounded-lg border-2 transition-all ${
                   isSelected
-                    ? 'border-teal-500 bg-teal-500/10 ring-1 shadow-focus'
-                    : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10] hover:bg-white/[0.04]'
+                    ? 'border-accent-primary bg-accent-primary/10 ring-1 shadow-focus'
+                    : 'border-border-subtle bg-surface-soft hover:border-border-subtle hover:bg-surface-subtle'
                 }`}
               >
-                <div className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-white'}`}>
+                <div className={`text-sm font-semibold ${isSelected ? 'text-text' : 'text-text'}`}>
                   {WEALTH_TIER_LABELS[tier]}
                 </div>
-                <div className={`text-xs mt-0.5 ${isSelected ? 'text-teal-300' : 'text-white/50'}`}>
+                <div className={`text-xs mt-0.5 ${isSelected ? 'text-accent-primarySoft' : 'text-text-muted'}`}>
                   {WEALTH_TIER_DESCRIPTIONS[tier]}
                 </div>
               </button>
@@ -423,8 +423,8 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
                 onClick={() => updateFinancials({ incomeStability: opt.value })}
                 className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all ${
                   isSelected
-                    ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                    : 'border-white/[0.06] bg-white/[0.07] text-white/50 hover:border-white/[0.10]'
+                    ? 'border-accent-primary bg-accent-primary/10 text-accent-primarySoft'
+                    : 'border-border-subtle bg-surface-soft text-text-muted hover:border-border-subtle'
                 }`}
               >
                 {opt.label}
@@ -550,7 +550,7 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
       {intake.goals.map((goal, index) => (
         <div key={index} className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-white/60">Goal {index + 1}</h4>
+            <h4 className="text-sm font-semibold text-text-muted">Goal {index + 1}</h4>
             {intake.goals.length > 1 && (
               <button
                 type="button"
@@ -614,8 +614,8 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
                     onClick={() => updateGoal(index, { priority: opt.value })}
                     className={`flex-1 px-3 py-2 rounded-lg border text-xs font-medium transition-all ${
                       isSelected
-                        ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                        : 'border-white/[0.06] bg-white/[0.07] text-white/50 hover:border-white/[0.10]'
+                        ? 'border-accent-primary bg-accent-primary/10 text-accent-primarySoft'
+                        : 'border-border-subtle bg-surface-soft text-text-muted hover:border-border-subtle'
                     }`}
                   >
                     {opt.label}
@@ -631,7 +631,7 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
         <button
           type="button"
           onClick={addGoal}
-          className="w-full px-4 py-2.5 border-2 border-dashed border-white/[0.10] rounded-lg text-sm font-medium text-white/50 hover:border-brand-400 hover:text-teal-300 transition-colors"
+          className="w-full px-4 py-2.5 border-2 border-dashed border-border-subtle rounded-lg text-sm font-medium text-text-muted hover:border-brand-400 hover:text-accent-primarySoft transition-colors"
         >
           + Add Goal
         </button>
@@ -671,22 +671,22 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
             onClick={() => updateAlternatives({ [key]: !isChecked })}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-all text-left ${
               isChecked
-                ? 'border-teal-500 bg-teal-500/10'
-                : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10] hover:bg-white/[0.04]'
+                ? 'border-accent-primary bg-accent-primary/10'
+                : 'border-border-subtle bg-surface-soft hover:border-border-subtle hover:bg-surface-subtle'
             }`}
           >
             <div
               className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                isChecked ? 'border-teal-500 bg-teal-500' : 'border-white/[0.10] bg-white'
+                isChecked ? 'border-accent-primary bg-accent-primary' : 'border-border-subtle bg-text'
               }`}
             >
               {isChecked && (
-                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <svg className="w-3 h-3 text-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               )}
             </div>
-            <span className={`text-sm ${isChecked ? 'text-white font-medium' : 'text-white/60'}`}>
+            <span className={`text-sm ${isChecked ? 'text-text font-medium' : 'text-text-muted'}`}>
               {label}
             </span>
           </button>
@@ -710,8 +710,8 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
       <div className="card p-6 sm:p-8">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
-          <p className="text-sm text-white/50 mt-1">{description}</p>
+          <h2 className="text-lg font-semibold text-text">{title}</h2>
+          <p className="text-sm text-text-muted mt-1">{description}</p>
         </div>
 
         {/* Errors */}
@@ -732,12 +732,12 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
         {stepRenderers[step]?.()}
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/[0.06]">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-border-subtle">
           {step > 0 ? (
             <button
               type="button"
               onClick={handleBack}
-              className="px-5 py-2.5 border border-white/[0.10] text-white/60 text-sm font-medium rounded-lg hover:bg-white/[0.04] transition-colors"
+              className="px-5 py-2.5 border border-border-subtle text-text-muted text-sm font-medium rounded-lg hover:bg-surface-subtle transition-colors"
             >
               Back
             </button>
@@ -748,7 +748,7 @@ export default function IntakeForm({ onComplete }: IntakeFormProps) {
           <button
             type="button"
             onClick={handleNext}
-            className="px-6 py-2.5 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
+            className="px-6 py-2.5 bg-accent-primary text-text text-sm font-medium rounded-lg hover:bg-accent-primary transition-colors"
           >
             {isLastStep ? 'Continue to Assessment' : 'Next'}
           </button>

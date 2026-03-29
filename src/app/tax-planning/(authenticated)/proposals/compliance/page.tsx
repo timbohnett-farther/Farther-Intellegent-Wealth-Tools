@@ -17,15 +17,15 @@ type ComplianceFilter = 'ALL' | 'COMPLETE' | 'PARTIAL' | 'MISSING';
 // ---------------------------------------------------------------------------
 
 const STATUS_COLORS: Record<ProposalStatus, string> = {
-  DRAFT: 'bg-white/[0.06] text-white/60',
-  READY: 'bg-teal-500/15 text-teal-300',
+  DRAFT: 'bg-surface-subtle text-text-muted',
+  READY: 'bg-accent-primary/15 text-accent-primarySoft',
   REVIEW: 'bg-info-100 text-info-700',
-  APPROVED: 'bg-teal-500/15 text-teal-300',
+  APPROVED: 'bg-accent-primary/15 text-accent-primarySoft',
   SENT: 'bg-warning-100 text-warning-700',
   VIEWED: 'bg-purple-100 text-purple-700',
   ACCEPTED: 'bg-success-100 text-success-700',
   DECLINED: 'bg-critical-100 text-critical-700',
-  EXPIRED: 'bg-white/[0.06] text-white/50',
+  EXPIRED: 'bg-surface-subtle text-text-muted',
 };
 
 const COMPLIANCE_FILTERS: Array<{ value: ComplianceFilter; label: string }> = [
@@ -68,7 +68,7 @@ function getComplianceStatus(p: Proposal): ComplianceFilter {
 
 function StatusBadge({ status }: { status: ProposalStatus }) {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[status] || 'bg-white/[0.06] text-white/60'}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[status] || 'bg-surface-subtle text-text-muted'}`}>
       {status.replace(/_/g, ' ')}
     </span>
   );
@@ -97,11 +97,11 @@ function TableSkeleton() {
     <div className="space-y-3 animate-pulse">
       {Array.from({ length: 8 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 py-3">
-          <div className="h-4 w-32 rounded bg-white/[0.06]" />
-          <div className="h-4 w-24 rounded bg-white/[0.06]" />
-          <div className="h-4 w-16 rounded bg-white/[0.06]" />
-          <div className="h-4 w-16 rounded bg-white/[0.06]" />
-          <div className="h-4 w-20 rounded bg-white/[0.06] flex-1" />
+          <div className="h-4 w-32 rounded bg-surface-subtle" />
+          <div className="h-4 w-24 rounded bg-surface-subtle" />
+          <div className="h-4 w-16 rounded bg-surface-subtle" />
+          <div className="h-4 w-16 rounded bg-surface-subtle" />
+          <div className="h-4 w-20 rounded bg-surface-subtle flex-1" />
         </div>
       ))}
     </div>
@@ -169,14 +169,14 @@ export default function ComplianceArchivePage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Compliance Archive</h1>
-          <p className="mt-1 text-sm text-white/50">
+          <h1 className="text-2xl font-bold text-text">Compliance Archive</h1>
+          <p className="mt-1 text-sm text-text-muted">
             Monitor IPS and Reg BI document status across all proposals.
           </p>
         </div>
         <Link
           href="/tax-planning/proposals"
-          className="inline-flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white/60 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-text-muted transition-colors"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -232,7 +232,7 @@ export default function ComplianceArchivePage() {
 
       {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="flex gap-1 rounded-lg bg-white/[0.06] p-1">
+        <div className="flex gap-1 rounded-lg bg-surface-subtle p-1">
           {COMPLIANCE_FILTERS.map((f) => (
             <button
               key={f.value}
@@ -240,8 +240,8 @@ export default function ComplianceArchivePage() {
               onClick={() => { setFilter(f.value); setPage(1); }}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                 filter === f.value
-                  ? 'bg-white/[0.07] text-teal-300 shadow-sm'
-                  : 'text-white/50 hover:text-white/60'
+                  ? 'bg-surface-soft text-accent-primarySoft shadow-sm'
+                  : 'text-text-muted hover:text-text-muted'
               }`}
             >
               {f.label}
@@ -249,7 +249,7 @@ export default function ComplianceArchivePage() {
           ))}
         </div>
         <div className="relative flex-1 max-w-sm">
-          <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
           <input
@@ -257,26 +257,26 @@ export default function ComplianceArchivePage() {
             placeholder="Search by client name..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="w-full border border-white/[0.10] rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
+            className="w-full border border-border-subtle rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-accent-primary/80"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-6"><TableSkeleton /></div>
         ) : error ? (
           <div className="p-8 text-center">
             <p className="text-sm text-critical-700">{error}</p>
-            <button type="button" onClick={fetchProposals} className="mt-3 text-sm font-medium text-teal-300 hover:text-teal-300">Try again</button>
+            <button type="button" onClick={fetchProposals} className="mt-3 text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft">Try again</button>
           </div>
         ) : paginated.length === 0 ? (
           <div className="p-12 text-center">
-            <svg className="mx-auto h-12 w-12 text-white/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+            <svg className="mx-auto h-12 w-12 text-text-faint mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
-            <p className="text-sm font-medium text-white/60">No proposals match the current filter.</p>
+            <p className="text-sm font-medium text-text-muted">No proposals match the current filter.</p>
           </div>
         ) : (
           <>
@@ -285,7 +285,7 @@ export default function ComplianceArchivePage() {
                 <thead className="bg-transparent">
                   <tr>
                     {['Client', 'Document Type', 'Proposal', 'Generated Date', 'Status (Locked/Draft)', 'Actions'].map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white/50">{h}</th>
+                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -293,40 +293,40 @@ export default function ComplianceArchivePage() {
                   {paginated.map((p) => (
                     <React.Fragment key={p.proposalId}>
                       {/* IPS row */}
-                      <tr className="transition-colors hover:bg-white/[0.04]">
-                        <td className="px-4 py-3 text-sm font-medium text-white whitespace-nowrap">
-                          <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-teal-300">{p.clientName}</Link>
+                      <tr className="transition-colors hover:bg-surface-subtle">
+                        <td className="px-4 py-3 text-sm font-medium text-text whitespace-nowrap">
+                          <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-accent-primarySoft">{p.clientName}</Link>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-info-100 text-info-700">IPS</span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-white/60 whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
-                        <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{hasIps(p) ? formatDate(p.updatedAt) : '--'}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{hasIps(p) ? formatDate(p.updatedAt) : '--'}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <ComplianceIndicator generated={hasIps(p)} label="IPS" />
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-teal-300 hover:text-teal-300">View</Link>
-                            <button type="button" onClick={() => addToast('Downloading IPS...', 'info')} className="text-sm text-white/50 hover:text-white/60">Download</button>
+                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft">View</Link>
+                            <button type="button" onClick={() => addToast('Downloading IPS...', 'info')} className="text-sm text-text-muted hover:text-text-muted">Download</button>
                           </div>
                         </td>
                       </tr>
                       {/* Reg BI row */}
-                      <tr className="transition-colors hover:bg-white/[0.04] bg-transparent/30">
-                        <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{p.clientName}</td>
+                      <tr className="transition-colors hover:bg-surface-subtle bg-transparent/30">
+                        <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{p.clientName}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-warning-100 text-warning-700">Reg BI</span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-white/60 whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
-                        <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{hasRegBI(p) ? formatDate(p.sentAt) : '--'}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{p.title || 'Portfolio Proposal'}</td>
+                        <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{hasRegBI(p) ? formatDate(p.sentAt) : '--'}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <ComplianceIndicator generated={hasRegBI(p)} label="Reg BI" />
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-teal-300 hover:text-teal-300">View</Link>
-                            <button type="button" onClick={() => addToast('Downloading Reg BI doc...', 'info')} className="text-sm text-white/50 hover:text-white/60">Download</button>
+                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft">View</Link>
+                            <button type="button" onClick={() => addToast('Downloading Reg BI doc...', 'info')} className="text-sm text-text-muted hover:text-text-muted">Download</button>
                           </div>
                         </td>
                       </tr>
@@ -337,8 +337,8 @@ export default function ComplianceArchivePage() {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between border-t border-white/[0.06] px-4 py-3">
-              <p className="text-sm text-white/50">
+            <div className="flex items-center justify-between border-t border-border-subtle px-4 py-3">
+              <p className="text-sm text-text-muted">
                 Showing {(page - 1) * PAGE_SIZE + 1}--{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}
               </p>
               <div className="flex items-center gap-2">
@@ -346,16 +346,16 @@ export default function ComplianceArchivePage() {
                   type="button"
                   disabled={page <= 1}
                   onClick={() => setPage((prev) => prev - 1)}
-                  className="rounded-md border border-white/[0.10] px-3 py-1.5 text-sm font-medium text-white/60 disabled:opacity-40 hover:bg-white/[0.04]"
+                  className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-muted disabled:opacity-40 hover:bg-surface-subtle"
                 >
                   Previous
                 </button>
-                <span className="text-sm text-white/50">Page {page} of {totalPages}</span>
+                <span className="text-sm text-text-muted">Page {page} of {totalPages}</span>
                 <button
                   type="button"
                   disabled={page >= totalPages}
                   onClick={() => setPage((prev) => prev + 1)}
-                  className="rounded-md border border-white/[0.10] px-3 py-1.5 text-sm font-medium text-white/60 disabled:opacity-40 hover:bg-white/[0.04]"
+                  className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-muted disabled:opacity-40 hover:bg-surface-subtle"
                 >
                   Next
                 </button>

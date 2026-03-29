@@ -102,28 +102,28 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
   );
 
   return (
-    <div className="bg-white/[0.07] rounded-lg shadow-sm border border-white/[0.06] overflow-hidden">
+    <div className="bg-surface-soft rounded-lg shadow-sm border border-border-subtle overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/[0.06] bg-transparent">
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+            <tr className="border-b border-border-subtle bg-transparent">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Line Reference
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Description
               </th>
-              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+              <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Value
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Source
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Confidence
               </th>
               {onOverride && (
-                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Edit
                 </th>
               )}
@@ -134,7 +134,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
               <tr>
                 <td
                   colSpan={onOverride ? 6 : 5}
-                  className="px-4 py-10 text-center text-white/50"
+                  className="px-4 py-10 text-center text-text-muted"
                 >
                   No return lines to display.
                 </td>
@@ -146,18 +146,18 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                 return (
                   <tr
                     key={line.taxLineRef}
-                    className="border-b border-limestone-100 last:border-b-0 hover:bg-white/[0.04] transition-colors"
+                    className="border-b border-limestone-100 last:border-b-0 hover:bg-surface-subtle transition-colors"
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-white/60">
+                    <td className="px-4 py-3 font-mono text-xs text-text-muted">
                       {line.taxLineRef}
                     </td>
-                    <td className="px-4 py-3 text-white/60">
+                    <td className="px-4 py-3 text-text-muted">
                       {parseDescription(line.taxLineRef)}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-text">
                       {isEditing ? (
                         <div className="flex items-center justify-end gap-1">
-                          <span className="text-white/50">$</span>
+                          <span className="text-text-muted">$</span>
                           <input
                             type="text"
                             value={editValue}
@@ -166,7 +166,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                               if (e.key === 'Enter') confirmEdit(line.taxLineRef);
                               if (e.key === 'Escape') cancelEdit();
                             }}
-                            className="w-28 h-7 rounded border border-teal-500 bg-white/[0.07] backdrop-blur-xl px-2 text-right text-sm text-white focus:outline-hidden focus:shadow-focus"
+                            className="w-28 h-7 rounded border border-accent-primary bg-surface-soft backdrop-blur-xl px-2 text-right text-sm text-text focus:outline-hidden focus:shadow-focus"
                             autoFocus
                           />
                         </div>
@@ -182,7 +182,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                     <td className="px-4 py-3">
                       {line.confidence != null ? (
                         <div className="flex items-center gap-2">
-                          <div className="h-2 w-16 overflow-hidden rounded-full bg-white/[0.06]">
+                          <div className="h-2 w-16 overflow-hidden rounded-full bg-surface-subtle">
                             <div
                               className={cn(
                                 'h-full rounded-full transition-all',
@@ -191,12 +191,12 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                               style={{ width: `${Math.round(line.confidence * 100)}%` }}
                             />
                           </div>
-                          <span className="text-xs text-white/50">
+                          <span className="text-xs text-text-muted">
                             {getConfidenceLabel(line.confidence)}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-xs text-white/30">--</span>
+                        <span className="text-xs text-text-faint">--</span>
                       )}
                     </td>
                     {onOverride && (
@@ -214,7 +214,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                             <button
                               type="button"
                               onClick={cancelEdit}
-                              className="rounded p-1 text-white/30 hover:bg-white/[0.04] transition-colors"
+                              className="rounded p-1 text-text-faint hover:bg-surface-subtle transition-colors"
                               aria-label="Cancel edit"
                             >
                               <X className="h-4 w-4" />
@@ -224,7 +224,7 @@ export const ReturnLineTable: React.FC<ReturnLineTableProps> = ({
                           <button
                             type="button"
                             onClick={() => startEdit(line)}
-                            className="rounded p-1 text-white/30 hover:bg-white/[0.04] hover:text-teal-300 transition-colors"
+                            className="rounded p-1 text-text-faint hover:bg-surface-subtle hover:text-accent-primarySoft transition-colors"
                             aria-label={`Edit ${line.taxLineRef}`}
                           >
                             <Pencil className="h-4 w-4" />

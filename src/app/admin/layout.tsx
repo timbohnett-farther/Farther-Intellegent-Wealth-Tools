@@ -15,6 +15,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const ADMIN_NAV = [
   { label: 'Firm Overview', href: '/admin', icon: LayoutDashboard },
@@ -33,21 +34,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-transparent">
       {/* Top nav */}
-      <header className="sticky top-0 z-30 bg-[#3D5A6A] text-white">
+      <header
+        className="sticky top-0 z-30"
+        style={{
+          background: 'var(--s-sidebar-bg)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid var(--s-border-subtle)',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-4">
-            <Link href="/prism/dashboard" className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white">
+            <Link href="/prism/dashboard" className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text transition-colors">
               <ArrowLeft size={14} /> Back to Prism
             </Link>
-            <div className="w-px h-6 bg-white/20" />
+            <div className="w-px h-6" style={{ background: 'var(--s-border-strong)' }} />
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-linear-to-br from-teal-500 to-teal-300 flex items-center justify-center">
-                <span className="text-white font-bold text-xs">FP</span>
+              <div className="w-7 h-7 rounded-lg bg-linear-to-br from-brand-500 to-brand-300 flex items-center justify-center">
+                <span className="text-text-onBrand font-bold text-xs">FP</span>
               </div>
-              <span className="font-semibold text-sm">Admin Portal</span>
+              <span className="font-semibold text-sm text-text">Admin Portal</span>
             </div>
           </div>
-          <span className="text-xs text-white/50">Farther Wealth Management</span>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <span className="text-xs text-text-muted">Farther Wealth Management</span>
+          </div>
         </div>
         {/* Tab bar */}
         <div className="max-w-7xl mx-auto px-6">
@@ -61,7 +72,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   href={item.href}
                   className={cn(
                     'flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
-                    isActive ? 'border-brand-400 text-white' : 'border-transparent text-white/50 hover:text-white/80'
+                    isActive
+                      ? 'border-accent-primarySoft text-text'
+                      : 'border-transparent text-text-muted hover:text-text-subtle'
                   )}
                 >
                   <Icon size={14} />

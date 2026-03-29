@@ -15,23 +15,23 @@ const buttonVariants = tv({
   variants: {
     variant: {
       primary: [
-        "text-white rounded-md",
-        "bg-gradient-to-br from-teal-500 to-teal-600",
-        "hover:from-teal-400 hover:to-teal-500",
-        "active:from-teal-700 active:to-teal-800",
+        "text-text rounded-md",
+        "bg-gradient-to-br from-brand-500 to-brand-600",
+        "hover:from-brand-400 hover:to-brand-500",
+        "active:from-brand-700 active:to-brand-800",
       ],
       secondary: [
-        "rounded-md text-white/80",
-        "bg-white/[0.08] border-[1.5px] border-white/[0.12]",
-        "hover:bg-white/[0.12] hover:text-white",
-        "active:bg-white/[0.06]",
+        "rounded-md text-text-subtle",
+        "bg-surface-soft border-[1.5px] border-border-strong",
+        "hover:bg-surface-strong hover:text-text",
+        "active:bg-surface-subtle",
       ],
       ghost: [
-        "bg-transparent text-white/60 rounded-md",
-        "hover:bg-white/[0.04] hover:text-white",
-        "active:bg-white/[0.08]",
+        "bg-transparent text-text-muted rounded-md",
+        "hover:bg-surface-subtle hover:text-text",
+        "active:bg-surface-soft",
       ],
-      danger: "bg-critical-500 text-white rounded-md hover:bg-[#dc2626] active:bg-[#b91c1c]",
+      danger: "bg-critical-500 text-text rounded-md hover:bg-[#dc2626] active:bg-[#b91c1c]",
     },
     size: {
       sm: "h-8 px-3 text-[13px] rounded",

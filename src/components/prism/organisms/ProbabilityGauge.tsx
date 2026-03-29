@@ -121,7 +121,7 @@ export function ProbabilityGauge({
 
       {label && (
         <span
-          className="text-white/50 font-medium -mt-1"
+          className="text-text-muted font-medium -mt-1"
           style={{ fontSize: cfg.labelSize }}
         >
           {label}

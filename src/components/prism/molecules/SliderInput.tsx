@@ -49,8 +49,8 @@ export function SliderInput({
       />
 
       <div className="mt-1 flex items-center justify-between">
-        <span className="text-xs text-white/30">{minLabel}</span>
-        <span className="text-xs text-white/30">{maxLabel}</span>
+        <span className="text-xs text-text-faint">{minLabel}</span>
+        <span className="text-xs text-text-faint">{maxLabel}</span>
       </div>
     </div>
   );

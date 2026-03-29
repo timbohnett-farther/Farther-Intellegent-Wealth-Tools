@@ -22,27 +22,27 @@ export default function ExpensesPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Receipt size={20} className="text-teal-300" />
-              <h1 className="text-xl font-bold text-white">Expenses</h1>
+              <Receipt size={20} className="text-accent-primarySoft" />
+              <h1 className="text-xl font-bold text-text">Expenses</h1>
             </div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-text-muted">
               Track living expenses, insurance premiums, debt payments, and one-time costs.
             </p>
           </div>
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
+          <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 transition-colors">
             <Plus size={16} />
             Add Expense
           </button>
         </div>
 
         {/* Empty state */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-8">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-8">
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="w-12 h-12 rounded-full bg-warning-50 flex items-center justify-center mb-4">
               <CreditCard size={24} className="text-warning-500" />
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1">No expenses added yet</h3>
-            <p className="text-sm text-white/50 max-w-sm">
+            <h3 className="text-sm font-semibold text-text mb-1">No expenses added yet</h3>
+            <p className="text-sm text-text-muted max-w-sm">
               No expenses added yet. Click + Add Expense to get started.
             </p>
           </div>

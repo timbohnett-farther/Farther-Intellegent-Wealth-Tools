@@ -162,8 +162,8 @@ export function RiskQuestionnaire({
               className={cn(
                 'w-full rounded-lg border-2 px-4 py-3 text-left text-sm transition-all',
                 isSelected
-                  ? 'border-teal-500 bg-teal-500/5 text-white'
-                  : 'border-white/[0.06] bg-white/[0.07] text-white/60 hover:border-teal-300 hover:bg-white/[0.04]',
+                  ? 'border-accent-primary bg-accent-primary/5 text-text'
+                  : 'border-border-subtle bg-surface-soft text-text-muted hover:border-accent-primarySoft hover:bg-surface-subtle',
               )}
             >
               <div className="flex items-center gap-3">
@@ -171,12 +171,12 @@ export function RiskQuestionnaire({
                   className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
                     isSelected
-                      ? 'border-teal-500 bg-teal-500'
-                      : 'border-white/[0.10] bg-white',
+                      ? 'border-accent-primary bg-accent-primary'
+                      : 'border-border-subtle bg-text',
                   )}
                 >
                   {isSelected && (
-                    <div className="h-2 w-2 rounded-full bg-white" />
+                    <div className="h-2 w-2 rounded-full bg-text" />
                   )}
                 </div>
                 <span className={cn(isSelected && 'font-medium')}>
@@ -205,8 +205,8 @@ export function RiskQuestionnaire({
               className={cn(
                 'flex flex-col items-center rounded-lg border-2 p-4 transition-all',
                 isSelected
-                  ? 'border-teal-500 bg-teal-500/5 shadow-md'
-                  : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10]',
+                  ? 'border-accent-primary bg-accent-primary/5 shadow-md'
+                  : 'border-border-subtle bg-surface-soft hover:border-border-subtle',
               )}
             >
               <div className="flex items-end gap-0.5 h-20 mb-3">
@@ -215,7 +215,7 @@ export function RiskQuestionnaire({
                     key={i}
                     className={cn(
                       'w-2 rounded-t-sm transition-all',
-                      isSelected ? 'bg-teal-400' : 'bg-charcoal-200',
+                      isSelected ? 'bg-brand-400' : 'bg-charcoal-200',
                     )}
                     style={{ height: `${val}%` }}
                   />
@@ -224,7 +224,7 @@ export function RiskQuestionnaire({
               <span
                 className={cn(
                   'text-xs font-semibold text-center',
-                  isSelected ? 'text-teal-300' : 'text-white/60',
+                  isSelected ? 'text-accent-primarySoft' : 'text-text-muted',
                 )}
               >
                 {opt.label}
@@ -240,7 +240,7 @@ export function RiskQuestionnaire({
     const currentValue = (currentResponse?.answer as number) ?? 50;
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between text-xs font-medium text-white/50">
+        <div className="flex items-center justify-between text-xs font-medium text-text-muted">
           <span>Protect Wealth</span>
           <span>Grow Wealth</span>
         </div>
@@ -250,19 +250,19 @@ export function RiskQuestionnaire({
           max={question.maxScore}
           value={currentValue}
           onChange={(e) => handleSliderChange(Number(e.target.value))}
-          className="w-full h-3 rounded-full appearance-none bg-white/[0.06] accent-brand-700 cursor-pointer"
+          className="w-full h-3 rounded-full appearance-none bg-surface-subtle accent-brand-700 cursor-pointer"
         />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <div className="h-3 w-3 rounded-sm bg-info-500" />
-            <span className="text-xs text-white/50">Stability</span>
+            <span className="text-xs text-text-muted">Stability</span>
           </div>
-          <span className="text-lg font-bold tabular-nums text-teal-300">
+          <span className="text-lg font-bold tabular-nums text-accent-primarySoft">
             {currentValue}
           </span>
           <div className="flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-sm bg-teal-500" />
-            <span className="text-xs text-white/50">Growth</span>
+            <div className="h-3 w-3 rounded-sm bg-accent-primary" />
+            <span className="text-xs text-text-muted">Growth</span>
           </div>
         </div>
       </div>
@@ -283,27 +283,27 @@ export function RiskQuestionnaire({
               className={cn(
                 'flex flex-col items-center rounded-xl border-2 p-6 transition-all',
                 isSelected
-                  ? 'border-teal-500 bg-teal-500/5 shadow-md'
-                  : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10]',
+                  ? 'border-accent-primary bg-accent-primary/5 shadow-md'
+                  : 'border-border-subtle bg-surface-soft hover:border-border-subtle',
               )}
             >
               <div
                 className={cn(
                   'mb-3 flex h-14 w-14 items-center justify-center rounded-full',
-                  isSelected ? 'bg-teal-500/15' : 'bg-white/[0.06]',
+                  isSelected ? 'bg-accent-primary/15' : 'bg-surface-subtle',
                 )}
               >
                 <Dice5
                   className={cn(
                     'h-6 w-6',
-                    isSelected ? 'text-teal-300' : 'text-white/30',
+                    isSelected ? 'text-accent-primarySoft' : 'text-text-faint',
                   )}
                 />
               </div>
               <span
                 className={cn(
                   'text-sm font-semibold text-center',
-                  isSelected ? 'text-white' : 'text-white',
+                  isSelected ? 'text-text' : 'text-text',
                 )}
               >
                 {opt.label}
@@ -335,7 +335,7 @@ export function RiskQuestionnaire({
     <div className="mx-auto max-w-2xl space-y-6">
       {/* Progress bar */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-white/50">
+        <div className="flex items-center justify-between text-xs text-text-muted">
           <span>
             Question {currentStep + 1} of {totalQuestions}
           </span>
@@ -343,9 +343,9 @@ export function RiskQuestionnaire({
             {answeredCount} of {totalQuestions} answered
           </span>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-surface-subtle">
           <div
-            className="h-full rounded-full bg-teal-500 transition-all duration-300"
+            className="h-full rounded-full bg-accent-primary transition-all duration-300"
             style={{ width: `${((currentStep + 1) / totalQuestions) * 100}%` }}
           />
         </div>
@@ -358,9 +358,9 @@ export function RiskQuestionnaire({
               onClick={() => setCurrentStep(i)}
               className={cn(
                 'h-2 flex-1 rounded-full transition-colors',
-                i === currentStep && 'bg-teal-500',
-                i !== currentStep && responses.has(q.id) && 'bg-teal-500/40',
-                i !== currentStep && !responses.has(q.id) && 'bg-white/[0.06]',
+                i === currentStep && 'bg-accent-primary',
+                i !== currentStep && responses.has(q.id) && 'bg-accent-primary/40',
+                i !== currentStep && !responses.has(q.id) && 'bg-surface-subtle',
               )}
               aria-label={`Go to question ${i + 1}`}
             />
@@ -369,17 +369,17 @@ export function RiskQuestionnaire({
       </div>
 
       {/* Question card */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             {React.createElement(getTypeIcon(question.type), {
-              className: 'h-4 w-4 text-teal-300',
+              className: 'h-4 w-4 text-accent-primarySoft',
             })}
-            <span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white/50">
+            <span className="rounded-full bg-surface-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
               {question.type.replace(/_/g, ' ')}
             </span>
           </div>
-          <h2 className="text-lg font-semibold text-white leading-snug">
+          <h2 className="text-lg font-semibold text-text leading-snug">
             {question.text}
           </h2>
         </div>
@@ -389,13 +389,13 @@ export function RiskQuestionnaire({
 
       {/* Score preview */}
       {answeredCount > 0 && (
-        <div className="flex items-center justify-center gap-3 rounded-lg border border-white/[0.06] bg-transparent px-4 py-3">
-          <BarChart3 className="h-4 w-4 text-white/30" />
-          <span className="text-xs text-white/50">Preliminary Score:</span>
-          <span className="text-lg font-bold tabular-nums text-teal-300">
+        <div className="flex items-center justify-center gap-3 rounded-lg border border-border-subtle bg-transparent px-4 py-3">
+          <BarChart3 className="h-4 w-4 text-text-faint" />
+          <span className="text-xs text-text-muted">Preliminary Score:</span>
+          <span className="text-lg font-bold tabular-nums text-accent-primarySoft">
             {currentTotalScore}
           </span>
-          <span className="text-xs text-white/30">/ 100</span>
+          <span className="text-xs text-text-faint">/ 100</span>
         </div>
       )}
 
@@ -408,8 +408,8 @@ export function RiskQuestionnaire({
           className={cn(
             'inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
             currentStep === 0
-              ? 'cursor-not-allowed text-white/30'
-              : 'text-white/60 hover:bg-white/[0.06]',
+              ? 'cursor-not-allowed text-text-faint'
+              : 'text-text-muted hover:bg-surface-subtle',
           )}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -424,8 +424,8 @@ export function RiskQuestionnaire({
             className={cn(
               'inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors',
               answeredCount >= totalQuestions
-                ? 'bg-teal-500 text-white hover:bg-teal-400'
-                : 'cursor-not-allowed bg-white/[0.06] text-white/30',
+                ? 'bg-accent-primary text-text hover:bg-brand-400'
+                : 'cursor-not-allowed bg-surface-subtle text-text-faint',
             )}
           >
             <CheckCircle2 className="h-4 w-4" />
@@ -439,8 +439,8 @@ export function RiskQuestionnaire({
             className={cn(
               'inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors',
               canProceed
-                ? 'bg-teal-500 text-white hover:bg-teal-400'
-                : 'cursor-not-allowed bg-white/[0.06] text-white/30',
+                ? 'bg-accent-primary text-text hover:bg-brand-400'
+                : 'cursor-not-allowed bg-surface-subtle text-text-faint',
             )}
           >
             Next

@@ -22,23 +22,23 @@ export default function RetirementPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Sunset size={20} className="text-teal-300" />
-              <h1 className="text-xl font-bold text-white">Retirement Analysis</h1>
+              <Sunset size={20} className="text-accent-primarySoft" />
+              <h1 className="text-xl font-bold text-text">Retirement Analysis</h1>
             </div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-text-muted">
               Model retirement timing, income needs, and withdrawal strategies.
             </p>
           </div>
         </div>
 
         {/* Stage 2 placeholder */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-8">
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-8">
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center mb-4">
               <Clock size={24} className="text-orange-400" />
             </div>
-            <h3 className="text-sm font-semibold text-white mb-1">Coming in Stage 2</h3>
-            <p className="text-sm text-white/50 max-w-sm">
+            <h3 className="text-sm font-semibold text-text mb-1">Coming in Stage 2</h3>
+            <p className="text-sm text-text-muted max-w-sm">
               Retirement analysis will be available after plan data is entered (Stage 2).
             </p>
           </div>

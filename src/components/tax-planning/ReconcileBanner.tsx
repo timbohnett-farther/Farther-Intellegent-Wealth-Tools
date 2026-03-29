@@ -29,7 +29,7 @@ export const ReconcileBanner: React.FC<ReconcileBannerProps> = ({
       <button
         type="button"
         onClick={onReconcile}
-        className="inline-flex items-center h-8 px-4 rounded-md bg-warning-700 text-white text-sm font-medium hover:bg-warning-800 transition-colors shadow-sm flex-shrink-0"
+        className="inline-flex items-center h-8 px-4 rounded-md bg-warning-700 text-text text-sm font-medium hover:bg-warning-800 transition-colors shadow-sm flex-shrink-0"
       >
         Review & Confirm
       </button>

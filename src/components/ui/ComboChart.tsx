@@ -103,7 +103,7 @@ function ComboChart({
           )}
           <Tooltip
             content={CustomTooltip ? <CustomTooltip /> : undefined}
-            cursor={{ fill: "rgba(255, 255, 255, 0.04)" }}
+            cursor={{ fill: "var(--s-surface-subtle)" }}
           />
           {showLegend && (
             <Legend

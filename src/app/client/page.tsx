@@ -127,7 +127,7 @@ function SuccessGauge({ value }: { value: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-xl font-bold text-white">{value}%</span>
+        <span className="text-xl font-bold text-text">{value}%</span>
       </div>
     </div>
   );
@@ -142,27 +142,27 @@ export default function ClientHomePage() {
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-text">
             Hello, {CLIENT.firstName}
           </h1>
-          <p className="text-sm text-white/50 mt-1">
+          <p className="text-sm text-text-muted mt-1">
             Last updated {formatDate(CLIENT.lastUpdated)}
           </p>
         </div>
-        <div className="flex items-center gap-4 text-sm text-white/50 bg-white/[0.07] border border-white/[0.06] rounded-lg px-4 py-3">
-          <span className="font-medium text-white">
+        <div className="flex items-center gap-4 text-sm text-text-muted bg-surface-soft border border-border-subtle rounded-lg px-4 py-3">
+          <span className="font-medium text-text">
             Your Advisor: {CLIENT.advisorName}
           </span>
-          <span className="hidden sm:inline text-white/30">|</span>
+          <span className="hidden sm:inline text-text-faint">|</span>
           <a
             href={`tel:${CLIENT.advisorPhone}`}
-            className="flex items-center gap-1 hover:text-teal-300"
+            className="flex items-center gap-1 hover:text-accent-primarySoft"
           >
             <Phone size={14} /> {CLIENT.advisorPhone}
           </a>
           <a
             href={`mailto:${CLIENT.advisorEmail}`}
-            className="flex items-center gap-1 hover:text-teal-300"
+            className="flex items-center gap-1 hover:text-accent-primarySoft"
           >
             <Mail size={14} /> Email
           </a>
@@ -172,48 +172,48 @@ export default function ClientHomePage() {
       {/* ── KPI Row ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Net Worth */}
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-2">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-2">
             <TrendingUp size={16} />
             Net Worth
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {formatCurrency(KPI.netWorth)}
           </p>
         </div>
 
         {/* Plan Success Rate */}
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5 flex items-center gap-4">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5 flex items-center gap-4">
           <SuccessGauge value={KPI.planSuccessRate} />
           <div>
-            <div className="text-sm text-white/50">Plan Success Rate</div>
-            <p className="text-lg font-semibold text-white mt-0.5">
+            <div className="text-sm text-text-muted">Plan Success Rate</div>
+            <p className="text-lg font-semibold text-text mt-0.5">
               {KPI.planSuccessRate}% probability
             </p>
           </div>
         </div>
 
         {/* Retirement Goal */}
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-2">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-2">
             <Target size={16} />
             Retirement Goal
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {KPI.retirementFundedPct}% funded
           </p>
-          <p className="text-xs text-white/50 mt-1">
+          <p className="text-xs text-text-muted mt-1">
             Target age {KPI.retirementGoalAge}
           </p>
         </div>
 
         {/* Next Meeting */}
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-2">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-2">
             <CalendarDays size={16} />
             Next Meeting
           </div>
-          <p className="text-lg font-semibold text-white">
+          <p className="text-lg font-semibold text-text">
             {formatMeetingDate(KPI.nextMeeting)}
           </p>
         </div>
@@ -221,12 +221,12 @@ export default function ClientHomePage() {
 
       {/* ── Plan Health Summary ── */}
       <div className="bg-linear-to-r from-brand-50 to-white border border-brand-100 rounded-card p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">
+        <h2 className="text-lg font-semibold text-text mb-2">
           Plan Health Summary
         </h2>
-        <p className="text-white/60 leading-relaxed">
+        <p className="text-text-muted leading-relaxed">
           Based on your current savings rate and projected returns, you have an{' '}
-          <span className="font-bold text-teal-300">
+          <span className="font-bold text-accent-primarySoft">
             {KPI.planSuccessRate}% chance
           </span>{' '}
           of fully funding your retirement at age{' '}
@@ -239,7 +239,7 @@ export default function ClientHomePage() {
 
       {/* ── Action Items ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Recommended Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -252,17 +252,17 @@ export default function ClientHomePage() {
                 onClick={() =>
                   setExpandedAction(isExpanded ? null : action.id)
                 }
-                className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5 text-left hover:border-teal-300 hover:shadow-sm transition-all"
+                className="bg-surface-soft rounded-card border border-border-subtle p-5 text-left hover:border-accent-primarySoft hover:shadow-sm transition-all"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center flex-shrink-0">
-                    <Icon size={20} className="text-teal-300" />
+                  <div className="w-10 h-10 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Icon size={20} className="text-accent-primarySoft" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold text-white">
+                    <h3 className="text-sm font-semibold text-text">
                       {action.title}
                     </h3>
-                    <p className="text-xs text-white/50 mt-1 leading-relaxed">
+                    <p className="text-xs text-text-muted mt-1 leading-relaxed">
                       {action.description}
                     </p>
                     <div className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-goal-funded">
@@ -279,7 +279,7 @@ export default function ClientHomePage() {
 
       {/* ── Goals Progress ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Goals Progress
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -288,23 +288,23 @@ export default function ClientHomePage() {
             return (
               <div
                 key={goal.id}
-                className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5"
+                className="bg-surface-soft rounded-card border border-border-subtle p-5"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-text">
                     {goal.name}
                   </h3>
-                  <span className="text-xs font-medium text-white/50">
+                  <span className="text-xs font-medium text-text-muted">
                     {pct}%
                   </span>
                 </div>
-                <div className="w-full h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-surface-subtle rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all ${goalColor(pct)}`}
                     style={{ width: `${Math.min(pct, 100)}%` }}
                   />
                 </div>
-                <div className="flex items-center justify-between mt-2 text-xs text-white/50">
+                <div className="flex items-center justify-between mt-2 text-xs text-text-muted">
                   <span>{formatCurrency(goal.current)}</span>
                   <span>Goal: {formatCurrency(goal.target)}</span>
                 </div>

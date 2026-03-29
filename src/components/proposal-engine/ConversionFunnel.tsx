@@ -30,8 +30,8 @@ interface FunnelStage {
 }
 
 const STAGES: FunnelStage[] = [
-  { key: 'created', label: 'Created', color: 'bg-charcoal-200', bgClass: 'bg-white/[0.04]' },
-  { key: 'sent', label: 'Sent', color: 'bg-teal-400', bgClass: 'bg-teal-500/10' },
+  { key: 'created', label: 'Created', color: 'bg-charcoal-200', bgClass: 'bg-surface-subtle' },
+  { key: 'sent', label: 'Sent', color: 'bg-brand-400', bgClass: 'bg-accent-primary/10' },
   { key: 'viewed', label: 'Viewed', color: 'bg-warning-400', bgClass: 'bg-warning-50' },
   { key: 'accepted', label: 'Accepted', color: 'bg-success-500', bgClass: 'bg-success-50' },
 ];
@@ -72,7 +72,7 @@ export function ConversionFunnel({
                 <div className="flex items-center justify-center py-0.5">
                   <div className="flex items-center gap-1.5">
                     <svg
-                      className="h-3 w-3 text-white/30"
+                      className="h-3 w-3 text-text-faint"
                       viewBox="0 0 12 12"
                       fill="none"
                       aria-hidden="true"
@@ -85,7 +85,7 @@ export function ConversionFunnel({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className="text-[11px] font-semibold tabular-nums text-white/50">
+                    <span className="text-[11px] font-semibold tabular-nums text-text-muted">
                       {rate.toFixed(0)}%
                     </span>
                   </div>
@@ -95,7 +95,7 @@ export function ConversionFunnel({
               {/* Bar */}
               <div className="flex items-center gap-3">
                 {/* Label */}
-                <span className="w-20 shrink-0 text-right text-xs font-medium text-white/50">
+                <span className="w-20 shrink-0 text-right text-xs font-medium text-text-muted">
                   {stage.label}
                 </span>
 
@@ -112,14 +112,14 @@ export function ConversionFunnel({
                       marginLeft: `${(100 - widthPct) / 2}%`, // center the bar
                     }}
                   >
-                    <span className="text-xs font-bold tabular-nums text-white drop-shadow-xs">
+                    <span className="text-xs font-bold tabular-nums text-text drop-shadow-xs">
                       {value.toLocaleString()}
                     </span>
                   </div>
                 </div>
 
                 {/* Count on the right */}
-                <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-white/60">
+                <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-text-muted">
                   {value.toLocaleString()}
                 </span>
               </div>
@@ -129,14 +129,14 @@ export function ConversionFunnel({
       </div>
 
       {/* Overall conversion */}
-      <div className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-white/[0.06] bg-transparent px-4 py-2">
-        <span className="text-xs font-medium text-white/50">
+      <div className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-border-subtle bg-transparent px-4 py-2">
+        <span className="text-xs font-medium text-text-muted">
           Overall Conversion
         </span>
-        <span className="text-sm font-bold tabular-nums text-teal-300">
+        <span className="text-sm font-bold tabular-nums text-accent-primarySoft">
           {created > 0 ? ((accepted / created) * 100).toFixed(1) : '0.0'}%
         </span>
-        <span className="text-xs text-white/30">
+        <span className="text-xs text-text-faint">
           ({accepted} of {created})
         </span>
       </div>

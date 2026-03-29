@@ -380,9 +380,9 @@ export default function EquityCompPage() {
   function PieTooltip({ active, payload }: { active?: boolean; payload?: Array<{ name: string; value: number }> }) {
     if (!active || !payload?.length) return null;
     return (
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-lg">
-        <p className="font-semibold text-white">{payload[0].name}</p>
-        <p className="text-white/60">{fmt$(payload[0].value)}</p>
+      <div className="rounded-xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-3 py-2 text-xs shadow-lg">
+        <p className="font-semibold text-text">{payload[0].name}</p>
+        <p className="text-text-muted">{fmt$(payload[0].value)}</p>
       </div>
     );
   }
@@ -404,17 +404,17 @@ export default function EquityCompPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <TrendingUp size={20} className="text-teal-300" />
-              <h1 className="text-xl font-bold text-white">Equity Compensation</h1>
+              <TrendingUp size={20} className="text-accent-primarySoft" />
+              <h1 className="text-xl font-bold text-text">Equity Compensation</h1>
             </div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-text-muted">
               Model stock options, RSUs, ESPP, and other equity compensation strategies.
             </p>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b border-white/[0.06] mb-6">
+        <div className="border-b border-border-subtle mb-6">
           <nav className="-mb-px flex gap-1 overflow-x-auto" aria-label="Tabs">
             {TABS.map((tab) => (
               <button
@@ -422,8 +422,8 @@ export default function EquityCompPage() {
                 onClick={() => setActiveTab(tab)}
                 className={`whitespace-nowrap border-b-2 px-3 py-2.5 text-xs font-medium transition-colors ${
                   activeTab === tab
-                    ? 'border-brand-500 text-teal-300'
-                    : 'border-transparent text-white/50 hover:border-white/[0.10] hover:text-white/60'
+                    ? 'border-brand-500 text-accent-primarySoft'
+                    : 'border-transparent text-text-muted hover:border-border-subtle hover:text-text-muted'
                 }`}
               >
                 {tab}
@@ -439,31 +439,31 @@ export default function EquityCompPage() {
           <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-1">
-                  <DollarSign size={16} className="text-teal-300" />
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Total Equity Value</span>
+                  <DollarSign size={16} className="text-accent-primarySoft" />
+                  <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Total Equity Value</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{fmt$(totalEquityValue)}</p>
+                <p className="text-2xl font-bold text-text">{fmt$(totalEquityValue)}</p>
                 <p className="text-xs text-success-500 mt-1 flex items-center gap-1">
                   <ArrowUpRight size={12} /> +12.4% YTD
                 </p>
               </div>
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-1">
                   <TrendingUp size={16} className="text-success-500" />
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wide">Unrealized Gain</span>
+                  <span className="text-xs font-medium text-text-muted uppercase tracking-wide">Unrealized Gain</span>
                 </div>
                 <p className="text-2xl font-bold text-success-500">{fmt$(totalUnrealizedGain)}</p>
-                <p className="text-xs text-white/50 mt-1">Cost basis: {fmt$(totalCostBasis)}</p>
+                <p className="text-xs text-text-muted mt-1">Cost basis: {fmt$(totalCostBasis)}</p>
               </div>
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-1">
                   <PieChartIcon size={16} className="text-indigo-500" />
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wide">% of Portfolio</span>
+                  <span className="text-xs font-medium text-text-muted uppercase tracking-wide">% of Portfolio</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{fmtPct(equityPctOfPortfolio)}</p>
-                <p className="text-xs text-white/50 mt-1">Portfolio: {fmt$(portfolioValue)}</p>
+                <p className="text-2xl font-bold text-text">{fmtPct(equityPctOfPortfolio)}</p>
+                <p className="text-xs text-text-muted mt-1">Portfolio: {fmt$(portfolioValue)}</p>
                 {equityPctOfPortfolio > 20 && (
                   <p className="text-xs text-warning-500 mt-1 flex items-center gap-1">
                     <AlertTriangle size={12} /> High concentration
@@ -475,57 +475,57 @@ export default function EquityCompPage() {
             {/* Summary Table + Pie Chart */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Table */}
-              <div className="lg:col-span-2 bg-white/[0.07] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="lg:col-span-2 bg-surface-soft backdrop-blur-xl rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">Holdings Detail</h3>
+                  <h3 className="text-sm font-semibold text-text">Holdings Detail</h3>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="border-b border-limestone-100 bg-transparent">
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Type</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Company</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Ticker</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Shares</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Price</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Value</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Gain</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Status</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Type</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Company</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Ticker</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Shares</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Price</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Value</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Gain</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-limestone-50">
                       {rsuGrants.map((g) => (
-                        <tr key={`rsu-${g.id}`} className="hover:bg-white/[0.04]">
+                        <tr key={`rsu-${g.id}`} className="hover:bg-surface-subtle">
                           <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] font-medium text-indigo-700">RSU</span></td>
-                          <td className="px-4 py-2.5 font-medium text-white">{g.company}</td>
-                          <td className="px-4 py-2.5 text-white/60">{g.ticker}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">{g.sharesHeld}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">${g.currentFMV.toFixed(2)}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-white">{fmt$(g.sharesHeld * g.currentFMV)}</td>
+                          <td className="px-4 py-2.5 font-medium text-text">{g.company}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{g.ticker}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">{g.sharesHeld}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">${g.currentFMV.toFixed(2)}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-text">{fmt$(g.sharesHeld * g.currentFMV)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums text-success-500">{fmt$(g.sharesHeld * (g.currentFMV - g.grantPrice))}</td>
                           <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-700">Vested</span></td>
                         </tr>
                       ))}
                       {options.map((o) => (
-                        <tr key={`opt-${o.id}`} className="hover:bg-white/[0.04]">
-                          <td className="px-4 py-2.5"><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${o.type === 'ISO' ? 'bg-teal-500/10 text-teal-300' : 'bg-teal-500/10 text-teal-300'}`}>{o.type}</span></td>
-                          <td className="px-4 py-2.5 font-medium text-white">{o.company}</td>
-                          <td className="px-4 py-2.5 text-white/60">{o.ticker}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">{o.shares}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">${o.currentFMV.toFixed(2)}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-white">{fmt$(Math.max(0, o.currentFMV - o.exercisePrice) * o.shares)}</td>
+                        <tr key={`opt-${o.id}`} className="hover:bg-surface-subtle">
+                          <td className="px-4 py-2.5"><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${o.type === 'ISO' ? 'bg-accent-primary/10 text-accent-primarySoft' : 'bg-accent-primary/10 text-accent-primarySoft'}`}>{o.type}</span></td>
+                          <td className="px-4 py-2.5 font-medium text-text">{o.company}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{o.ticker}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">{o.shares}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">${o.currentFMV.toFixed(2)}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-text">{fmt$(Math.max(0, o.currentFMV - o.exercisePrice) * o.shares)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums text-success-500">{fmt$(Math.max(0, o.currentFMV - o.exercisePrice) * o.shares)}</td>
                           <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-warning-50 px-2 py-0.5 text-[10px] font-medium text-warning-700">Unexercised</span></td>
                         </tr>
                       ))}
                       {esppPurchases.map((p) => (
-                        <tr key={`espp-${p.id}`} className="hover:bg-white/[0.04]">
-                          <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-medium text-teal-300">ESPP</span></td>
-                          <td className="px-4 py-2.5 font-medium text-white">{p.company}</td>
-                          <td className="px-4 py-2.5 text-white/60">{p.ticker}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">{p.shares}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">${p.currentFMV.toFixed(2)}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-white">{fmt$(p.shares * p.currentFMV)}</td>
+                        <tr key={`espp-${p.id}`} className="hover:bg-surface-subtle">
+                          <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-accent-primary/10 px-2 py-0.5 text-[10px] font-medium text-accent-primarySoft">ESPP</span></td>
+                          <td className="px-4 py-2.5 font-medium text-text">{p.company}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{p.ticker}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">{p.shares}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">${p.currentFMV.toFixed(2)}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-text">{fmt$(p.shares * p.currentFMV)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums text-success-500">{fmt$(p.shares * (p.currentFMV - p.purchasePrice))}</td>
                           <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-700">Held</span></td>
                         </tr>
@@ -536,8 +536,8 @@ export default function EquityCompPage() {
               </div>
 
               {/* Pie Chart */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-                <h3 className="text-sm font-semibold text-white mb-4">Allocation by Type</h3>
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+                <h3 className="text-sm font-semibold text-text mb-4">Allocation by Type</h3>
                 {allocationData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={220}>
                     <PieChart>
@@ -558,16 +558,16 @@ export default function EquityCompPage() {
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex items-center justify-center h-[220px] text-xs text-white/30">No holdings data</div>
+                  <div className="flex items-center justify-center h-[220px] text-xs text-text-faint">No holdings data</div>
                 )}
                 <div className="mt-3 space-y-2">
                   {allocationData.map((d, idx) => (
                     <div key={d.name} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                        <span className="text-white/60">{d.name}</span>
+                        <span className="text-text-muted">{d.name}</span>
                       </div>
-                      <span className="font-medium tabular-nums text-white">{fmt$(d.value)}</span>
+                      <span className="font-medium tabular-nums text-text">{fmt$(d.value)}</span>
                     </div>
                   ))}
                 </div>
@@ -582,12 +582,12 @@ export default function EquityCompPage() {
         {activeTab === 'RSU / Restricted Stock' && (
           <div className="space-y-6">
             {/* RSU Grants Table */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">RSU Grants</h3>
+                <h3 className="text-sm font-semibold text-text">RSU Grants</h3>
                 <button
                   onClick={() => setShowAddRSU(!showAddRSU)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 transition-colors"
                 >
                   <Plus size={14} /> Add RSU Grant
                 </button>
@@ -598,43 +598,43 @@ export default function EquityCompPage() {
                 <div className="px-5 py-4 border-b border-limestone-100 bg-transparent">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Company</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Company</label>
                       <input type="text" value={newRSU.company || ''} onChange={e => setNewRSU({ ...newRSU, company: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="Alphabet Inc." />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="Alphabet Inc." />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Ticker</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Ticker</label>
                       <input type="text" value={newRSU.ticker || ''} onChange={e => setNewRSU({ ...newRSU, ticker: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="GOOGL" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="GOOGL" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Grant Date</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Grant Date</label>
                       <input type="date" value={newRSU.grantDate || ''} onChange={e => setNewRSU({ ...newRSU, grantDate: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares Granted</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares Granted</label>
                       <input type="number" value={newRSU.sharesGranted || ''} onChange={e => setNewRSU({ ...newRSU, sharesGranted: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="100" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="100" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Grant Price</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Grant Price</label>
                       <input type="number" step="0.01" value={newRSU.grantPrice || ''} onChange={e => setNewRSU({ ...newRSU, grantPrice: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="150.00" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="150.00" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Vesting Schedule</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Vesting Schedule</label>
                       <input type="text" value={newRSU.vestingSchedule || ''} onChange={e => setNewRSU({ ...newRSU, vestingSchedule: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="4yr / quarterly" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="4yr / quarterly" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Current FMV</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Current FMV</label>
                       <input type="number" step="0.01" value={newRSU.currentFMV || ''} onChange={e => setNewRSU({ ...newRSU, currentFMV: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="178.25" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="178.25" />
                     </div>
                     <div className="flex items-end">
                       <button onClick={addRSUGrant}
-                        className="w-full rounded-md bg-teal-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-teal-400 transition-colors">
+                        className="w-full rounded-md bg-accent-primary px-3 py-1.5 text-xs font-medium text-text hover:bg-accent-primary/80 transition-colors">
                         Save Grant
                       </button>
                     </div>
@@ -647,43 +647,43 @@ export default function EquityCompPage() {
                   <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center mb-3">
                     <Briefcase size={20} className="text-indigo-400" />
                   </div>
-                  <p className="text-xs text-white/50">No RSU grants added yet. Click &quot;Add RSU Grant&quot; to get started.</p>
+                  <p className="text-xs text-text-muted">No RSU grants added yet. Click &quot;Add RSU Grant&quot; to get started.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="border-b border-limestone-100 bg-transparent">
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Company</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Ticker</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Grant Date</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Granted</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Grant Price</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Schedule</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Vested</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Held</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">FMV</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Value</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Company</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Ticker</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Grant Date</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Granted</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Grant Price</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Schedule</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Vested</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Held</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">FMV</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Value</th>
                         <th className="px-4 py-2.5"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-limestone-50">
                       {rsuGrants.map((g) => (
-                        <tr key={g.id} className={`hover:bg-white/[0.04] cursor-pointer ${selectedRSU === g.id ? 'bg-indigo-50' : ''}`}
+                        <tr key={g.id} className={`hover:bg-surface-subtle cursor-pointer ${selectedRSU === g.id ? 'bg-indigo-50' : ''}`}
                           onClick={() => setSelectedRSU(selectedRSU === g.id ? null : g.id)}>
-                          <td className="px-4 py-2.5 font-medium text-white">{g.company}</td>
-                          <td className="px-4 py-2.5 text-white/60">{g.ticker}</td>
-                          <td className="px-4 py-2.5 text-white/60">{g.grantDate}</td>
+                          <td className="px-4 py-2.5 font-medium text-text">{g.company}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{g.ticker}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{g.grantDate}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">{g.sharesGranted}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">${g.grantPrice.toFixed(2)}</td>
-                          <td className="px-4 py-2.5 text-white/60">{g.vestingSchedule}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{g.vestingSchedule}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">{g.sharesVested}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">{g.sharesHeld}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">${g.currentFMV.toFixed(2)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums font-medium">{fmt$(g.sharesHeld * g.currentFMV)}</td>
                           <td className="px-4 py-2.5 text-right">
                             <button onClick={(e) => { e.stopPropagation(); removeRSUGrant(g.id); }}
-                              className="text-white/30 hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
+                              className="text-text-faint hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
                           </td>
                         </tr>
                       ))}
@@ -694,32 +694,32 @@ export default function EquityCompPage() {
             </div>
 
             {/* Per-Vest Tax Calculator */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Per-Vest Tax Calculator</h3>
-                <p className="text-[10px] text-white/50 mt-0.5">RSUs are taxed as ordinary income (W-2) on the vesting date</p>
+                <h3 className="text-sm font-semibold text-text">Per-Vest Tax Calculator</h3>
+                <p className="text-[10px] text-text-muted mt-0.5">RSUs are taxed as ordinary income (W-2) on the vesting date</p>
               </div>
               <div className="p-5">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares Vesting</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares Vesting</label>
                     <input type="number" value={rsuVestShares} onChange={e => setRsuVestShares(Number(e.target.value))}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">FMV / Share</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">FMV / Share</label>
                     <input type="number" step="0.01" value={rsuVestFMV} onChange={e => setRsuVestFMV(Number(e.target.value))}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Federal Rate %</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Federal Rate %</label>
                     <input type="number" value={rsuFedRate} onChange={e => setRsuFedRate(Number(e.target.value))}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">State Rate %</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">State Rate %</label>
                     <input type="number" value={rsuStateRate} onChange={e => setRsuStateRate(Number(e.target.value))}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                 </div>
 
@@ -727,52 +727,52 @@ export default function EquityCompPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     <div className="flex justify-between text-xs py-1.5 border-b border-limestone-100">
-                      <span className="text-white/60">Ordinary Income (W-2)</span>
-                      <span className="font-medium tabular-nums text-white">{fmt$(rsuOrdinaryIncome)}</span>
+                      <span className="text-text-muted">Ordinary Income (W-2)</span>
+                      <span className="font-medium tabular-nums text-text">{fmt$(rsuOrdinaryIncome)}</span>
                     </div>
                     <div className="flex justify-between text-xs py-1.5 border-b border-limestone-100">
-                      <span className="text-white/60">Federal Withholding ({rsuFedRate}%)</span>
+                      <span className="text-text-muted">Federal Withholding ({rsuFedRate}%)</span>
                       <span className="font-medium tabular-nums text-critical-500">-{fmt$(rsuFederalTax)}</span>
                     </div>
                     <div className="flex justify-between text-xs py-1.5 border-b border-limestone-100">
-                      <span className="text-white/60">FICA (7.65%)</span>
+                      <span className="text-text-muted">FICA (7.65%)</span>
                       <span className="font-medium tabular-nums text-critical-500">-{fmt$(rsuFICA)}</span>
                     </div>
                     <div className="flex justify-between text-xs py-1.5 border-b border-limestone-100">
-                      <span className="text-white/60">State Withholding ({rsuStateRate}%)</span>
+                      <span className="text-text-muted">State Withholding ({rsuStateRate}%)</span>
                       <span className="font-medium tabular-nums text-critical-500">-{fmt$(rsuStateTax)}</span>
                     </div>
-                    <div className="flex justify-between text-xs py-2 border-b-2 border-white/[0.06] font-semibold">
-                      <span className="text-white">Total Tax</span>
+                    <div className="flex justify-between text-xs py-2 border-b-2 border-border-subtle font-semibold">
+                      <span className="text-text">Total Tax</span>
                       <span className="tabular-nums text-critical-500">-{fmt$(rsuTotalTax)}</span>
                     </div>
                     <div className="flex justify-between text-xs py-1.5">
-                      <span className="text-white/60">Net Shares Delivered</span>
-                      <span className="font-medium tabular-nums text-white">{rsuNetShares}</span>
+                      <span className="text-text-muted">Net Shares Delivered</span>
+                      <span className="font-medium tabular-nums text-text">{rsuNetShares}</span>
                     </div>
                     <div className="flex justify-between text-xs py-1.5">
-                      <span className="text-white/60">Net Cash Value</span>
-                      <span className="font-medium tabular-nums text-white">{fmt$(rsuNetCashValue)}</span>
+                      <span className="text-text-muted">Net Cash Value</span>
+                      <span className="font-medium tabular-nums text-text">{fmt$(rsuNetCashValue)}</span>
                     </div>
                   </div>
 
                   {/* Tax Planning Options */}
                   <div>
-                    <h4 className="text-xs font-semibold text-white mb-3">Tax Planning Options</h4>
+                    <h4 className="text-xs font-semibold text-text mb-3">Tax Planning Options</h4>
                     <div className="space-y-2">
                       {(['sell-to-cover', 'sell-all', 'hold'] as const).map((strategy) => (
                         <button key={strategy} onClick={() => setRsuTaxStrategy(strategy)}
                           className={`w-full text-left rounded-lg border p-3 text-xs transition-colors ${
                             rsuTaxStrategy === strategy
-                              ? 'border-brand-500 bg-teal-500/10 text-teal-300'
-                              : 'border-white/[0.06] bg-white/[0.07] text-white/60 hover:border-white/[0.10]'
+                              ? 'border-brand-500 bg-accent-primary/10 text-accent-primarySoft'
+                              : 'border-border-subtle bg-surface-soft text-text-muted hover:border-border-subtle'
                           }`}>
                           <div className="font-medium">
                             {strategy === 'sell-to-cover' && 'Sell to Cover'}
                             {strategy === 'sell-all' && 'Sell All'}
                             {strategy === 'hold' && 'Hold All Shares'}
                           </div>
-                          <div className="text-[10px] text-white/50 mt-0.5">
+                          <div className="text-[10px] text-text-muted mt-0.5">
                             {strategy === 'sell-to-cover' && `Sell ${rsuVestShares - rsuNetShares} shares to cover taxes, keep ${rsuNetShares} shares`}
                             {strategy === 'sell-all' && `Sell all ${rsuVestShares} shares, receive ${fmt$(rsuNetCashValue)} after tax`}
                             {strategy === 'hold' && `Keep all ${rsuVestShares} shares, pay ${fmt$(rsuTotalTax)} from cash`}
@@ -815,11 +815,11 @@ export default function EquityCompPage() {
         {activeTab === 'Stock Options (NQSO / ISO)' && (
           <div className="space-y-6">
             {/* Options Table */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">Stock Option Grants</h3>
+                <h3 className="text-sm font-semibold text-text">Stock Option Grants</h3>
                 <button onClick={() => setShowAddOption(!showAddOption)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 transition-colors">
                   <Plus size={14} /> Add Option Grant
                 </button>
               </div>
@@ -829,52 +829,52 @@ export default function EquityCompPage() {
                 <div className="px-5 py-4 border-b border-limestone-100 bg-transparent">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Type</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Type</label>
                       <select value={newOption.type || 'ISO'} onChange={e => setNewOption({ ...newOption, type: e.target.value as 'ISO' | 'NQSO' })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500">
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
                         <option value="ISO">ISO</option>
                         <option value="NQSO">NQSO</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Company</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Company</label>
                       <input type="text" value={newOption.company || ''} onChange={e => setNewOption({ ...newOption, company: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="Company" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="Company" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Ticker</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Ticker</label>
                       <input type="text" value={newOption.ticker || ''} onChange={e => setNewOption({ ...newOption, ticker: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="GOOGL" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="GOOGL" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Grant Date</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Grant Date</label>
                       <input type="date" value={newOption.grantDate || ''} onChange={e => setNewOption({ ...newOption, grantDate: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Exercise Price</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Exercise Price</label>
                       <input type="number" step="0.01" value={newOption.exercisePrice || ''} onChange={e => setNewOption({ ...newOption, exercisePrice: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="68.50" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="68.50" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Current FMV</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Current FMV</label>
                       <input type="number" step="0.01" value={newOption.currentFMV || ''} onChange={e => setNewOption({ ...newOption, currentFMV: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="178.25" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="178.25" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares</label>
                       <input type="number" value={newOption.shares || ''} onChange={e => setNewOption({ ...newOption, shares: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="500" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Expiration</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Expiration</label>
                       <input type="date" value={newOption.expiration || ''} onChange={e => setNewOption({ ...newOption, expiration: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                   </div>
                   <div className="mt-3 flex justify-end">
                     <button onClick={addOptionGrant}
-                      className="rounded-md bg-teal-500 px-4 py-1.5 text-xs font-medium text-white hover:bg-teal-400 transition-colors">
+                      className="rounded-md bg-accent-primary px-4 py-1.5 text-xs font-medium text-text hover:bg-accent-primary/80 transition-colors">
                       Save Option
                     </button>
                   </div>
@@ -883,25 +883,25 @@ export default function EquityCompPage() {
 
               {options.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-10 h-10 rounded-full bg-teal-500/10 flex items-center justify-center mb-3">
-                    <Target size={20} className="text-teal-300" />
+                  <div className="w-10 h-10 rounded-full bg-accent-primary/10 flex items-center justify-center mb-3">
+                    <Target size={20} className="text-accent-primarySoft" />
                   </div>
-                  <p className="text-xs text-white/50">No stock options added yet. Click &quot;Add Option Grant&quot; to get started.</p>
+                  <p className="text-xs text-text-muted">No stock options added yet. Click &quot;Add Option Grant&quot; to get started.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="border-b border-limestone-100 bg-transparent">
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Type</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Company</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Grant Date</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Exercise Price</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">FMV</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Spread</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Shares</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Intrinsic Value</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Expiration</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Type</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Company</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Grant Date</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Exercise Price</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">FMV</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Spread</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Shares</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Intrinsic Value</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Expiration</th>
                         <th className="px-4 py-2.5"></th>
                       </tr>
                     </thead>
@@ -909,24 +909,24 @@ export default function EquityCompPage() {
                       {options.map((o) => {
                         const spread = Math.max(0, o.currentFMV - o.exercisePrice);
                         return (
-                          <tr key={o.id} className={`hover:bg-white/[0.04] cursor-pointer ${selectedOption === o.id ? 'bg-teal-500/10' : ''}`}
+                          <tr key={o.id} className={`hover:bg-surface-subtle cursor-pointer ${selectedOption === o.id ? 'bg-accent-primary/10' : ''}`}
                             onClick={() => setSelectedOption(selectedOption === o.id ? null : o.id)}>
                             <td className="px-4 py-2.5">
                               <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                                o.type === 'ISO' ? 'bg-teal-500/10 text-teal-300' : 'bg-teal-500/10 text-teal-300'
+                                o.type === 'ISO' ? 'bg-accent-primary/10 text-accent-primarySoft' : 'bg-accent-primary/10 text-accent-primarySoft'
                               }`}>{o.type}</span>
                             </td>
-                            <td className="px-4 py-2.5 font-medium text-white">{o.company}</td>
-                            <td className="px-4 py-2.5 text-white/60">{o.grantDate}</td>
+                            <td className="px-4 py-2.5 font-medium text-text">{o.company}</td>
+                            <td className="px-4 py-2.5 text-text-muted">{o.grantDate}</td>
                             <td className="px-4 py-2.5 text-right tabular-nums">${o.exercisePrice.toFixed(2)}</td>
                             <td className="px-4 py-2.5 text-right tabular-nums">${o.currentFMV.toFixed(2)}</td>
                             <td className="px-4 py-2.5 text-right tabular-nums text-success-500">${spread.toFixed(2)}</td>
                             <td className="px-4 py-2.5 text-right tabular-nums">{o.shares}</td>
                             <td className="px-4 py-2.5 text-right tabular-nums font-medium">{fmt$(spread * o.shares)}</td>
-                            <td className="px-4 py-2.5 text-white/60">{o.expiration}</td>
+                            <td className="px-4 py-2.5 text-text-muted">{o.expiration}</td>
                             <td className="px-4 py-2.5 text-right">
                               <button onClick={(e) => { e.stopPropagation(); removeOption(o.id); }}
-                                className="text-white/30 hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
+                                className="text-text-faint hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
                             </td>
                           </tr>
                         );
@@ -940,56 +940,56 @@ export default function EquityCompPage() {
             {/* Exercise Calculators - Side by Side */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* NQSO Exercise Calculator */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">NQSO Exercise Calculator</h3>
-                  <p className="text-[10px] text-white/50 mt-0.5">Spread taxed as ordinary income at exercise</p>
+                  <h3 className="text-sm font-semibold text-text">NQSO Exercise Calculator</h3>
+                  <p className="text-[10px] text-text-muted mt-0.5">Spread taxed as ordinary income at exercise</p>
                 </div>
                 <div className="p-5 space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares to Exercise</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares to Exercise</label>
                       <input type="number" value={optExerciseShares} onChange={e => setOptExerciseShares(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Federal Rate %</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Federal Rate %</label>
                       <input type="number" value={optFedRate} onChange={e => setOptFedRate(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                   </div>
                   {selectedOpt && (
                     <div className="space-y-2 pt-2">
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Exercise Price</span>
+                        <span className="text-text-muted">Exercise Price</span>
                         <span className="tabular-nums">${selectedOpt.exercisePrice.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Current FMV</span>
+                        <span className="text-text-muted">Current FMV</span>
                         <span className="tabular-nums">${selectedOpt.currentFMV.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Spread / share</span>
+                        <span className="text-text-muted">Spread / share</span>
                         <span className="tabular-nums text-success-500">${optSpread.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Gross Ordinary Income</span>
+                        <span className="text-text-muted">Gross Ordinary Income</span>
                         <span className="tabular-nums font-medium">{fmt$(optGrossIncome)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Federal Tax ({optFedRate}%)</span>
+                        <span className="text-text-muted">Federal Tax ({optFedRate}%)</span>
                         <span className="tabular-nums text-critical-500">-{fmt$(optFedTax)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">FICA (7.65%)</span>
+                        <span className="text-text-muted">FICA (7.65%)</span>
                         <span className="tabular-nums text-critical-500">-{fmt$(optFICATax)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">State Tax ({optStateRate}%)</span>
+                        <span className="text-text-muted">State Tax ({optStateRate}%)</span>
                         <span className="tabular-nums text-critical-500">-{fmt$(optStateTaxAmt)}</span>
                       </div>
                       <div className="flex justify-between text-xs font-semibold pt-1">
-                        <span className="text-white">Net After Tax</span>
+                        <span className="text-text">Net After Tax</span>
                         <span className="tabular-nums text-success-500">{fmt$(optNetAfterTax)}</span>
                       </div>
 
@@ -1001,11 +1001,11 @@ export default function EquityCompPage() {
                           <p className="text-[10px] text-success-500 mt-0.5">Pay {fmt$(optExerciseShares * selectedOpt.exercisePrice)} to exercise</p>
                           <p className="text-[10px] text-success-500">Future LTCG on appreciation</p>
                         </div>
-                        <div className="rounded-lg border border-brand-200 bg-teal-500/10 p-3">
-                          <h5 className="text-[10px] font-semibold text-teal-400 uppercase">Exercise + Sell</h5>
-                          <p className="text-xs font-medium text-teal-300 mt-1">{fmt$(optNetAfterTax)} net</p>
-                          <p className="text-[10px] text-teal-300 mt-0.5">No capital at risk</p>
-                          <p className="text-[10px] text-teal-300">All ordinary income</p>
+                        <div className="rounded-lg border border-brand-200 bg-accent-primary/10 p-3">
+                          <h5 className="text-[10px] font-semibold text-accent-primary/80 uppercase">Exercise + Sell</h5>
+                          <p className="text-xs font-medium text-accent-primarySoft mt-1">{fmt$(optNetAfterTax)} net</p>
+                          <p className="text-[10px] text-accent-primarySoft mt-0.5">No capital at risk</p>
+                          <p className="text-[10px] text-accent-primarySoft">All ordinary income</p>
                         </div>
                       </div>
                     </div>
@@ -1014,36 +1014,36 @@ export default function EquityCompPage() {
               </div>
 
               {/* ISO Exercise Calculator */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">ISO Exercise Calculator</h3>
-                  <p className="text-[10px] text-white/50 mt-0.5">No ordinary income at exercise; AMT may apply</p>
+                  <h3 className="text-sm font-semibold text-text">ISO Exercise Calculator</h3>
+                  <p className="text-[10px] text-text-muted mt-0.5">No ordinary income at exercise; AMT may apply</p>
                 </div>
                 <div className="p-5 space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">AMT Exemption</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">AMT Exemption</label>
                       <input type="number" value={isoAMTExemption} onChange={e => setIsoAMTExemption(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares to Exercise</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares to Exercise</label>
                       <input type="number" value={optExerciseShares} onChange={e => setOptExerciseShares(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                   </div>
                   {selectedOpt && (
                     <div className="space-y-2 pt-2">
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">Ordinary Income at Exercise</span>
+                        <span className="text-text-muted">Ordinary Income at Exercise</span>
                         <span className="tabular-nums font-medium text-success-500">$0 (ISO)</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">AMT Preference Item</span>
+                        <span className="text-text-muted">AMT Preference Item</span>
                         <span className="tabular-nums font-medium">{fmt$(isoAMTPreference)}</span>
                       </div>
                       <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                        <span className="text-white/60">AMT Impact (est. 26%)</span>
+                        <span className="text-text-muted">AMT Impact (est. 26%)</span>
                         <span className="tabular-nums text-critical-500">{isoAMTImpact > 0 ? `-${fmt$(isoAMTImpact)}` : '$0'}</span>
                       </div>
 
@@ -1074,16 +1074,16 @@ export default function EquityCompPage() {
                       </div>
 
                       {/* AMT Optimizer */}
-                      <div className="mt-4 rounded-lg border border-brand-200 bg-teal-500/10 p-3">
+                      <div className="mt-4 rounded-lg border border-brand-200 bg-accent-primary/10 p-3">
                         <div className="flex items-center gap-1.5 mb-2">
-                          <Shield size={14} className="text-teal-300" />
-                          <h5 className="text-xs font-semibold text-teal-400">ISO AMT Optimizer</h5>
+                          <Shield size={14} className="text-accent-primarySoft" />
+                          <h5 className="text-xs font-semibold text-accent-primary/80">ISO AMT Optimizer</h5>
                         </div>
-                        <p className="text-[10px] text-teal-300">
+                        <p className="text-[10px] text-accent-primarySoft">
                           Maximum ISOs to exercise before triggering AMT:
                         </p>
-                        <p className="text-lg font-bold text-white mt-1">{isoMaxBeforeAMT} shares</p>
-                        <p className="text-[10px] text-teal-300 mt-1">
+                        <p className="text-lg font-bold text-text mt-1">{isoMaxBeforeAMT} shares</p>
+                        <p className="text-[10px] text-accent-primarySoft mt-1">
                           Based on ${optSpread.toFixed(2)} spread and {fmt$(isoAMTExemption)} AMT exemption
                         </p>
                       </div>
@@ -1101,11 +1101,11 @@ export default function EquityCompPage() {
         {activeTab === 'ESPP' && (
           <div className="space-y-6">
             {/* ESPP Purchases Table */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">ESPP Purchases</h3>
+                <h3 className="text-sm font-semibold text-text">ESPP Purchases</h3>
                 <button onClick={() => setShowAddESPP(!showAddESPP)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400 transition-colors">
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 transition-colors">
                   <Plus size={14} /> Add ESPP Purchase
                 </button>
               </div>
@@ -1115,49 +1115,49 @@ export default function EquityCompPage() {
                 <div className="px-5 py-4 border-b border-limestone-100 bg-transparent">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Company</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Company</label>
                       <input type="text" value={newESPP.company || ''} onChange={e => setNewESPP({ ...newESPP, company: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="Alphabet Inc." />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="Alphabet Inc." />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Ticker</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Ticker</label>
                       <input type="text" value={newESPP.ticker || ''} onChange={e => setNewESPP({ ...newESPP, ticker: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="GOOGL" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="GOOGL" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Offering Period</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Offering Period</label>
                       <input type="text" value={newESPP.offeringPeriod || ''} onChange={e => setNewESPP({ ...newESPP, offeringPeriod: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="Jan 2025 - Jun 2025" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="Jan 2025 - Jun 2025" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Purchase Date</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Purchase Date</label>
                       <input type="date" value={newESPP.purchaseDate || ''} onChange={e => setNewESPP({ ...newESPP, purchaseDate: e.target.value })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares</label>
                       <input type="number" value={newESPP.shares || ''} onChange={e => setNewESPP({ ...newESPP, shares: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="50" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="50" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Purchase Price</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Purchase Price</label>
                       <input type="number" step="0.01" value={newESPP.purchasePrice || ''} onChange={e => setNewESPP({ ...newESPP, purchasePrice: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="127.50" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="127.50" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">FMV at Purchase</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">FMV at Purchase</label>
                       <input type="number" step="0.01" value={newESPP.fmvAtPurchase || ''} onChange={e => setNewESPP({ ...newESPP, fmvAtPurchase: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="165.00" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="165.00" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Current FMV</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Current FMV</label>
                       <input type="number" step="0.01" value={newESPP.currentFMV || ''} onChange={e => setNewESPP({ ...newESPP, currentFMV: Number(e.target.value) })}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="178.25" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" placeholder="178.25" />
                     </div>
                   </div>
                   <div className="mt-3 flex justify-end">
                     <button onClick={addESPPPurchase}
-                      className="rounded-md bg-teal-500 px-4 py-1.5 text-xs font-medium text-white hover:bg-teal-400 transition-colors">
+                      className="rounded-md bg-accent-primary px-4 py-1.5 text-xs font-medium text-text hover:bg-accent-primary/80 transition-colors">
                       Save Purchase
                     </button>
                   </div>
@@ -1166,33 +1166,33 @@ export default function EquityCompPage() {
 
               {esppPurchases.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-10 h-10 rounded-full bg-teal-500/10 flex items-center justify-center mb-3">
-                    <DollarSign size={20} className="text-teal-300" />
+                  <div className="w-10 h-10 rounded-full bg-accent-primary/10 flex items-center justify-center mb-3">
+                    <DollarSign size={20} className="text-accent-primarySoft" />
                   </div>
-                  <p className="text-xs text-white/50">No ESPP purchases added yet. Click &quot;Add ESPP Purchase&quot; to get started.</p>
+                  <p className="text-xs text-text-muted">No ESPP purchases added yet. Click &quot;Add ESPP Purchase&quot; to get started.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="border-b border-limestone-100 bg-transparent">
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Company</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Offering Period</th>
-                        <th className="px-4 py-2.5 text-left font-medium text-white/50">Purchase Date</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Shares</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Purchase Price</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">FMV</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Discount</th>
-                        <th className="px-4 py-2.5 text-right font-medium text-white/50">Current Value</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Company</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Offering Period</th>
+                        <th className="px-4 py-2.5 text-left font-medium text-text-muted">Purchase Date</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Shares</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Purchase Price</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">FMV</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Discount</th>
+                        <th className="px-4 py-2.5 text-right font-medium text-text-muted">Current Value</th>
                         <th className="px-4 py-2.5"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-limestone-50">
                       {esppPurchases.map((p) => (
-                        <tr key={p.id} className="hover:bg-white/[0.04]">
-                          <td className="px-4 py-2.5 font-medium text-white">{p.company}</td>
-                          <td className="px-4 py-2.5 text-white/60">{p.offeringPeriod}</td>
-                          <td className="px-4 py-2.5 text-white/60">{p.purchaseDate}</td>
+                        <tr key={p.id} className="hover:bg-surface-subtle">
+                          <td className="px-4 py-2.5 font-medium text-text">{p.company}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{p.offeringPeriod}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{p.purchaseDate}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">{p.shares}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">${p.purchasePrice.toFixed(2)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums">${p.fmvAtPurchase.toFixed(2)}</td>
@@ -1202,7 +1202,7 @@ export default function EquityCompPage() {
                           <td className="px-4 py-2.5 text-right tabular-nums font-medium">{fmt$(p.shares * p.currentFMV)}</td>
                           <td className="px-4 py-2.5 text-right">
                             <button onClick={() => removeESPP(p.id)}
-                              className="text-white/30 hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
+                              className="text-text-faint hover:text-critical-500 transition-colors"><Trash2 size={14} /></button>
                           </td>
                         </tr>
                       ))}
@@ -1215,15 +1215,15 @@ export default function EquityCompPage() {
             {/* Disposition Analysis & Tax Calculator */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Qualifying vs Disqualifying */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">Disposition Analysis</h3>
+                  <h3 className="text-sm font-semibold text-text">Disposition Analysis</h3>
                 </div>
                 <div className="p-5 space-y-3">
                   <div className="flex gap-2 mb-4">
                     <button onClick={() => setEsppQualifying(true)}
                       className={`flex-1 rounded-lg border p-3 text-xs transition-colors ${
-                        esppQualifying ? 'border-success-500 bg-success-50 text-success-700' : 'border-white/[0.06] text-white/60 hover:border-white/[0.10]'
+                        esppQualifying ? 'border-success-500 bg-success-50 text-success-700' : 'border-border-subtle text-text-muted hover:border-border-subtle'
                       }`}>
                       <div className="flex items-center gap-1.5 mb-1">
                         <CheckCircle size={14} />
@@ -1233,7 +1233,7 @@ export default function EquityCompPage() {
                     </button>
                     <button onClick={() => setEsppQualifying(false)}
                       className={`flex-1 rounded-lg border p-3 text-xs transition-colors ${
-                        !esppQualifying ? 'border-critical-500 bg-critical-50 text-critical-700' : 'border-white/[0.06] text-white/60 hover:border-white/[0.10]'
+                        !esppQualifying ? 'border-critical-500 bg-critical-50 text-critical-700' : 'border-border-subtle text-text-muted hover:border-border-subtle'
                       }`}>
                       <div className="flex items-center gap-1.5 mb-1">
                         <AlertTriangle size={14} />
@@ -1268,47 +1268,47 @@ export default function EquityCompPage() {
               </div>
 
               {/* ESPP Sale Tax Calculator */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">Sale Tax Calculator</h3>
+                  <h3 className="text-sm font-semibold text-text">Sale Tax Calculator</h3>
                 </div>
                 <div className="p-5 space-y-3">
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares to Sell</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares to Sell</label>
                       <input type="number" value={esppSaleShares} onChange={e => setEsppSaleShares(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Sale Price / Share</label>
+                      <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Sale Price / Share</label>
                       <input type="number" step="0.01" value={esppSalePrice} onChange={e => setEsppSalePrice(Number(e.target.value))}
-                        className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                        className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                      <span className="text-white/60">Sale Proceeds</span>
+                      <span className="text-text-muted">Sale Proceeds</span>
                       <span className="tabular-nums font-medium">{fmt$(esppSaleShares * esppSalePrice)}</span>
                     </div>
                     <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                      <span className="text-white/60">Ordinary Income (W-2)</span>
+                      <span className="text-text-muted">Ordinary Income (W-2)</span>
                       <span className="tabular-nums text-critical-500">{fmt$(esppOrdinaryIncome)}</span>
                     </div>
                     <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                      <span className="text-white/60">{esppQualifying ? 'Long-Term' : 'Short-Term'} Capital Gain</span>
+                      <span className="text-text-muted">{esppQualifying ? 'Long-Term' : 'Short-Term'} Capital Gain</span>
                       <span className="tabular-nums text-success-500">{fmt$(Math.max(0, esppCapGain))}</span>
                     </div>
                     <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                      <span className="text-white/60">Est. Tax on Ordinary</span>
+                      <span className="text-text-muted">Est. Tax on Ordinary</span>
                       <span className="tabular-nums text-critical-500">-{fmt$(esppOrdinaryIncome * 0.32)}</span>
                     </div>
                     <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                      <span className="text-white/60">Est. Tax on Cap Gain</span>
+                      <span className="text-text-muted">Est. Tax on Cap Gain</span>
                       <span className="tabular-nums text-critical-500">-{fmt$(Math.max(0, esppCapGain) * (esppQualifying ? 0.15 : 0.24))}</span>
                     </div>
                     <div className="flex justify-between text-xs font-semibold pt-1">
-                      <span className="text-white">Net After Tax</span>
+                      <span className="text-text">Net After Tax</span>
                       <span className="tabular-nums text-success-500">
                         {fmt$(esppSaleShares * esppSalePrice - esppOrdinaryIncome * 0.32 - Math.max(0, esppCapGain) * (esppQualifying ? 0.15 : 0.24))}
                       </span>
@@ -1326,41 +1326,41 @@ export default function EquityCompPage() {
         {activeTab === 'Vesting Calendar' && (
           <div className="space-y-6">
             {/* Vesting Timeline Table */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100 flex items-center gap-2">
-                <Calendar size={16} className="text-teal-300" />
-                <h3 className="text-sm font-semibold text-white">Upcoming Vesting Events</h3>
+                <Calendar size={16} className="text-accent-primarySoft" />
+                <h3 className="text-sm font-semibold text-text">Upcoming Vesting Events</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-limestone-100 bg-transparent">
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Year</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Quarter</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Month</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Grant</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Shares Vesting</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Est. Value</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Est. Tax</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Year</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Quarter</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Month</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Grant</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Shares Vesting</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Est. Value</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Est. Tax</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-limestone-50">
                     {vestingEvents.map((ev, idx) => {
                       const isNewQuarter = idx === 0 || vestingEvents[idx - 1].quarter !== ev.quarter || vestingEvents[idx - 1].year !== ev.year;
                       return (
-                        <tr key={idx} className={`${isNewQuarter ? 'border-t-2 border-white/[0.06]' : ''} hover:bg-white/[0.04]`}>
-                          <td className="px-4 py-2.5 font-medium text-white">{isNewQuarter ? ev.year : ''}</td>
+                        <tr key={idx} className={`${isNewQuarter ? 'border-t-2 border-border-subtle' : ''} hover:bg-surface-subtle`}>
+                          <td className="px-4 py-2.5 font-medium text-text">{isNewQuarter ? ev.year : ''}</td>
                           <td className="px-4 py-2.5">
                             {isNewQuarter && (
-                              <span className="inline-flex items-center rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-medium text-teal-300">
+                              <span className="inline-flex items-center rounded-full bg-accent-primary/10 px-2 py-0.5 text-[10px] font-medium text-accent-primarySoft">
                                 {ev.quarter}
                               </span>
                             )}
                           </td>
-                          <td className="px-4 py-2.5 text-white/60">{ev.month}</td>
-                          <td className="px-4 py-2.5 text-white/60">{ev.grant}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-white">{ev.shares}</td>
-                          <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(ev.estValue)}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{ev.month}</td>
+                          <td className="px-4 py-2.5 text-text-muted">{ev.grant}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums font-medium text-text">{ev.shares}</td>
+                          <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(ev.estValue)}</td>
                           <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">-{fmt$(ev.estTax)}</td>
                         </tr>
                       );
@@ -1371,19 +1371,19 @@ export default function EquityCompPage() {
             </div>
 
             {/* Year Summary */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Annual Summary</h3>
+                <h3 className="text-sm font-semibold text-text">Annual Summary</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-limestone-100 bg-transparent">
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Year</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Total Shares Vesting</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Total Est. Value</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Total Est. Tax</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Net After Tax</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Year</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Total Shares Vesting</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Total Est. Value</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Total Est. Tax</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Net After Tax</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-limestone-50">
@@ -1393,10 +1393,10 @@ export default function EquityCompPage() {
                       const totalValue = yearEvents.reduce((s, e) => s + e.estValue, 0);
                       const totalTax = yearEvents.reduce((s, e) => s + e.estTax, 0);
                       return (
-                        <tr key={year} className="hover:bg-white/[0.04] font-medium">
-                          <td className="px-4 py-3 text-white">{year}</td>
-                          <td className="px-4 py-3 text-right tabular-nums text-white">{totalShares}</td>
-                          <td className="px-4 py-3 text-right tabular-nums text-white">{fmt$(totalValue)}</td>
+                        <tr key={year} className="hover:bg-surface-subtle font-medium">
+                          <td className="px-4 py-3 text-text">{year}</td>
+                          <td className="px-4 py-3 text-right tabular-nums text-text">{totalShares}</td>
+                          <td className="px-4 py-3 text-right tabular-nums text-text">{fmt$(totalValue)}</td>
                           <td className="px-4 py-3 text-right tabular-nums text-critical-500">-{fmt$(totalTax)}</td>
                           <td className="px-4 py-3 text-right tabular-nums text-success-500">{fmt$(totalValue - totalTax)}</td>
                         </tr>
@@ -1408,8 +1408,8 @@ export default function EquityCompPage() {
             </div>
 
             {/* Vesting Bar Chart */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-              <h3 className="text-sm font-semibold text-white mb-4">Quarterly Vesting Value</h3>
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+              <h3 className="text-sm font-semibold text-text mb-4">Quarterly Vesting Value</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={[
                   { quarter: '2026 Q1', value: vestingEvents.filter(e => e.year === 2026 && e.quarter === 'Q1').reduce((s, e) => s + e.estValue, 0) },
@@ -1436,49 +1436,49 @@ export default function EquityCompPage() {
         {activeTab === 'Concentrated Position Strategy' && (
           <div className="space-y-6">
             {/* Input Section */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Concentrated Position Details</h3>
+                <h3 className="text-sm font-semibold text-text">Concentrated Position Details</h3>
               </div>
               <div className="p-5">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Stock / Asset</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Stock / Asset</label>
                     <input type="text" value={concPos.stock} onChange={e => setConcPos({ ...concPos, stock: e.target.value })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Ticker</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Ticker</label>
                     <input type="text" value={concPos.ticker} onChange={e => setConcPos({ ...concPos, ticker: e.target.value })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Shares Held</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Shares Held</label>
                     <input type="number" value={concPos.sharesHeld} onChange={e => setConcPos({ ...concPos, sharesHeld: Number(e.target.value) })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Cost Basis / Share</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Cost Basis / Share</label>
                     <input type="number" step="0.01" value={concPos.costBasis} onChange={e => setConcPos({ ...concPos, costBasis: Number(e.target.value) })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Current Price</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Current Price</label>
                     <input type="number" step="0.01" value={concPos.currentPrice} onChange={e => setConcPos({ ...concPos, currentPrice: Number(e.target.value) })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Holding Period</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Holding Period</label>
                     <select value={concPos.holdingPeriod} onChange={e => setConcPos({ ...concPos, holdingPeriod: e.target.value })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500">
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary">
                       <option value="<1 year">Less than 1 year</option>
                       <option value=">1 year">More than 1 year</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-white/50 uppercase mb-1">Total Portfolio Value</label>
+                    <label className="block text-[10px] font-medium text-text-muted uppercase mb-1">Total Portfolio Value</label>
                     <input type="number" value={concPos.portfolioValue} onChange={e => setConcPos({ ...concPos, portfolioValue: Number(e.target.value) })}
-                      className="w-full rounded-md border border-white/[0.10] px-2.5 py-1.5 text-xs focus:border-teal-500 focus:ring-1 focus:ring-teal-500" />
+                      className="w-full rounded-md border border-border-subtle px-2.5 py-1.5 text-xs focus:border-accent-primary focus:ring-1 focus:ring-accent-primary" />
                   </div>
                 </div>
               </div>
@@ -1486,148 +1486,148 @@ export default function EquityCompPage() {
 
             {/* Risk Analysis */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <PieChartIcon size={16} className="text-warning-500" />
-                  <span className="text-xs font-medium text-white/50 uppercase">Concentration</span>
+                  <span className="text-xs font-medium text-text-muted uppercase">Concentration</span>
                 </div>
                 <p className="text-2xl font-bold text-warning-500">{fmtPct(concPct)}</p>
-                <p className="text-[10px] text-white/50 mt-1">{concPos.ticker} is {fmtPct(concPct)} of portfolio</p>
+                <p className="text-[10px] text-text-muted mt-1">{concPos.ticker} is {fmtPct(concPct)} of portfolio</p>
                 {concPct > 10 && (
                   <div className="mt-2 rounded bg-warning-50 px-2 py-1 text-[10px] text-warning-700">
                     <AlertTriangle size={10} className="inline mr-1" /> Above 10% threshold
                   </div>
                 )}
               </div>
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <ArrowDownRight size={16} className="text-critical-500" />
-                  <span className="text-xs font-medium text-white/50 uppercase">50% Drop Impact</span>
+                  <span className="text-xs font-medium text-text-muted uppercase">50% Drop Impact</span>
                 </div>
                 <p className="text-2xl font-bold text-critical-500">-{fmt$(concDrop50)}</p>
-                <p className="text-[10px] text-white/50 mt-1">Portfolio drops to {fmt$(concPos.portfolioValue - concDrop50)}</p>
+                <p className="text-[10px] text-text-muted mt-1">Portfolio drops to {fmt$(concPos.portfolioValue - concDrop50)}</p>
               </div>
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <ArrowDownRight size={16} className="text-critical-700" />
-                  <span className="text-xs font-medium text-white/50 uppercase">75% Drop Impact</span>
+                  <span className="text-xs font-medium text-text-muted uppercase">75% Drop Impact</span>
                 </div>
                 <p className="text-2xl font-bold text-critical-700">-{fmt$(concDrop75)}</p>
-                <p className="text-[10px] text-white/50 mt-1">Portfolio drops to {fmt$(concPos.portfolioValue - concDrop75)}</p>
+                <p className="text-[10px] text-text-muted mt-1">Portfolio drops to {fmt$(concPos.portfolioValue - concDrop75)}</p>
               </div>
             </div>
 
             {/* 5 Diversification Strategies */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Diversification Strategies</h3>
+                <h3 className="text-sm font-semibold text-text">Diversification Strategies</h3>
               </div>
               <div className="p-5 space-y-4">
                 {/* Strategy 1: Outright Sale */}
-                <div className="rounded-lg border border-white/[0.06] p-4">
+                <div className="rounded-lg border border-border-subtle p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="w-6 h-6 rounded-full bg-teal-500/15 text-teal-300 flex items-center justify-center text-xs font-bold">1</span>
-                    <h4 className="text-xs font-semibold text-white">Outright Sale</h4>
+                    <span className="w-6 h-6 rounded-full bg-accent-primary/15 text-accent-primarySoft flex items-center justify-center text-xs font-bold">1</span>
+                    <h4 className="text-xs font-semibold text-text">Outright Sale</h4>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-xs">
                     <div>
-                      <span className="text-white/50">CG Tax (20% LTCG + 3.8% NIIT)</span>
+                      <span className="text-text-muted">CG Tax (20% LTCG + 3.8% NIIT)</span>
                       <p className="font-medium text-critical-500 mt-0.5">-{fmt$(concGain * 0.238)}</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Net Proceeds</span>
-                      <p className="font-medium text-white mt-0.5">{fmt$(concValue - concGain * 0.238)}</p>
+                      <span className="text-text-muted">Net Proceeds</span>
+                      <p className="font-medium text-text mt-0.5">{fmt$(concValue - concGain * 0.238)}</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Opportunity Cost</span>
-                      <p className="font-medium text-white mt-0.5">Immediate diversification</p>
+                      <span className="text-text-muted">Opportunity Cost</span>
+                      <p className="font-medium text-text mt-0.5">Immediate diversification</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Strategy 2: Exchange Fund */}
-                <div className="rounded-lg border border-white/[0.06] p-4">
+                <div className="rounded-lg border border-border-subtle p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-success-100 text-success-700 flex items-center justify-center text-xs font-bold">2</span>
-                    <h4 className="text-xs font-semibold text-white">Exchange Fund</h4>
+                    <h4 className="text-xs font-semibold text-text">Exchange Fund</h4>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-xs">
                     <div>
-                      <span className="text-white/50">Tax Deferral</span>
+                      <span className="text-text-muted">Tax Deferral</span>
                       <p className="font-medium text-success-500 mt-0.5">100% deferred</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Lockup Period</span>
-                      <p className="font-medium text-white mt-0.5">7 years</p>
+                      <span className="text-text-muted">Lockup Period</span>
+                      <p className="font-medium text-text mt-0.5">7 years</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Diversification</span>
-                      <p className="font-medium text-white mt-0.5">Receive diversified basket</p>
+                      <span className="text-text-muted">Diversification</span>
+                      <p className="font-medium text-text mt-0.5">Receive diversified basket</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Strategy 3: Charitable Remainder Trust */}
-                <div className="rounded-lg border border-white/[0.06] p-4">
+                <div className="rounded-lg border border-border-subtle p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="w-6 h-6 rounded-full bg-teal-500/15 text-teal-300 flex items-center justify-center text-xs font-bold">3</span>
-                    <h4 className="text-xs font-semibold text-white">Charitable Remainder Trust (CRT)</h4>
+                    <span className="w-6 h-6 rounded-full bg-accent-primary/15 text-accent-primarySoft flex items-center justify-center text-xs font-bold">3</span>
+                    <h4 className="text-xs font-semibold text-text">Charitable Remainder Trust (CRT)</h4>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-xs">
                     <div>
-                      <span className="text-white/50">Capital Gains Tax</span>
+                      <span className="text-text-muted">Capital Gains Tax</span>
                       <p className="font-medium text-success-500 mt-0.5">$0 (CRT sells tax-free)</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Annual Payout (5%)</span>
-                      <p className="font-medium text-white mt-0.5">{fmt$(concValue * 0.05)}/yr</p>
+                      <span className="text-text-muted">Annual Payout (5%)</span>
+                      <p className="font-medium text-text mt-0.5">{fmt$(concValue * 0.05)}/yr</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Charitable Deduction</span>
-                      <p className="font-medium text-white mt-0.5">~{fmt$(concValue * 0.10)} est.</p>
+                      <span className="text-text-muted">Charitable Deduction</span>
+                      <p className="font-medium text-text mt-0.5">~{fmt$(concValue * 0.10)} est.</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Strategy 4: Equity Collar + Margin */}
-                <div className="rounded-lg border border-white/[0.06] p-4">
+                <div className="rounded-lg border border-border-subtle p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-warning-100 text-warning-700 flex items-center justify-center text-xs font-bold">4</span>
-                    <h4 className="text-xs font-semibold text-white">Equity Collar + Margin Loan</h4>
+                    <h4 className="text-xs font-semibold text-text">Equity Collar + Margin Loan</h4>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-xs">
                     <div>
-                      <span className="text-white/50">Hedge Downside</span>
-                      <p className="font-medium text-white mt-0.5">Put at 90%, call at 120%</p>
+                      <span className="text-text-muted">Hedge Downside</span>
+                      <p className="font-medium text-text mt-0.5">Put at 90%, call at 120%</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Borrow Against</span>
-                      <p className="font-medium text-white mt-0.5">Up to {fmt$(concValue * 0.70)} (70% LTV)</p>
+                      <span className="text-text-muted">Borrow Against</span>
+                      <p className="font-medium text-text mt-0.5">Up to {fmt$(concValue * 0.70)} (70% LTV)</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Annual Cost</span>
+                      <span className="text-text-muted">Annual Cost</span>
                       <p className="font-medium text-critical-500 mt-0.5">~{fmtPct(2.5)} collar + interest</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Strategy 5: Installment Sale to IDGT */}
-                <div className="rounded-lg border border-white/[0.06] p-4">
+                <div className="rounded-lg border border-border-subtle p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-critical-100 text-critical-700 flex items-center justify-center text-xs font-bold">5</span>
-                    <h4 className="text-xs font-semibold text-white">Installment Sale to IDGT</h4>
+                    <h4 className="text-xs font-semibold text-text">Installment Sale to IDGT</h4>
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-xs">
                     <div>
-                      <span className="text-white/50">Transfer to Grantor Trust</span>
-                      <p className="font-medium text-white mt-0.5">{fmt$(concValue)} in stock</p>
+                      <span className="text-text-muted">Transfer to Grantor Trust</span>
+                      <p className="font-medium text-text mt-0.5">{fmt$(concValue)} in stock</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Installment Note</span>
-                      <p className="font-medium text-white mt-0.5">AFR ~5.0%, 9-year note</p>
+                      <span className="text-text-muted">Installment Note</span>
+                      <p className="font-medium text-text mt-0.5">AFR ~5.0%, 9-year note</p>
                     </div>
                     <div>
-                      <span className="text-white/50">Estate Impact</span>
+                      <span className="text-text-muted">Estate Impact</span>
                       <p className="font-medium text-success-500 mt-0.5">Future appreciation outside estate</p>
                     </div>
                   </div>
@@ -1636,30 +1636,30 @@ export default function EquityCompPage() {
             </div>
 
             {/* Strategy Comparison Table */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Strategy Comparison</h3>
+                <h3 className="text-sm font-semibold text-text">Strategy Comparison</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-limestone-100 bg-transparent">
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Strategy</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Tax Now</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Tax Deferred</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Annual Income</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Estate Impact</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Complexity</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Recommended</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Strategy</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Tax Now</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Tax Deferred</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Annual Income</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Estate Impact</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Complexity</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Recommended</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-limestone-50">
-                    <tr className="hover:bg-white/[0.04]">
-                      <td className="px-4 py-2.5 font-medium text-white">Outright Sale</td>
+                    <tr className="hover:bg-surface-subtle">
+                      <td className="px-4 py-2.5 font-medium text-text">Outright Sale</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">{fmt$(concGain * 0.238)}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">$0</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">Varies</td>
-                      <td className="px-4 py-2.5 text-white/60">Neutral</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">$0</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">Varies</td>
+                      <td className="px-4 py-2.5 text-text-muted">Neutral</td>
                       <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-700">Low</span></td>
                       <td className="px-4 py-2.5">
                         <span className="inline-flex items-center rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-700">
@@ -1667,12 +1667,12 @@ export default function EquityCompPage() {
                         </span>
                       </td>
                     </tr>
-                    <tr className="hover:bg-white/[0.04]">
-                      <td className="px-4 py-2.5 font-medium text-white">Exchange Fund</td>
+                    <tr className="hover:bg-surface-subtle">
+                      <td className="px-4 py-2.5 font-medium text-text">Exchange Fund</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-success-500">$0</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(concGain * 0.238)}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">$0</td>
-                      <td className="px-4 py-2.5 text-white/60">Neutral</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(concGain * 0.238)}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">$0</td>
+                      <td className="px-4 py-2.5 text-text-muted">Neutral</td>
                       <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-warning-50 px-2 py-0.5 text-[10px] font-medium text-warning-700">Medium</span></td>
                       <td className="px-4 py-2.5">
                         <span className="inline-flex items-center rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-700">
@@ -1680,25 +1680,25 @@ export default function EquityCompPage() {
                         </span>
                       </td>
                     </tr>
-                    <tr className="hover:bg-white/[0.04]">
-                      <td className="px-4 py-2.5 font-medium text-white">CRT</td>
+                    <tr className="hover:bg-surface-subtle">
+                      <td className="px-4 py-2.5 font-medium text-text">CRT</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-success-500">$0</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">Partial</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(concValue * 0.05)}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">Partial</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(concValue * 0.05)}</td>
                       <td className="px-4 py-2.5 text-success-500">Reduces estate</td>
                       <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-warning-50 px-2 py-0.5 text-[10px] font-medium text-warning-700">Medium</span></td>
                       <td className="px-4 py-2.5">
-                        <span className="inline-flex items-center rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-medium text-teal-300">
+                        <span className="inline-flex items-center rounded-full bg-accent-primary/10 px-2 py-0.5 text-[10px] font-medium text-accent-primarySoft">
                           <Info size={10} className="mr-1" /> Charitable
                         </span>
                       </td>
                     </tr>
-                    <tr className="hover:bg-white/[0.04]">
-                      <td className="px-4 py-2.5 font-medium text-white">Collar + Margin</td>
+                    <tr className="hover:bg-surface-subtle">
+                      <td className="px-4 py-2.5 font-medium text-text">Collar + Margin</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-success-500">$0</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(concGain * 0.238)}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(concGain * 0.238)}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">-{fmt$(concValue * 0.025)}</td>
-                      <td className="px-4 py-2.5 text-white/60">Neutral</td>
+                      <td className="px-4 py-2.5 text-text-muted">Neutral</td>
                       <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-critical-50 px-2 py-0.5 text-[10px] font-medium text-critical-700">High</span></td>
                       <td className="px-4 py-2.5">
                         <span className="inline-flex items-center rounded-full bg-warning-50 px-2 py-0.5 text-[10px] font-medium text-warning-700">
@@ -1706,15 +1706,15 @@ export default function EquityCompPage() {
                         </span>
                       </td>
                     </tr>
-                    <tr className="hover:bg-white/[0.04]">
-                      <td className="px-4 py-2.5 font-medium text-white">IDGT Sale</td>
+                    <tr className="hover:bg-surface-subtle">
+                      <td className="px-4 py-2.5 font-medium text-text">IDGT Sale</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-success-500">$0</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">Deferred</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(concValue * 0.05)}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">Deferred</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(concValue * 0.05)}</td>
                       <td className="px-4 py-2.5 text-success-500">Outside estate</td>
                       <td className="px-4 py-2.5"><span className="inline-flex items-center rounded-full bg-critical-50 px-2 py-0.5 text-[10px] font-medium text-critical-700">High</span></td>
                       <td className="px-4 py-2.5">
-                        <span className="inline-flex items-center rounded-full bg-teal-500/10 px-2 py-0.5 text-[10px] font-medium text-teal-300">
+                        <span className="inline-flex items-center rounded-full bg-accent-primary/10 px-2 py-0.5 text-[10px] font-medium text-accent-primarySoft">
                           <Info size={10} className="mr-1" /> Estate Plan
                         </span>
                       </td>
@@ -1732,43 +1732,43 @@ export default function EquityCompPage() {
         {activeTab === 'Exercise / Sale Optimizer' && (
           <div className="space-y-6">
             {/* Multi-Year Exercise Plan */}
-            <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <div className="px-5 py-4 border-b border-limestone-100">
-                <h3 className="text-sm font-semibold text-white">Multi-Year Exercise Plan Optimizer</h3>
-                <p className="text-[10px] text-white/50 mt-0.5">Spreading exercises across years to minimize cumulative tax burden</p>
+                <h3 className="text-sm font-semibold text-text">Multi-Year Exercise Plan Optimizer</h3>
+                <p className="text-[10px] text-text-muted mt-0.5">Spreading exercises across years to minimize cumulative tax burden</p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-limestone-100 bg-transparent">
-                      <th className="px-4 py-2.5 text-left font-medium text-white/50">Year</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Projected Income</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Available Options</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Recommended Exercise</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Tax Cost</th>
-                      <th className="px-4 py-2.5 text-right font-medium text-white/50">Cumulative Tax</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-text-muted">Year</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Projected Income</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Available Options</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Recommended Exercise</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Tax Cost</th>
+                      <th className="px-4 py-2.5 text-right font-medium text-text-muted">Cumulative Tax</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-limestone-50">
                     {optimizerPlan.map((yr) => (
-                      <tr key={yr.year} className="hover:bg-white/[0.04]">
-                        <td className="px-4 py-2.5 font-medium text-white">{yr.year}</td>
-                        <td className="px-4 py-2.5 text-right tabular-nums text-white">{fmt$(yr.projectedIncome)}</td>
-                        <td className="px-4 py-2.5 text-right tabular-nums text-white">{yr.availableOptions}</td>
-                        <td className="px-4 py-2.5 text-right tabular-nums font-medium text-teal-300">{yr.recommendedExercise}</td>
+                      <tr key={yr.year} className="hover:bg-surface-subtle">
+                        <td className="px-4 py-2.5 font-medium text-text">{yr.year}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums text-text">{fmt$(yr.projectedIncome)}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums text-text">{yr.availableOptions}</td>
+                        <td className="px-4 py-2.5 text-right tabular-nums font-medium text-accent-primarySoft">{yr.recommendedExercise}</td>
                         <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">-{fmt$(yr.taxCost)}</td>
                         <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">-{fmt$(yr.cumulativeTax)}</td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="border-t-2 border-white/[0.06] bg-transparent font-semibold">
-                      <td className="px-4 py-2.5 text-white">Total</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-white">
+                    <tr className="border-t-2 border-border-subtle bg-transparent font-semibold">
+                      <td className="px-4 py-2.5 text-text">Total</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-text">
                         {fmt$(optimizerPlan.reduce((s, y) => s + y.projectedIncome, 0))}
                       </td>
                       <td className="px-4 py-2.5"></td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-teal-300">
+                      <td className="px-4 py-2.5 text-right tabular-nums text-accent-primarySoft">
                         {optimizerPlan.reduce((s, y) => s + y.recommendedExercise, 0)}
                       </td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-critical-500">
@@ -1783,34 +1783,34 @@ export default function EquityCompPage() {
 
             {/* AMT Breakeven Calculator */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">AMT Breakeven Calculator (ISOs)</h3>
+                  <h3 className="text-sm font-semibold text-text">AMT Breakeven Calculator (ISOs)</h3>
                 </div>
                 <div className="p-5 space-y-3">
                   <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                    <span className="text-white/60">ISO Spread / Share</span>
+                    <span className="text-text-muted">ISO Spread / Share</span>
                     <span className="tabular-nums font-medium">${selectedOpt ? optSpread.toFixed(2) : '0.00'}</span>
                   </div>
                   <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                    <span className="text-white/60">AMT Exemption (MFJ 2025)</span>
+                    <span className="text-text-muted">AMT Exemption (MFJ 2025)</span>
                     <span className="tabular-nums font-medium">{fmt$(isoAMTExemption)}</span>
                   </div>
                   <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                    <span className="text-white/60">Max ISOs Before AMT</span>
-                    <span className="tabular-nums font-bold text-teal-300">{isoMaxBeforeAMT} shares</span>
+                    <span className="text-text-muted">Max ISOs Before AMT</span>
+                    <span className="tabular-nums font-bold text-accent-primarySoft">{isoMaxBeforeAMT} shares</span>
                   </div>
                   <div className="flex justify-between text-xs border-b border-limestone-100 pb-1.5">
-                    <span className="text-white/60">Max Spread Before AMT</span>
+                    <span className="text-text-muted">Max Spread Before AMT</span>
                     <span className="tabular-nums font-medium">{fmt$(isoMaxBeforeAMT * optSpread)}</span>
                   </div>
                   <div className="flex justify-between text-xs pt-1">
-                    <span className="text-white/60">AMT Rate</span>
+                    <span className="text-text-muted">AMT Rate</span>
                     <span className="tabular-nums font-medium">26%</span>
                   </div>
 
-                  <div className="mt-4 rounded-lg bg-teal-500/10 border border-brand-200 p-3">
-                    <p className="text-[10px] text-teal-400">
+                  <div className="mt-4 rounded-lg bg-accent-primary/10 border border-brand-200 p-3">
+                    <p className="text-[10px] text-accent-primary/80">
                       <Info size={12} className="inline mr-1" />
                       The AMT breakeven is the point where exercising additional ISOs would trigger AMT. 
                       Exercise up to {isoMaxBeforeAMT} shares in the current year to avoid AMT, 
@@ -1821,17 +1821,17 @@ export default function EquityCompPage() {
               </div>
 
               {/* Optimal Strategy Recommendation */}
-              <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+              <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
                 <div className="px-5 py-4 border-b border-limestone-100">
-                  <h3 className="text-sm font-semibold text-white">Optimal Strategy Recommendation</h3>
+                  <h3 className="text-sm font-semibold text-text">Optimal Strategy Recommendation</h3>
                 </div>
                 <div className="p-5">
-                  <div className="rounded-lg bg-teal-500/10 border border-brand-200 p-4 mb-4">
+                  <div className="rounded-lg bg-accent-primary/10 border border-brand-200 p-4 mb-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle size={16} className="text-teal-300" />
-                      <h4 className="text-xs font-semibold text-teal-400">Recommended Approach</h4>
+                      <CheckCircle size={16} className="text-accent-primarySoft" />
+                      <h4 className="text-xs font-semibold text-accent-primary/80">Recommended Approach</h4>
                     </div>
-                    <p className="text-xs text-teal-300 leading-relaxed">
+                    <p className="text-xs text-accent-primarySoft leading-relaxed">
                       Based on your projected income trajectory and available options, we recommend a 
                       <span className="font-semibold"> phased exercise strategy</span> over 3-5 years. This approach 
                       keeps annual income below higher tax brackets and avoids AMT triggers for ISO exercises.
@@ -1840,29 +1840,29 @@ export default function EquityCompPage() {
 
                   <div className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <ChevronRight size={14} className="text-teal-300 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/60">
+                      <ChevronRight size={14} className="text-accent-primarySoft mt-0.5 shrink-0" />
+                      <p className="text-xs text-text-muted">
                         <span className="font-medium">NQSOs:</span> Exercise 100 shares/year to stay within the 24% bracket.
                         Total tax savings of ~{fmt$(optimizerPlan.reduce((s, y) => s + y.taxCost, 0) * 0.15)} vs exercising all at once.
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <ChevronRight size={14} className="text-teal-300 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/60">
+                      <ChevronRight size={14} className="text-accent-primarySoft mt-0.5 shrink-0" />
+                      <p className="text-xs text-text-muted">
                         <span className="font-medium">ISOs:</span> Exercise up to {isoMaxBeforeAMT} shares per year to avoid AMT. 
                         Hold for qualifying disposition (2yr from grant + 1yr from exercise) for LTCG treatment.
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <ChevronRight size={14} className="text-teal-300 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/60">
+                      <ChevronRight size={14} className="text-accent-primarySoft mt-0.5 shrink-0" />
+                      <p className="text-xs text-text-muted">
                         <span className="font-medium">RSUs:</span> Consider sell-to-cover strategy at each vest to manage concentration risk.
                         Diversify proceeds into broad market index funds.
                       </p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <ChevronRight size={14} className="text-teal-300 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/60">
+                      <ChevronRight size={14} className="text-accent-primarySoft mt-0.5 shrink-0" />
+                      <p className="text-xs text-text-muted">
                         <span className="font-medium">Concentration:</span> Target reducing {concPos.ticker} from {fmtPct(concPct)} to below 10% 
                         of portfolio over the next 2-3 years through planned sales and vesting diversification.
                       </p>

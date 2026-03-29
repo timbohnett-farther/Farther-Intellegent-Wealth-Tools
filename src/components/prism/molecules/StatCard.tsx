@@ -25,7 +25,7 @@ const trendConfig = {
   },
   neutral: {
     icon: Minus,
-    colorClass: 'text-white/50',
+    colorClass: 'text-text-muted',
   },
 } as const;
 
@@ -42,12 +42,12 @@ export function StatCard({
 
   return (
     <Card className={cn('p-4', className)}>
-      <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+      <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
         {label}
       </p>
 
       <p
-        className={cn('mt-1 text-2xl font-bold tabular-nums', color || 'text-white')}
+        className={cn('mt-1 text-2xl font-bold tabular-nums', color || 'text-text')}
       >
         {value}
       </p>

@@ -10,6 +10,7 @@ import {
   type AuthUser,
   type Toast,
 } from '@/lib/tax-planning/auth-context';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 // ---------------------------------------------------------------------------
 // Navigation Items
@@ -141,10 +142,10 @@ export default function AuthenticatedLayout({
   // Show loading until hydrated
   if (!isHydrated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-canvas">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-500 border-t-transparent" />
-          <p className="text-sm text-white/50">Loading...</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-accent-primary border-t-transparent" />
+          <p className="text-sm text-text-muted">Loading...</p>
         </div>
       </div>
     );
@@ -158,11 +159,12 @@ export default function AuthenticatedLayout({
   return (
     <AuthContext.Provider value={{ user, token, logout }}>
       <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
-        <div className="flex min-h-screen bg-canvas">
+        <div className="flex min-h-screen">
           {/* Mobile sidebar overlay */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-[#3D5A6A]/50 backdrop-blur-xs lg:hidden"
+              className="fixed inset-0 z-40 backdrop-blur-xs lg:hidden"
+              style={{ background: 'rgba(0, 0, 0, 0.30)' }}
               onClick={() => setSidebarOpen(false)}
               aria-hidden="true"
             />
@@ -170,15 +172,23 @@ export default function AuthenticatedLayout({
 
           {/* Sidebar */}
           <aside
-            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-[#3D5A6A] text-white transition-transform lg:translate-x-0 lg:static lg:z-auto ${
+            className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col transition-transform lg:translate-x-0 lg:static lg:z-auto ${
               sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
+            style={{
+              background: 'var(--s-sidebar-bg)',
+              backdropFilter: 'blur(24px)',
+              borderRight: '1px solid var(--s-border-subtle)',
+            }}
           >
             {/* Logo area */}
-            <div className="flex h-16 items-center gap-3 border-b border-white/[0.06] px-5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500">
+            <div
+              className="flex h-16 items-center gap-3 px-5"
+              style={{ borderBottom: '1px solid var(--s-border-subtle)' }}
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-primary">
                 <svg
-                  className="h-5 w-5 text-white"
+                  className="h-5 w-5 text-text-onBrand"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -193,8 +203,8 @@ export default function AuthenticatedLayout({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">Farther</p>
-                <p className="text-[10px] uppercase tracking-wider text-white/30">
+                <p className="text-sm font-semibold text-text">Farther</p>
+                <p className="text-[10px] uppercase tracking-wider text-text-faint">
                   Tax Planning
                 </p>
               </div>
@@ -215,9 +225,10 @@ export default function AuthenticatedLayout({
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-teal-500/20 text-teal-300'
-                        : 'text-white/30 hover:bg-[#456878] hover:text-white'
+                        ? 'text-accent-primarySoft'
+                        : 'text-text-faint hover:text-text'
                     }`}
+                    style={isActive ? { background: 'var(--s-nav-active-bg)' } : {}}
                   >
                     {item.icon}
                     {item.label}
@@ -226,19 +237,27 @@ export default function AuthenticatedLayout({
               })}
             </nav>
 
+            {/* Theme Toggle */}
+            <div className="px-4 py-2" style={{ borderTop: '1px solid var(--s-border-subtle)' }}>
+              <ThemeToggle />
+            </div>
+
             {/* User section */}
             {user && (
-              <div className="border-t border-white/[0.06] px-4 py-4">
+              <div className="px-4 py-4" style={{ borderTop: '1px solid var(--s-border-subtle)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#456878] text-sm font-semibold text-white">
+                  <div
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold text-accent-primarySoft"
+                    style={{ background: 'rgba(78, 112, 130, 0.20)' }}
+                  >
                     {user.first_name[0]}
                     {user.last_name[0]}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-white">
+                    <p className="truncate text-sm font-medium text-text">
                       {user.first_name} {user.last_name}
                     </p>
-                    <p className="truncate text-xs text-white/30">
+                    <p className="truncate text-xs text-text-faint">
                       {user.role}
                     </p>
                   </div>
@@ -246,7 +265,10 @@ export default function AuthenticatedLayout({
                 <button
                   type="button"
                   onClick={logout}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs font-medium text-white/30 transition-colors hover:bg-[#456878] hover:text-white"
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium text-text-faint transition-colors hover:text-text"
+                  style={{
+                    border: '1px solid var(--s-border-subtle)',
+                  }}
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -260,12 +282,18 @@ export default function AuthenticatedLayout({
           {/* Main content area */}
           <div className="flex flex-1 flex-col overflow-hidden">
             {/* Top bar */}
-            <header className="flex h-16 items-center gap-4 border-b border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 lg:px-8">
+            <header
+              className="flex h-16 items-center gap-4 backdrop-blur-xl px-4 lg:px-8"
+              style={{
+                background: 'var(--s-topbar-bg)',
+                borderBottom: '1px solid var(--s-border-subtle)',
+              }}
+            >
               {/* Mobile menu button */}
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-lg p-2 text-white/50 hover:bg-white/[0.04] lg:hidden"
+                className="rounded-lg p-2 text-text-muted lg:hidden"
                 aria-label="Open sidebar"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -278,18 +306,18 @@ export default function AuthenticatedLayout({
                 {breadcrumbs.map((crumb, index) => (
                   <React.Fragment key={crumb.href}>
                     {index > 0 && (
-                      <svg className="h-4 w-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 text-text-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                       </svg>
                     )}
                     {index === breadcrumbs.length - 1 ? (
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-text">
                         {crumb.label}
                       </span>
                     ) : (
                       <Link
                         href={crumb.href}
-                        className="text-white/50 transition-colors hover:text-white/60"
+                        className="text-text-muted transition-colors hover:text-text-subtle"
                       >
                         {crumb.label}
                       </Link>
@@ -304,8 +332,8 @@ export default function AuthenticatedLayout({
               {/* User badge in top bar */}
               {user && (
                 <div className="hidden items-center gap-2 sm:flex">
-                  <span className="text-xs text-white/50">{user.email}</span>
-                  <span className="inline-flex items-center rounded-full bg-teal-500/15 px-2 py-0.5 text-[10px] font-semibold text-teal-300">
+                  <span className="text-xs text-text-muted">{user.email}</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold text-accent-primarySoft" style={{ background: 'rgba(78, 112, 130, 0.15)' }}>
                     {user.role}
                   </span>
                 </div>
@@ -327,12 +355,12 @@ export default function AuthenticatedLayout({
                   role="alert"
                   className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-lg animate-in slide-in-from-right ${
                     toast.type === 'success'
-                      ? 'border-success-200 bg-success-100 text-success-700'
+                      ? 'border-success-300 bg-success-100 text-success-700'
                       : toast.type === 'error'
-                        ? 'border-critical-200 bg-critical-100 text-critical-700'
+                        ? 'border-critical-300 bg-critical-100 text-critical-700'
                         : toast.type === 'warning'
-                          ? 'border-warning-200 bg-warning-100 text-warning-700'
-                          : 'border-info-200 bg-info-100 text-info-700'
+                          ? 'border-warning-300 bg-warning-100 text-warning-700'
+                          : 'border-info-300 bg-info-100 text-info-700'
                   }`}
                 >
                   <span className="text-sm font-medium">{toast.message}</span>

@@ -69,11 +69,11 @@ function statusBadge(status: string) {
     case 'Needs Attention':
       return 'bg-goal-partial/10 text-goal-partial';
     case 'Complete':
-      return 'bg-teal-500/10 text-teal-300';
+      return 'bg-accent-primary/10 text-accent-primarySoft';
     case 'At Risk':
       return 'bg-goal-at-risk/10 text-goal-at-risk';
     default:
-      return 'bg-white/[0.06] text-white/50';
+      return 'bg-surface-subtle text-text-muted';
   }
 }
 
@@ -93,20 +93,20 @@ function ProjectionChart({ data }: { data: typeof RETIREMENT_PROJECTION }) {
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
               {isRetirement && (
-                <span className="text-[9px] font-medium text-teal-300">
+                <span className="text-[9px] font-medium text-accent-primarySoft">
                   Retire
                 </span>
               )}
-              <span className="text-[9px] text-white/30 font-medium">
+              <span className="text-[9px] text-text-faint font-medium">
                 {formatCurrency(point.portfolio)}
               </span>
               <div
                 className={`w-full rounded-t-md transition-all ${
-                  i <= retirementIdx ? 'bg-teal-500' : 'bg-teal-300'
+                  i <= retirementIdx ? 'bg-accent-primary' : 'bg-accent-primarySoft'
                 }`}
                 style={{ height: `${Math.max(height, 4)}%` }}
               />
-              <span className="text-[10px] text-white/50">{point.age}</span>
+              <span className="text-[10px] text-text-muted">{point.age}</span>
             </div>
           );
         })}
@@ -120,7 +120,7 @@ export default function ClientPlanPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">My Plan</h1>
+        <h1 className="text-2xl font-bold text-text">My Plan</h1>
         <span
           className={`text-xs font-medium px-3 py-1 rounded-full ${statusBadge(PLAN_OVERVIEW.planStatus)}`}
         >
@@ -130,55 +130,55 @@ export default function ClientPlanPage() {
 
       {/* ── Plan Overview Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
             <Target size={16} />
             Success Rate
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {PLAN_OVERVIEW.successRate}%
           </p>
         </div>
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
             <CalendarDays size={16} />
             Years to Retirement
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {PLAN_OVERVIEW.yearsToRetirement}
           </p>
-          <p className="text-xs text-white/50 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             Age {PLAN_OVERVIEW.currentAge} to {PLAN_OVERVIEW.retirementAge}
           </p>
         </div>
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
             <DollarSign size={16} />
             Retirement Income
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {formatCurrency(PLAN_OVERVIEW.estimatedAnnualRetirementIncome)}
           </p>
-          <p className="text-xs text-white/50 mt-0.5">per year (projected)</p>
+          <p className="text-xs text-text-muted mt-0.5">per year (projected)</p>
         </div>
-        <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5">
-          <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+        <div className="bg-surface-soft rounded-card border border-border-subtle p-5">
+          <div className="flex items-center gap-2 text-sm text-text-muted mb-1">
             <ShieldCheck size={16} />
             Social Security
           </div>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-bold text-text">
             {formatCurrency(PLAN_OVERVIEW.estimatedSocialSecurity)}
           </p>
-          <p className="text-xs text-white/50 mt-0.5">estimated annual</p>
+          <p className="text-xs text-text-muted mt-0.5">estimated annual</p>
         </div>
       </div>
 
       {/* ── Retirement Projection Chart ── */}
-      <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-1">
+      <div className="bg-surface-soft rounded-card border border-border-subtle p-6">
+        <h2 className="text-lg font-semibold text-text mb-1">
           Retirement Projection
         </h2>
-        <p className="text-sm text-white/50 mb-6">
+        <p className="text-sm text-text-muted mb-6">
           Projected portfolio value from now through age 90
         </p>
         <ProjectionChart data={RETIREMENT_PROJECTION} />
@@ -186,7 +186,7 @@ export default function ClientPlanPage() {
 
       {/* ── Goals ── */}
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Goal Progress
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -194,7 +194,7 @@ export default function ClientPlanPage() {
             const pct = Math.round((goal.current / goal.target) * 100);
             const barColor =
               goal.status === 'Complete'
-                ? 'bg-teal-500'
+                ? 'bg-accent-primary'
                 : goal.status === 'On Track'
                   ? 'bg-goal-funded'
                   : goal.status === 'Needs Attention'
@@ -204,10 +204,10 @@ export default function ClientPlanPage() {
             return (
               <div
                 key={i}
-                className="bg-white/[0.07] rounded-card border border-white/[0.06] p-5"
+                className="bg-surface-soft rounded-card border border-border-subtle p-5"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-text">
                     {goal.name}
                   </h3>
                   <span
@@ -216,13 +216,13 @@ export default function ClientPlanPage() {
                     {goal.status}
                   </span>
                 </div>
-                <div className="w-full h-2 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-surface-subtle rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${barColor}`}
                     style={{ width: `${Math.min(pct, 100)}%` }}
                   />
                 </div>
-                <div className="flex justify-between mt-2 text-xs text-white/50">
+                <div className="flex justify-between mt-2 text-xs text-text-muted">
                   <span>{formatCurrency(goal.current)}</span>
                   <span>{formatCurrency(goal.target)}</span>
                 </div>
@@ -233,44 +233,44 @@ export default function ClientPlanPage() {
       </div>
 
       {/* ── Tax Summary (Simplified) ── */}
-      <div className="bg-white/[0.07] rounded-card border border-white/[0.06] p-6">
-        <h2 className="text-lg font-semibold text-white mb-4">
+      <div className="bg-surface-soft rounded-card border border-border-subtle p-6">
+        <h2 className="text-lg font-semibold text-text mb-4">
           Tax Summary
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-text-muted">
               Estimated Federal Tax (2025)
             </p>
-            <p className="text-xl font-bold text-white mt-1">
+            <p className="text-xl font-bold text-text mt-1">
               {formatCurrency(TAX_SUMMARY.estimatedFederalTax)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-white/50">Estimated State Tax</p>
-            <p className="text-xl font-bold text-white mt-1">
+            <p className="text-sm text-text-muted">Estimated State Tax</p>
+            <p className="text-xl font-bold text-text mt-1">
               {formatCurrency(TAX_SUMMARY.estimatedStateTax)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-white/50">Effective Tax Rate</p>
-            <p className="text-xl font-bold text-white mt-1">
+            <p className="text-sm text-text-muted">Effective Tax Rate</p>
+            <p className="text-xl font-bold text-text mt-1">
               {TAX_SUMMARY.effectiveRate}%
             </p>
-            <p className="text-xs text-white/30 mt-0.5">
+            <p className="text-xs text-text-faint mt-0.5">
               Marginal bracket: {TAX_SUMMARY.marginalBracket}%
             </p>
           </div>
         </div>
 
-        <div className="mt-6 p-4 bg-teal-500/10 rounded-lg border border-brand-100">
+        <div className="mt-6 p-4 bg-accent-primary/10 rounded-lg border border-brand-100">
           <div className="flex items-start gap-3">
-            <TrendingUp size={20} className="text-teal-300 mt-0.5" />
+            <TrendingUp size={20} className="text-accent-primarySoft mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-text">
                 Roth Conversion Opportunity
               </p>
-              <p className="text-sm text-white/50 mt-0.5">
+              <p className="text-sm text-text-muted mt-0.5">
                 Converting {formatCurrency(TAX_SUMMARY.rothConversionOpportunity)}{' '}
                 this year could save an estimated{' '}
                 {formatCurrency(TAX_SUMMARY.estimatedTaxSavings)} in future

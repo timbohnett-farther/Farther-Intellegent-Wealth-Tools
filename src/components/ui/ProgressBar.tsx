@@ -6,9 +6,9 @@ const progressVariants = tv({
   base: "h-full rounded-full transition-[width] duration-800 ease-ripple",
   variants: {
     status: {
-      default: "bg-gradient-to-r from-teal-500 to-teal-300",
+      default: "bg-gradient-to-r from-brand-500 to-brand-300",
       funded: "bg-success-500",
-      "on-track": "bg-gradient-to-r from-teal-500 to-teal-300",
+      "on-track": "bg-gradient-to-r from-brand-500 to-brand-300",
       "at-risk": "bg-warning-500",
       underfunded: "bg-critical-500",
     },
@@ -41,19 +41,19 @@ function ProgressBar({
       {(label || showValue) && (
         <div className="flex items-center justify-between mb-1.5">
           {label && (
-            <span className="text-xs font-medium text-white/60">
+            <span className="text-xs font-medium text-text-muted">
               {label}
             </span>
           )}
           {showValue && (
-            <span className="text-xs font-mono font-medium text-white/40">
+            <span className="text-xs font-mono font-medium text-text-faint">
               {Math.round(percentage)}%
             </span>
           )}
         </div>
       )}
       <div
-        className="w-full h-2 bg-white/10 rounded-full overflow-hidden"
+        className="w-full h-2 bg-surface-subtle rounded-full overflow-hidden"
         role="progressbar"
         aria-valuenow={value}
         aria-valuemin={0}

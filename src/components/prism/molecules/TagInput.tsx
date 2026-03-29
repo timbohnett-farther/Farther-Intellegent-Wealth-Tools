@@ -48,21 +48,21 @@ export function TagInput({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center gap-1.5 rounded-input border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-2 py-1.5',
-        'transition-colors focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-100',
+        'flex flex-wrap items-center gap-1.5 rounded-input border border-border-subtle bg-surface-soft backdrop-blur-xl px-2 py-1.5',
+        'transition-colors focus-within:border-accent-primary focus-within:ring-2 focus-within:ring-brand-100',
         className,
       )}
     >
       {tags.map((tag) => (
         <span
           key={tag}
-          className="inline-flex items-center gap-1 rounded bg-teal-500/15 px-2 py-0.5 text-xs font-medium text-teal-300"
+          className="inline-flex items-center gap-1 rounded bg-accent-primary/15 px-2 py-0.5 text-xs font-medium text-accent-primarySoft"
         >
           {tag}
           <button
             type="button"
             onClick={() => onRemove(tag)}
-            className="inline-flex items-center rounded-sm p-0.5 text-teal-300 transition-colors hover:bg-teal-500/20 hover:text-teal-400"
+            className="inline-flex items-center rounded-sm p-0.5 text-accent-primarySoft transition-colors hover:bg-accent-primary/20 hover:text-brand-400"
             aria-label={`Remove ${tag}`}
           >
             <X className="h-3 w-3" />
@@ -77,7 +77,7 @@ export function TagInput({
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
         placeholder={tags.length === 0 ? placeholder : ''}
-        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-white outline-hidden placeholder:text-white/30"
+        className="min-w-[80px] flex-1 bg-transparent py-1 text-sm text-text outline-hidden placeholder:text-text-faint"
       />
     </div>
   );

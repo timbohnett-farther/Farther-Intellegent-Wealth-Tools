@@ -111,20 +111,20 @@ export function ModelLibrary({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-sm font-semibold text-white">
+        <h3 className="text-sm font-semibold text-text">
           Model Library ({filteredModels.length})
         </h3>
 
         <div className="flex items-center gap-3">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/30" />
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-faint" />
             <input
               type="text"
               placeholder="Search models..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl py-2 pl-8 pr-3 text-xs text-white/60 placeholder:text-white/30 outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+              className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl py-2 pl-8 pr-3 text-xs text-text-muted placeholder:text-text-faint outline-hidden focus:border-accent-primary focus:ring-1 focus:ring-accent-primary"
             />
           </div>
 
@@ -132,7 +132,7 @@ export function ModelLibrary({
           <button
             type="button"
             onClick={() => setSortBy((s) => (s === 'risk' ? 'name' : 'risk'))}
-            className="inline-flex items-center gap-1.5 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs font-medium text-white/50 hover:bg-white/[0.04] transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-3 py-2 text-xs font-medium text-text-muted hover:bg-surface-subtle transition-colors"
           >
             <ArrowUpDown className="h-3.5 w-3.5" />
             {sortBy === 'risk' ? 'Risk Score' : 'Name'}
@@ -141,7 +141,7 @@ export function ModelLibrary({
       </div>
 
       {/* Category tabs */}
-      <div className="flex gap-1 overflow-x-auto rounded-lg bg-white/[0.06] p-1">
+      <div className="flex gap-1 overflow-x-auto rounded-lg bg-surface-subtle p-1">
         {CATEGORY_TABS.filter((tab) => categoriesWithModels.has(tab.key)).map((tab) => (
           <button
             key={tab.key}
@@ -150,8 +150,8 @@ export function ModelLibrary({
             className={cn(
               'shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-all',
               activeCategory === tab.key
-                ? 'bg-white/[0.07] text-teal-300 shadow-sm'
-                : 'text-white/50 hover:text-white/60',
+                ? 'bg-surface-soft text-accent-primarySoft shadow-sm'
+                : 'text-text-muted hover:text-text-muted',
             )}
           >
             {tab.label}
@@ -176,7 +176,7 @@ export function ModelLibrary({
           {filteredModels.map((model) => (
             <div key={model.modelId} className="relative">
               {bestMatchId === model.modelId && riskScore !== undefined && (
-                <div className="absolute -top-2 left-4 z-10 inline-flex items-center gap-1 rounded-full bg-success-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                <div className="absolute -top-2 left-4 z-10 inline-flex items-center gap-1 rounded-full bg-success-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-text">
                   <Star className="h-3 w-3" />
                   Best Match
                 </div>
@@ -190,8 +190,8 @@ export function ModelLibrary({
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 text-center shadow-sm">
-          <p className="text-sm text-white/50">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-8 text-center shadow-sm">
+          <p className="text-sm text-text-muted">
             No models match your current filters.
           </p>
         </div>

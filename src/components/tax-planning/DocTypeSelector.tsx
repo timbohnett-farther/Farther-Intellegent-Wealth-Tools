@@ -38,7 +38,7 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
 }) => {
   return (
     <fieldset className="w-full">
-      <legend className="text-sm font-medium text-white/60 mb-3">
+      <legend className="text-sm font-medium text-text-muted mb-3">
         Document Type
       </legend>
 
@@ -53,8 +53,8 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
               className={cn(
                 'flex items-center gap-4 rounded-lg border-[1.5px] p-4 cursor-pointer transition-all',
                 isSelected
-                  ? 'border-teal-500 bg-teal-500/10 shadow-sm'
-                  : 'border-white/[0.06] bg-white/[0.07] hover:border-teal-300 hover:bg-teal-500/10/30'
+                  ? 'border-accent-primary bg-accent-primary/10 shadow-sm'
+                  : 'border-border-subtle bg-surface-soft hover:border-accent-primarySoft hover:bg-accent-primary/10/30'
               )}
             >
               <input
@@ -69,13 +69,13 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
               <div
                 className={cn(
                   'flex items-center justify-center h-10 w-10 rounded-lg flex-shrink-0',
-                  isSelected ? 'bg-teal-500' : 'bg-white/[0.06]'
+                  isSelected ? 'bg-accent-primary' : 'bg-surface-subtle'
                 )}
               >
                 <Icon
                   className={cn(
                     'h-5 w-5',
-                    isSelected ? 'text-white' : 'text-white/50'
+                    isSelected ? 'text-text' : 'text-text-muted'
                   )}
                 />
               </div>
@@ -84,12 +84,12 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
                 <p
                   className={cn(
                     'text-sm font-medium',
-                    isSelected ? 'text-teal-300' : 'text-white'
+                    isSelected ? 'text-accent-primarySoft' : 'text-text'
                   )}
                 >
                   {docType.label}
                 </p>
-                <p className="text-xs text-white/50 mt-0.5">
+                <p className="text-xs text-text-muted mt-0.5">
                   {docType.description}
                 </p>
               </div>
@@ -99,12 +99,12 @@ export const DocTypeSelector: React.FC<DocTypeSelectorProps> = ({
                 className={cn(
                   'flex-shrink-0 h-5 w-5 rounded-full border-2 flex items-center justify-center',
                   isSelected
-                    ? 'border-teal-500'
-                    : 'border-white/[0.10]'
+                    ? 'border-accent-primary'
+                    : 'border-border-subtle'
                 )}
               >
                 {isSelected && (
-                  <div className="h-2.5 w-2.5 rounded-full bg-teal-500" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-accent-primary" />
                 )}
               </div>
             </label>

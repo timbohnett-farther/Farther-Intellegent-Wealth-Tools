@@ -27,8 +27,8 @@ interface StatusConfig {
 const STATUS_MAP: Record<ProposalStatus, StatusConfig> = {
   DRAFT: {
     label: 'Draft',
-    bgClass: 'bg-white/[0.04]',
-    textClass: 'text-white/60',
+    bgClass: 'bg-surface-subtle',
+    textClass: 'text-text-muted',
     dotClass: 'bg-charcoal-400',
   },
   READY: {
@@ -51,9 +51,9 @@ const STATUS_MAP: Record<ProposalStatus, StatusConfig> = {
   },
   SENT: {
     label: 'Sent',
-    bgClass: 'bg-teal-500/15',
-    textClass: 'text-teal-300',
-    dotClass: 'bg-teal-500',
+    bgClass: 'bg-accent-primary/15',
+    textClass: 'text-accent-primarySoft',
+    dotClass: 'bg-accent-primary',
   },
   VIEWED: {
     label: 'Viewed',
@@ -75,9 +75,9 @@ const STATUS_MAP: Record<ProposalStatus, StatusConfig> = {
   },
   EXPIRED: {
     label: 'Expired',
-    bgClass: 'bg-white/[0.04]',
-    textClass: 'text-white/50',
-    dotClass: 'bg-white/20',
+    bgClass: 'bg-surface-subtle',
+    textClass: 'text-text-muted',
+    dotClass: 'bg-surface-subtle',
   },
 };
 

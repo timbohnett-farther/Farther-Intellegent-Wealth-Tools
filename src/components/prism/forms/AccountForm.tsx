@@ -396,8 +396,8 @@ export function AccountForm({
 
       {/* ── Investment Account Fields ── */}
       {isInvestmentAccount(accountType) && (
-        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
-          <h4 className="text-sm font-medium text-white/60">Investment Details</h4>
+        <div className="rounded-lg border border-border-subtle bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-text-muted">Investment Details</h4>
 
           <FormField label="Cost Basis" error={errors.costBasis?.message}>
             <Controller
@@ -413,8 +413,8 @@ export function AccountForm({
           </FormField>
 
           <div>
-            <p className="mb-2 text-sm font-medium text-white/60">
-              Asset Allocation <span className="font-normal text-white/50">(must total 100%)</span>
+            <p className="mb-2 text-sm font-medium text-text-muted">
+              Asset Allocation <span className="font-normal text-text-muted">(must total 100%)</span>
             </p>
             <div className="grid grid-cols-2 gap-3">
               <FormField label="Equity %" error={errors.equityPct?.message}>
@@ -497,8 +497,8 @@ export function AccountForm({
 
       {/* ── Employer Plan Fields ── */}
       {isEmployerPlan(accountType) && (
-        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
-          <h4 className="text-sm font-medium text-white/60">Employer Plan Details</h4>
+        <div className="rounded-lg border border-border-subtle bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-text-muted">Employer Plan Details</h4>
 
           <div className="grid grid-cols-2 gap-4">
             <FormField label="Employer Match %" error={errors.employerMatchPct?.message}>
@@ -560,8 +560,8 @@ export function AccountForm({
 
       {/* ── Liability Fields ── */}
       {isLiability(accountType) && (
-        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
-          <h4 className="text-sm font-medium text-white/60">Liability Details</h4>
+        <div className="rounded-lg border border-border-subtle bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-text-muted">Liability Details</h4>
 
           <div className="grid grid-cols-2 gap-4">
             <FormField label="Original Balance" error={errors.originalBalance?.message}>
@@ -647,8 +647,8 @@ export function AccountForm({
 
       {/* ── Real Estate Fields ── */}
       {isRealEstate(accountType) && (
-        <div className="rounded-lg border border-white/[0.06] bg-transparent p-4 space-y-4">
-          <h4 className="text-sm font-medium text-white/60">Real Estate Details</h4>
+        <div className="rounded-lg border border-border-subtle bg-transparent p-4 space-y-4">
+          <h4 className="text-sm font-medium text-text-muted">Real Estate Details</h4>
 
           <FormField label="Property Type" error={errors.propertyType?.message}>
             <Controller
@@ -708,7 +708,7 @@ export function AccountForm({
       )}
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-3 border-t border-white/[0.06] pt-5">
+      <div className="flex items-center justify-end gap-3 border-t border-border-subtle pt-5">
         {onCancel && (
           <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
             Cancel

@@ -105,15 +105,15 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
           return (
             <div
               key={card.label}
-              className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm"
+              className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm"
             >
               <div className="flex items-center gap-2">
-                <Icon className="h-4 w-4 text-white/30" aria-hidden="true" />
-                <span className="text-xs font-medium uppercase tracking-wide text-white/50">
+                <Icon className="h-4 w-4 text-text-faint" aria-hidden="true" />
+                <span className="text-xs font-medium uppercase tracking-wide text-text-muted">
                   {card.label}
                 </span>
               </div>
-              <p className="mt-1.5 text-xl font-bold tabular-nums text-white">
+              <p className="mt-1.5 text-xl font-bold tabular-nums text-text">
                 {card.value}
               </p>
             </div>
@@ -122,8 +122,8 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       </div>
 
       {/* Allocation bar */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-white/50 mb-3">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-text-muted mb-3">
           Asset Allocation
         </h4>
         <AllocationBar
@@ -139,7 +139,7 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       {/* Quality flags */}
       {qualityFlags.length > 0 && (
         <div>
-          <h4 className="text-sm font-semibold text-white mb-3">
+          <h4 className="text-sm font-semibold text-text mb-3">
             Quality Flags
           </h4>
           <QualityFlagsList flags={qualityFlags} />
@@ -147,9 +147,9 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
       )}
 
       {/* Top 5 holdings table */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm">
-        <div className="border-b border-white/[0.06] px-5 py-3">
-          <h4 className="text-sm font-semibold text-white">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl shadow-sm">
+        <div className="border-b border-border-subtle px-5 py-3">
+          <h4 className="text-sm font-semibold text-text">
             Top Holdings
           </h4>
         </div>
@@ -157,19 +157,19 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
           <table className="w-full text-sm">
             <thead className="border-b border-limestone-100 bg-transparent">
               <tr>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Ticker
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Description
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Asset Class
                 </th>
-                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Value
                 </th>
-                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-4 py-2 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                   % of Total
                 </th>
               </tr>
@@ -181,20 +181,20 @@ export function PortfolioSummary({ portfolio }: PortfolioSummaryProps) {
                     ? ((h.marketValue as number) / (metrics.totalValue as number)) * 100
                     : 0;
                 return (
-                  <tr key={i} className="hover:bg-white/[0.04] transition-colors">
-                    <td className="px-4 py-2.5 font-mono font-semibold text-white">
+                  <tr key={i} className="hover:bg-surface-subtle transition-colors">
+                    <td className="px-4 py-2.5 font-mono font-semibold text-text">
                       {h.ticker ?? '--'}
                     </td>
-                    <td className="px-4 py-2.5 text-white/60 truncate max-w-[200px]">
+                    <td className="px-4 py-2.5 text-text-muted truncate max-w-[200px]">
                       {h.description}
                     </td>
-                    <td className="px-4 py-2.5 text-xs text-white/50">
+                    <td className="px-4 py-2.5 text-xs text-text-muted">
                       {fmtAssetClass(h.assetClass)}
                     </td>
-                    <td className="px-4 py-2.5 text-right tabular-nums text-white font-medium">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-text font-medium">
                       {fmtMoney(h.marketValue)}
                     </td>
-                    <td className="px-4 py-2.5 text-right tabular-nums text-white/50">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-text-muted">
                       {pctOfTotal.toFixed(1)}%
                     </td>
                   </tr>

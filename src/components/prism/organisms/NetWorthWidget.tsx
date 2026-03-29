@@ -56,9 +56,9 @@ function formatCompact(value: number): string {
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-1.5 text-xs shadow-md">
-      <p className="font-medium text-white">{payload[0].payload.name}</p>
-      <p className="tabular-nums text-white/60">{formatCurrency(payload[0].value)}</p>
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-surface-soft backdrop-blur-xl px-3 py-1.5 text-xs shadow-md">
+      <p className="font-medium text-text">{payload[0].payload.name}</p>
+      <p className="tabular-nums text-text-muted">{formatCurrency(payload[0].value)}</p>
     </div>
   );
 }
@@ -89,7 +89,7 @@ export function NetWorthWidget({
       <div className="space-y-3">
         {/* Total Assets */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Total Assets
           </p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-success-500">
@@ -99,7 +99,7 @@ export function NetWorthWidget({
 
         {/* Total Liabilities */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Total Liabilities
           </p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-critical-500">
@@ -108,17 +108,17 @@ export function NetWorthWidget({
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/[0.06]" />
+        <div className="border-t border-border-subtle" />
 
         {/* Net Worth */}
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Net Worth
           </p>
           <p
             className={cn(
               'mt-0.5 text-2xl font-bold tabular-nums',
-              netWorth >= 0 ? 'text-white' : 'text-critical-500',
+              netWorth >= 0 ? 'text-text' : 'text-critical-500',
             )}
           >
             {formatCurrency(netWorth)}

@@ -141,24 +141,24 @@ export default function BoxSpreadCalculatorPage() {
   return (
     <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-white/[0.07]/[0.03] border-b border-white/[0.06] backdrop-blur-xl sticky top-0 z-50 no-print">
+      <header className="bg-surface-soft/[0.03] border-b border-border-subtle backdrop-blur-xl sticky top-0 z-50 no-print">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="text-white/30 hover:text-white/50 transition-colors"
+              className="text-text-faint hover:text-text-muted transition-colors"
               aria-label="Back to tools"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-white">Box Spread Lending Calculator</h1>
-              <p className="text-xs text-white/50">Portfolio-Based Liquidity Planning</p>
+              <h1 className="text-lg font-bold text-text">Box Spread Lending Calculator</h1>
+              <p className="text-xs text-text-muted">Portfolio-Based Liquidity Planning</p>
             </div>
           </div>
           <button
             onClick={handleExportPDF}
-            className="px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-400 transition-colors"
+            className="px-4 py-2 bg-accent-primary text-text text-sm font-medium rounded-lg hover:bg-accent-primary/80 transition-colors"
           >
             Export PDF
           </button>
@@ -175,7 +175,7 @@ export default function BoxSpreadCalculatorPage() {
         <main className="flex-1 p-4 min-w-0">
           {/* Tabs */}
           <div className="mb-4 no-print overflow-x-auto">
-            <div className="flex gap-1 border-b border-white/[0.06] min-w-max">
+            <div className="flex gap-1 border-b border-border-subtle min-w-max">
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
@@ -194,9 +194,9 @@ export default function BoxSpreadCalculatorPage() {
 
           {/* Derived Rates Banner */}
           <div className="mb-4 card p-3">
-            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-white/50">
-              <span>LTV: <strong className="text-white">{((inputs.loan.loanAmount / inputs.loan.portfolioValue) * 100).toFixed(1)}%</strong></span>
-              <span>All-In Rate: <strong className="text-teal-300">{((inputs.loan.boxRate + inputs.loan.managerFee) * 100).toFixed(2)}%</strong></span>
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-text-muted">
+              <span>LTV: <strong className="text-text">{((inputs.loan.loanAmount / inputs.loan.portfolioValue) * 100).toFixed(1)}%</strong></span>
+              <span>All-In Rate: <strong className="text-accent-primarySoft">{((inputs.loan.boxRate + inputs.loan.managerFee) * 100).toFixed(2)}%</strong></span>
               <span>Fed LTCG: <strong>{(inputs.tax.ltcgRate * 100).toFixed(0)}%</strong></span>
               <span>Fed STCG: <strong>{(inputs.tax.stcgRate * 100).toFixed(0)}%</strong></span>
               <span>NIIT: <strong>{(inputs.tax.niitRate * 100).toFixed(1)}%</strong></span>
@@ -219,7 +219,7 @@ export default function BoxSpreadCalculatorPage() {
           </div>
 
           {/* Disclosures */}
-          <div className="mt-8 p-4 bg-white/[0.06] rounded-lg text-[10px] text-white/30 space-y-1 leading-relaxed">
+          <div className="mt-8 p-4 bg-surface-subtle rounded-lg text-[10px] text-text-faint space-y-1 leading-relaxed">
             <p>This tool is for educational and illustrative purposes only and does not constitute investment, tax, or legal advice.</p>
             <p>Box spread lending involves risk, including the possibility of margin calls if portfolio values decline significantly.</p>
             <p>Past market performance is not indicative of future results. Monte Carlo simulations are hypothetical and based on assumptions that may not reflect actual market conditions.</p>

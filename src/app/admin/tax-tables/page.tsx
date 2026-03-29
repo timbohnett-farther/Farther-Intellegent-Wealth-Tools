@@ -47,13 +47,13 @@ export default function TaxTablesPage() {
       {/* Year selector + actions */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-white/60">Tax Year:</span>
+          <span className="text-sm font-medium text-text-muted">Tax Year:</span>
           {TAX_YEARS.map((y) => (
             <button
               key={y}
               onClick={() => setSelectedYear(y)}
               className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-                selectedYear === y ? 'bg-teal-500 text-white' : 'bg-white text-white/50 border border-white/[0.06] hover:bg-white/[0.04]'
+                selectedYear === y ? 'bg-accent-primary text-text' : 'bg-text text-text-muted border border-border-subtle hover:bg-surface-subtle'
               }`}
             >
               {y}
@@ -61,10 +61,10 @@ export default function TaxTablesPage() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/60 bg-white/[0.07] backdrop-blur-xl rounded-lg border border-white/[0.06] hover:bg-white/[0.04]">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-muted bg-surface-soft backdrop-blur-xl rounded-lg border border-border-subtle hover:bg-surface-subtle">
             <Upload size={14} /> Import CSV
           </button>
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text bg-accent-primary rounded-lg hover:bg-accent-primary/80">
             <RefreshCw size={14} /> Update for {selectedYear + 1}
           </button>
         </div>
@@ -80,16 +80,16 @@ export default function TaxTablesPage() {
         {TAX_TABLES.map((table) => {
           const isExpanded = expandedTable === table.type;
           return (
-            <div key={table.type} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+            <div key={table.type} className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
               <button
                 onClick={() => setExpandedTable(isExpanded ? null : table.type)}
                 className="w-full flex items-center justify-between px-5 py-4 text-left"
               >
                 <div className="flex items-center gap-3">
-                  <FileSpreadsheet size={16} className="text-white/30" />
+                  <FileSpreadsheet size={16} className="text-text-faint" />
                   <div>
-                    <p className="text-sm font-semibold text-white">{table.label}</p>
-                    <p className="text-xs text-white/50">
+                    <p className="text-sm font-semibold text-text">{table.label}</p>
+                    <p className="text-xs text-text-muted">
                       Filing statuses: {table.filingStatuses.join(', ')} &middot; Updated: {table.lastUpdated}
                     </p>
                   </div>
@@ -98,7 +98,7 @@ export default function TaxTablesPage() {
                   <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-success-50 text-success-700">
                     <CheckCircle2 size={10} /> {table.status}
                   </span>
-                  {isExpanded ? <ChevronDown size={16} className="text-white/30" /> : <ChevronRight size={16} className="text-white/30" />}
+                  {isExpanded ? <ChevronDown size={16} className="text-text-faint" /> : <ChevronRight size={16} className="text-text-faint" />}
                 </div>
               </button>
 
@@ -107,17 +107,17 @@ export default function TaxTablesPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-limestone-100 text-left">
-                        <th className="pb-2 text-xs font-medium text-white/50 uppercase">Bracket</th>
-                        <th className="pb-2 text-xs font-medium text-white/50 uppercase">MFJ</th>
-                        <th className="pb-2 text-xs font-medium text-white/50 uppercase">Single</th>
+                        <th className="pb-2 text-xs font-medium text-text-muted uppercase">Bracket</th>
+                        <th className="pb-2 text-xs font-medium text-text-muted uppercase">MFJ</th>
+                        <th className="pb-2 text-xs font-medium text-text-muted uppercase">Single</th>
                       </tr>
                     </thead>
                     <tbody>
                       {SAMPLE_BRACKETS.map((b) => (
                         <tr key={b.bracket} className="border-b border-limestone-50">
-                          <td className="py-2 font-medium text-white">{b.bracket}</td>
-                          <td className="py-2 text-white/50">{b.mfj}</td>
-                          <td className="py-2 text-white/50">{b.single}</td>
+                          <td className="py-2 font-medium text-text">{b.bracket}</td>
+                          <td className="py-2 text-text-muted">{b.mfj}</td>
+                          <td className="py-2 text-text-muted">{b.single}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -127,8 +127,8 @@ export default function TaxTablesPage() {
 
               {isExpanded && table.type !== 'ordinary_income' && (
                 <div className="px-5 pb-4 border-t border-limestone-100 pt-3">
-                  <p className="text-sm text-white/50">Detailed bracket data for {table.label} ({selectedYear}). Click edit to modify values.</p>
-                  <button className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
+                  <p className="text-sm text-text-muted">Detailed bracket data for {table.label} ({selectedYear}). Click edit to modify values.</p>
+                  <button className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-accent-primarySoft hover:text-accent-primarySoft">
                     Edit Table Values
                   </button>
                 </div>
@@ -139,8 +139,8 @@ export default function TaxTablesPage() {
       </div>
 
       {/* Update workflow */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-white mb-3">Annual Tax Table Update Workflow</h3>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-text mb-3">Annual Tax Table Update Workflow</h3>
         <div className="space-y-2">
           {[
             { step: '1', label: 'Import new IRS brackets (CSV or manual entry)', status: 'complete' },
@@ -153,9 +153,9 @@ export default function TaxTablesPage() {
               {s.status === 'complete' ? (
                 <CheckCircle2 size={18} className="text-success-500 flex-shrink-0" />
               ) : (
-                <div className="w-4.5 h-4.5 rounded-full border-2 border-white/[0.10] flex-shrink-0" />
+                <div className="w-4.5 h-4.5 rounded-full border-2 border-border-subtle flex-shrink-0" />
               )}
-              <span className={`text-sm ${s.status === 'complete' ? 'text-white/50' : 'text-white font-medium'}`}>
+              <span className={`text-sm ${s.status === 'complete' ? 'text-text-muted' : 'text-text font-medium'}`}>
                 Step {s.step}: {s.label}
               </span>
             </div>

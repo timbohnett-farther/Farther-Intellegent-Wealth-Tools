@@ -138,32 +138,32 @@ export default function PresentationPage() {
   const section = SECTIONS[currentSection];
 
   return (
-    <div className={`bg-[#3D5A6A] text-white min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`bg-[#3D5A6A] text-text min-h-screen flex flex-col ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Top Bar */}
-      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-b border-white/10 px-6 py-3 flex items-center justify-between">
+      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-b border-border-subtle px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button onClick={exitPresentation} className="text-white/30 hover:text-white transition-colors">
+          <button onClick={exitPresentation} className="text-text-faint hover:text-text transition-colors">
             <X size={20} />
           </button>
-          <div className="h-5 w-px bg-white/20" />
+          <div className="h-5 w-px bg-surface-subtle" />
           <span className="text-sm font-medium">Presentation Mode</span>
-          <span className="text-xs text-white/50">Smith Family Financial Plan</span>
+          <span className="text-xs text-text-muted">Smith Family Financial Plan</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-white/30">
+          <span className="text-xs text-text-faint">
             {currentSection + 1} / {SECTIONS.length}
           </span>
           <button
             onClick={() => setIsAutoPlay(!isAutoPlay)}
-            className="p-2 text-white/30 hover:text-white transition-colors"
+            className="p-2 text-text-faint hover:text-text transition-colors"
             title={isAutoPlay ? 'Pause auto-advance' : 'Auto-advance slides'}
           >
             {isAutoPlay ? <Pause size={16} /> : <Play size={16} />}
           </button>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-2 text-white/30 hover:text-white transition-colors"
+            className="p-2 text-text-faint hover:text-text transition-colors"
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
@@ -178,8 +178,8 @@ export default function PresentationPage() {
             onClick={() => setCurrentSection(i)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap ${
               i === currentSection
-                ? 'bg-teal-500 text-white'
-                : 'text-white/30 hover:text-white hover:bg-white/5'
+                ? 'bg-accent-primary text-text'
+                : 'text-text-faint hover:text-text hover:bg-surface-subtle'
             }`}
           >
             {s.icon}
@@ -194,7 +194,7 @@ export default function PresentationPage() {
         {section.id === 'net_worth' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Net Worth Summary</h1>
-            <p className="text-white/30 text-lg mb-8">Where you stand today</p>
+            <p className="text-text-faint text-lg mb-8">Where you stand today</p>
 
             <div className="grid grid-cols-3 gap-6 mb-8">
               {[
@@ -202,8 +202,8 @@ export default function PresentationPage() {
                 { label: 'Total Liabilities', value: '$450,000', change: '-8.2%' },
                 { label: 'Net Worth', value: '$4,400,000', change: '+15.1%' },
               ].map((card) => (
-                <div key={card.label} className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
-                  <p className="text-sm text-white/30">{card.label}</p>
+                <div key={card.label} className="bg-surface-soft/5 rounded-2xl p-6 border border-border-subtle">
+                  <p className="text-sm text-text-faint">{card.label}</p>
                   <p className="text-3xl font-bold mt-1">{card.value}</p>
                   <p className="text-sm text-success-500 mt-1">{card.change} vs last year</p>
                 </div>
@@ -211,8 +211,8 @@ export default function PresentationPage() {
             </div>
 
             <div className="grid grid-cols-5 gap-6">
-              <div className="col-span-3 bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-sm font-semibold text-white/30 mb-4">Net Worth Projection</h3>
+              <div className="col-span-3 bg-surface-subtle rounded-2xl p-6 border border-border-subtle">
+                <h3 className="text-sm font-semibold text-text-faint mb-4">Net Worth Projection</h3>
                 <ResponsiveContainer width="100%" height={350}>
                   <AreaChart data={NET_WORTH_DATA}>
                     <defs>
@@ -235,8 +235,8 @@ export default function PresentationPage() {
                 </ResponsiveContainer>
               </div>
 
-              <div className="col-span-2 bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-sm font-semibold text-white/30 mb-4">Asset Allocation</h3>
+              <div className="col-span-2 bg-surface-subtle rounded-2xl p-6 border border-border-subtle">
+                <h3 className="text-sm font-semibold text-text-faint mb-4">Asset Allocation</h3>
                 <ResponsiveContainer width="100%" height={250}>
                   <RPieChart>
                     <Pie
@@ -265,9 +265,9 @@ export default function PresentationPage() {
         {section.id === 'cash_flow' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Cash Flow Analysis</h1>
-            <p className="text-white/30 text-lg mb-8">Income vs expenses over time</p>
+            <p className="text-text-faint text-lg mb-8">Income vs expenses over time</p>
 
-            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
+            <div className="bg-surface-soft/5 rounded-2xl p-6 border border-border-subtle">
               <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart data={CASH_FLOW_DATA}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -291,7 +291,7 @@ export default function PresentationPage() {
         {section.id === 'retirement' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Retirement Readiness</h1>
-            <p className="text-white/30 text-lg mb-8">Your probability of achieving retirement goals</p>
+            <p className="text-text-faint text-lg mb-8">Your probability of achieving retirement goals</p>
 
             {/* Success Rate Gauge */}
             <div className="flex items-center justify-center mb-8">
@@ -299,7 +299,7 @@ export default function PresentationPage() {
                 <div className="text-8xl font-bold bg-linear-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                   {successRate}%
                 </div>
-                <p className="text-xl text-white/30 mt-2">Probability of Success</p>
+                <p className="text-xl text-text-faint mt-2">Probability of Success</p>
                 {delta !== 0 && (
                   <p className={`text-sm mt-1 ${delta > 0 ? 'text-success-500' : 'text-critical-500'}`}>
                     {delta > 0 ? '+' : ''}{delta}% from baseline
@@ -309,10 +309,10 @@ export default function PresentationPage() {
             </div>
 
             {/* Live Planning Sliders */}
-            <div className="max-w-2xl mx-auto bg-white/5 rounded-2xl p-6 border border-white/10">
+            <div className="max-w-2xl mx-auto bg-surface-subtle rounded-2xl p-6 border border-border-subtle">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-white/30">Interactive Planning Levers</h3>
-                <button onClick={resetSliders} className="text-xs text-white/30 hover:text-white flex items-center gap-1">
+                <h3 className="text-sm font-semibold text-text-faint">Interactive Planning Levers</h3>
+                <button onClick={resetSliders} className="text-xs text-text-faint hover:text-text flex items-center gap-1">
                   <RotateCcw size={12} /> Reset
                 </button>
               </div>
@@ -326,8 +326,8 @@ export default function PresentationPage() {
               ].map(({ key, label, min, max, step, format }) => (
                 <div key={key} className="mb-4">
                   <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-white/30">{label}</span>
-                    <span className="font-medium text-white">{format(sliders[key])}</span>
+                    <span className="text-text-faint">{label}</span>
+                    <span className="font-medium text-text">{format(sliders[key])}</span>
                   </div>
                   <input
                     type="range"
@@ -338,14 +338,14 @@ export default function PresentationPage() {
                     onChange={(e) => handleSliderChange(key, parseFloat(e.target.value))}
                     className="w-full h-1.5 rounded-full bg-[#456878] appearance-none cursor-pointer accent-brand-700"
                   />
-                  <div className="flex justify-between text-[10px] text-white/50 mt-0.5">
+                  <div className="flex justify-between text-[10px] text-text-muted mt-0.5">
                     <span>{format(min)}</span>
                     <span>{format(max)}</span>
                   </div>
                 </div>
               ))}
 
-              <button className="w-full mt-4 px-4 py-2 bg-teal-500 rounded-lg text-sm font-medium hover:bg-teal-500 transition-colors flex items-center justify-center gap-2">
+              <button className="w-full mt-4 px-4 py-2 bg-accent-primary rounded-lg text-sm font-medium hover:bg-accent-primary transition-colors flex items-center justify-center gap-2">
                 <Save size={14} /> Save as Scenario
               </button>
             </div>
@@ -356,11 +356,11 @@ export default function PresentationPage() {
         {section.id === 'goals' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Goal Progress</h1>
-            <p className="text-white/30 text-lg mb-8">Tracking your financial goals</p>
+            <p className="text-text-faint text-lg mb-8">Tracking your financial goals</p>
 
             <div className="grid grid-cols-2 gap-6">
               {GOAL_DATA.map((goal) => (
-                <div key={goal.name} className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
+                <div key={goal.name} className="bg-surface-soft/5 rounded-2xl p-6 border border-border-subtle">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-lg font-semibold">{goal.name}</h3>
                     <span
@@ -373,8 +373,8 @@ export default function PresentationPage() {
                       {goal.status === 'on_track' ? 'On Track' : 'Attention Needed'}
                     </span>
                   </div>
-                  <p className="text-sm text-white/30 mb-3">{goal.amount}</p>
-                  <div className="relative h-4 bg-white/10 rounded-full overflow-hidden">
+                  <p className="text-sm text-text-faint mb-3">{goal.amount}</p>
+                  <div className="relative h-4 bg-surface-subtle rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-1000 ${
                         goal.status === 'on_track' ? 'bg-success-500' : 'bg-warning-500'
@@ -393,7 +393,7 @@ export default function PresentationPage() {
         {section.id === 'tax' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Tax Strategy</h1>
-            <p className="text-white/30 text-lg mb-8">Current year and forward-looking tax planning</p>
+            <p className="text-text-faint text-lg mb-8">Current year and forward-looking tax planning</p>
 
             <div className="grid grid-cols-4 gap-4 mb-8">
               {[
@@ -402,16 +402,16 @@ export default function PresentationPage() {
                 { label: 'Roth Conversion Opportunity', value: '$50,000', sub: 'Fill 24% bracket' },
                 { label: 'Lifetime Tax Savings', value: '$142,000', sub: 'With Roth strategy' },
               ].map((card) => (
-                <div key={card.label} className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10">
-                  <p className="text-xs text-white/30">{card.label}</p>
+                <div key={card.label} className="bg-surface-soft/5 rounded-2xl p-5 border border-border-subtle">
+                  <p className="text-xs text-text-faint">{card.label}</p>
                   <p className="text-2xl font-bold mt-1">{card.value}</p>
-                  <p className="text-xs text-white/50 mt-1">{card.sub}</p>
+                  <p className="text-xs text-text-muted mt-1">{card.sub}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-sm font-semibold text-white/30 mb-3">Key Tax Recommendations</h3>
+            <div className="bg-surface-soft/5 rounded-2xl p-6 border border-border-subtle">
+              <h3 className="text-sm font-semibold text-text-faint mb-3">Key Tax Recommendations</h3>
               <div className="space-y-3">
                 {[
                   'Convert $50,000 from Traditional IRA to Roth IRA (fills 24% bracket without IRMAA impact)',
@@ -419,9 +419,9 @@ export default function PresentationPage() {
                   'Harvest $15,000 in tax losses from international fund position',
                   'Contribute max $7,500 to HSA for triple tax benefit',
                 ].map((rec, i) => (
-                  <div key={i} className="flex items-start gap-3 text-sm text-white/30">
-                    <div className="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold text-teal-300">{i + 1}</span>
+                  <div key={i} className="flex items-start gap-3 text-sm text-text-faint">
+                    <div className="w-6 h-6 rounded-full bg-accent-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-accent-primarySoft">{i + 1}</span>
                     </div>
                     {rec}
                   </div>
@@ -435,7 +435,7 @@ export default function PresentationPage() {
         {section.id === 'social_security' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Social Security Strategy</h1>
-            <p className="text-white/30 text-lg mb-8">Optimal claiming recommendation</p>
+            <p className="text-text-faint text-lg mb-8">Optimal claiming recommendation</p>
 
             <div className="grid grid-cols-3 gap-6 mb-8">
               {[
@@ -445,26 +445,26 @@ export default function PresentationPage() {
               ].map((opt) => (
                 <div
                   key={opt.age}
-                  className={`bg-white/5 rounded-2xl p-6 border ${
-                    opt.age === 70 ? 'border-success-500/50 ring-1 ring-success-500/20' : 'border-white/10'
+                  className={`bg-surface-subtle rounded-2xl p-6 border ${
+                    opt.age === 70 ? 'border-success-500/50 ring-1 ring-success-500/20' : 'border-border-subtle'
                   }`}
                 >
                   {opt.age === 70 && (
                     <span className="text-xs font-medium text-success-500 mb-2 block">Recommended</span>
                   )}
                   <p className="text-4xl font-bold">Age {opt.age}</p>
-                  <p className="text-sm text-white/30 mt-1">{opt.label}</p>
+                  <p className="text-sm text-text-faint mt-1">{opt.label}</p>
                   <div className="mt-4 space-y-1">
                     <p className="text-lg font-semibold">{opt.monthly}/mo</p>
-                    <p className="text-sm text-white/30">{opt.annual}/year</p>
-                    <p className="text-xs text-white/50">{opt.note}</p>
+                    <p className="text-sm text-text-faint">{opt.annual}/year</p>
+                    <p className="text-xs text-text-muted">{opt.note}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/[0.07]/5 rounded-2xl p-6 border border-white/10">
-              <p className="text-sm text-white/30">
+            <div className="bg-surface-soft/5 rounded-2xl p-6 border border-border-subtle">
+              <p className="text-sm text-text-faint">
                 <strong>Recommendation:</strong> Delay Social Security to age 70 for maximum lifetime benefit.
                 Break-even age vs claiming at 62 is age 80. With your family longevity (both parents lived to 90+),
                 the delayed strategy provides an additional <strong>$288,000</strong> in cumulative benefits by age 90.
@@ -477,7 +477,7 @@ export default function PresentationPage() {
         {section.id === 'insurance' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Insurance Review</h1>
-            <p className="text-white/30 text-lg mb-8">Coverage gaps and recommendations</p>
+            <p className="text-text-faint text-lg mb-8">Coverage gaps and recommendations</p>
 
             <div className="space-y-4">
               {[
@@ -486,13 +486,13 @@ export default function PresentationPage() {
                 { type: 'Umbrella', current: '$1,000,000', need: '$3,000,000', status: 'gap', gap: 'Increase recommended' },
                 { type: 'Long-Term Care', current: 'None', need: 'Evaluate by age 55', status: 'warning', gap: 'No coverage in place' },
               ].map((ins) => (
-                <div key={ins.type} className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10 flex items-center gap-6">
+                <div key={ins.type} className="bg-surface-soft/5 rounded-2xl p-5 border border-border-subtle flex items-center gap-6">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold">{ins.type}</h3>
-                    <p className="text-sm text-white/30">Current: {ins.current}</p>
+                    <p className="text-sm text-text-faint">Current: {ins.current}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-white/30">Recommended: {ins.need}</p>
+                    <p className="text-sm text-text-faint">Recommended: {ins.need}</p>
                     <p className="text-sm text-warning-500 flex items-center gap-1 justify-end">
                       <AlertTriangle size={14} /> {ins.gap}
                     </p>
@@ -507,7 +507,7 @@ export default function PresentationPage() {
         {section.id === 'estate' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Estate Plan Status</h1>
-            <p className="text-white/30 text-lg mb-8">Document checklist and planning status</p>
+            <p className="text-text-faint text-lg mb-8">Document checklist and planning status</p>
 
             <div className="grid grid-cols-2 gap-4">
               {[
@@ -518,7 +518,7 @@ export default function PresentationPage() {
                 { doc: 'HIPAA Authorization', status: 'not_in_place', date: null },
                 { doc: 'Beneficiary Review', status: 'needs_update', date: '2021' },
               ].map((item) => (
-                <div key={item.doc} className="bg-white/[0.07]/5 rounded-xl p-4 border border-white/10 flex items-center gap-4">
+                <div key={item.doc} className="bg-surface-soft/5 rounded-xl p-4 border border-border-subtle flex items-center gap-4">
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                       item.status === 'in_place'
@@ -538,7 +538,7 @@ export default function PresentationPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">{item.doc}</p>
-                    <p className="text-xs text-white/50">
+                    <p className="text-xs text-text-muted">
                       {item.status === 'in_place' ? `Updated ${item.date}` : item.status === 'needs_update' ? `Last updated ${item.date}` : 'Not in place'}
                     </p>
                   </div>
@@ -552,13 +552,13 @@ export default function PresentationPage() {
         {section.id === 'actions' && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Action Items</h1>
-            <p className="text-white/30 text-lg mb-8">Prioritized next steps for your plan</p>
+            <p className="text-text-faint text-lg mb-8">Prioritized next steps for your plan</p>
 
             <div className="space-y-4 max-w-3xl">
               {ACTION_ITEMS.map((item, i) => (
                 <div
                   key={i}
-                  className="bg-white/[0.07]/5 rounded-2xl p-5 border border-white/10 flex items-start gap-4"
+                  className="bg-surface-soft/5 rounded-2xl p-5 border border-border-subtle flex items-start gap-4"
                 >
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -566,7 +566,7 @@ export default function PresentationPage() {
                         ? 'bg-critical-500/20'
                         : item.priority === 'medium'
                         ? 'bg-warning-500/20'
-                        : 'bg-teal-500/20'
+                        : 'bg-accent-primary/20'
                     }`}
                   >
                     <span
@@ -575,7 +575,7 @@ export default function PresentationPage() {
                           ? 'text-critical-500'
                           : item.priority === 'medium'
                           ? 'text-warning-500'
-                          : 'text-teal-300'
+                          : 'text-accent-primarySoft'
                       }`}
                     >
                       {i + 1}
@@ -590,7 +590,7 @@ export default function PresentationPage() {
                             ? 'bg-critical-500/20 text-critical-500'
                             : item.priority === 'medium'
                             ? 'bg-warning-500/20 text-warning-500'
-                            : 'bg-teal-500/20 text-teal-300'
+                            : 'bg-accent-primary/20 text-accent-primarySoft'
                         }`}
                       >
                         {item.priority.toUpperCase()}
@@ -598,7 +598,7 @@ export default function PresentationPage() {
                       <span className="text-xs text-success-500">{item.impact}</span>
                     </div>
                   </div>
-                  <ArrowRight size={16} className="text-white/50 mt-1" />
+                  <ArrowRight size={16} className="text-text-muted mt-1" />
                 </div>
               ))}
             </div>
@@ -607,11 +607,11 @@ export default function PresentationPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-t border-white/10 px-8 py-4 flex items-center justify-between">
+      <div className="bg-[#3D5A6A]/80 backdrop-blur-sm border-t border-border-subtle px-8 py-4 flex items-center justify-between">
         <button
           onClick={goPrev}
           disabled={currentSection === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-white/30 hover:text-white hover:bg-white/5"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-text-faint hover:text-text hover:bg-surface-subtle"
         >
           <ChevronLeft size={18} />
           Previous
@@ -623,7 +623,7 @@ export default function PresentationPage() {
               key={i}
               onClick={() => setCurrentSection(i)}
               className={`w-2 h-2 rounded-full transition-colors ${
-                i === currentSection ? 'bg-teal-500' : 'bg-white/[0.04]0 hover:bg-white/20'
+                i === currentSection ? 'bg-accent-primary' : 'bg-surface-subtle0 hover:bg-surface-subtle'
               }`}
             />
           ))}
@@ -632,7 +632,7 @@ export default function PresentationPage() {
         <button
           onClick={goNext}
           disabled={currentSection === SECTIONS.length - 1}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-teal-500 text-white hover:bg-teal-500"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-accent-primary text-text hover:bg-accent-primary"
         >
           Next
           <ChevronRight size={18} />

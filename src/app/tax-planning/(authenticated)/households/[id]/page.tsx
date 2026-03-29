@@ -34,15 +34,15 @@ const TABS: Tab[] = [
 
 function HeaderSkeleton() {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm animate-pulse">
+    <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm animate-pulse">
       <div className="flex items-start justify-between">
         <div>
-          <div className="h-7 w-48 rounded bg-white/[0.06] mb-3" />
-          <div className="h-4 w-32 rounded bg-white/[0.06]" />
+          <div className="h-7 w-48 rounded bg-surface-subtle mb-3" />
+          <div className="h-4 w-32 rounded bg-surface-subtle" />
         </div>
         <div className="flex gap-6">
-          <div className="h-12 w-20 rounded bg-white/[0.06]" />
-          <div className="h-12 w-20 rounded bg-white/[0.06]" />
+          <div className="h-12 w-20 rounded bg-surface-subtle" />
+          <div className="h-12 w-20 rounded bg-surface-subtle" />
         </div>
       </div>
     </div>
@@ -53,12 +53,12 @@ function ContentSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
+        <div key={i} className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-white/[0.06]" />
+            <div className="h-10 w-10 rounded-lg bg-surface-subtle" />
             <div className="flex-1">
-              <div className="h-4 w-40 rounded bg-white/[0.06] mb-2" />
-              <div className="h-3 w-24 rounded bg-white/[0.06]" />
+              <div className="h-4 w-40 rounded bg-surface-subtle mb-2" />
+              <div className="h-3 w-24 rounded bg-surface-subtle" />
             </div>
           </div>
         </div>
@@ -81,71 +81,71 @@ interface OverviewTabProps {
 function OverviewTab({ household, personsCount, returnsCount, docsCount }: OverviewTabProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
-          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-teal-500/10">
-            <svg className="h-4 w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-accent-primary/10">
+            <svg className="h-4 w-4 text-accent-primarySoft" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-white">Primary State</h3>
+          <h3 className="text-sm font-semibold text-text">Primary State</h3>
         </div>
-        <p className="text-2xl font-bold text-white">
+        <p className="text-2xl font-bold text-text">
           {household.primary_state || 'Not set'}
         </p>
-        <p className="mt-1 text-xs text-white/50">State of primary residence</p>
+        <p className="mt-1 text-xs text-text-muted">State of primary residence</p>
       </div>
 
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-info-100">
             <svg className="h-4 w-4 text-info-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-white">Total Returns</h3>
+          <h3 className="text-sm font-semibold text-text">Total Returns</h3>
         </div>
-        <p className="text-2xl font-bold text-white tabular-nums">{returnsCount}</p>
-        <p className="mt-1 text-xs text-white/50">
+        <p className="text-2xl font-bold text-text tabular-nums">{returnsCount}</p>
+        <p className="mt-1 text-xs text-text-muted">
           Tax returns on file
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-success-100">
             <svg className="h-4 w-4 text-success-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-white">People</h3>
+          <h3 className="text-sm font-semibold text-text">People</h3>
         </div>
-        <p className="text-2xl font-bold text-white tabular-nums">{personsCount}</p>
-        <p className="mt-1 text-xs text-white/50">
+        <p className="text-2xl font-bold text-text tabular-nums">{personsCount}</p>
+        <p className="mt-1 text-xs text-text-muted">
           Household members
         </p>
       </div>
 
       {/* Created/Updated info */}
-      <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-        <h3 className="text-sm font-semibold text-white mb-3">Details</h3>
+      <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-text mb-3">Details</h3>
         <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
-            <dt className="text-xs font-medium text-white/50">Household ID</dt>
-            <dd className="mt-0.5 text-sm font-mono text-white">
+            <dt className="text-xs font-medium text-text-muted">Household ID</dt>
+            <dd className="mt-0.5 text-sm font-mono text-text">
               {household.household_id}
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-white/50">Firm ID</dt>
-            <dd className="mt-0.5 text-sm font-mono text-white">
+            <dt className="text-xs font-medium text-text-muted">Firm ID</dt>
+            <dd className="mt-0.5 text-sm font-mono text-text">
               {household.firm_id}
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-white/50">Created</dt>
-            <dd className="mt-0.5 text-sm text-white">
+            <dt className="text-xs font-medium text-text-muted">Created</dt>
+            <dd className="mt-0.5 text-sm text-text">
               {new Date(household.created_at).toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -156,8 +156,8 @@ function OverviewTab({ household, personsCount, returnsCount, docsCount }: Overv
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-white/50">Last Updated</dt>
-            <dd className="mt-0.5 text-sm text-white">
+            <dt className="text-xs font-medium text-text-muted">Last Updated</dt>
+            <dd className="mt-0.5 text-sm text-text">
               {new Date(household.updated_at).toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -168,8 +168,8 @@ function OverviewTab({ household, personsCount, returnsCount, docsCount }: Overv
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-white/50">Documents</dt>
-            <dd className="mt-0.5 text-sm text-white tabular-nums">{docsCount}</dd>
+            <dt className="text-xs font-medium text-text-muted">Documents</dt>
+            <dd className="mt-0.5 text-sm text-text tabular-nums">{docsCount}</dd>
           </div>
         </dl>
       </div>
@@ -288,14 +288,14 @@ export default function HouseholdDetailPage() {
             <button
               type="button"
               onClick={() => router.push('/tax-planning/households')}
-              className="text-sm font-medium text-white/50 hover:text-white"
+              className="text-sm font-medium text-text-muted hover:text-text"
             >
               Back to Households
             </button>
             <button
               type="button"
               onClick={fetchHouseholdData}
-              className="text-sm font-medium text-teal-300 hover:text-teal-300"
+              className="text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft"
             >
               Try again
             </button>
@@ -327,7 +327,7 @@ export default function HouseholdDetailPage() {
             <button
               type="button"
               onClick={handleUploadReturn}
-              className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400 active:bg-teal-600"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-5 py-2.5 text-sm font-medium text-text shadow-sm transition-colors hover:bg-accent-primary/80 active:bg-accent-primary/60"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -339,7 +339,7 @@ export default function HouseholdDetailPage() {
       ) : null}
 
       {/* Tab Navigation */}
-      <div className="border-b border-white/[0.06]">
+      <div className="border-b border-border-subtle">
         <nav className="-mb-px flex gap-6" aria-label="Household tabs">
           {TABS.map((tab) => (
             <button
@@ -348,8 +348,8 @@ export default function HouseholdDetailPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`whitespace-nowrap border-b-2 py-3 text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'border-teal-500 text-teal-300'
-                  : 'border-transparent text-white/50 hover:border-white/300 hover:text-white/60'
+                  ? 'border-accent-primary text-accent-primarySoft'
+                  : 'border-transparent text-text-muted hover:border-border-strong hover:text-text-muted'
               }`}
             >
               {tab.label}

@@ -101,9 +101,9 @@ export function DataTable<T>({
       )}
 
       {/* ---- Table ---- */}
-      <div className="overflow-x-auto rounded-card border border-white/[0.06]">
+      <div className="overflow-x-auto rounded-card border border-border-subtle">
         <table className="w-full text-sm">
-          <thead className="border-b border-white/[0.06] bg-transparent">
+          <thead className="border-b border-border-subtle bg-transparent">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -113,7 +113,7 @@ export function DataTable<T>({
                     <th
                       key={header.id}
                       className={cn(
-                        'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50',
+                        'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted',
                         canSort && 'cursor-pointer select-none',
                       )}
                       style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
@@ -124,7 +124,7 @@ export function DataTable<T>({
                           ? null
                           : flexRender(header.column.columnDef.header, header.getContext())}
                         {canSort && (
-                          <span className="text-white/30">
+                          <span className="text-text-faint">
                             {sortDir === 'asc' ? (
                               <ArrowUp className="h-3.5 w-3.5" />
                             ) : sortDir === 'desc' ? (
@@ -142,12 +142,12 @@ export function DataTable<T>({
             ))}
           </thead>
 
-          <tbody className="divide-y divide-limestone-100 bg-white">
+          <tbody className="divide-y divide-limestone-100 bg-text">
             {table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="px-4 py-12 text-center text-sm text-white/30"
+                  className="px-4 py-12 text-center text-sm text-text-faint"
                 >
                   No results found.
                 </td>
@@ -160,11 +160,11 @@ export function DataTable<T>({
                   className={cn(
                     'transition-colors',
                     onRowClick && 'cursor-pointer',
-                    'hover:bg-white/[0.04]',
+                    'hover:bg-surface-subtle',
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-3 text-white/60">
+                    <td key={cell.id} className="px-4 py-3 text-text-muted">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
@@ -177,14 +177,14 @@ export function DataTable<T>({
 
       {/* ---- Pagination ---- */}
       {pagination && totalRows > 0 && (
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-white/50">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-text-muted">
           {/* Left – page size selector */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-white/50">Rows per page</span>
+            <span className="text-xs text-text-muted">Rows per page</span>
             <select
               value={currentPageSize}
               onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="h-8 rounded-md border border-white/[0.10] bg-white/[0.07] backdrop-blur-xl px-2 text-xs text-white/60 focus:border-teal-500 focus:outline-hidden focus:ring-1 focus:ring-teal-500"
+              className="h-8 rounded-md border border-border-subtle bg-surface-soft backdrop-blur-xl px-2 text-xs text-text-muted focus:border-accent-primary focus:outline-hidden focus:ring-1 focus:ring-accent-primary"
             >
               {PAGE_SIZE_OPTIONS.map((size) => (
                 <option key={size} value={size}>
@@ -195,7 +195,7 @@ export function DataTable<T>({
           </div>
 
           {/* Center – row range */}
-          <span className="text-xs tabular-nums text-white/50">
+          <span className="text-xs tabular-nums text-text-muted">
             {startRow}–{endRow} of {totalRows}
           </span>
 

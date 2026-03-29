@@ -18,7 +18,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   actions,
 }) => {
   return (
-    <header className="h-16 bg-white/[0.03] border-b border-white/[0.06] backdrop-blur-xl shadow-xs flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 bg-surface-soft border-b border-border-subtle backdrop-blur-xl shadow-xs flex items-center justify-between px-6 sticky top-0 z-30">
       {/* Left: Breadcrumbs and/or title */}
       <div className="flex items-center gap-2 min-w-0">
         {breadcrumbs && breadcrumbs.length > 0 ? (
@@ -29,30 +29,30 @@ export const Topbar: React.FC<TopbarProps> = ({
               return (
                 <React.Fragment key={`${crumb.label}-${idx}`}>
                   {idx > 0 && (
-                    <span className="text-white/30" aria-hidden="true">
+                    <span className="text-text-faint" aria-hidden="true">
                       /
                     </span>
                   )}
                   {isLast ? (
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-text">
                       {crumb.label}
                     </span>
                   ) : crumb.href ? (
                     <Link
                       href={crumb.href}
-                      className="text-sm text-white/50 hover:text-teal-300 transition-colors"
+                      className="text-sm text-text-muted hover:text-accent-primarySoft transition-colors"
                     >
                       {crumb.label}
                     </Link>
                   ) : (
-                    <span className="text-sm text-white/50">{crumb.label}</span>
+                    <span className="text-sm text-text-muted">{crumb.label}</span>
                   )}
                 </React.Fragment>
               );
             })}
           </nav>
         ) : (
-          <h2 className="text-sm font-semibold text-white truncate">
+          <h2 className="text-sm font-semibold text-text truncate">
             {title}
           </h2>
         )}

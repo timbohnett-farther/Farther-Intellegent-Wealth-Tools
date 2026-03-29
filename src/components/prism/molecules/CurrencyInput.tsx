@@ -97,15 +97,15 @@ export function CurrencyInput({
   return (
     <div
       className={cn(
-        'flex items-center rounded-input border bg-white transition-colors',
+        'flex items-center rounded-input border bg-text transition-colors',
         error
           ? 'border-critical-500 focus-within:ring-2 focus-within:ring-critical-100'
-          : 'border-white/[0.06] focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-100',
+          : 'border-border-subtle focus-within:border-accent-primary focus-within:ring-2 focus-within:ring-brand-100',
         disabled && 'cursor-not-allowed bg-transparent opacity-60',
         className,
       )}
     >
-      <span className="select-none pl-3 text-sm text-white/50">$</span>
+      <span className="select-none pl-3 text-sm text-text-muted">$</span>
       <input
         type="text"
         inputMode="decimal"
@@ -116,8 +116,8 @@ export function CurrencyInput({
         placeholder={placeholder}
         disabled={disabled}
         className={cn(
-          'w-full bg-transparent py-2 pl-1 pr-3 text-sm font-mono text-white outline-hidden',
-          'tabular-nums placeholder:text-white/30',
+          'w-full bg-transparent py-2 pl-1 pr-3 text-sm font-mono text-text outline-hidden',
+          'tabular-nums placeholder:text-text-faint',
           disabled && 'cursor-not-allowed',
         )}
         aria-invalid={error || undefined}

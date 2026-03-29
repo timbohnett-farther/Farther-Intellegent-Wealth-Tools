@@ -16,7 +16,7 @@ export const Divider: React.FC<DividerProps> = ({ label, className }) => {
     return (
       <div className={cn('flex items-center gap-3', className)} role="separator">
         <TremorDivider className="flex-1" />
-        <span className="text-xs font-medium text-white/30 uppercase tracking-wider">
+        <span className="text-xs font-medium text-text-faint uppercase tracking-wider">
           {label}
         </span>
         <TremorDivider className="flex-1" />

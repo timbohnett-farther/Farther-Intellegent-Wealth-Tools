@@ -137,16 +137,16 @@ export default function ReviewQueuePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/admin/update-engine" className="text-white/30 hover:text-white/50">
+          <Link href="/admin/update-engine" className="text-text-faint hover:text-text-muted">
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h2 className="text-lg font-bold text-white">Human Review Queue</h2>
-            <p className="text-sm text-white/50">Review and approve tax table changes that require human verification</p>
+            <h2 className="text-lg font-bold text-text">Human Review Queue</h2>
+            <p className="text-sm text-text-muted">Review and approve tax table changes that require human verification</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-white/50">{statusCounts.pending} pending</span>
+          <span className="text-sm text-text-muted">{statusCounts.pending} pending</span>
         </div>
       </div>
 
@@ -164,8 +164,8 @@ export default function ReviewQueuePage() {
             onClick={() => setFilter(f.key)}
             className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
               filter === f.key
-                ? 'bg-teal-500/10 text-teal-300'
-                : 'text-white/50 hover:text-white/60 hover:bg-white/[0.06]'
+                ? 'bg-accent-primary/10 text-accent-primarySoft'
+                : 'text-text-muted hover:text-text-muted hover:bg-surface-subtle'
             }`}
           >
             {f.label} ({statusCounts[f.key]})
@@ -178,10 +178,10 @@ export default function ReviewQueuePage() {
         {filteredItems.map((item) => {
           const isExpanded = expandedId === item.id;
           return (
-            <div key={item.id} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm overflow-hidden">
+            <div key={item.id} className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm overflow-hidden">
               {/* Header row */}
               <div
-                className="px-5 py-4 cursor-pointer hover:bg-white/[0.04]/50 transition-colors"
+                className="px-5 py-4 cursor-pointer hover:bg-surface-subtle/50 transition-colors"
                 onClick={() => setExpandedId(isExpanded ? null : item.id)}
               >
                 <div className="flex items-center justify-between">
@@ -190,23 +190,23 @@ export default function ReviewQueuePage() {
                       item.severity === 'critical' ? 'bg-critical-500' :
                       item.severity === 'high' ? 'bg-orange-500' :
                       item.severity === 'medium' ? 'bg-warning-500' :
-                      'bg-teal-500'
+                      'bg-accent-primary'
                     }`} />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-white">{item.title}</span>
+                        <span className="text-sm font-bold text-text">{item.title}</span>
                         {item.billNumber && (
-                          <span className="text-xs text-white/30">{item.billNumber}</span>
+                          <span className="text-xs text-text-faint">{item.billNumber}</span>
                         )}
                       </div>
-                      <p className="text-xs text-white/50 mt-0.5">{item.source} · Detected {item.detectedAt}</p>
+                      <p className="text-xs text-text-muted mt-0.5">{item.source} · Detected {item.detectedAt}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                       item.type === 'law_change' ? 'bg-critical-50 text-critical-700' :
                       item.type === 'pending_legislation' ? 'bg-warning-50 text-warning-700' :
-                      'bg-teal-500/10 text-teal-300'
+                      'bg-accent-primary/10 text-accent-primarySoft'
                     }`}>
                       {item.type === 'law_change' ? 'Law Change' :
                        item.type === 'pending_legislation' ? 'Pending Legislation' :
@@ -216,14 +216,14 @@ export default function ReviewQueuePage() {
                       item.status === 'pending' ? 'bg-warning-50 text-warning-700' :
                       item.status === 'approved' ? 'bg-success-50 text-success-700' :
                       item.status === 'rejected' ? 'bg-critical-50 text-critical-700' :
-                      'bg-teal-500/10 text-teal-300'
+                      'bg-accent-primary/10 text-accent-primarySoft'
                     }`}>
                       {item.status === 'pending' && <><Clock size={10} /> Pending</>}
                       {item.status === 'approved' && <><CheckCircle2 size={10} /> Approved</>}
                       {item.status === 'rejected' && <><XCircle size={10} /> Rejected</>}
                       {item.status === 'scenario_created' && <><Eye size={10} /> Scenario</>}
                     </span>
-                    {isExpanded ? <ChevronUp size={16} className="text-white/30" /> : <ChevronDown size={16} className="text-white/30" />}
+                    {isExpanded ? <ChevronUp size={16} className="text-text-faint" /> : <ChevronDown size={16} className="text-text-faint" />}
                   </div>
                 </div>
               </div>
@@ -235,61 +235,61 @@ export default function ReviewQueuePage() {
                     {/* Impact strip */}
                     <div className="grid grid-cols-4 gap-4">
                       <div className="p-3 rounded-lg bg-transparent">
-                        <p className="text-xs text-white/50 mb-0.5">Affected Clients</p>
-                        <p className="text-lg font-bold text-white">{item.affectedClients.toLocaleString()}</p>
+                        <p className="text-xs text-text-muted mb-0.5">Affected Clients</p>
+                        <p className="text-lg font-bold text-text">{item.affectedClients.toLocaleString()}</p>
                       </div>
                       <div className="p-3 rounded-lg bg-transparent">
-                        <p className="text-xs text-white/50 mb-0.5">Affected Tables</p>
-                        <p className="text-sm font-medium text-white">{item.affectedTables.join(', ')}</p>
+                        <p className="text-xs text-text-muted mb-0.5">Affected Tables</p>
+                        <p className="text-sm font-medium text-text">{item.affectedTables.join(', ')}</p>
                       </div>
                       <div className="p-3 rounded-lg bg-transparent">
-                        <p className="text-xs text-white/50 mb-0.5">Effective Date</p>
-                        <p className="text-sm font-medium text-white">{item.effectiveDate ?? 'TBD'}</p>
+                        <p className="text-xs text-text-muted mb-0.5">Effective Date</p>
+                        <p className="text-sm font-medium text-text">{item.effectiveDate ?? 'TBD'}</p>
                       </div>
                       <div className="p-3 rounded-lg bg-transparent">
-                        <p className="text-xs text-white/50 mb-0.5">Severity</p>
+                        <p className="text-xs text-text-muted mb-0.5">Severity</p>
                         <p className={`text-sm font-bold ${
                           item.severity === 'critical' ? 'text-critical-500' :
                           item.severity === 'high' ? 'text-orange-600' :
                           item.severity === 'medium' ? 'text-warning-500' :
-                          'text-teal-300'
+                          'text-accent-primarySoft'
                         }`}>{item.severity.charAt(0).toUpperCase() + item.severity.slice(1)}</p>
                       </div>
                     </div>
 
                     {/* AI Analysis */}
-                    <div className="p-4 rounded-lg bg-teal-500/10/50 border border-brand-100">
-                      <p className="text-xs font-semibold text-teal-300 mb-1.5 flex items-center gap-1">
+                    <div className="p-4 rounded-lg bg-accent-primary/10/50 border border-brand-100">
+                      <p className="text-xs font-semibold text-accent-primarySoft mb-1.5 flex items-center gap-1">
                         <Pause size={10} /> AI ANALYSIS
                       </p>
-                      <p className="text-sm text-white/60 leading-relaxed">{item.aiAnalysis}</p>
+                      <p className="text-sm text-text-muted leading-relaxed">{item.aiAnalysis}</p>
                     </div>
 
                     {/* Table comparison */}
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 rounded-lg border border-white/[0.06]">
-                        <p className="text-xs font-semibold text-white/50 uppercase mb-2">Current Table</p>
-                        <pre className="text-xs text-white/60 font-mono whitespace-pre-wrap leading-relaxed">{item.currentTable}</pre>
+                      <div className="p-4 rounded-lg border border-border-subtle">
+                        <p className="text-xs font-semibold text-text-muted uppercase mb-2">Current Table</p>
+                        <pre className="text-xs text-text-muted font-mono whitespace-pre-wrap leading-relaxed">{item.currentTable}</pre>
                       </div>
                       <div className="p-4 rounded-lg border border-success-100 bg-success-50/30">
                         <p className="text-xs font-semibold text-success-700 uppercase mb-2">Proposed Change</p>
-                        <pre className="text-xs text-white/60 font-mono whitespace-pre-wrap leading-relaxed">{item.proposedTable}</pre>
+                        <pre className="text-xs text-text-muted font-mono whitespace-pre-wrap leading-relaxed">{item.proposedTable}</pre>
                       </div>
                     </div>
 
                     {/* Estimated impact */}
                     <div className="p-3 rounded-lg bg-warning-50/50 border border-warning-100">
                       <p className="text-xs font-semibold text-warning-700 mb-1">ESTIMATED IMPACT</p>
-                      <p className="text-sm text-white/60">{item.estimatedImpact}</p>
+                      <p className="text-sm text-text-muted">{item.estimatedImpact}</p>
                     </div>
 
                     {/* Action buttons */}
                     {item.status === 'pending' && (
                       <div className="flex items-center gap-3 pt-2 border-t border-limestone-100">
-                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-success-500 rounded-lg hover:bg-success-700 transition-colors">
+                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-text bg-success-500 rounded-lg hover:bg-success-700 transition-colors">
                           <CheckCircle2 size={14} /> Approve &amp; Publish
                         </button>
-                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-teal-300 bg-teal-500/10 rounded-lg hover:bg-teal-500/15 transition-colors">
+                        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-accent-primarySoft bg-accent-primary/10 rounded-lg hover:bg-accent-primary/15 transition-colors">
                           <Eye size={14} /> Create Scenario Only
                         </button>
                         <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-critical-700 bg-critical-50 rounded-lg hover:bg-critical-100 transition-colors">
@@ -297,11 +297,11 @@ export default function ReviewQueuePage() {
                         </button>
                         <div className="flex-1" />
                         <div className="text-right">
-                          <label className="text-xs text-white/50 block mb-1">Reviewer Notes</label>
+                          <label className="text-xs text-text-muted block mb-1">Reviewer Notes</label>
                           <input
                             type="text"
                             placeholder="Add notes..."
-                            className="w-64 px-3 py-1.5 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500"
+                            className="w-64 px-3 py-1.5 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary"
                           />
                         </div>
                       </div>
@@ -312,7 +312,7 @@ export default function ReviewQueuePage() {
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg ${
                           item.status === 'approved' ? 'bg-success-50 text-success-700' :
                           item.status === 'rejected' ? 'bg-critical-50 text-critical-700' :
-                          'bg-teal-500/10 text-teal-300'
+                          'bg-accent-primary/10 text-accent-primarySoft'
                         }`}>
                           {item.status === 'approved' && <><CheckCircle2 size={14} /> Published to production tables</>}
                           {item.status === 'rejected' && <><XCircle size={14} /> Rejected — monitoring continues</>}
@@ -329,7 +329,7 @@ export default function ReviewQueuePage() {
       </div>
 
       {filteredItems.length === 0 && (
-        <div className="text-center py-12 text-white/30">
+        <div className="text-center py-12 text-text-faint">
           <FileText size={32} className="mx-auto mb-2 opacity-50" />
           <p className="text-sm">No items matching this filter</p>
         </div>

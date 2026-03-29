@@ -69,11 +69,11 @@ const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
 };
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  tax: 'bg-teal-500/10 text-teal-300 border-brand-200',
-  retirement: 'bg-teal-500/10 text-teal-300 border-brand-200',
-  estate: 'bg-teal-500/10 text-teal-300 border-brand-200',
+  tax: 'bg-accent-primary/10 text-accent-primarySoft border-brand-200',
+  retirement: 'bg-accent-primary/10 text-accent-primarySoft border-brand-200',
+  estate: 'bg-accent-primary/10 text-accent-primarySoft border-brand-200',
   insurance: 'bg-pink-50 text-pink-700 border-pink-200',
-  investments: 'bg-teal-500/10 text-teal-300 border-brand-200',
+  investments: 'bg-accent-primary/10 text-accent-primarySoft border-brand-200',
   cash_flow: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   goals: 'bg-orange-50 text-orange-700 border-orange-200',
 };
@@ -81,7 +81,7 @@ const CATEGORY_COLORS: Record<Category, string> = {
 const SEVERITY_STYLES: Record<Severity, string> = {
   critical: 'bg-critical-100 text-critical-700 border-critical-300',
   warning: 'bg-warning-100 text-warning-700 border-warning-300',
-  info: 'bg-teal-500/15 text-teal-300 border-teal-300',
+  info: 'bg-accent-primary/15 text-accent-primarySoft border-accent-primarySoft',
 };
 
 // ---------------------------------------------------------------------------
@@ -243,19 +243,19 @@ export default function InsightsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Lightbulb size={20} className="text-teal-300" />
-            <h1 className="text-xl font-bold text-white">AI Insights</h1>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-teal-500/10 text-teal-300">
+            <Lightbulb size={20} className="text-accent-primarySoft" />
+            <h1 className="text-xl font-bold text-text">AI Insights</h1>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-accent-primary/10 text-accent-primarySoft">
               <Zap size={11} /> AI-Powered
             </span>
           </div>
-          <p className="text-sm text-white/50">Proactive action items and planning recommendations across your practice.</p>
+          <p className="text-sm text-text-muted">Proactive action items and planning recommendations across your practice.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/60 bg-white/[0.07] backdrop-blur-xl rounded-lg border border-white/[0.06] hover:bg-white/[0.04]">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-muted bg-surface-soft backdrop-blur-xl rounded-lg border border-border-subtle hover:bg-surface-subtle">
             <Download size={14} /> Export
           </button>
-          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400">
+          <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text bg-accent-primary rounded-lg hover:bg-accent-primary/80">
             <Mail size={14} /> Generate Emails
           </button>
         </div>
@@ -266,11 +266,11 @@ export default function InsightsPage() {
         {[
           { label: 'Critical', count: criticalCount, color: 'text-critical-500', bg: 'bg-critical-50 border-critical-100' },
           { label: 'Warning', count: warningCount, color: 'text-warning-500', bg: 'bg-warning-50 border-warning-100' },
-          { label: 'Informational', count: infoCount, color: 'text-teal-300', bg: 'bg-teal-500/10 border-brand-200' },
+          { label: 'Informational', count: infoCount, color: 'text-accent-primarySoft', bg: 'bg-accent-primary/10 border-brand-200' },
           { label: 'Total Impact', count: null, value: fmt$(totalImpact), color: 'text-success-500', bg: 'bg-success-50 border-success-100' },
         ].map((card) => (
           <div key={card.label} className={`rounded-xl border p-4 ${card.bg}`}>
-            <p className="text-xs font-medium text-white/50 mb-1">{card.label}</p>
+            <p className="text-xs font-medium text-text-muted mb-1">{card.label}</p>
             <p className={`text-2xl font-bold ${card.color}`}>{card.value ?? card.count}</p>
           </div>
         ))}
@@ -279,17 +279,17 @@ export default function InsightsPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 mb-6">
         <div className="relative flex-1 max-w-xs">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-faint" />
           <input
             type="text"
             placeholder="Search by client or insight..."
-            className="w-full pl-9 pr-3 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-300"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary/20 focus:border-accent-primarySoft"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <select
-          className="px-3 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500/20"
+          className="px-3 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary/20"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
         >
@@ -299,7 +299,7 @@ export default function InsightsPage() {
           ))}
         </select>
         <select
-          className="px-3 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500/20"
+          className="px-3 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary/20"
           value={severityFilter}
           onChange={(e) => setSeverityFilter(e.target.value as Severity | 'all')}
         >
@@ -308,7 +308,7 @@ export default function InsightsPage() {
           <option value="warning">Warning</option>
           <option value="info">Info</option>
         </select>
-        <span className="text-sm text-white/50">{filteredInsights.length} insights</span>
+        <span className="text-sm text-text-muted">{filteredInsights.length} insights</span>
       </div>
 
       {/* Insight cards (3-column masonry grid) */}
@@ -316,7 +316,7 @@ export default function InsightsPage() {
         {filteredInsights.map((insight) => {
           const isExpanded = expandedId === insight.id;
           return (
-            <div key={insight.id} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4 flex flex-col">
+            <div key={insight.id} className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-4 flex flex-col">
               {/* Header */}
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -328,20 +328,20 @@ export default function InsightsPage() {
                   </span>
                 </div>
                 {insight.aiGenerated && (
-                  <span className="inline-flex items-center gap-0.5 text-xs text-teal-300"><Zap size={10} /> AI</span>
+                  <span className="inline-flex items-center gap-0.5 text-xs text-accent-primarySoft"><Zap size={10} /> AI</span>
                 )}
               </div>
 
               {/* Title */}
-              <h3 className="text-sm font-semibold text-white mb-1">{insight.title}</h3>
-              <p className="text-xs text-white/50 mb-2">{insight.clientName} &middot; Age {insight.clientAge} &middot; {insight.wealthTier}</p>
+              <h3 className="text-sm font-semibold text-text mb-1">{insight.title}</h3>
+              <p className="text-xs text-text-muted mb-2">{insight.clientName} &middot; Age {insight.clientAge} &middot; {insight.wealthTier}</p>
 
               {/* Summary */}
-              <p className="text-sm text-white/50 mb-3 flex-1">{insight.summary}</p>
+              <p className="text-sm text-text-muted mb-3 flex-1">{insight.summary}</p>
 
               {/* Expanded detail */}
               {isExpanded && (
-                <div className="mb-3 p-3 rounded-lg bg-transparent text-sm text-white/60 border border-limestone-100">
+                <div className="mb-3 p-3 rounded-lg bg-transparent text-sm text-text-muted border border-limestone-100">
                   {insight.detail}
                 </div>
               )}
@@ -356,18 +356,18 @@ export default function InsightsPage() {
 
               {/* Actions */}
               <div className="flex items-center gap-2 pt-3 border-t border-limestone-100">
-                <button className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400">
+                <button className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80">
                   <ChevronRight size={12} /> Take Action
                 </button>
                 <button
                   onClick={() => setExpandedId(isExpanded ? null : insight.id)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white/50 bg-white/[0.06] rounded-lg hover:bg-white/[0.06]"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-text-muted bg-surface-subtle rounded-lg hover:bg-surface-subtle"
                 >
                   <Eye size={12} /> {isExpanded ? 'Less' : 'Details'}
                 </button>
                 <button
                   onClick={() => setDismissedIds((prev) => new Set([...prev, insight.id]))}
-                  className="ml-auto text-white/30 hover:text-white/50"
+                  className="ml-auto text-text-faint hover:text-text-muted"
                 >
                   <X size={14} />
                 </button>
@@ -380,8 +380,8 @@ export default function InsightsPage() {
       {filteredInsights.length === 0 && (
         <div className="text-center py-16">
           <CheckCircle2 size={32} className="mx-auto text-success-500 mb-3" />
-          <h3 className="text-sm font-semibold text-white/60">All caught up</h3>
-          <p className="text-sm text-white/50 mt-1">No insights match your current filters.</p>
+          <h3 className="text-sm font-semibold text-text-muted">All caught up</h3>
+          <p className="text-sm text-text-muted mt-1">No insights match your current filters.</p>
         </div>
       )}
     </div>

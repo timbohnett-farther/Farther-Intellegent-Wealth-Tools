@@ -23,7 +23,7 @@ export interface RiskProfileDisplayProps {
 const RISK_LABEL_MAP: Record<RiskLabel, { label: string; colorClass: string; bgClass: string }> = {
   CONSERVATIVE: { label: 'Conservative', colorClass: 'text-info-700', bgClass: 'bg-info-100' },
   MODERATELY_CONSERVATIVE: { label: 'Mod. Conservative', colorClass: 'text-info-600', bgClass: 'bg-info-50' },
-  MODERATE: { label: 'Moderate', colorClass: 'text-teal-300', bgClass: 'bg-teal-500/15' },
+  MODERATE: { label: 'Moderate', colorClass: 'text-accent-primarySoft', bgClass: 'bg-accent-primary/15' },
   MODERATELY_AGGRESSIVE: { label: 'Mod. Aggressive', colorClass: 'text-warning-700', bgClass: 'bg-warning-100' },
   AGGRESSIVE: { label: 'Aggressive', colorClass: 'text-critical-700', bgClass: 'bg-critical-100' },
 };
@@ -60,7 +60,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
   return (
     <div className="space-y-6">
       {/* Composite score -- prominent display */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
         <div className="flex flex-col items-center sm:flex-row sm:items-center sm:gap-6">
           <RiskScoreGauge
             score={profile.compositeScore}
@@ -77,7 +77,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
             >
               {compositeConfig.label}
             </span>
-            <p className="mt-2 text-sm text-white/50 max-w-xs">
+            <p className="mt-2 text-sm text-text-muted max-w-xs">
               Weighted composite of behavioral preference, financial capacity,
               and required return dimensions.
             </p>
@@ -88,7 +88,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
       {/* Three dimension gauges */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Behavioral */}
-        <div className="flex flex-col items-center rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+        <div className="flex flex-col items-center rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
           <RiskScoreGauge
             score={profile.behavioralScore}
             label="Behavioral"
@@ -106,7 +106,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
         </div>
 
         {/* Capacity */}
-        <div className="flex flex-col items-center rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+        <div className="flex flex-col items-center rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
           <RiskScoreGauge
             score={profile.capacityScore}
             label="Capacity"
@@ -124,7 +124,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
         </div>
 
         {/* Required */}
-        <div className="flex flex-col items-center rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+        <div className="flex flex-col items-center rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
           <RiskScoreGauge
             score={profile.requiredScore}
             label="Required"
@@ -143,8 +143,8 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
       </div>
 
       {/* Recommended allocation as stacked bar */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-        <h3 className="text-sm font-semibold text-white mb-3">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-text mb-3">
           Recommended Allocation
         </h3>
         <AllocationBar
@@ -158,48 +158,48 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
       </div>
 
       {/* Capacity factors detail grid */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-        <h3 className="text-sm font-semibold text-white mb-4">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-text mb-4">
           Capacity Factors
         </h3>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Time Horizon
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {profile.capacityFactors.timeHorizon} yrs
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Income Stability
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {profile.capacityFactors.incomeStability}
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Liquidity Ratio
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {profile.capacityFactors.liquidityRatio.toFixed(1)}x
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Debt Ratio
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {(profile.capacityFactors.debtRatio * 100).toFixed(0)}%
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Human Capital
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {fmtCompact(profile.capacityFactors.humanCapitalValue)}
             </p>
           </div>
@@ -208,18 +208,18 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
         {/* Required return metrics */}
         <div className="mt-4 grid grid-cols-2 gap-4 border-t border-limestone-100 pt-4 sm:grid-cols-3">
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Required Return
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {(profile.requiredReturn * 100).toFixed(1)}%
             </p>
           </div>
           <div>
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Funding Ratio
             </span>
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {(profile.fundingRatio * 100).toFixed(0)}%
             </p>
           </div>
@@ -257,7 +257,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
               >
                 Risk Gap: {profile.riskGapLabel}
               </h4>
-              <p className="mt-1 text-sm text-white/50">
+              <p className="mt-1 text-sm text-text-muted">
                 Current portfolio risk score is{' '}
                 <strong>{profile.currentPortfolioRisk}</strong> vs. recommended{' '}
                 <strong>{profile.compositeScore}</strong> (gap of{' '}
@@ -266,9 +266,9 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
               </p>
 
               {/* Visual gap indicator */}
-              <div className="mt-3 relative h-3 w-full rounded-full bg-white/[0.06]">
+              <div className="mt-3 relative h-3 w-full rounded-full bg-surface-subtle">
                 <div
-                  className="absolute top-0 h-3 w-3 rounded-full bg-critical-400 border-2 border-white shadow"
+                  className="absolute top-0 h-3 w-3 rounded-full bg-critical-400 border-2 border-surface-soft shadow"
                   style={{
                     left: `${Math.min(97, Math.max(3, profile.currentPortfolioRisk))}%`,
                     transform: 'translateX(-50%)',
@@ -276,7 +276,7 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
                   title={`Current: ${profile.currentPortfolioRisk}`}
                 />
                 <div
-                  className="absolute top-0 h-3 w-3 rounded-full bg-success-500 border-2 border-white shadow"
+                  className="absolute top-0 h-3 w-3 rounded-full bg-success-500 border-2 border-surface-soft shadow"
                   style={{
                     left: `${Math.min(97, Math.max(3, profile.compositeScore))}%`,
                     transform: 'translateX(-50%)',
@@ -284,12 +284,12 @@ export function RiskProfileDisplay({ profile }: RiskProfileDisplayProps) {
                   title={`Recommended: ${profile.compositeScore}`}
                 />
               </div>
-              <div className="mt-2 flex items-center gap-4 text-xs text-white/50">
+              <div className="mt-2 flex items-center gap-4 text-xs text-text-muted">
                 <div className="flex items-center gap-1.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-critical-400" />
                   Current ({profile.currentPortfolioRisk})
                 </div>
-                <ArrowRight className="h-3 w-3 text-white/30" />
+                <ArrowRight className="h-3 w-3 text-text-faint" />
                 <div className="flex items-center gap-1.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-success-500" />
                   Recommended ({profile.compositeScore})

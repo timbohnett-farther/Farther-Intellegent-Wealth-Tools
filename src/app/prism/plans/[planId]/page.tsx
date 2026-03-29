@@ -103,7 +103,7 @@ function SuccessGauge({ value }: { value: number }) {
         <path d="M 10 55 A 40 40 0 0 1 90 55" fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
           strokeDasharray={circumference} strokeDashoffset={offset} />
       </svg>
-      <span className="absolute bottom-0 text-xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>
+      <span className="absolute bottom-0 text-xl font-bold text-text" style={{ fontFeatureSettings: '"tnum"' }}>
         {Math.round(pct)}%
       </span>
     </div>
@@ -203,29 +203,29 @@ export default function PlanOverviewPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-white">{meta.planName}</h1>
+              <h1 className="text-xl font-bold text-text">{meta.planName}</h1>
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-success-100 text-success-700">
                 Active
               </span>
             </div>
             {meta.lastUpdated && (
-              <p className="text-sm text-white/50">Last updated: {meta.lastUpdated}</p>
+              <p className="text-sm text-text-muted">Last updated: {meta.lastUpdated}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-white/[0.06] rounded-lg hover:bg-white/[0.04] text-white/50">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-border-subtle rounded-lg hover:bg-surface-subtle text-text-muted">
               <Edit3 size={14} /> Edit
             </button>
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-white/[0.06] rounded-lg hover:bg-white/[0.04] text-white/50">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-border-subtle rounded-lg hover:bg-surface-subtle text-text-muted">
               <Share2 size={14} /> Share
             </button>
-            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-white/[0.06] rounded-lg hover:bg-white/[0.04] text-white/50">
+            <button className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-border-subtle rounded-lg hover:bg-surface-subtle text-text-muted">
               <Download size={14} /> Export
             </button>
             <button
               onClick={runPlan}
               disabled={calculating}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-teal-500 text-white rounded-lg hover:bg-teal-400 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80 disabled:opacity-50"
             >
               {calculating ? (
                 <><Loader2 size={14} className="animate-spin" /> Calculating...</>
@@ -244,73 +244,73 @@ export default function PlanOverviewPage() {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 flex flex-col items-center">
-            <p className="text-xs text-white/50 mb-2">Probability of Success</p>
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 flex flex-col items-center">
+            <p className="text-xs text-text-muted mb-2">Probability of Success</p>
             {loading ? (
-              <Loader2 size={24} className="animate-spin text-white/30" />
+              <Loader2 size={24} className="animate-spin text-text-faint" />
             ) : results ? (
               <SuccessGauge value={probabilityOfSuccess * 100} />
             ) : (
-              <p className="text-sm text-white/30">Run plan</p>
+              <p className="text-sm text-text-faint">Run plan</p>
             )}
           </div>
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
               <Shield size={16} className={isRetirementReady ? 'text-success-500' : 'text-warning-500'} />
-              <p className="text-xs text-white/50">Retirement Ready?</p>
+              <p className="text-xs text-text-muted">Retirement Ready?</p>
             </div>
             <p className={`text-xl font-bold ${isRetirementReady ? 'text-success-500' : 'text-warning-500'}`}>
               {results ? (isRetirementReady ? 'Yes' : 'At Risk') : '--'}
             </p>
             {retirementYear && (
-              <p className="text-xs text-white/30 mt-1">Target: {retirementYear}</p>
+              <p className="text-xs text-text-faint mt-1">Target: {retirementYear}</p>
             )}
           </div>
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={16} className="text-teal-300" />
-              <p className="text-xs text-white/50">Total Net Worth</p>
+              <DollarSign size={16} className="text-accent-primarySoft" />
+              <p className="text-xs text-text-muted">Total Net Worth</p>
             </div>
-            <p className="text-xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-text" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(netWorth) : '--'}
             </p>
           </div>
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Landmark size={16} className="text-teal-300" />
-              <p className="text-xs text-white/50">Projected Estate</p>
+              <Landmark size={16} className="text-accent-primarySoft" />
+              <p className="text-xs text-text-muted">Projected Estate</p>
             </div>
-            <p className="text-xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-text" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(projectedEstate) : '--'}
             </p>
           </div>
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
             <div className="flex items-center gap-2 mb-2">
               <Receipt size={16} className="text-warning-500" />
-              <p className="text-xs text-white/50">Annual Tax Est.</p>
+              <p className="text-xs text-text-muted">Annual Tax Est.</p>
             </div>
-            <p className="text-xl font-bold text-white" style={{ fontFeatureSettings: '"tnum"' }}>
+            <p className="text-xl font-bold text-text" style={{ fontFeatureSettings: '"tnum"' }}>
               {results ? formatCurrency(annualTax) : '--'}
             </p>
           </div>
         </div>
 
         {/* Planning Modules Status */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 mb-8">
-          <h3 className="font-semibold text-white mb-4">Planning Modules</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 mb-8">
+          <h3 className="font-semibold text-text mb-4">Planning Modules</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2">
             {MODULES.map((mod) => (
               <Link
                 key={mod.segment}
                 href={`/prism/plans/${planId}${mod.segment}`}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-limestone-100 hover:border-brand-200 hover:bg-teal-500/10 transition-colors group"
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-limestone-100 hover:border-brand-200 hover:bg-accent-primary/10 transition-colors group"
               >
                 {mod.complete ? (
                   <CheckCircle2 size={16} className="text-success-500 flex-shrink-0" />
                 ) : (
-                  <Circle size={16} className="text-white/30 flex-shrink-0" />
+                  <Circle size={16} className="text-text-faint flex-shrink-0" />
                 )}
-                <span className="text-xs font-medium text-white/60 group-hover:text-teal-300 truncate">
+                <span className="text-xs font-medium text-text-muted group-hover:text-accent-primarySoft truncate">
                   {mod.label}
                 </span>
               </Link>
@@ -320,8 +320,8 @@ export default function PlanOverviewPage() {
 
         {/* Monte Carlo Fan Chart */}
         {results?.annualPercentileBands && results.annualPercentileBands.length > 0 && (
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 mb-6">
-            <h3 className="font-semibold text-white mb-4">Portfolio Projection (Monte Carlo)</h3>
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 mb-6">
+            <h3 className="font-semibold text-text mb-4">Portfolio Projection (Monte Carlo)</h3>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={results.annualPercentileBands} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -340,7 +340,7 @@ export default function PlanOverviewPage() {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center gap-4 mt-2 text-xs text-white/50">
+            <div className="flex items-center gap-4 mt-2 text-xs text-text-muted">
               <span className="flex items-center gap-1"><span className="w-3 h-2 bg-success-500 rounded" /> Median (p50)</span>
               <span className="flex items-center gap-1"><span className="w-3 h-2 bg-success-100 rounded" /> p25-p75</span>
               <span className="flex items-center gap-1"><span className="w-3 h-2 bg-warning-100 rounded" /> p10-p25</span>
@@ -351,8 +351,8 @@ export default function PlanOverviewPage() {
 
         {/* Bottom row - Cash Flow Chart + Goals summary */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white/[0.07] backdrop-blur-xl rounded-xl border border-white/[0.06] shadow-sm p-5">
-            <h3 className="font-semibold text-white mb-4">Cash Flow Summary</h3>
+          <div className="lg:col-span-2 bg-surface-soft backdrop-blur-xl rounded-xl border border-border-subtle shadow-sm p-5">
+            <h3 className="font-semibold text-text mb-4">Cash Flow Summary</h3>
             {results?.cashFlows && results.cashFlows.length > 0 ? (
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -370,18 +370,18 @@ export default function PlanOverviewPage() {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-64 flex items-center justify-center bg-transparent rounded-lg border border-dashed border-white/[0.06]">
+              <div className="h-64 flex items-center justify-center bg-transparent rounded-lg border border-dashed border-border-subtle">
                 <div className="text-center">
-                  <TrendingUp size={32} className="mx-auto mb-2 text-white/30" />
-                  <p className="text-sm text-white/30">Click "Run Plan" to generate cash flow projections</p>
+                  <TrendingUp size={32} className="mx-auto mb-2 text-text-faint" />
+                  <p className="text-sm text-text-faint">Click "Run Plan" to generate cash flow projections</p>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
             <div className="px-5 py-4 border-b border-limestone-100">
-              <h3 className="font-semibold text-white">Goals Summary</h3>
+              <h3 className="font-semibold text-text">Goals Summary</h3>
             </div>
             <div className="divide-y divide-limestone-50">
               {results?.goalResults && results.goalResults.length > 0 ? (
@@ -391,22 +391,22 @@ export default function PlanOverviewPage() {
                   return (
                     <div key={goal.goalId} className="px-5 py-3 flex items-center gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate">{goal.name}</p>
-                        <div className="mt-1 w-full h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                        <p className="text-sm font-medium text-text truncate">{goal.name}</p>
+                        <div className="mt-1 w-full h-1.5 bg-surface-subtle rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${isFunded ? 'bg-success-500' : pct >= 50 ? 'bg-warning-500' : 'bg-critical-500'}`}
                             style={{ width: `${Math.min(100, pct)}%` }}
                           />
                         </div>
                       </div>
-                      <span className="text-xs font-medium text-white/50" style={{ fontFeatureSettings: '"tnum"' }}>
+                      <span className="text-xs font-medium text-text-muted" style={{ fontFeatureSettings: '"tnum"' }}>
                         {pct}%
                       </span>
                     </div>
                   );
                 })
               ) : (
-                <div className="px-5 py-8 text-center text-sm text-white/30">
+                <div className="px-5 py-8 text-center text-sm text-text-faint">
                   Run plan to see goal funding analysis
                 </div>
               )}
@@ -416,8 +416,8 @@ export default function PlanOverviewPage() {
 
         {/* Net Worth Timeline */}
         {results?.cashFlows && results.cashFlows.length > 0 && (
-          <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 mt-6">
-            <h3 className="font-semibold text-white mb-4">Net Worth Over Time</h3>
+          <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 mt-6">
+            <h3 className="font-semibold text-text mb-4">Net Worth Over Time</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={results.cashFlows} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>

@@ -31,7 +31,7 @@ const cardVariants = tv({
   compoundVariants: [
     { variant: "insight", status: "critical", className: "border-l-critical-500" },
     { variant: "insight", status: "warning", className: "border-l-warning-500" },
-    { variant: "insight", status: "info", className: "border-l-teal-500" },
+    { variant: "insight", status: "info", className: "border-l-brand-500" },
     { variant: "alert", status: "critical", className: "bg-critical-50 border-critical-100 text-critical-300" },
     { variant: "alert", status: "warning", className: "bg-warning-50 border-warning-100 text-warning-300" },
     { variant: "alert", status: "success", className: "bg-success-50 border-success-100 text-success-300" },
