@@ -25,6 +25,10 @@ import { ItemizedDeductionsModule } from './itemized-deductions';
 import { DeductionChooserModule } from './deduction-chooser';
 import { QBIDeductionModule } from './qbi-deduction';
 import { TaxableIncomeComposerModule } from './taxable-income-composer';
+import { OrdinaryIncomeTaxModule } from './ordinary-income-tax';
+import { CapitalGainsTaxModule } from './capital-gains-tax';
+import { NIITModule } from './niit';
+import { TotalTaxComposerModule } from './total-tax-composer';
 
 /**
  * Registry of all available calculation modules
@@ -39,6 +43,10 @@ const ALL_MODULES: TaxCalculationModule[] = [
   DeductionChooserModule,
   QBIDeductionModule,
   TaxableIncomeComposerModule,
+  OrdinaryIncomeTaxModule,
+  CapitalGainsTaxModule,
+  NIITModule,
+  TotalTaxComposerModule,
 ];
 
 /**

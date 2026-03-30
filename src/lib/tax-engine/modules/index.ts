@@ -12,4 +12,8 @@ export * from './itemized-deductions';
 export * from './deduction-chooser';
 export * from './qbi-deduction';
 export * from './taxable-income-composer';
+export * from './ordinary-income-tax';
+export * from './capital-gains-tax';
+export * from './niit';
+export * from './total-tax-composer';
 export * from './orchestrator';
