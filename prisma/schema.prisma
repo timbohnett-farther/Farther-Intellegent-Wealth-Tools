@@ -93,6 +93,10 @@ model Household {
   // Phase 3: Deterministic Tax Calculation relations
   taxInputSnapshots TaxInputSnapshot[]
 
+  // Phase 4: Opportunity Detection Engine relations
+  opportunityDetectionRuns OpportunityDetectionRun[]
+  opportunities            Opportunity[]
+
   @@map("households")
 }
 
@@ -2034,6 +2038,7 @@ model CalculationRun {
   scenarioComparisons   RunComparison[] @relation("ScenarioComparisons")
   recommendationSignals RecommendationSignals?
   auditEvents           CalculationAuditEvent[]
+  opportunityDetectionRuns OpportunityDetectionRun[]
 
   createdAt             DateTime @default(now()) @map("created_at")
 
@@ -2218,4 +2223,180 @@ model CalculationAuditEvent {
   @@index([runId])
   @@index([timestamp])
   @@map("calculation_audit_events")
+}
+
+// ==================== PHASE 4: OPPORTUNITY DETECTION ENGINE ====================
+// Sprint 1-7 Models: Opportunity detection runs, opportunities, audit events, rules
+
+model OpportunityDetectionRun {
+  id                  String   @id @default(cuid())
+
+  // Input linkage
+  calculationRunId    String   @map("calculation_run_id")
+  calculationRun      CalculationRun @relation(fields: [calculationRunId], references: [id], onDelete: Cascade)
+  householdId         String   @map("household_id")
+  household           Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  taxYear             Int      @map("tax_year")
+
+  // Run metadata
+  rulesVersion        String   @map("rules_version") // Which rule package was used
+  totalRulesEvaluated Int      @map("total_rules_evaluated")
+  totalRulesPassed    Int      @map("total_rules_passed")
+
+  // Results summary
+  opportunitiesDetected Int    @map("opportunities_detected")
+  highPriorityCount     Int    @map("high_priority_count")
+  estimatedValueTotal   Float? @map("estimated_value_total")
+
+  // Performance
+  computeTimeMs       Int      @map("compute_time_ms")
+
+  // Status
+  status              String   @default("completed") // "running" | "completed" | "failed"
+  error               String?
+
+  // Relations
+  opportunities       Opportunity[]
+  auditEvents         OpportunityAuditEvent[]
+
+  completedAt         DateTime @default(now()) @map("completed_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@index([householdId, taxYear])
+  @@index([calculationRunId])
+  @@index([rulesVersion])
+  @@index([status])
+  @@map("opportunity_detection_runs")
+}
+
+model Opportunity {
+  id                  String   @id @default(cuid())
+
+  // Linkage
+  detectionRunId      String   @map("detection_run_id")
+  detectionRun        OpportunityDetectionRun @relation(fields: [detectionRunId], references: [id], onDelete: Cascade)
+  householdId         String   @map("household_id")
+  household           Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  taxYear             Int      @map("tax_year")
+
+  // Rule that detected this
+  ruleName            String   @map("rule_name")
+  ruleVersion         String   @map("rule_version")
+
+  // Classification
+  category            String   // "roth_conversion" | "irmaa" | "withholding" | "tax_loss_harvest" | "bunching" | etc.
+  subcategory         String?
+
+  // Ranking
+  priority            String   // "high" | "medium" | "low"
+  rank                Int      // Within household+year, 1 = top opportunity
+
+  // Core fields
+  title               String
+  summary             String
+  estimatedValue      Float?   @map("estimated_value")
+  confidence          String   // "high" | "medium" | "low"
+
+  // Evidence (JSON: Evidence[])
+  evidenceJson        String   @map("evidence_json")
+
+  // Composite scoring (JSON: CompositeScore)
+  scoreJson           String   @map("score_json")
+  finalScore          Float    @map("final_score") // Denormalized for sorting
+
+  // Context (JSON: contextual data from rule evaluation)
+  contextJson         String   @map("context_json")
+
+  // Suppression & Deduplication
+  isDuplicate         Boolean  @default(false) @map("is_duplicate")
+  duplicateOfId       String?  @map("duplicate_of_id")
+  suppressionReason   String?  @map("suppression_reason")
+
+  // Workflow
+  status              String   @default("detected") // "detected" | "reviewed" | "recommended" | "dismissed" | "implemented"
+  reviewedAt          DateTime? @map("reviewed_at")
+  reviewedBy          String?  @map("reviewed_by")
+  dismissedAt         DateTime? @map("dismissed_at")
+  dismissedReason     String?  @map("dismissed_reason")
+  implementedAt       DateTime? @map("implemented_at")
+
+  // AI enhancement
+  aiSummary           String?  @map("ai_summary")
+  aiGeneratedAt       DateTime? @map("ai_generated_at")
+
+  // Relations
+  auditEvents         OpportunityAuditEvent[]
+
+  detectedAt          DateTime @default(now()) @map("detected_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, taxYear])
+  @@index([detectionRunId])
+  @@index([category])
+  @@index([priority, rank])
+  @@index([status])
+  @@index([isDuplicate])
+  @@map("opportunities")
+}
+
+model OpportunityAuditEvent {
+  id                  String   @id @default(cuid())
+
+  eventId             String   @unique @map("event_id")
+  eventType           String   @map("event_type") // "opportunity.detected" | "opportunity.reviewed" | "opportunity.dismissed" | etc.
+
+  // Related opportunity
+  opportunityId       String?  @map("opportunity_id")
+  opportunity         Opportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+
+  // Related detection run
+  detectionRunId      String?  @map("detection_run_id")
+  detectionRun        OpportunityDetectionRun? @relation(fields: [detectionRunId], references: [id], onDelete: SetNull)
+
+  // Event payload (JSON)
+  payloadJson         String   @map("payload_json")
+
+  // Metadata
+  source              String   @default("opportunity-engine")
+  triggeredBy         String?  @map("triggered_by")
+
+  timestamp           DateTime @default(now())
+
+  @@index([eventType])
+  @@index([opportunityId])
+  @@index([detectionRunId])
+  @@index([timestamp])
+  @@map("opportunity_audit_events")
+}
+
+model OpportunityRule {
+  id                  String   @id @default(cuid())
+
+  // Rule identity
+  ruleName            String   @unique @map("rule_name")
+  ruleVersion         String   @map("rule_version")
+  category            String
+
+  // Metadata
+  title               String
+  description         String
+
+  // Rule definition (JSON: complete rule package)
+  ruleDefinitionJson  String   @map("rule_definition_json")
+
+  // Control
+  isActive            Boolean  @default(true) @map("is_active")
+  priority            Int      @default(50) // Higher = evaluated first
+
+  // Author
+  createdBy           String   @map("created_by")
+  publishedAt         DateTime @map("published_at")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@index([isActive, priority])
+  @@map("opportunity_rules")
 }
