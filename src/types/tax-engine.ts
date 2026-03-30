@@ -210,8 +210,18 @@ export interface CapitalGainBracket {
 export interface TaxRulesPackage {
   rulesVersion: string; // e.g. "2025_federal_v1"
   taxYear: number;
+  jurisdiction: string; // "federal" | "state:CA" | etc.
   publishedAt: Date;
+  publishedBy: string;
+  isActive: boolean;
   checksum: string;
+
+  metadata: {
+    description: string;
+    changeLog: string[];
+    authoredBy: string;
+    sources?: string[];
+  };
 
   // Ordinary income brackets (by filing status)
   ordinaryBrackets: Record<FilingStatus, OrdinaryBracket[]>;
@@ -222,33 +232,139 @@ export interface TaxRulesPackage {
   // Standard deduction
   standardDeduction: Record<FilingStatus, number>;
 
-  // NIIT thresholds
-  niitThresholds: Record<FilingStatus, number>;
-  niitRate: number; // 0.038
+  // Additional standard deduction
+  additionalStandardDeduction?: {
+    age65OrBlind: Record<FilingStatus, number>;
+  };
 
-  // Social Security taxability thresholds
-  socialSecurityThresholds: Record<FilingStatus, { min: number; max: number }>;
+  // NIIT (Net Investment Income Tax)
+  niit: {
+    rate: number; // 0.038
+    thresholds: Record<FilingStatus, number>;
+  };
 
-  // AMT exemption amounts
-  amtExemption: Record<FilingStatus, number>;
-  amtPhaseoutThreshold: Record<FilingStatus, number>;
+  // Social Security taxability
+  socialSecurityTaxability: {
+    thresholds: Record<FilingStatus, { tier1: number; tier2: number }>;
+  };
+
+  // AMT (Alternative Minimum Tax)
+  amt: {
+    exemption: Record<FilingStatus, number>;
+    phaseoutThreshold: Record<FilingStatus, number>;
+    phaseoutRate: number;
+    rates: {
+      tier1: { threshold: number; rate: number };
+      tier2: { threshold: number; rate: number };
+    };
+  };
 
   // Child tax credit
-  childTaxCreditAmount: number;
-  childTaxCreditPhaseoutThreshold: Record<FilingStatus, number>;
-
-  // Other thresholds
-  personalExemption: number; // $0 for 2018-2025
-  dependentStandardDeduction: number;
-  additionalStandardDeductionAge65: number;
-  additionalStandardDeductionBlind: number;
+  childTaxCredit: {
+    creditAmount: number;
+    phaseoutThreshold: Record<FilingStatus, number>;
+    phaseoutRate: number;
+    refundableAmount: number;
+    otherDependentCredit: number;
+  };
 
   // Retirement contribution limits
-  contributionLimits: {
-    ira: number;
-    iraCatchUp: number;
-    rothIraMagiPhaseout: Record<FilingStatus, { min: number; max: number }>;
-    hsa: Record<'individual' | 'family', number>;
+  retirementContributions: {
+    traditionalIRA: {
+      limit: number;
+      catchUpAge: number;
+      catchUpAmount: number;
+      totalWithCatchUp: number;
+    };
+    rothIRA: {
+      limit: number;
+      catchUpAge: number;
+      catchUpAmount: number;
+      totalWithCatchUp: number;
+      phaseoutThresholds: Record<string, { lower: number; upper: number }>;
+    };
+    traditional401k: {
+      limit: number;
+      catchUpAge: number;
+      catchUpAmount: number;
+      totalWithCatchUp: number;
+    };
+    hsa: {
+      individual: number;
+      family: number;
+      catchUpAge: number;
+      catchUpAmount: number;
+    };
+  };
+
+  // EITC (Earned Income Tax Credit)
+  eitc: {
+    maxCredit: Record<string, number>;
+    phaseoutBegins: Record<string, Record<string, number>>;
+    phaseoutEnds: Record<string, Record<string, number>>;
+  };
+
+  // Deduction limits
+  deductionLimits: {
+    saltCap: number;
+    mortgageInterestCap: number;
+    charitableCashLimit: number;
+    charitablePropertyLimit: number;
+    medicalExpenseFloor: number;
+  };
+
+  // Kiddie tax
+  kiddieTax: {
+    threshold: number;
+    rate: string;
+  };
+
+  // Education credits
+  educationCredits: {
+    americanOpportunityCredit: {
+      maxCredit: number;
+      qualifiedExpenses: number;
+      phaseoutThreshold: Record<string, number>;
+      phaseoutEnd: Record<string, number>;
+      refundablePercentage: number;
+    };
+    lifetimeLearningCredit: {
+      maxCredit: number;
+      rate: number;
+      qualifiedExpensesLimit: number;
+      phaseoutThreshold: Record<string, number>;
+      phaseoutEnd: Record<string, number>;
+    };
+  };
+
+  // Capital loss limits
+  capitalLoss: {
+    annualDeductionLimit: number;
+    carryforwardIndefinite: boolean;
+  };
+
+  // Estate & gift tax
+  estateAndGift: {
+    exemption: number;
+    annualGiftExclusion: number;
+    topRate: number;
+  };
+
+  // Self-employment tax
+  selfEmploymentTax: {
+    socialSecurityRate: number;
+    medicareRate: number;
+    additionalMedicareRate: number;
+    additionalMedicareThreshold: Record<FilingStatus, number>;
+    socialSecurityWageBase: number;
+  };
+
+  // Section 199A (QBI deduction)
+  section199A: {
+    deductionRate: number;
+    thresholdAmount: Record<FilingStatus, number>;
+    phaseoutRange: number;
+    phaseoutRangeMFJ: number;
   };
 }
 
