@@ -398,7 +398,7 @@ describe('Full Tax Pipeline (All Modules)', () => {
     expect(effectiveRate).toBeLessThan(25);
   });
 
-  it('should verify all 13 modules execute in correct dependency order', async () => {
+  it('should verify all 15 modules execute in correct dependency order', async () => {
     const snapshot = createMockSnapshot({
       wages: 100000,
       longTermCapitalGains: 20000,
@@ -407,8 +407,8 @@ describe('Full Tax Pipeline (All Modules)', () => {
     const rules = FEDERAL_RULES_2025_V1;
     const result = await runTaxCalculation(snapshot, rules);
 
-    // Verify all 13 modules ran
-    expect(result.executionOrder).toHaveLength(13);
+    // Verify all 15 modules ran (including tax_credits and final_tax from Sprint 7)
+    expect(result.executionOrder).toHaveLength(15);
 
     // Verify critical ordering constraints
     const filingStatusIndex = result.executionOrder.indexOf('filing_status_resolver');

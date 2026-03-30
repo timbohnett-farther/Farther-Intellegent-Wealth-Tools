@@ -16,4 +16,6 @@ export * from './ordinary-income-tax';
 export * from './capital-gains-tax';
 export * from './niit';
 export * from './total-tax-composer';
+export * from './tax-credits';
+export * from './final-tax';
 export * from './orchestrator';

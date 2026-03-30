@@ -29,6 +29,8 @@ import { OrdinaryIncomeTaxModule } from './ordinary-income-tax';
 import { CapitalGainsTaxModule } from './capital-gains-tax';
 import { NIITModule } from './niit';
 import { TotalTaxComposerModule } from './total-tax-composer';
+import { TaxCreditsModule } from './tax-credits';
+import { FinalTaxModule } from './final-tax';
 
 /**
  * Registry of all available calculation modules
@@ -47,6 +49,8 @@ const ALL_MODULES: TaxCalculationModule[] = [
   CapitalGainsTaxModule,
   NIITModule,
   TotalTaxComposerModule,
+  TaxCreditsModule,
+  FinalTaxModule,
 ];
 
 /**
