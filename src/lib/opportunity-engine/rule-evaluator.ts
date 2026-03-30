@@ -41,7 +41,7 @@ export class RuleEvaluator {
     }
 
     // Step 3: Check blocking conditions (if any)
-    if (rule.blocking && this.evaluateConditions(rule.blocking, context)) {
+    if (rule.blocking && rule.blocking.length > 0 && this.evaluateConditions(rule.blocking, context)) {
       return null;
     }
 
@@ -241,7 +241,8 @@ export class RuleEvaluator {
   private formatValue(value: any): string {
     if (typeof value === 'number') {
       if (value > 1000 || value < -1000) {
-        return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+        // Don't add $ prefix - templates handle currency symbols
+        return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
       }
       return value.toFixed(2);
     }
