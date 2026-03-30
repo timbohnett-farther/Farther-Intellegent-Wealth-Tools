@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Plus,
 } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface NavItem {
   label: string;
@@ -81,14 +82,14 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen flex flex-col transition-all duration-200 z-40',
+        'fixed left-0 top-0 h-screen flex flex-col transition-all duration-200 z-40 bg-white dark:bg-transparent',
         collapsed ? 'w-sidebar-collapsed' : 'w-sidebar'
       )}
       style={{
-        background: 'rgba(42, 42, 42, 0.95)',
+        background: 'var(--sidebar-bg, rgba(42, 42, 42, 0.95))',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderRight: '1px solid rgba(255, 255, 255, 0.06)',
+        borderRight: '1px solid var(--sidebar-border, rgba(229, 231, 235, 1))',
       }}
     >
       {/* Sidebar Header */}
@@ -209,8 +210,15 @@ export function Sidebar() {
         ))}
       </nav>
 
+      {/* Theme Toggle */}
+      {!collapsed && (
+        <div className="px-3 py-2 flex-shrink-0" style={{ borderTop: '1px solid rgba(229, 231, 235, 0.5) dark:border-white/[0.06]' }}>
+          <ThemeToggle />
+        </div>
+      )}
+
       {/* Sidebar Footer */}
-      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(229, 231, 235, 0.5)' }}>
         {!collapsed ? (
           <div className="flex items-center gap-3">
             <div

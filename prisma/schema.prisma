@@ -56,6 +56,9 @@ model Advisor {
   clients     Client[]
   plans       Plan[]
 
+  // Tax Intelligence relations
+  uploadedTaxDocuments TaxDocument[]
+
   @@map("advisors")
 }
 
@@ -74,6 +77,18 @@ model Household {
   clients     Client[]
   dependents  Dependent[]
   plans       Plan[]
+
+  // Tax Intelligence relations
+  taxDocuments     TaxDocument[]
+  taxForms         TaxForm[]
+  taxScenarios     TaxScenario[]
+  taxOpportunities TaxOpportunity[]
+  taxDeliverables  TaxDeliverable[]
+
+  // Phase 2: Intake & Review relations
+  approvedFacts    ApprovedFact[]
+  conflictRecords  ConflictRecord[]
+  missingDataItems MissingDataItem[]
 
   @@map("households")
 }
@@ -234,6 +249,9 @@ model Plan {
   planAlerts            PlanAlert[]
   planInsights          PlanInsight[]
   regBIDocuments        RegBIDocumentation[]
+
+  // Tax Intelligence relations
+  taxScenarios          TaxScenario[]
 
   @@index([status])
   @@map("plans")
@@ -1349,4 +1367,537 @@ model TaxTable {
 
   @@unique([taxYear, tableType, filingStatus])
   @@map("tax_tables")
+}
+
+// ==================== TAX INTELLIGENCE PLATFORM ====================
+// Phase 1: Core Models (6 new models + 3 extensions)
+
+model TaxDocument {
+  id                String   @id @default(cuid())
+  householdId       String   @map("household_id")
+  household         Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  documentType      String   // "1040" | "W-2" | "1099-DIV" | "Schedule_D" | "K-1_1065" | etc.
+  taxYear           Int?     @map("tax_year") // Nullable until classified
+  originalFilename  String   @map("original_filename")
+  uploadedAt        DateTime @default(now()) @map("uploaded_at")
+  uploadedBy        String   @map("uploaded_by") // advisorId
+  uploadedByAdvisor Advisor  @relation(fields: [uploadedBy], references: [id])
+
+  // Storage
+  fileUrl           String   @map("file_url")
+  fileSize          Int      @map("file_size")
+  contentType       String   @map("content_type")
+  fileHash          String?  @map("file_hash") // SHA-256 for duplicate detection
+
+  // Phase 2: Processing Pipeline Status
+  processingStatus  String   @default("uploaded") @map("processing_status") // "uploaded" | "queued" | "processing" | "ocr_complete" | "classified" | "fields_extracted" | "needs_review" | "approved" | "rejected" | "failed"
+
+  // OCR processing
+  ocrStatus         String   @default("pending") @map("ocr_status") // "pending" | "processing" | "completed" | "failed" | "review_needed"
+  ocrProvider       String?  @map("ocr_provider") // "azure"
+  ocrProcessedAt    DateTime? @map("ocr_processed_at")
+  ocrConfidence     Float?   @map("ocr_confidence")
+  ocrRawJson        String?  @map("ocr_raw_json") // Raw OCR output for debugging
+
+  // Phase 2: Classification
+  classificationConfidence Float? @map("classification_confidence")
+  classificationMethod     String? @map("classification_method") // "rules" | "layout" | "ai"
+  classificationReason     String? @map("classification_reason") // Why it chose this type
+  alternativeTypes         String? @map("alternative_types") // JSON: fallback options
+  taxpayerName             String? @map("taxpayer_name")
+  spouseName               String? @map("spouse_name")
+
+  // Phase 2: Page Management
+  pageCount         Int?     @map("page_count")
+  hasTextLayer      Boolean  @default(false) @map("has_text_layer")
+
+  // Human review
+  reviewStatus      String   @default("pending") @map("review_status") // "pending" | "in_review" | "approved" | "rejected"
+  reviewedAt        DateTime? @map("reviewed_at")
+  reviewedBy        String?  @map("reviewed_by")
+  reviewNotes       String?  @map("review_notes")
+
+  // Phase 2: Error Handling
+  processingError   String?  @map("processing_error")
+  retryCount        Int      @default(0) @map("retry_count")
+  lastRetryAt       DateTime? @map("last_retry_at")
+
+  // Data lineage
+  sourcePagesMap    String?  @map("source_pages_map") // JSON: { "wages": [1, 2], "dividends": [3] }
+
+  // Relations
+  extractedForms    TaxForm[]
+  documentPages     DocumentPage[]
+  extractedFields   ExtractedField[]
+  auditLogs         AuditLog[]
+
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, taxYear])
+  @@index([ocrStatus])
+  @@index([reviewStatus])
+  @@index([processingStatus])
+  @@index([fileHash])
+  @@map("tax_documents")
+}
+
+model TaxForm {
+  id              String   @id @default(cuid())
+  documentId      String   @map("document_id")
+  document        TaxDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  formType        String   @map("form_type") // "1040" | "W-2" | "1099-DIV" | "Schedule_A" | "K-1_1065" | etc.
+  taxYear         Int      @map("tax_year")
+
+  // Line-by-line data with confidence (JSON)
+  fieldData       String   @map("field_data") // { "line_1_wages": { value: 150000, confidence: 0.98, sourcePage: 1 }, ... }
+
+  // Computed aggregates (from fieldData, NEVER from AI)
+  agi             Float?
+  totalIncome     Float?   @map("total_income")
+  adjustments     Float?
+  deductions      Float?
+  taxableIncome   Float?   @map("taxable_income")
+  totalTax        Float?   @map("total_tax")
+
+  // Versioning (immutable)
+  checksum        String?
+  version         Int      @default(1)
+  supersededBy    String?  @map("superseded_by")
+
+  extractedAt     DateTime @default(now()) @map("extracted_at")
+  verifiedAt      DateTime? @map("verified_at")
+  verifiedBy      String?  @map("verified_by")
+
+  scenarios       TaxScenario[] @relation("BaselineForm")
+  auditLogs       AuditLog[]
+
+  @@index([householdId, taxYear, formType])
+  @@index([documentId])
+  @@map("tax_forms")
+}
+
+model TaxScenario {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  planId          String?  @map("plan_id")
+  plan            Plan?    @relation(fields: [planId], references: [id], onDelete: SetNull)
+
+  name            String
+  type            String   // "baseline" | "opportunity" | "what_if" | "multi_year"
+  description     String?
+  taxYear         Int      @map("tax_year")
+
+  baselineFormId  String?  @map("baseline_form_id")
+  baselineForm    TaxForm? @relation("BaselineForm", fields: [baselineFormId], references: [id], onDelete: SetNull)
+
+  // Scenario inputs (overrides to baseline)
+  adjustments     String   // JSON: { "rothConversion": 50000, "charitableGift": 10000, ... }
+
+  // Computed results (DETERMINISTIC calculation)
+  results         String   // JSON: { federal: {...}, state: {...}, summary: {...} }
+
+  // Comparison to baseline
+  vsBaseline      String?  @map("vs_baseline") // JSON: { taxSavings: -5000, effectiveRateChange: -1.2, ... }
+
+  calculationEngine String @default("v1") @map("calculation_engine")
+  calculatedAt    DateTime @default(now()) @map("calculated_at")
+  calculatedBy    String?  @map("calculated_by")
+
+  status          String   @default("draft") // "draft" | "published" | "archived"
+  publishedAt     DateTime? @map("published_at")
+
+  opportunities   TaxOpportunity[]
+  deliverables    TaxDeliverable[]
+  auditLogs       AuditLog[]
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  createdBy       String   @map("created_by")
+
+  @@index([householdId, taxYear])
+  @@index([planId])
+  @@index([status])
+  @@map("tax_scenarios")
+}
+
+model TaxOpportunity {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  scenarioId      String?  @map("scenario_id")
+  scenario        TaxScenario? @relation(fields: [scenarioId], references: [id], onDelete: SetNull)
+
+  category        String   // "roth_conversion" | "cap_gains_mgmt" | "charitable_gifting" | "niit_planning" | "withholding" | "rmd_sequencing"
+  priority        String   // "high" | "medium" | "low"
+  status          String   @default("identified") @map("status") // "identified" | "reviewed" | "recommended" | "in_progress" | "implemented" | "dismissed"
+
+  detectedAt      DateTime @default(now()) @map("detected_at")
+  detectedBy      String   @default("system") @map("detected_by")
+  detectionLogic  String?  @map("detection_logic")
+
+  title           String
+  description     String
+  estimatedValue  Float?   @map("estimated_value")
+  confidence      String   // "high" | "medium" | "low"
+
+  analysisData    String   @map("analysis_data") // JSON: { currentAgi: 150000, marginalRate: 0.24, conversionSpace: 50000, ... }
+
+  // AI-generated content (with citations)
+  aiSummary       String?  @map("ai_summary")
+  aiCitations     String?  @map("ai_citations") // JSON: [{ source: "IRS Pub 590-B", section: "..." }]
+  aiGeneratedAt   DateTime? @map("ai_generated_at")
+
+  // Workflow
+  recommendedAt   DateTime? @map("recommended_at")
+  recommendedBy   String?  @map("recommended_by")
+  implementedAt   DateTime? @map("implemented_at")
+  implementedBy   String?  @map("implemented_by")
+  dismissedAt     DateTime? @map("dismissed_at")
+  dismissedReason String?  @map("dismissed_reason")
+
+  deliverables    TaxDeliverable[]
+  auditLogs       AuditLog[]
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, category])
+  @@index([status])
+  @@index([priority])
+  @@map("tax_opportunities")
+}
+
+model TaxDeliverable {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  scenarioId      String?  @map("scenario_id")
+  scenario        TaxScenario? @relation(fields: [scenarioId], references: [id], onDelete: SetNull)
+  opportunityId   String?  @map("opportunity_id")
+  opportunity     TaxOpportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+
+  type            String   // "tax_snapshot" | "client_letter" | "advisor_summary" | "scenario_comparison" | "cpa_memo"
+  format          String   // "pdf" | "docx"
+
+  generatedAt     DateTime @default(now()) @map("generated_at")
+  generatedBy     String   @map("generated_by")
+  generationInputs String  @map("generation_inputs") // JSON snapshot
+
+  version         Int      @default(1)
+  supersededBy    String?  @map("superseded_by")
+
+  fileUrl         String?  @map("file_url")
+  fileSize        Int?     @map("file_size")
+  checksum        String?
+
+  title           String
+  summary         String?
+
+  containsPHI     Boolean  @default(true) @map("contains_phi")
+  retentionPolicy String   @default("7_years") @map("retention_policy")
+
+  status          String   @default("draft") // "draft" | "finalized" | "sent" | "archived"
+  finalizedAt     DateTime? @map("finalized_at")
+  sentAt          DateTime? @map("sent_at")
+  sentTo          String?  @map("sent_to")
+
+  auditLogs       AuditLog[]
+
+  @@index([householdId, type])
+  @@index([scenarioId])
+  @@index([status])
+  @@map("tax_deliverables")
+}
+
+model AuditLog {
+  id              String   @id @default(cuid())
+
+  entityType      String   @map("entity_type") // "TaxDocument" | "TaxForm" | "TaxScenario" | "TaxOpportunity" | "TaxDeliverable"
+  entityId        String   @map("entity_id")
+
+  documentId      String?  @map("document_id")
+  document        TaxDocument? @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  formId          String?  @map("form_id")
+  form            TaxForm? @relation(fields: [formId], references: [id], onDelete: Cascade)
+  scenarioId      String?  @map("scenario_id")
+  scenario        TaxScenario? @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  opportunityId   String?  @map("opportunity_id")
+  opportunity     TaxOpportunity? @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  deliverableId   String?  @map("deliverable_id")
+  deliverable     TaxDeliverable? @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+
+  action          String   // "created" | "updated" | "deleted" | "ocr_processed" | "reviewed" | "approved" | "calculated" | "sent"
+  actor           String   // advisorId or "system"
+  actorType       String   @map("actor_type") // "advisor" | "system" | "client"
+
+  changesBefore   String?  @map("changes_before") // JSON snapshot
+  changesAfter    String?  @map("changes_after") // JSON snapshot
+  metadata        String?  // JSON: { reason: "...", notes: "..." }
+
+  timestamp       DateTime @default(now())
+
+  ipAddress       String?  @map("ip_address")
+  userAgent       String?  @map("user_agent")
+  sessionId       String?  @map("session_id")
+
+  @@index([entityType, entityId])
+  @@index([documentId])
+  @@index([formId])
+  @@index([scenarioId])
+  @@index([actor])
+  @@index([timestamp])
+  @@map("audit_logs")
+}
+
+// ==================== PHASE 2: INTAKE & REVIEW MODELS ====================
+// Sprint 1-6 Models: Document pages, extracted fields, approved facts, review actions
+
+model DocumentPage {
+  id              String   @id @default(cuid())
+  documentId      String   @map("document_id")
+  document        TaxDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  pageNumber      Int      @map("page_number")
+  pageImageUrl    String?  @map("page_image_url") // Rendered page image
+  thumbnailUrl    String?  @map("thumbnail_url")
+
+  // OCR Results
+  rawText         String?  @map("raw_text") // Full page text
+  textLayerJson   String?  @map("text_layer_json") // Coordinate-mapped text
+  ocrConfidence   Float?   @map("ocr_confidence")
+
+  // Layout Analysis
+  layoutType      String?  @map("layout_type") // "form" | "statement" | "letter" | "table"
+  detectedFields  String?  @map("detected_fields") // JSON: preliminary field locations
+
+  // Preprocessing
+  isRotated       Boolean  @default(false) @map("is_rotated")
+  rotationDegrees Int?     @map("rotation_degrees")
+  isDeskewed      Boolean  @default(false) @map("is_deskewed")
+
+  width           Int?
+  height          Int?
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  extractedFields ExtractedField[]
+
+  @@index([documentId, pageNumber])
+  @@map("document_pages")
+}
+
+model ExtractedField {
+  id              String   @id @default(cuid())
+
+  // Source linkage
+  documentId      String   @map("document_id")
+  document        TaxDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  pageId          String?  @map("page_id")
+  page            DocumentPage? @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  householdId     String   @map("household_id")
+
+  // Field identity
+  formType        String   @map("form_type") // "1040" | "W-2" | "1099-DIV" | etc.
+  taxYear         Int      @map("tax_year")
+  fieldName       String   @map("field_name") // Canonical field name (e.g., "qualified_dividends")
+  fieldLabel      String?  @map("field_label") // Display label (e.g., "Qualified Dividends")
+
+  // Extracted values
+  rawValue        String?  @map("raw_value") // As extracted from OCR
+  normalizedValue String?  @map("normalized_value") // Cleaned/parsed value
+  valueType       String   @map("value_type") // "currency" | "integer" | "text" | "date" | "boolean"
+
+  // Source provenance
+  pageNumber      Int?     @map("page_number")
+  sourceBbox      String?  @map("source_bbox") // JSON: {x, y, width, height}
+  sourceSnippet   String?  @map("source_snippet") // Text snippet showing context
+
+  // Confidence & Quality
+  extractionMethod String  @map("extraction_method") // "rules" | "layout" | "ocr" | "ai"
+  confidenceScore Float    @map("confidence_score") // 0.0 to 1.0
+  confidenceTier  String   @map("confidence_tier") // "high" | "medium" | "low"
+
+  // Status & Review
+  status          String   @default("extracted") @map("status") // "extracted" | "approved" | "edited" | "rejected" | "uncertain"
+  reviewedAt      DateTime? @map("reviewed_at")
+  reviewedBy      String?  @map("reviewed_by")
+
+  // Linking to approved fact
+  approvedFactId  String?  @map("approved_fact_id")
+  approvedFact    ApprovedFact? @relation(fields: [approvedFactId], references: [id], onDelete: SetNull)
+
+  // Versioning
+  supersededBy    String?  @map("superseded_by") // If this extraction was replaced
+
+  extractedAt     DateTime @default(now()) @map("extracted_at")
+
+  reviewActions   ReviewAction[]
+
+  @@index([householdId, taxYear])
+  @@index([documentId, formType])
+  @@index([fieldName, taxYear])
+  @@index([confidenceTier])
+  @@index([status])
+  @@map("extracted_fields")
+}
+
+model ApprovedFact {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  // Canonical field identity
+  canonicalField  String   @map("canonical_field") // From taxonomy: "agi" | "qualified_dividends" | "filing_status" | etc.
+  fieldCategory   String   @map("field_category") // "income" | "deductions" | "retirement" | "identity" | etc.
+
+  // Value
+  value           String   // Stored as string, type indicates interpretation
+  valueType       String   @map("value_type") // "currency" | "integer" | "text" | "date" | "boolean"
+  taxYear         Int      @map("tax_year")
+
+  // Source tracking
+  sourceFieldIds  String   @map("source_field_ids") // JSON array of ExtractedField IDs
+  sourceSummary   String?  @map("source_summary") // Human-readable source description
+
+  // Approval metadata
+  approvalStatus  String   @default("approved") @map("approval_status") // "approved" | "provisional" | "disputed"
+  approvedBy      String   @map("approved_by") // advisorId
+  approvedAt      DateTime @default(now()) @map("approved_at")
+
+  // Confidence rollup
+  confidenceScore Float?   @map("confidence_score") // Aggregate from source fields
+
+  // Notes & Context
+  notes           String?
+  context         String? // Additional context (e.g., "includes W-2 + 1099 income")
+
+  // Versioning
+  version         Int      @default(1)
+  supersededBy    String?  @map("superseded_by")
+  supersededAt    DateTime? @map("superseded_at")
+
+  // Relations
+  sourceFields    ExtractedField[]
+  conflicts       ConflictRecord[] @relation("ConflictedFacts")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, taxYear])
+  @@index([canonicalField, taxYear])
+  @@index([fieldCategory])
+  @@index([approvalStatus])
+  @@map("approved_facts")
+}
+
+model ReviewAction {
+  id              String   @id @default(cuid())
+
+  // What was reviewed
+  extractedFieldId String  @map("extracted_field_id")
+  extractedField  ExtractedField @relation(fields: [extractedFieldId], references: [id], onDelete: Cascade)
+
+  // Action taken
+  action          String   // "approved" | "edited" | "rejected" | "marked_uncertain" | "requested_second_review" | "merged" | "suppressed"
+
+  // Actor
+  reviewerId      String   @map("reviewer_id")
+  reviewerName    String?  @map("reviewer_name")
+
+  // Changes
+  valueBefore     String?  @map("value_before")
+  valueAfter      String?  @map("value_after")
+  reason          String?
+  notes           String?
+
+  // Context
+  ipAddress       String?  @map("ip_address")
+  userAgent       String?  @map("user_agent")
+
+  timestamp       DateTime @default(now())
+
+  @@index([extractedFieldId])
+  @@index([reviewerId])
+  @@index([action])
+  @@index([timestamp])
+  @@map("review_actions")
+}
+
+model ConflictRecord {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  // Conflict type
+  conflictType    String   @map("conflict_type") // "duplicate_value" | "year_mismatch" | "logical_inconsistency" | "missing_schedule" | "staleness" | "name_mismatch"
+  severity        String   // "critical" | "warning" | "info"
+
+  // What conflicts
+  fieldName       String?  @map("field_name")
+  taxYear         Int?     @map("tax_year")
+
+  // Conflicting facts
+  fact1Id         String?  @map("fact_1_id")
+  fact1           ApprovedFact? @relation("ConflictedFacts", fields: [fact1Id], references: [id], onDelete: SetNull)
+  fact2Id         String?  @map("fact_2_id")
+
+  // Description
+  title           String
+  description     String
+  suggestion      String? // How to resolve
+
+  // Resolution
+  status          String   @default("open") // "open" | "reviewing" | "resolved" | "dismissed"
+  resolvedAt      DateTime? @map("resolved_at")
+  resolvedBy      String?  @map("resolved_by")
+  resolutionNotes String?  @map("resolution_notes")
+
+  detectedAt      DateTime @default(now()) @map("detected_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, status])
+  @@index([conflictType])
+  @@index([severity])
+  @@map("conflict_records")
+}
+
+model MissingDataItem {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  household       Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  // What's missing
+  itemType        String   @map("item_type") // "document" | "field" | "schedule"
+  itemName        String   @map("item_name") // "prior_year_return" | "spouse_w2" | "schedule_d"
+  itemCategory    String   @map("item_category") // "income" | "deductions" | "retirement" | "identity"
+
+  // Context
+  taxYear         Int?     @map("tax_year")
+  priority        String   @default("medium") // "critical" | "high" | "medium" | "low"
+  reason          String   // Why it's needed
+
+  // Status
+  status          String   @default("missing") // "missing" | "requested" | "received" | "dismissed"
+  requestedAt     DateTime? @map("requested_at")
+  receivedAt      DateTime? @map("received_at")
+  dismissedAt     DateTime? @map("dismissed_at")
+
+  notes           String?
+
+  detectedAt      DateTime @default(now()) @map("detected_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, status])
+  @@index([itemType])
+  @@index([priority])
+  @@map("missing_data_items")
 }

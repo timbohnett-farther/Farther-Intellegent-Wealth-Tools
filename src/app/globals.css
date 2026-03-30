@@ -278,6 +278,23 @@
   }
 }
 
+/* ── LIGHT MODE THEME OVERRIDES ───────────────────────────────────── */
+:root:not(.dark) {
+  --sidebar-bg: #FFFFFF;
+  --sidebar-border: rgba(229, 231, 235, 1);
+  --color-charcoal-50: #111827;
+  --color-charcoal-100: #1F2937;
+  --color-charcoal-200: #374151;
+  --color-charcoal-900: #FFFFFF;
+  --color-charcoal-800: #F9FAFB;
+  --color-charcoal-700: #F3F4F6;
+}
+
+.dark:root {
+  --sidebar-bg: rgba(42, 42, 42, 0.95);
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+}
+
 /* ── BASE BORDER COLOR ───────────────────────────────────────────── */
 @layer base {
   *,
@@ -285,7 +302,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: var(--sidebar-border, rgba(255, 255, 255, 0.06));
   }
 }
 
