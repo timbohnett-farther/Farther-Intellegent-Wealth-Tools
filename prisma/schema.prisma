@@ -90,6 +90,9 @@ model Household {
   conflictRecords  ConflictRecord[]
   missingDataItems MissingDataItem[]
 
+  // Phase 3: Deterministic Tax Calculation relations
+  taxInputSnapshots TaxInputSnapshot[]
+
   @@map("households")
 }
 
@@ -1900,4 +1903,319 @@ model MissingDataItem {
   @@index([itemType])
   @@index([priority])
   @@map("missing_data_items")
+}
+
+// ==================== PHASE 3: DETERMINISTIC TAX CALCULATION ENGINE ====================
+// Sprint 1-10 Models: Input snapshots, validation, rules, calculation runs, traces, scenarios, comparisons
+
+model TaxInputSnapshot {
+  id                    String   @id @default(cuid())
+  householdId           String   @map("household_id")
+  household             Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  taxYear               Int      @map("tax_year")
+  filingStatus          String   @map("filing_status") // "single" | "married_filing_jointly" | etc.
+
+  // Taxpayer information
+  taxpayers             String   // JSON: Taxpayer[]
+
+  // Complete tax inputs (JSON serialization of TaxInputs interface)
+  inputs                String   // JSON: all income, deductions, credits, payments
+
+  // Data quality
+  missingInputs         String?  @map("missing_inputs") // JSON: string[]
+  warnings              String?  // JSON: string[]
+
+  // Data lineage
+  sourceFactVersions    String   @map("source_fact_versions") // JSON: Record<string, number>
+
+  // Approval
+  approvedBy            String?  @map("approved_by")
+  approvedAt            DateTime? @map("approved_at")
+
+  // Relations
+  validations           TaxInputValidation[]
+  calculationRuns       CalculationRun[]
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId, taxYear])
+  @@index([filingStatus])
+  @@map("tax_input_snapshots")
+}
+
+model TaxInputValidation {
+  id                    String   @id @default(cuid())
+  snapshotId            String   @map("snapshot_id")
+  snapshot              TaxInputSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+
+  pass                  Boolean
+  canProceed            Boolean  @map("can_proceed") // false if any hard_fail
+
+  // Summary stats
+  totalRules            Int      @map("total_rules")
+  passCount             Int      @map("pass_count")
+  passWithWarningCount  Int      @map("pass_with_warning_count")
+  softFailCount         Int      @map("soft_fail_count")
+  hardFailCount         Int      @map("hard_fail_count")
+
+  // Violations
+  violations            String   // JSON: ValidationViolation[]
+
+  validatedAt           DateTime @default(now()) @map("validated_at")
+
+  @@index([snapshotId])
+  @@index([canProceed])
+  @@map("tax_input_validations")
+}
+
+model TaxRulesPackage {
+  id                    String   @id @default(cuid())
+
+  rulesVersion          String   @unique @map("rules_version") // "2025_federal_v1"
+  taxYear               Int      @map("tax_year")
+  jurisdiction          String   @default("federal") // "federal" | "state:CA" | etc.
+
+  // Complete rules JSON (TaxRulesPackage interface)
+  rulesJson             String   @map("rules_json")
+
+  // Integrity
+  checksum              String   // SHA-256 of rulesJson
+
+  // Metadata
+  publishedAt           DateTime @map("published_at")
+  publishedBy           String   @map("published_by")
+  isActive              Boolean  @default(true) @map("is_active")
+
+  // Relations
+  calculationRuns       CalculationRun[]
+
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([taxYear, jurisdiction, isActive])
+  @@map("tax_rules_packages")
+}
+
+model CalculationRun {
+  id                    String   @id @default(cuid())
+
+  // Input
+  snapshotId            String   @map("snapshot_id")
+  snapshot              TaxInputSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  householdId           String   @map("household_id")
+  taxYear               Int      @map("tax_year")
+
+  // Rules
+  rulesVersion          String   @map("rules_version")
+  rulesPackage          TaxRulesPackage @relation(fields: [rulesVersion], references: [rulesVersion])
+
+  // Run type
+  runType               String   @map("run_type") // "baseline" | "scenario"
+
+  // Output
+  outputSnapshotId      String   @unique @map("output_snapshot_id")
+  outputSnapshot        TaxOutputSnapshot @relation(fields: [outputSnapshotId], references: [id], onDelete: Cascade)
+
+  // Metadata
+  outputHash            String   @map("output_hash") // SHA-256
+  computeTimeMs         Int      @map("compute_time_ms")
+  warningCount          Int      @default(0) @map("warning_count")
+
+  // Supersede chain
+  supersededBy          String?  @map("superseded_by")
+  supersededAt          DateTime? @map("superseded_at")
+  supersededReason      String?  @map("superseded_reason") // "fact_update" | "rules_update" | "manual_recalc"
+
+  // Relations
+  trace                 CalculationTrace?
+  scenarioRuns          ScenarioRun[] @relation("BaselineRun")
+  comparisons           RunComparison[] @relation("BaselineComparisons")
+  scenarioComparisons   RunComparison[] @relation("ScenarioComparisons")
+  recommendationSignals RecommendationSignals?
+  auditEvents           CalculationAuditEvent[]
+
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([householdId, taxYear])
+  @@index([runType])
+  @@index([rulesVersion])
+  @@index([supersededBy])
+  @@map("calculation_runs")
+}
+
+model TaxOutputSnapshot {
+  id                    String   @id @default(cuid())
+
+  // Complete output (TaxOutput interface)
+  summaryJson           String   @map("summary_json") // TaxSummary
+  incomeBreakdownJson   String   @map("income_breakdown_json")
+  deductionBreakdownJson String  @map("deduction_breakdown_json")
+  taxCalculationJson    String   @map("tax_calculation_json")
+  creditsJson           String   @map("credits_json")
+  paymentsJson          String   @map("payments_json")
+
+  // Quick access fields (denormalized for query performance)
+  agi                   Float
+  taxableIncome         Float    @map("taxable_income")
+  totalTax              Float    @map("total_tax")
+  refundOrBalanceDue    Float    @map("refund_or_balance_due")
+  effectiveTaxRate      Float    @map("effective_tax_rate")
+  marginalTaxRate       Float    @map("marginal_tax_rate")
+
+  // Warnings
+  warnings              String?  // JSON: string[]
+
+  // Relations
+  calculationRun        CalculationRun?
+
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([agi])
+  @@index([totalTax])
+  @@map("tax_output_snapshots")
+}
+
+model CalculationTrace {
+  id                    String   @id @default(cuid())
+  runId                 String   @unique @map("run_id")
+  run                   CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  // Trace steps (TraceStep[])
+  stepsJson             String   @map("steps_json")
+  totalSteps            Int      @map("total_steps")
+
+  completedAt           DateTime @default(now()) @map("completed_at")
+
+  @@index([runId])
+  @@map("calculation_traces")
+}
+
+model ScenarioOverrideSet {
+  id                    String   @id @default(cuid())
+  householdId           String   @map("household_id")
+  taxYear               Int      @map("tax_year")
+
+  name                  String
+  description           String?
+
+  // Overrides (ScenarioOverride[])
+  overridesJson         String   @map("overrides_json")
+
+  // Metadata
+  createdBy             String   @map("created_by")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  scenarioRuns          ScenarioRun[]
+
+  @@index([householdId, taxYear])
+  @@map("scenario_override_sets")
+}
+
+model ScenarioRun {
+  id                    String   @id @default(cuid())
+
+  // Links
+  baselineRunId         String   @map("baseline_run_id")
+  baselineRun           CalculationRun @relation("BaselineRun", fields: [baselineRunId], references: [id], onDelete: Cascade)
+
+  overrideSetId         String   @map("override_set_id")
+  overrideSet           ScenarioOverrideSet @relation(fields: [overrideSetId], references: [id], onDelete: Cascade)
+
+  scenarioRunId         String   @map("scenario_run_id") // Points to CalculationRun with runType="scenario"
+
+  // Context
+  householdId           String   @map("household_id")
+  taxYear               Int      @map("tax_year")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([baselineRunId])
+  @@index([overrideSetId])
+  @@index([householdId, taxYear])
+  @@map("scenario_runs")
+}
+
+model RunComparison {
+  id                    String   @id @default(cuid())
+
+  // Runs being compared
+  baselineRunId         String   @map("baseline_run_id")
+  baselineRun           CalculationRun @relation("BaselineComparisons", fields: [baselineRunId], references: [id], onDelete: Cascade)
+
+  scenarioRunId         String   @map("scenario_run_id")
+  scenarioRun           CalculationRun @relation("ScenarioComparisons", fields: [scenarioRunId], references: [id], onDelete: Cascade)
+
+  // Context
+  householdId           String   @map("household_id")
+  taxYear               Int      @map("tax_year")
+
+  // Summary diff
+  summaryDiffJson       String   @map("summary_diff_json") // Quick deltas (AGI, tax, etc.)
+
+  // Field-by-field diffs (FieldDiff[])
+  fieldDiffsJson        String   @map("field_diffs_json")
+
+  // Interpretation tags
+  interpretations       String   // JSON: InterpretationTag[]
+
+  // AI narrative
+  narrative             String?
+  narrativeGeneratedAt  DateTime? @map("narrative_generated_at")
+
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  @@index([baselineRunId, scenarioRunId])
+  @@index([householdId, taxYear])
+  @@map("run_comparisons")
+}
+
+model RecommendationSignals {
+  id                    String   @id @default(cuid())
+  runId                 String   @unique @map("run_id")
+  run                   CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  householdId           String   @map("household_id")
+  taxYear               Int      @map("tax_year")
+
+  // Complete signals (RecommendationSignals interface)
+  signalsJson           String   @map("signals_json")
+
+  // Quick access flags (denormalized)
+  niitApplies           Boolean  @map("niit_applies")
+  irmaaB1               Boolean  @map("irmaa_b1")
+  estimatedTaxShortfall Float?   @map("estimated_tax_shortfall")
+
+  computedAt            DateTime @default(now()) @map("computed_at")
+
+  @@index([runId])
+  @@index([householdId, taxYear])
+  @@map("recommendation_signals")
+}
+
+model CalculationAuditEvent {
+  id                    String   @id @default(cuid())
+
+  eventId               String   @unique @map("event_id")
+  eventType             String   @map("event_type") // "calculation_run.completed" | "calculation_run.superseded" | etc.
+
+  // Related run
+  runId                 String?  @map("run_id")
+  run                   CalculationRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  // Event payload
+  payloadJson           String   @map("payload_json")
+
+  // Metadata
+  source                String   @default("tax-engine")
+  triggeredBy           String?  @map("triggered_by")
+
+  timestamp             DateTime @default(now())
+
+  @@index([eventType])
+  @@index([runId])
+  @@index([timestamp])
+  @@map("calculation_audit_events")
 }
