@@ -21,6 +21,10 @@ import { IncomeAggregationModule } from './income-aggregation';
 import { SocialSecurityTaxabilityModule } from './social-security-taxability';
 import { AdjustmentsToIncomeModule } from './adjustments-to-income';
 import { AGIComposerModule } from './agi-composer';
+import { ItemizedDeductionsModule } from './itemized-deductions';
+import { DeductionChooserModule } from './deduction-chooser';
+import { QBIDeductionModule } from './qbi-deduction';
+import { TaxableIncomeComposerModule } from './taxable-income-composer';
 
 /**
  * Registry of all available calculation modules
@@ -31,6 +35,10 @@ const ALL_MODULES: TaxCalculationModule[] = [
   SocialSecurityTaxabilityModule,
   AdjustmentsToIncomeModule,
   AGIComposerModule,
+  ItemizedDeductionsModule,
+  DeductionChooserModule,
+  QBIDeductionModule,
+  TaxableIncomeComposerModule,
 ];
 
 /**

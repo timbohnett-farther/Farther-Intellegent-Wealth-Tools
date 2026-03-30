@@ -34,6 +34,10 @@ describe('Tax Calculation Orchestrator', () => {
       expect(modules).toContain('social_security_taxability');
       expect(modules).toContain('adjustments_to_income');
       expect(modules).toContain('agi_composer');
+      expect(modules).toContain('itemized_deductions');
+      expect(modules).toContain('deduction_chooser');
+      expect(modules).toContain('qbi_deduction');
+      expect(modules).toContain('taxable_income_composer');
     });
 
     it('should validate module dependencies (no circular dependencies)', () => {
@@ -65,7 +69,7 @@ describe('Tax Calculation Orchestrator', () => {
       const result = await runTaxCalculation(snapshot, FEDERAL_RULES_2025_V1);
 
       // Verify correct number of modules executed
-      expect(result.executionOrder).toHaveLength(5);
+      expect(result.executionOrder).toHaveLength(9);
 
       // Verify required dependencies are satisfied
       expect(result.executionOrder[0]).toBe('filing_status_resolver'); // Must be first (no dependencies)
@@ -78,6 +82,15 @@ describe('Tax Calculation Orchestrator', () => {
       expect(result.executionOrder.indexOf('agi_composer')).toBeGreaterThan(
         result.executionOrder.indexOf('adjustments_to_income')
       );
+      expect(result.executionOrder.indexOf('deduction_chooser')).toBeGreaterThan(
+        result.executionOrder.indexOf('itemized_deductions')
+      );
+      expect(result.executionOrder.indexOf('taxable_income_composer')).toBeGreaterThan(
+        result.executionOrder.indexOf('deduction_chooser')
+      );
+      expect(result.executionOrder.indexOf('taxable_income_composer')).toBeGreaterThan(
+        result.executionOrder.indexOf('qbi_deduction')
+      );
 
       // Verify all expected modules ran
       expect(result.executionOrder).toContain('filing_status_resolver');
@@ -85,6 +98,10 @@ describe('Tax Calculation Orchestrator', () => {
       expect(result.executionOrder).toContain('social_security_taxability');
       expect(result.executionOrder).toContain('adjustments_to_income');
       expect(result.executionOrder).toContain('agi_composer');
+      expect(result.executionOrder).toContain('itemized_deductions');
+      expect(result.executionOrder).toContain('deduction_chooser');
+      expect(result.executionOrder).toContain('qbi_deduction');
+      expect(result.executionOrder).toContain('taxable_income_composer');
     });
 
     it('should execute specified modules only', async () => {
@@ -431,8 +448,10 @@ describe('Tax Calculation Orchestrator', () => {
       expect(result.context.intermediates.grossIncome).toBe(76000);
       expect(result.context.intermediates.adjustmentsToIncome).toBe(6000);
       expect(result.context.intermediates.agi).toBe(70000);
-      expect(result.executionOrder).toHaveLength(5);
-      expect(result.context.traceSteps).toHaveLength(5);
+      expect(result.context.intermediates.deductionType).toBe('standard');
+      expect(result.context.intermediates.taxableIncome).toBe(55000);
+      expect(result.executionOrder).toHaveLength(9);
+      expect(result.context.traceSteps).toHaveLength(9);
     });
 
     it('should execute complete pipeline for retiree with Social Security', async () => {
@@ -441,6 +460,7 @@ describe('Tax Calculation Orchestrator', () => {
           pensionIncomeTaxable: 40000,
           socialSecurityTotal: 24000,
           taxableInterest: 3000,
+          ordinaryDividends: 2000,
           qualifiedDividends: 2000,
         },
         'married_filing_jointly',
@@ -458,6 +478,7 @@ describe('Tax Calculation Orchestrator', () => {
       expect(result.context.intermediates.socialSecurityGross).toBe(24000);
       expect(result.context.intermediates.taxableSocialSecurity).toBeGreaterThan(0);
       expect(result.context.intermediates.agi).toBeGreaterThan(0);
+      expect(result.context.intermediates.taxableIncome).toBeGreaterThan(0);
     });
 
     it('should create complete trace for all executed modules', async () => {
@@ -468,7 +489,7 @@ describe('Tax Calculation Orchestrator', () => {
 
       const result = await runTaxCalculation(snapshot, FEDERAL_RULES_2025_V1);
 
-      expect(result.context.traceSteps).toHaveLength(5);
+      expect(result.context.traceSteps).toHaveLength(9);
 
       // Verify trace step structure
       for (const step of result.context.traceSteps) {
