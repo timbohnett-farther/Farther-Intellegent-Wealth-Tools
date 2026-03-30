@@ -51,217 +51,219 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   SEMANTIC COLOR VARIABLES — Light (default) / Dark (.dark on <html>)
-   Per BRANDING.md spec
+   SEMANTIC COLOR VARIABLES — Billing Portal Theme
+   Light (:root) / Dark (.dark on <html>)
+   Palette: Clay · Limestone · Slate Blue · Serene Aqua · Granite Blue
+   Financial Sentiment: Sage Green · Terra Red · Warm Bronze · Stone Gray
    ══════════════════════════════════════════════════════════════════════ */
 :root {
   /* ── Body ── */
-  --body-gradient: linear-gradient(165deg, #FFFEF4 0%, #F7F4F0 40%, #D4DFE5 100%);
+  --body-gradient: linear-gradient(165deg, #F8F4F0 0%, #F2EDE7 40%, #E8E0D8 100%);
 
   /* ── Surfaces ── */
-  --s-surface: #FFFEF4;
-  --s-surface-soft: rgba(255, 254, 244, 0.96);
-  --s-surface-strong: #F7F4F0;
-  --s-surface-subtle: rgba(212, 223, 229, 0.40);
-  --s-surface-brand: #4E7082;
+  --s-surface: #FAFAF8;
+  --s-surface-soft: rgba(255, 255, 255, 0.92);
+  --s-surface-strong: #F0EBE5;
+  --s-surface-subtle: rgba(159, 142, 117, 0.10);
+  --s-surface-brand: #9F8E75;
 
   /* ── Text ── */
-  --s-text: #374E59;
-  --s-text-subtle: rgba(55, 78, 89, 0.85);
-  --s-text-muted: rgba(89, 89, 89, 0.75);
-  --s-text-faint: rgba(137, 137, 137, 0.55);
-  --s-text-onBrand: #FFFEF4;
+  --s-text: #2C3B4E;
+  --s-text-subtle: rgba(44, 59, 78, 0.82);
+  --s-text-muted: #7C8D94;
+  --s-text-faint: rgba(124, 141, 148, 0.55);
+  --s-text-onBrand: #F8F4F0;
 
   /* ── Borders ── */
-  --s-border: rgba(57, 78, 89, 0.12);
-  --s-border-subtle: rgba(57, 78, 89, 0.10);
-  --s-border-strong: rgba(57, 78, 89, 0.18);
-  --s-border-brand: rgba(78, 112, 130, 0.35);
+  --s-border: rgba(44, 59, 78, 0.14);
+  --s-border-subtle: rgba(44, 59, 78, 0.10);
+  --s-border-strong: rgba(44, 59, 78, 0.20);
+  --s-border-brand: rgba(159, 142, 117, 0.35);
 
   /* ── Accents ── */
-  --s-accent-primary: #4E7082;
-  --s-accent-primarySoft: #A8CED3;
-  --s-accent-secondary: #99B6C3;
-  --s-accent-luxury: #8A5C4F;
+  --s-accent-primary: #9F8E75;
+  --s-accent-primarySoft: #D1B6A0;
+  --s-accent-secondary: #94B5C3;
+  --s-accent-luxury: #B17B5E;
 
   /* ── Component: Nav ── */
-  --s-nav-bg: rgba(247, 244, 240, 0.92);
-  --s-sidebar-bg: rgba(247, 244, 240, 0.95);
-  --s-topbar-bg: rgba(247, 244, 240, 0.92);
-  --s-nav-active-bg: rgba(78, 112, 130, 0.12);
-  --s-nav-active-text: #4E7082;
-  --s-nav-active-border: #4E7082;
+  --s-nav-bg: rgba(248, 244, 240, 0.94);
+  --s-sidebar-bg: rgba(248, 244, 240, 0.96);
+  --s-topbar-bg: rgba(248, 244, 240, 0.94);
+  --s-nav-active-bg: rgba(159, 142, 117, 0.12);
+  --s-nav-active-text: #9F8E75;
+  --s-nav-active-border: #9F8E75;
 
   /* ── Component: Card ── */
-  --s-card-bg: rgba(255, 254, 244, 0.96);
-  --s-card-border: rgba(57, 78, 89, 0.10);
-  --s-card-shadow: 0 8px 24px rgba(55, 78, 89, 0.10);
-  --s-card-hover-border: rgba(78, 112, 130, 0.25);
-  --s-card-hover-shadow: 0 12px 32px rgba(55, 78, 89, 0.15);
+  --s-card-bg: rgba(255, 255, 255, 0.92);
+  --s-card-border: rgba(44, 59, 78, 0.10);
+  --s-card-shadow: 0 8px 24px rgba(44, 59, 78, 0.08);
+  --s-card-hover-border: rgba(159, 142, 117, 0.30);
+  --s-card-hover-shadow: 0 12px 32px rgba(44, 59, 78, 0.12);
 
   /* ── Component: Input ── */
-  --s-input-bg: rgba(255, 254, 244, 0.9);
-  --s-input-border: rgba(57, 78, 89, 0.18);
-  --s-input-placeholder: rgba(89, 89, 89, 0.6);
-  --s-focus-ring: 0 0 0 3px rgba(78, 112, 130, 0.20);
-  --s-focus-border: #4E7082;
+  --s-input-bg: rgba(255, 255, 255, 0.88);
+  --s-input-border: rgba(44, 59, 78, 0.18);
+  --s-input-placeholder: rgba(124, 141, 148, 0.60);
+  --s-focus-ring: 0 0 0 3px rgba(93, 204, 219, 0.20);
+  --s-focus-border: #5DCCDB;
 
   /* ── Component: Button ── */
-  --s-btn-secondary-bg: rgba(212, 223, 229, 0.7);
-  --s-btn-secondary-text: #374E59;
-  --s-btn-secondary-border: rgba(57, 78, 89, 0.12);
-  --s-btn-secondary-hover-border: rgba(78, 112, 130, 0.35);
-  --s-btn-ghost-text: #4E7082;
-  --s-btn-ghost-hover-bg: rgba(212, 223, 229, 0.45);
+  --s-btn-secondary-bg: rgba(159, 142, 117, 0.12);
+  --s-btn-secondary-text: #2C3B4E;
+  --s-btn-secondary-border: rgba(44, 59, 78, 0.12);
+  --s-btn-secondary-hover-border: rgba(159, 142, 117, 0.40);
+  --s-btn-ghost-text: #9F8E75;
+  --s-btn-ghost-hover-bg: rgba(159, 142, 117, 0.12);
 
   /* ── Shadows ── */
-  --s-shadow-glass: 0 8px 24px rgba(55, 78, 89, 0.10);
-  --s-shadow-glass-hover: 0 12px 32px rgba(55, 78, 89, 0.15);
-  --s-shadow-glow: 0 0 20px rgba(78, 112, 130, 0.15);
-  --s-shadow-nav: 0 4px 16px rgba(55, 78, 89, 0.12);
+  --s-shadow-glass: 0 8px 24px rgba(44, 59, 78, 0.08);
+  --s-shadow-glass-hover: 0 12px 32px rgba(44, 59, 78, 0.12);
+  --s-shadow-glow: 0 0 20px rgba(159, 142, 117, 0.15);
+  --s-shadow-nav: 0 4px 16px rgba(44, 59, 78, 0.10);
 
   /* ── Scrollbar ── */
-  --s-scrollbar-thumb: rgba(78, 112, 130, 0.30);
-  --s-scrollbar-thumb-hover: rgba(78, 112, 130, 0.50);
+  --s-scrollbar-thumb: rgba(159, 142, 117, 0.30);
+  --s-scrollbar-thumb-hover: rgba(159, 142, 117, 0.50);
 
   /* ── Selection ── */
-  --s-selection-bg: rgba(78, 112, 130, 0.20);
-  --s-selection-text: #374E59;
+  --s-selection-bg: rgba(93, 204, 219, 0.20);
+  --s-selection-text: #2C3B4E;
 
   /* ── Skeleton ── */
-  --s-skeleton-from: rgba(212, 223, 229, 0.30);
-  --s-skeleton-via: rgba(212, 223, 229, 0.50);
+  --s-skeleton-from: rgba(159, 142, 117, 0.10);
+  --s-skeleton-via: rgba(159, 142, 117, 0.20);
 
   /* ── Badge neutral ── */
-  --s-badge-neutral-bg: rgba(212, 223, 229, 0.40);
-  --s-badge-neutral-text: rgba(55, 78, 89, 0.75);
+  --s-badge-neutral-bg: rgba(176, 172, 164, 0.20);
+  --s-badge-neutral-text: #6D6D6D;
 
   /* ── Tab ── */
-  --s-tab-inactive: rgba(55, 78, 89, 0.55);
-  --s-tab-hover: #374E59;
-  --s-tab-hover-border: rgba(55, 78, 89, 0.25);
-  --s-tab-active-text: #4E7082;
-  --s-tab-active-border: #4E7082;
+  --s-tab-inactive: #7C8D94;
+  --s-tab-hover: #2C3B4E;
+  --s-tab-hover-border: rgba(44, 59, 78, 0.25);
+  --s-tab-active-text: #9F8E75;
+  --s-tab-active-border: #9F8E75;
 
   /* ── Progress ── */
-  --s-progress-track: rgba(212, 223, 229, 0.40);
+  --s-progress-track: rgba(159, 142, 117, 0.15);
 
   /* ── Table ── */
-  --s-table-bg: rgba(255, 254, 244, 0.96);
-  --s-table-border: rgba(57, 78, 89, 0.10);
+  --s-table-bg: rgba(255, 255, 255, 0.92);
+  --s-table-border: rgba(44, 59, 78, 0.10);
 
   /* ── Form section ── */
-  --s-form-section-title: #374E59;
-  --s-form-section-border: rgba(57, 78, 89, 0.10);
+  --s-form-section-title: #2C3B4E;
+  --s-form-section-border: rgba(44, 59, 78, 0.10);
 
   /* ── Label ── */
-  --s-label-text: rgba(55, 78, 89, 0.65);
-  --s-hint-text: rgba(89, 89, 89, 0.60);
+  --s-label-text: #9F8E75;
+  --s-hint-text: rgba(124, 141, 148, 0.65);
 }
 
 .dark {
   /* ── Body ── */
-  --body-gradient: linear-gradient(165deg, #111111 0%, #1A1A1A 40%, #202830 100%);
+  --body-gradient: #0F1117;
 
-  /* ── Surfaces ── */
-  --s-surface: #111111;
-  --s-surface-soft: rgba(23, 31, 39, 0.80);
-  --s-surface-strong: #1A1A1A;
-  --s-surface-subtle: rgba(64, 91, 105, 0.40);
-  --s-surface-brand: #4E7082;
+  /* ── Surfaces (from Billing Portal spec) ── */
+  --s-surface: #0F1117;
+  --s-surface-soft: #181C24;
+  --s-surface-strong: #1F2533;
+  --s-surface-subtle: rgba(42, 48, 64, 0.60);
+  --s-surface-brand: #9F8E75;
 
   /* ── Text ── */
-  --s-text: #FFFEF4;
-  --s-text-subtle: rgba(255, 254, 244, 0.78);
-  --s-text-muted: rgba(212, 223, 229, 0.66);
-  --s-text-faint: rgba(212, 223, 229, 0.45);
-  --s-text-onBrand: #FFFEF4;
+  --s-text: #F8F4F0;
+  --s-text-subtle: #CCD2D5;
+  --s-text-muted: #7C8D94;
+  --s-text-faint: rgba(124, 141, 148, 0.50);
+  --s-text-onBrand: #F8F4F0;
 
   /* ── Borders ── */
-  --s-border: rgba(212, 223, 229, 0.16);
-  --s-border-subtle: rgba(212, 223, 229, 0.10);
-  --s-border-strong: rgba(212, 223, 229, 0.22);
-  --s-border-brand: rgba(153, 182, 195, 0.35);
+  --s-border: #2A3040;
+  --s-border-subtle: #1E2530;
+  --s-border-strong: #2A3040;
+  --s-border-brand: rgba(159, 142, 117, 0.35);
 
   /* ── Accents ── */
-  --s-accent-primary: #4E7082;
-  --s-accent-primarySoft: #A8CED3;
-  --s-accent-secondary: #99B6C3;
-  --s-accent-luxury: #8A5C4F;
+  --s-accent-primary: #9F8E75;
+  --s-accent-primarySoft: #D1B6A0;
+  --s-accent-secondary: #94B5C3;
+  --s-accent-luxury: #B17B5E;
 
   /* ── Component: Nav ── */
-  --s-nav-bg: rgba(16, 20, 25, 0.95);
-  --s-sidebar-bg: rgba(16, 20, 25, 0.95);
-  --s-topbar-bg: rgba(23, 31, 39, 0.92);
-  --s-nav-active-bg: linear-gradient(135deg, rgba(78, 112, 130, 0.32), rgba(168, 206, 211, 0.24));
-  --s-nav-active-text: #A8CED3;
-  --s-nav-active-border: #A8CED3;
+  --s-nav-bg: rgba(15, 17, 23, 0.96);
+  --s-sidebar-bg: rgba(15, 17, 23, 0.96);
+  --s-topbar-bg: rgba(24, 28, 36, 0.94);
+  --s-nav-active-bg: rgba(159, 142, 117, 0.15);
+  --s-nav-active-text: #D1B6A0;
+  --s-nav-active-border: #9F8E75;
 
   /* ── Component: Card ── */
-  --s-card-bg: rgba(23, 31, 39, 0.80);
-  --s-card-border: rgba(212, 223, 229, 0.16);
-  --s-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.60);
-  --s-card-hover-border: rgba(153, 182, 195, 0.35);
-  --s-card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --s-card-bg: #181C24;
+  --s-card-border: #2A3040;
+  --s-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.50);
+  --s-card-hover-border: rgba(159, 142, 117, 0.35);
+  --s-card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.40);
 
   /* ── Component: Input ── */
-  --s-input-bg: rgba(16, 20, 25, 0.90);
-  --s-input-border: rgba(212, 223, 229, 0.22);
-  --s-input-placeholder: rgba(212, 223, 229, 0.50);
-  --s-focus-ring: 0 0 0 3px rgba(168, 206, 211, 0.38);
-  --s-focus-border: #4E7082;
+  --s-input-bg: #1F2533;
+  --s-input-border: #2A3040;
+  --s-input-placeholder: rgba(124, 141, 148, 0.50);
+  --s-focus-ring: 0 0 0 3px rgba(93, 204, 219, 0.30);
+  --s-focus-border: #5DCCDB;
 
   /* ── Component: Button ── */
-  --s-btn-secondary-bg: rgba(64, 91, 105, 0.70);
-  --s-btn-secondary-text: rgba(255, 254, 244, 0.90);
-  --s-btn-secondary-border: rgba(212, 223, 229, 0.12);
-  --s-btn-secondary-hover-border: rgba(212, 223, 229, 0.35);
-  --s-btn-ghost-text: #99B6C3;
-  --s-btn-ghost-hover-bg: rgba(64, 91, 105, 0.55);
+  --s-btn-secondary-bg: rgba(42, 48, 64, 0.70);
+  --s-btn-secondary-text: #CCD2D5;
+  --s-btn-secondary-border: #2A3040;
+  --s-btn-secondary-hover-border: rgba(159, 142, 117, 0.40);
+  --s-btn-ghost-text: #94B5C3;
+  --s-btn-ghost-hover-bg: rgba(42, 48, 64, 0.60);
 
   /* ── Shadows ── */
-  --s-shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --s-shadow-glass-hover: 0 12px 40px rgba(0, 0, 0, 0.45);
-  --s-shadow-glow: 0 0 20px rgba(78, 112, 130, 0.15), 0 0 40px rgba(78, 112, 130, 0.05);
+  --s-shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.40);
+  --s-shadow-glass-hover: 0 12px 40px rgba(0, 0, 0, 0.50);
+  --s-shadow-glow: 0 0 20px rgba(159, 142, 117, 0.12), 0 0 40px rgba(159, 142, 117, 0.06);
   --s-shadow-nav: 0 4px 16px rgba(0, 0, 0, 0.30);
 
   /* ── Scrollbar ── */
-  --s-scrollbar-thumb: linear-gradient(180deg, #4E7082, #A8CED3);
-  --s-scrollbar-thumb-hover: linear-gradient(180deg, #A8CED3, #99B6C3);
+  --s-scrollbar-thumb: rgba(159, 142, 117, 0.30);
+  --s-scrollbar-thumb-hover: rgba(159, 142, 117, 0.50);
 
   /* ── Selection ── */
-  --s-selection-bg: rgba(78, 112, 130, 0.30);
-  --s-selection-text: #FFFEF4;
+  --s-selection-bg: rgba(93, 204, 219, 0.25);
+  --s-selection-text: #F8F4F0;
 
   /* ── Skeleton ── */
-  --s-skeleton-from: rgba(78, 112, 130, 0.08);
-  --s-skeleton-via: rgba(78, 112, 130, 0.15);
+  --s-skeleton-from: rgba(42, 48, 64, 0.40);
+  --s-skeleton-via: rgba(42, 48, 64, 0.60);
 
   /* ── Badge neutral ── */
-  --s-badge-neutral-bg: rgba(255, 255, 255, 0.08);
-  --s-badge-neutral-text: rgba(255, 255, 255, 0.60);
+  --s-badge-neutral-bg: rgba(176, 172, 164, 0.10);
+  --s-badge-neutral-text: #B0ACA4;
 
   /* ── Tab ── */
-  --s-tab-inactive: rgba(255, 255, 255, 0.50);
-  --s-tab-hover: #ffffff;
-  --s-tab-hover-border: rgba(255, 255, 255, 0.20);
-  --s-tab-active-text: #A8CED3;
-  --s-tab-active-border: #4E7082;
+  --s-tab-inactive: #7C8D94;
+  --s-tab-hover: #CCD2D5;
+  --s-tab-hover-border: rgba(124, 141, 148, 0.25);
+  --s-tab-active-text: #D1B6A0;
+  --s-tab-active-border: #9F8E75;
 
   /* ── Progress ── */
-  --s-progress-track: rgba(255, 255, 255, 0.10);
+  --s-progress-track: rgba(42, 48, 64, 0.60);
 
   /* ── Table ── */
-  --s-table-bg: rgba(23, 31, 39, 0.80);
-  --s-table-border: rgba(212, 223, 229, 0.10);
+  --s-table-bg: #181C24;
+  --s-table-border: #2A3040;
 
   /* ── Form section ── */
-  --s-form-section-title: #FFFEF4;
-  --s-form-section-border: rgba(212, 223, 229, 0.10);
+  --s-form-section-title: #F8F4F0;
+  --s-form-section-border: #2A3040;
 
   /* ── Label ── */
-  --s-label-text: rgba(212, 223, 229, 0.50);
-  --s-hint-text: rgba(212, 223, 229, 0.45);
+  --s-label-text: #9F8E75;
+  --s-hint-text: #7C8D94;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -290,121 +292,133 @@
   --color-accent-secondary: var(--s-accent-secondary);
   --color-accent-luxury: var(--s-accent-luxury);
 
-  /* ── Static Brand Colors (Steel palette — same in both modes) ── */
-  --color-brand-50: rgba(78, 112, 130, 0.08);
-  --color-brand-100: rgba(78, 112, 130, 0.15);
-  --color-brand-200: rgba(78, 112, 130, 0.25);
-  --color-brand-300: #99B6C3;
-  --color-brand-400: #A8CED3;
-  --color-brand-500: #4E7082;
-  --color-brand-600: #405B69;
-  --color-brand-700: #374E59;
-  --color-brand-800: #2B3D47;
-  --color-brand-900: #1F2D35;
+  /* ── Brand Scale (Clay / Earth Tone) ── */
+  --color-brand-50: rgba(159, 142, 117, 0.06);
+  --color-brand-100: rgba(159, 142, 117, 0.12);
+  --color-brand-200: rgba(159, 142, 117, 0.20);
+  --color-brand-300: #D1B6A0;
+  --color-brand-400: #B17B5E;
+  --color-brand-500: #9F8E75;
+  --color-brand-600: #8A7A64;
+  --color-brand-700: #3B5A69;
+  --color-brand-800: #2C3B4E;
+  --color-brand-900: #0F1117;
 
-  /* ── Steel Blue (alias for brand) ── */
-  --color-steel-blue-50: rgba(78, 112, 130, 0.06);
-  --color-steel-blue-100: rgba(78, 112, 130, 0.12);
-  --color-steel-blue-200: rgba(78, 112, 130, 0.20);
-  --color-steel-blue-300: #99B6C3;
-  --color-steel-blue-400: #A8CED3;
-  --color-steel-blue-500: #4E7082;
-  --color-steel-blue-600: #405B69;
-  --color-steel-blue-700: #374E59;
-  --color-steel-blue-800: #2B3D47;
+  /* ── Steel Blue (support accent) ── */
+  --color-steel-blue-50: rgba(148, 181, 195, 0.06);
+  --color-steel-blue-100: rgba(148, 181, 195, 0.12);
+  --color-steel-blue-200: #CCD2D5;
+  --color-steel-blue-300: #94B5C3;
+  --color-steel-blue-400: #7CA4B4;
+  --color-steel-blue-500: #5B8A9C;
+  --color-steel-blue-600: #4A7585;
+  --color-steel-blue-700: #3B5A69;
+  --color-steel-blue-800: #2C3B4E;
   --color-steel-blue-900: #1F2D35;
 
-  /* ── Teal (backward compat alias → Steel) ── */
-  --color-teal-50: rgba(78, 112, 130, 0.06);
-  --color-teal-100: rgba(78, 112, 130, 0.12);
-  --color-teal-200: rgba(78, 112, 130, 0.20);
-  --color-teal-300: #99B6C3;
-  --color-teal-400: #A8CED3;
-  --color-teal-500: #4E7082;
-  --color-teal-600: #405B69;
-  --color-teal-700: #374E59;
-  --color-teal-800: #2B3D47;
-  --color-teal-900: #1F2D35;
+  /* ── Aqua (link/active accent — NOT financial sentiment) ── */
+  --color-aqua-300: #8AE0EB;
+  --color-aqua-400: #5DCCDB;
+  --color-aqua-500: #4AB8C7;
+  --color-aqua-600: #3A9DAB;
 
   /* ── Canvas ── */
-  --color-canvas: #3D5A6A;
+  --color-canvas: #0F1117;
 
-  /* ── Status Colors ── */
-  --color-success-50: rgba(16, 185, 129, 0.08);
-  --color-success-100: rgba(16, 185, 129, 0.15);
-  --color-success-300: #10b981;
-  --color-success-500: #10b981;
-  --color-success-700: #22c55e;
+  /* ── Financial Sentiment Colors (mode-aware via CSS vars would be ideal,
+       but keeping static dark-mode defaults here — light mode handled by
+       component logic or overrides) ── */
+  --color-success-50: rgba(109, 191, 123, 0.08);
+  --color-success-100: rgba(109, 191, 123, 0.12);
+  --color-success-300: #6DBF7B;
+  --color-success-500: #6DBF7B;
+  --color-success-700: #4A9E56;
 
-  --color-warning-50: rgba(234, 88, 12, 0.08);
-  --color-warning-100: rgba(234, 88, 12, 0.15);
-  --color-warning-300: #ea580c;
-  --color-warning-500: #ea580c;
-  --color-warning-700: #f97316;
+  --color-warning-50: rgba(196, 154, 92, 0.08);
+  --color-warning-100: rgba(196, 154, 92, 0.12);
+  --color-warning-300: #C49A5C;
+  --color-warning-500: #C49A5C;
+  --color-warning-700: #A8834E;
 
-  --color-critical-50: rgba(185, 28, 28, 0.08);
-  --color-critical-100: rgba(185, 28, 28, 0.15);
-  --color-critical-300: #b91c1c;
-  --color-critical-500: #b91c1c;
-  --color-critical-700: #ef4444;
+  --color-critical-50: rgba(212, 115, 110, 0.08);
+  --color-critical-100: rgba(212, 115, 110, 0.12);
+  --color-critical-300: #D4736E;
+  --color-critical-500: #D4736E;
+  --color-critical-700: #B85C57;
 
-  --color-info-50: rgba(59, 130, 246, 0.08);
-  --color-info-100: rgba(59, 130, 246, 0.15);
-  --color-info-300: #3b82f6;
-  --color-info-500: #3b82f6;
-  --color-info-700: #60a5fa;
+  --color-info-50: rgba(93, 204, 219, 0.08);
+  --color-info-100: rgba(93, 204, 219, 0.12);
+  --color-info-300: #5DCCDB;
+  --color-info-500: #5DCCDB;
+  --color-info-700: #4AB8C7;
 
-  /* ── Tool Colors ── */
-  --color-safe: #10b981;
-  --color-danger: #b91c1c;
-  --color-box-spread: #3b82f6;
-  --color-margin-loan: #64748b;
-  --color-sbloc: #f97316;
-  --color-heloc: #8b5cf6;
-  --color-savings: #34d399;
+  /* ── Neutral (zero change, flat trends) ── */
+  --color-neutral-50: rgba(176, 172, 164, 0.08);
+  --color-neutral-100: rgba(176, 172, 164, 0.10);
+  --color-neutral-500: #B0ACA4;
 
-  /* ── Tier Colors ── */
-  --color-tier-platinum: #c7d2fe;
-  --color-tier-gold: #fbbf24;
-  --color-tier-silver: #cbd5e1;
-  --color-tier-bronze: #f59e0b;
+  /* ── Tool Colors (using billing palette) ── */
+  --color-safe: #6DBF7B;
+  --color-danger: #D4736E;
+  --color-box-spread: #5DCCDB;
+  --color-margin-loan: #7C8D94;
+  --color-sbloc: #C49A5C;
+  --color-heloc: #94B5C3;
+  --color-savings: #6DBF7B;
+
+  /* ── Tier Colors (from billing guide) ── */
+  --color-tier-platinum: #CCD2D5;
+  --color-tier-gold: #B68A4C;
+  --color-tier-silver: #94B5C3;
+  --color-tier-bronze: #D1B6A0;
+  --color-tier-emerging: #5DCCDB;
 
   /* ── Goal / Tax / Wealth tier ── */
-  --color-goal-funded: #10b981;
-  --color-goal-partial: #ea580c;
-  --color-goal-at-risk: #b91c1c;
-  --color-tax-deferred: #8b5cf6;
-  --color-tax-free: #06b6d4;
-  --color-taxable: #f97316;
+  --color-goal-funded: #6DBF7B;
+  --color-goal-partial: #C49A5C;
+  --color-goal-at-risk: #D4736E;
+  --color-tax-deferred: #94B5C3;
+  --color-tax-free: #5DCCDB;
+  --color-taxable: #C49A5C;
+
+  /* ── Chart Series (8-color palette from billing guide) ── */
+  --color-chart-1: #94B5C3;
+  --color-chart-2: #5DCCDB;
+  --color-chart-3: #9F8E75;
+  --color-chart-4: #5B8A9C;
+  --color-chart-5: #D1B6A0;
+  --color-chart-6: #CCD2D5;
+  --color-chart-7: #2C3B4E;
+  --color-chart-8: #B17B5E;
 
   /* ── Accent (static) ── */
-  --color-accent-400: #A8CED3;
-  --color-accent-500: #4E7082;
+  --color-accent-400: #D1B6A0;
+  --color-accent-500: #9F8E75;
 
   /* ── Typography ── */
-  --font-sans: 'Fakt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', 'Fakt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: 'ABC Arizona Text', 'Georgia', 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
-  --text-xs: 0.75rem;
+  --text-xs: 0.6875rem;
   --text-xs--line-height: 1.4;
-  --text-sm: 0.875rem;
+  --text-sm: 0.75rem;
   --text-sm--line-height: 1.45;
-  --text-base: 1rem;
+  --text-base: 0.8125rem;
   --text-base--line-height: 1.5;
-  --text-md: 1.125rem;
+  --text-md: 0.9375rem;
   --text-md--line-height: 1.45;
-  --text-lg: 1.25rem;
+  --text-lg: 1.125rem;
   --text-lg--line-height: 1.35;
-  --text-xl: 1.5rem;
+  --text-xl: 1.25rem;
   --text-xl--line-height: 1.3;
-  --text-2xl: 1.875rem;
+  --text-2xl: 1.5rem;
   --text-2xl--line-height: 1.2;
-  --text-3xl: 2.25rem;
+  --text-3xl: 1.875rem;
   --text-3xl--line-height: 1.1;
-  --text-4xl: 3rem;
+  --text-4xl: 2.25rem;
   --text-4xl--line-height: 1.05;
-  --text-5xl: 3.75rem;
+  --text-5xl: 3rem;
   --text-5xl--line-height: 1;
 
   /* ── Spacing ── */
@@ -429,15 +443,15 @@
   --radius-modal: 16px;
   --radius-panel: 20px;
 
-  /* ── Shadows (static base values) ── */
+  /* ── Shadows ── */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.08);
-  --shadow-brand: 0 4px 16px rgba(78, 112, 130, 0.25), 0 2px 4px rgba(78, 112, 130, 0.15);
-  --shadow-focus: 0 0 0 3px rgba(78, 112, 130, 0.25);
+  --shadow-brand: 0 4px 16px rgba(159, 142, 117, 0.20), 0 2px 4px rgba(159, 142, 117, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(93, 204, 219, 0.25);
   --shadow-glass: var(--s-shadow-glass);
   --shadow-glow: var(--s-shadow-glow);
 
@@ -560,31 +574,31 @@
   border-left-color: var(--color-warning-500);
 }
 @utility card-insight--info {
-  border-left-color: var(--s-accent-primary);
+  border-left-color: #5DCCDB;
 }
 
-/* ── Alert Cards ── */
+/* ── Alert Cards (using billing financial sentiment) ── */
 @utility card-alert {
   @apply rounded-md p-3.5 flex items-start gap-3 text-sm;
 }
 @utility card-alert--critical {
-  background: rgba(185, 28, 28, 0.10);
-  border: 1px solid rgba(185, 28, 28, 0.20);
+  background: rgba(212, 115, 110, 0.12);
+  border: 1px solid #B85C57;
   color: var(--color-critical-500);
 }
 @utility card-alert--warning {
-  background: rgba(234, 88, 12, 0.10);
-  border: 1px solid rgba(234, 88, 12, 0.20);
+  background: rgba(196, 154, 92, 0.12);
+  border: 1px solid #A8834E;
   color: var(--color-warning-500);
 }
 @utility card-alert--success {
-  background: rgba(16, 185, 129, 0.10);
-  border: 1px solid rgba(16, 185, 129, 0.20);
+  background: rgba(109, 191, 123, 0.12);
+  border: 1px solid #4A9E56;
   color: var(--color-success-500);
 }
 @utility card-alert--info {
-  background: rgba(59, 130, 246, 0.10);
-  border: 1px solid rgba(59, 130, 246, 0.20);
+  background: rgba(93, 204, 219, 0.10);
+  border: 1px solid #4AB8C7;
   color: var(--color-info-500);
 }
 
@@ -602,14 +616,14 @@
 }
 @utility btn-primary {
   @apply rounded-md;
-  background: linear-gradient(135deg, #4E7082, #A8CED3);
+  background: linear-gradient(135deg, #3B5A69, #94B5C3);
   color: var(--s-text-onBrand);
   &:hover {
-    background: linear-gradient(135deg, #374E59, #4E7082);
+    background: linear-gradient(135deg, #2C3B4E, #5B8A9C);
     box-shadow: var(--s-shadow-glow);
   }
   &:active {
-    background: linear-gradient(135deg, #405B69, #374E59);
+    background: linear-gradient(135deg, #2C3B4E, #3B5A69);
   }
 }
 @utility btn-secondary {
@@ -637,8 +651,9 @@
   }
 }
 @utility btn-danger {
-  @apply text-white rounded-md;
+  @apply rounded-md;
   background: var(--color-critical-500);
+  color: #F8F4F0;
   &:hover {
     background: var(--color-critical-700);
   }
@@ -680,7 +695,7 @@
 @utility input-field--error {
   border-color: var(--color-critical-500);
   &:focus {
-    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.25);
+    box-shadow: 0 0 0 3px rgba(212, 115, 110, 0.25);
   }
 }
 @utility input-currency {
@@ -752,19 +767,19 @@
   letter-spacing: 0.04em;
 }
 @utility badge--success {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(109, 191, 123, 0.12);
   color: var(--color-success-500);
 }
 @utility badge--warning {
-  background: rgba(234, 88, 12, 0.15);
+  background: rgba(196, 154, 92, 0.12);
   color: var(--color-warning-500);
 }
 @utility badge--critical {
-  background: rgba(185, 28, 28, 0.15);
+  background: rgba(212, 115, 110, 0.12);
   color: var(--color-critical-500);
 }
 @utility badge--info {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(93, 204, 219, 0.12);
   color: var(--color-info-500);
 }
 @utility badge--neutral {
@@ -772,7 +787,7 @@
   color: var(--s-badge-neutral-text);
 }
 @utility badge--brand {
-  background: rgba(78, 112, 130, 0.15);
+  background: rgba(159, 142, 117, 0.15);
   color: var(--s-accent-primarySoft);
 }
 @utility badge--mass-affluent {
@@ -780,16 +795,16 @@
   color: var(--s-text-muted);
 }
 @utility badge--hnw {
-  background: rgba(78, 112, 130, 0.15);
-  color: var(--s-accent-primarySoft);
+  background: rgba(148, 181, 195, 0.15);
+  color: var(--s-accent-secondary);
 }
 @utility badge--vhnw {
-  background: rgba(78, 112, 130, 0.25);
+  background: rgba(159, 142, 117, 0.20);
   color: var(--s-accent-primary);
 }
 @utility badge--uhnw {
-  background: #4E7082;
-  color: #FFFEF4;
+  background: #9F8E75;
+  color: #F8F4F0;
 }
 
 /* ── Status Dots ── */
@@ -809,7 +824,7 @@
   background: var(--s-text-faint);
 }
 @utility status-dot--blue {
-  @apply bg-brand-500;
+  background: #5DCCDB;
 }
 
 /* ── Progress Bars ── */
@@ -820,13 +835,13 @@
 @utility progress-fill {
   @apply h-full rounded-full;
   transition: width 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  background: linear-gradient(90deg, #4E7082, #A8CED3);
+  background: linear-gradient(90deg, #3B5A69, #94B5C3);
 }
 @utility progress-fill--funded {
   @apply bg-success-500;
 }
 @utility progress-fill--on-track {
-  background: linear-gradient(90deg, #4E7082, #A8CED3);
+  background: linear-gradient(90deg, #3B5A69, #94B5C3);
 }
 @utility progress-fill--at-risk {
   @apply bg-warning-500;
@@ -898,8 +913,8 @@
     background: var(--body-gradient);
     background-attachment: fixed;
     color: var(--s-text);
-    font-family: 'Fakt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 1rem;
+    font-family: 'Inter', 'Fakt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8125rem;
     line-height: 1.5;
     margin: 0;
     padding: 0;
@@ -939,7 +954,7 @@
 }
 
 .portal-hero {
-  background: linear-gradient(135deg, #374E59 0%, #4E7082 100%);
+  background: linear-gradient(135deg, #2C3B4E 0%, #3B5A69 100%);
   @apply p-12 rounded-2xl mb-8;
   color: var(--s-text-onBrand);
 }
