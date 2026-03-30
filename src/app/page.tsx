@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface ToolCard {
   title: string;
@@ -27,7 +28,7 @@ const TOOLS: ToolCard[] = [
         <path d="M2 12l10 5 10-5" />
       </svg>
     ),
-    color: 'from-teal-500 to-teal-800',
+    color: 'from-brand-500 to-brand-800',
     tags: ['Financial Planning', 'Tax', 'Retirement', 'Estate', 'Goals'],
   },
   {
@@ -106,7 +107,7 @@ const TOOLS: ToolCard[] = [
         <path d="m19 9-5 5-4-4-3 3" />
       </svg>
     ),
-    color: 'from-teal-500 to-brand-700',
+    color: 'from-brand-500 to-brand-700',
     tags: ['Margin', 'Risk', 'Optimization'],
   },
 ];
@@ -115,30 +116,37 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-white/[0.07]/[0.03] border-b border-white/[0.06] backdrop-blur-xl">
+      <header
+        className="backdrop-blur-xl"
+        style={{
+          background: 'var(--s-nav-bg)',
+          borderBottom: '1px solid var(--s-border-subtle)',
+        }}
+      >
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-teal-500 to-teal-800 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">F</span>
+            <div className="w-9 h-9 rounded-lg bg-linear-to-br from-brand-500 to-brand-800 flex items-center justify-center">
+              <span className="text-text-onBrand font-bold text-lg">F</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
-              <p className="text-xs text-white/50">Investment Lending Tools</p>
+              <h1 className="text-xl font-bold text-text tracking-tight">Farther Intelligent Wealth Advisor Platform</h1>
+              <p className="text-xs text-text-muted">Investment Lending Tools</p>
             </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
 
       {/* Hero */}
-      <section className="bg-linear-to-br from-brand-900 via-brand-800 to-brand-700 text-white">
+      <section className="bg-linear-to-br from-brand-900 via-brand-800 to-brand-700">
         <div className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl text-text-onBrand">
             Intelligent tools for modern wealth management
           </h2>
-          <p className="mt-4 text-lg text-teal-300 max-w-xl leading-relaxed">
+          <p className="mt-4 text-lg max-w-xl leading-relaxed text-accent-secondary">
             Empower your client conversations with institutional-grade calculators, comparison engines, and risk analytics — built for advisors who serve UHNW and HNW families.
           </p>
-          <div className="mt-6 flex items-center gap-4 text-sm text-teal-300">
+          <div className="mt-6 flex items-center gap-4 text-sm text-accent-secondary">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-success-500"></span>
               {TOOLS.filter(t => t.status === 'live').length} tool{TOOLS.filter(t => t.status === 'live').length !== 1 ? 's' : ''} live
@@ -153,47 +161,48 @@ export default function HomePage() {
 
       {/* Tools Grid */}
       <section className="max-w-6xl mx-auto px-6 py-12">
-        <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-6">Available Tools</h3>
+        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-6">Available Tools</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {TOOLS.map((tool) => {
             const isLive = tool.status === 'live';
             const className = `group card p-6 transition-all duration-200 ${
               isLive
-                ? 'hover:shadow-lg hover:border-brand-200 hover:-translate-y-0.5 cursor-pointer'
+                ? 'hover:shadow-lg hover:-translate-y-0.5 cursor-pointer'
                 : 'opacity-60 cursor-default'
             }`;
 
             const content = (
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-linear-to-br ${tool.color} flex items-center justify-center text-white shadow-sm`}>
+                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-linear-to-br ${tool.color} flex items-center justify-center text-text-onBrand shadow-sm`}>
                     {tool.icon}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-white group-hover:text-teal-300 transition-colors">
+                      <h4 className="font-semibold text-text group-hover:text-accent-primarySoft transition-colors">
                         {tool.title}
                       </h4>
                       {isLive ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-success-100 text-success-700">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-success-100 text-success-500">
                           LIVE
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/[0.04] text-white/50">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: 'var(--s-badge-neutral-bg)', color: 'var(--s-badge-neutral-text)' }}>
                           COMING SOON
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-white/50 leading-relaxed">{tool.description}</p>
+                    <p className="text-sm text-text-muted leading-relaxed">{tool.description}</p>
 
                     {/* Tags */}
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {tool.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-block px-2 py-0.5 rounded-md bg-white/[0.06] text-[11px] font-medium text-white/50"
+                          className="inline-block px-2 py-0.5 rounded-md text-[11px] font-medium"
+                          style={{ background: 'var(--s-surface-subtle)', color: 'var(--s-text-muted)' }}
                         >
                           {tag}
                         </span>
@@ -202,7 +211,7 @@ export default function HomePage() {
 
                     {/* CTA */}
                     {isLive && (
-                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-teal-300 group-hover:text-teal-300">
+                      <div className="mt-4 flex items-center gap-1 text-sm font-medium text-accent-primarySoft group-hover:text-accent-secondary">
                         Open tool
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                       </div>
@@ -225,8 +234,14 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.06] bg-white/[0.07] backdrop-blur-xl mt-8">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
+      <footer
+        className="backdrop-blur-xl mt-8"
+        style={{
+          borderTop: '1px solid var(--s-border-subtle)',
+          background: 'var(--s-card-bg)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-text-faint">
           <p>Farther Intelligent Wealth Advisor Platform. For authorized advisor use only.</p>
           <p>Tools are for educational and illustrative purposes and do not constitute investment advice.</p>
         </div>

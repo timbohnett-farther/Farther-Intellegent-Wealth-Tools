@@ -23,17 +23,17 @@ export const HouseholdHeader: React.FC<HouseholdHeaderProps> = ({
   returnCount,
 }) => {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+    <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         {/* Left side: name and details */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-2xl font-bold text-white truncate">
+            <h1 className="text-2xl font-bold text-text truncate">
               {household.displayName}
             </h1>
             <button
               type="button"
-              className="flex-shrink-0 rounded p-1.5 text-white/30 hover:bg-white/[0.04] hover:text-teal-300 transition-colors"
+              className="flex-shrink-0 rounded p-1.5 text-text-faint hover:bg-surface-subtle hover:text-accent-primarySoft transition-colors"
               aria-label="Edit household"
             >
               <Pencil className="h-4 w-4" />
@@ -43,12 +43,12 @@ export const HouseholdHeader: React.FC<HouseholdHeaderProps> = ({
           <div className="flex items-center gap-4 flex-wrap">
             {household.primaryState && (
               <div className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-white/30" />
+                <MapPin className="h-3.5 w-3.5 text-text-faint" />
                 <Badge variant="neutral">{household.primaryState}</Badge>
               </div>
             )}
 
-            <span className="text-xs text-white/30 font-mono">
+            <span className="text-xs text-text-faint font-mono">
               ID: {household.householdId.slice(0, 8)}...
             </span>
           </div>
@@ -57,14 +57,14 @@ export const HouseholdHeader: React.FC<HouseholdHeaderProps> = ({
         {/* Right side: quick stats */}
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-teal-500/10">
-              <Users className="h-4 w-4 text-teal-300" />
+            <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-accent-primary/10">
+              <Users className="h-4 w-4 text-accent-primarySoft" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white tabular-nums leading-tight">
+              <p className="text-lg font-bold text-text tabular-nums leading-tight">
                 {personCount}
               </p>
-              <p className="text-xs text-white/50">
+              <p className="text-xs text-text-muted">
                 {personCount === 1 ? 'Person' : 'People'}
               </p>
             </div>
@@ -75,10 +75,10 @@ export const HouseholdHeader: React.FC<HouseholdHeaderProps> = ({
               <FileText className="h-4 w-4 text-info-700" />
             </div>
             <div>
-              <p className="text-lg font-bold text-white tabular-nums leading-tight">
+              <p className="text-lg font-bold text-text tabular-nums leading-tight">
                 {returnCount}
               </p>
-              <p className="text-xs text-white/50">
+              <p className="text-xs text-text-muted">
                 {returnCount === 1 ? 'Return' : 'Returns'}
               </p>
             </div>

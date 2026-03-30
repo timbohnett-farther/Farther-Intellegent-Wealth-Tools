@@ -337,25 +337,25 @@ export default function ScenarioBuilderPage() {
       <div className="flex gap-6 bg-canvas">
         {/* Side nav skeleton */}
         <div className="w-[280px] flex-shrink-0 space-y-3">
-          <div className="h-4 w-24 rounded bg-white/[0.06] animate-pulse" />
+          <div className="h-4 w-24 rounded bg-surface-subtle animate-pulse" />
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-10 rounded bg-white/[0.06] animate-pulse" />
+            <div key={i} className="h-10 rounded bg-surface-subtle animate-pulse" />
           ))}
         </div>
         {/* Main area skeleton */}
         <div className="flex-1 space-y-6">
-          <div className="h-8 w-64 rounded bg-white/[0.06] animate-pulse" />
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-4">
+          <div className="h-8 w-64 rounded bg-surface-subtle animate-pulse" />
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-16 rounded bg-white/[0.06] animate-pulse" />
+              <div key={i} className="h-16 rounded bg-surface-subtle animate-pulse" />
             ))}
           </div>
-          <div className="h-10 w-48 rounded bg-white/[0.06] animate-pulse" />
+          <div className="h-10 w-48 rounded bg-surface-subtle animate-pulse" />
           <div className="grid grid-cols-2 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-20 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
-                <div className="h-3 w-20 rounded bg-white/[0.06] animate-pulse mb-2" />
-                <div className="h-6 w-28 rounded bg-white/[0.06] animate-pulse" />
+              <div key={i} className="h-20 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
+                <div className="h-3 w-20 rounded bg-surface-subtle animate-pulse mb-2" />
+                <div className="h-6 w-28 rounded bg-surface-subtle animate-pulse" />
               </div>
             ))}
           </div>
@@ -381,7 +381,7 @@ export default function ScenarioBuilderPage() {
           <button
             type="button"
             onClick={fetchScenario}
-            className="mt-4 inline-flex h-10 items-center rounded-lg bg-teal-500 px-5 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
+            className="mt-4 inline-flex h-10 items-center rounded-lg bg-accent-primary px-5 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
           >
             Retry
           </button>
@@ -403,7 +403,7 @@ export default function ScenarioBuilderPage() {
   return (
     <div className="flex gap-6 bg-canvas min-h-[calc(100vh-8rem)]">
       {/* Left panel: Scenario side nav */}
-      <div className="w-[280px] flex-shrink-0 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl py-4 shadow-sm self-start">
+      <div className="w-[280px] flex-shrink-0 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl py-4 shadow-sm self-start">
         <ScenarioSideNav
           scenarios={allScenarios.map((s) => ({
             scenarioId: s.scenario_id,
@@ -433,13 +433,13 @@ export default function ScenarioBuilderPage() {
                     setNameValue(scenario.name);
                   }
                 }}
-                className="h-10 rounded-lg border-[1.5px] border-teal-500 bg-white/[0.07] backdrop-blur-xl px-3 text-xl font-bold text-white focus:outline-hidden focus:shadow-focus"
+                className="h-10 rounded-lg border-[1.5px] border-accent-primary bg-surface-soft backdrop-blur-xl px-3 text-xl font-bold text-text focus:outline-hidden focus:shadow-focus"
                 autoFocus
               />
               <button
                 type="button"
                 onClick={handleNameSave}
-                className="inline-flex h-10 items-center rounded-lg bg-teal-500 px-4 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
+                className="inline-flex h-10 items-center rounded-lg bg-accent-primary px-4 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
               >
                 Save
               </button>
@@ -449,7 +449,7 @@ export default function ScenarioBuilderPage() {
                   setEditingName(false);
                   setNameValue(scenario.name);
                 }}
-                className="inline-flex h-10 items-center rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
+                className="inline-flex h-10 items-center rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-4 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
               >
                 Cancel
               </button>
@@ -458,7 +458,7 @@ export default function ScenarioBuilderPage() {
             <button
               type="button"
               onClick={() => setEditingName(true)}
-              className="text-2xl font-bold text-white hover:text-teal-300 transition-colors text-left"
+              className="text-2xl font-bold text-text hover:text-accent-primarySoft transition-colors text-left"
               title="Click to edit scenario name"
             >
               {scenario.name}
@@ -466,26 +466,26 @@ export default function ScenarioBuilderPage() {
           )}
 
           {scenario.is_baseline && (
-            <span className="inline-flex items-center rounded-full bg-teal-500/15 px-3 py-1 text-xs font-semibold text-teal-300">
+            <span className="inline-flex items-center rounded-full bg-accent-primary/15 px-3 py-1 text-xs font-semibold text-accent-primarySoft">
               Baseline
             </span>
           )}
         </div>
 
         {/* Middle section: Overrides */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Overrides</h2>
+            <h2 className="text-lg font-semibold text-text">Overrides</h2>
             {overrides.length > 0 && (
               <button
                 type="button"
                 onClick={saveOverrides}
                 disabled={savingOverrides}
-                className="inline-flex h-9 items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-4 text-sm font-medium text-white/60 hover:bg-white/[0.04] disabled:opacity-50 transition-colors"
+                className="inline-flex h-9 items-center gap-2 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-4 text-sm font-medium text-text-muted hover:bg-surface-subtle disabled:opacity-50 transition-colors"
               >
                 {savingOverrides ? (
                   <>
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/400 border-t-transparent" />
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-text-faint border-t-transparent" />
                     Saving...
                   </>
                 ) : (
@@ -514,39 +514,39 @@ export default function ScenarioBuilderPage() {
             <div className="space-y-6">
               {/* Key Metrics grid */}
               <div>
-                <h2 className="mb-3 text-lg font-semibold text-white">
+                <h2 className="mb-3 text-lg font-semibold text-text">
                   Results
                 </h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-                    <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+                    <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
                       Federal Taxable Income
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-white">
+                    <p className="mt-1 text-lg font-semibold text-text">
                       {fmtCurrency(taxableIncome)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-                    <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+                    <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
                       Total Tax
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-white">
+                    <p className="mt-1 text-lg font-semibold text-text">
                       {fmtCurrency(totalTax)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-                    <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+                    <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
                       Effective Tax Rate
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-white">
+                    <p className="mt-1 text-lg font-semibold text-text">
                       {fmtPercent(effectiveRate)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-                    <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+                  <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+                    <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
                       EMR on Next $1,000
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-white">
+                    <p className="mt-1 text-lg font-semibold text-text">
                       {fmtPercent(emr)}
                     </p>
                   </div>
@@ -555,26 +555,26 @@ export default function ScenarioBuilderPage() {
 
               {/* Comparison table (only for non-baseline scenarios with baseline data) */}
               {!scenario.is_baseline && baselineResult && comparisonRows.length > 0 && (
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
-                  <div className="px-6 py-4 border-b border-white/[0.06]">
-                    <h3 className="text-base font-semibold text-white">
+                <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl shadow-sm overflow-hidden">
+                  <div className="px-6 py-4 border-b border-border-subtle">
+                    <h3 className="text-base font-semibold text-text">
                       Comparison to Baseline
                     </h3>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-white/[0.06] bg-transparent">
-                          <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+                        <tr className="border-b border-border-subtle bg-transparent">
+                          <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                             Metric
                           </th>
-                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                             Baseline
                           </th>
-                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                             This Scenario
                           </th>
-                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                          <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                             Delta
                           </th>
                         </tr>
@@ -585,15 +585,15 @@ export default function ScenarioBuilderPage() {
                             key={row.label}
                             className="border-b border-limestone-100 last:border-b-0"
                           >
-                            <td className="px-6 py-3 font-medium text-white">
+                            <td className="px-6 py-3 font-medium text-text">
                               {row.label}
                             </td>
-                            <td className="px-6 py-3 text-right tabular-nums text-white/60">
+                            <td className="px-6 py-3 text-right tabular-nums text-text-muted">
                               {row.isRate
                                 ? fmtPercent(row.baselineCents)
                                 : fmtCurrency(row.baselineCents)}
                             </td>
-                            <td className="px-6 py-3 text-right tabular-nums text-white/60">
+                            <td className="px-6 py-3 text-right tabular-nums text-text-muted">
                               {row.isRate
                                 ? fmtPercent(row.scenarioCents)
                                 : fmtCurrency(row.scenarioCents)}
@@ -604,7 +604,7 @@ export default function ScenarioBuilderPage() {
                                   ? 'text-success-600'
                                   : row.deltaCents > 0
                                     ? 'text-critical-600'
-                                    : 'text-white/50'
+                                    : 'text-text-muted'
                               }`}
                             >
                               {row.deltaCents > 0 ? '+' : ''}
@@ -624,8 +624,8 @@ export default function ScenarioBuilderPage() {
 
           {/* Empty results state */}
           {!computeResult && (
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 text-center shadow-sm">
-              <p className="text-sm text-white/50">
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-8 text-center shadow-sm">
+              <p className="text-sm text-text-muted">
                 Configure overrides above and click &quot;Compute Scenario&quot; to see
                 results.
               </p>

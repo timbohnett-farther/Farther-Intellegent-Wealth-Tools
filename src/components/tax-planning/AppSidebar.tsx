@@ -74,17 +74,17 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   );
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-sidebar bg-white/[0.07] backdrop-blur-xl border-r border-white/[0.06] flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-screen w-sidebar bg-surface-soft backdrop-blur-xl border-r border-border-subtle flex flex-col z-40">
       {/* Logo area */}
-      <div className="h-16 flex items-center gap-3 px-4 border-b border-white/[0.06] flex-shrink-0">
-        <div className="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-bold text-sm">FT</span>
+      <div className="h-16 flex items-center gap-3 px-4 border-b border-border-subtle flex-shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-accent-primary flex items-center justify-center flex-shrink-0">
+          <span className="text-text font-bold text-sm">FT</span>
         </div>
         <div className="overflow-hidden">
-          <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-white">
+          <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-text">
             Farther Tax Planning
           </h1>
-          <p className="text-[10px] text-white/30">Tax Planning Platform</p>
+          <p className="text-[10px] text-text-faint">Tax Planning Platform</p>
         </div>
       </div>
 
@@ -104,14 +104,14 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   className={cn(
                     'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors',
                     isActive
-                      ? 'bg-teal-500/10 text-teal-300 font-semibold border-l-[3px] border-teal-500 pl-[13px]'
-                      : 'text-white/60 font-medium hover:bg-white/[0.04] hover:text-white'
+                      ? 'bg-accent-primary/10 text-accent-primarySoft font-semibold border-l-[3px] border-accent-primary pl-[13px]'
+                      : 'text-text-muted font-medium hover:bg-surface-subtle hover:text-text'
                   )}
                 >
                   <span
                     className={cn(
                       'flex-shrink-0',
-                      isActive ? 'text-teal-300' : 'text-white/50'
+                      isActive ? 'text-accent-primarySoft' : 'text-text-muted'
                     )}
                   >
                     {link.icon}
@@ -125,15 +125,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </nav>
 
       {/* User info at bottom */}
-      <div className="border-t border-white/[0.06] px-3 py-3 flex-shrink-0">
+      <div className="border-t border-border-subtle px-3 py-3 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-teal-500/15 flex items-center justify-center flex-shrink-0">
-            <span className="text-teal-300 text-xs font-semibold">
+          <div className="w-8 h-8 rounded-full bg-accent-primary/15 flex items-center justify-center flex-shrink-0">
+            <span className="text-accent-primarySoft text-xs font-semibold">
               {getUserInitials(userName)}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
+            <p className="text-sm font-medium text-text truncate">
               {userName}
             </p>
             <Badge variant={getRoleBadgeVariant(userRole)} className="mt-0.5">

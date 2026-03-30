@@ -34,8 +34,8 @@ function Tooltip({ content, children, side = "top", className }: TooltipProps) {
           role="tooltip"
           className={cn(
             "absolute z-50 px-3 py-1.5 rounded-md",
-            "bg-[rgba(26,26,26,0.95)] text-white text-xs font-medium",
-            "border border-white/[0.12]",
+            "bg-[rgba(26,26,26,0.95)] text-text text-xs font-medium",
+            "border border-border-strong",
             "shadow-md whitespace-nowrap pointer-events-none",
             "animate-slide-in-up backdrop-blur-xl",
             positionClasses[side],

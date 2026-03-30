@@ -27,7 +27,7 @@ const ADVISORS = [
 ];
 
 const ROLE_LABELS: Record<string, string> = { admin: 'Admin', advisor: 'Advisor', associate: 'Associate', read_only: 'Read Only' };
-const ROLE_COLORS: Record<string, string> = { admin: 'bg-teal-500/10 text-teal-300', advisor: 'bg-teal-500/10 text-teal-300', associate: 'bg-teal-500/10 text-teal-300', read_only: 'bg-white/[0.06] text-white/50' };
+const ROLE_COLORS: Record<string, string> = { admin: 'bg-accent-primary/10 text-accent-primarySoft', advisor: 'bg-accent-primary/10 text-accent-primarySoft', associate: 'bg-accent-primary/10 text-accent-primarySoft', read_only: 'bg-surface-subtle text-text-muted' };
 
 export default function AdvisorsPage() {
   const [search, setSearch] = useState('');
@@ -37,35 +37,35 @@ export default function AdvisorsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
-          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500/20" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-faint" />
+          <input type="text" placeholder="Search advisors..." className="w-full pl-9 pr-3 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary/20" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-teal-500 text-white rounded-lg hover:bg-teal-400">
+        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-accent-primary text-text rounded-lg hover:bg-accent-primary/80">
           <Plus size={14} /> Add Advisor
         </button>
       </div>
 
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm">
+      <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-limestone-100 text-left">
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Advisor</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Role</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Clients</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Plans</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase text-right">Avg Success</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">MFA</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Status</th>
-              <th className="px-5 py-3 text-xs font-medium text-white/50 uppercase">Last Active</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase">Advisor</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase">Role</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase text-right">Clients</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase text-right">Plans</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase text-right">Avg Success</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase">MFA</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase">Status</th>
+              <th className="px-5 py-3 text-xs font-medium text-text-muted uppercase">Last Active</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((a) => (
-              <tr key={a.id} className={`border-b border-limestone-50 hover:bg-white/[0.04]/50 ${!a.isActive ? 'opacity-50' : ''}`}>
+              <tr key={a.id} className={`border-b border-limestone-50 hover:bg-surface-subtle/50 ${!a.isActive ? 'opacity-50' : ''}`}>
                 <td className="px-5 py-3">
                   <div>
-                    <p className="font-medium text-white">{a.name}</p>
-                    <p className="text-xs text-white/50">{a.email} {a.crd ? `· CRD: ${a.crd}` : ''}</p>
+                    <p className="font-medium text-text">{a.name}</p>
+                    <p className="text-xs text-text-muted">{a.email} {a.crd ? `· CRD: ${a.crd}` : ''}</p>
                   </div>
                 </td>
                 <td className="px-5 py-3">
@@ -73,22 +73,22 @@ export default function AdvisorsPage() {
                     {ROLE_LABELS[a.role]}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-white/50 text-right">{a.clients}</td>
-                <td className="px-5 py-3 text-white/50 text-right">{a.plans}</td>
+                <td className="px-5 py-3 text-text-muted text-right">{a.clients}</td>
+                <td className="px-5 py-3 text-text-muted text-right">{a.plans}</td>
                 <td className="px-5 py-3 text-right">
                   {a.avgSuccess > 0 ? (
                     <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-success-500' : a.avgSuccess >= 70 ? 'text-warning-500' : 'text-critical-500'}`}>{a.avgSuccess}%</span>
-                  ) : <span className="text-white/30">—</span>}
+                  ) : <span className="text-text-faint">—</span>}
                 </td>
                 <td className="px-5 py-3">
                   {a.mfaEnabled ? <CheckCircle2 size={16} className="text-success-500" /> : <XCircle size={16} className="text-critical-500" />}
                 </td>
                 <td className="px-5 py-3">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${a.isActive ? 'bg-success-50 text-success-700' : 'bg-white/[0.06] text-white/50'}`}>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${a.isActive ? 'bg-success-50 text-success-700' : 'bg-surface-subtle text-text-muted'}`}>
                     {a.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-white/50">{a.lastLogin}</td>
+                <td className="px-5 py-3 text-text-muted">{a.lastLogin}</td>
               </tr>
             ))}
           </tbody>

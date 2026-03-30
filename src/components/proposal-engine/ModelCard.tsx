@@ -24,15 +24,15 @@ export interface ModelCardProps {
 // ---------------------------------------------------------------------------
 
 const CATEGORY_CONFIG: Record<ModelCategory, { label: string; bgClass: string; textClass: string }> = {
-  CORE: { label: 'Core', bgClass: 'bg-teal-500/15', textClass: 'text-teal-300' },
-  STRATEGIC: { label: 'Strategic', bgClass: 'bg-teal-500/15', textClass: 'text-teal-300' },
+  CORE: { label: 'Core', bgClass: 'bg-accent-primary/15', textClass: 'text-accent-primarySoft' },
+  STRATEGIC: { label: 'Strategic', bgClass: 'bg-accent-primary/15', textClass: 'text-accent-primarySoft' },
   TACTICAL: { label: 'Tactical', bgClass: 'bg-info-100', textClass: 'text-info-700' },
   FACTOR: { label: 'Factor', bgClass: 'bg-warning-100', textClass: 'text-warning-700' },
   ESG: { label: 'ESG', bgClass: 'bg-success-100', textClass: 'text-success-700' },
   TAX_EFFICIENT: { label: 'Tax Efficient', bgClass: 'bg-success-100', textClass: 'text-success-700' },
   INCOME: { label: 'Income', bgClass: 'bg-info-100', textClass: 'text-info-700' },
   ALTERNATIVES: { label: 'Alternatives', bgClass: 'bg-warning-100', textClass: 'text-warning-700' },
-  CUSTOM: { label: 'Custom', bgClass: 'bg-white/[0.06]', textClass: 'text-white/60' },
+  CUSTOM: { label: 'Custom', bgClass: 'bg-surface-subtle', textClass: 'text-text-muted' },
 };
 
 // ---------------------------------------------------------------------------
@@ -91,15 +91,15 @@ export function ModelCard({
   return (
     <div
       className={cn(
-        'relative rounded-lg border-2 bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm transition-all',
+        'relative rounded-lg border-2 bg-surface-soft backdrop-blur-xl p-5 shadow-sm transition-all',
         selected
-          ? 'border-teal-500 shadow-md shadow-brand-700/10'
-          : 'border-white/[0.06] hover:border-white/[0.10] hover:shadow',
+          ? 'border-accent-primary shadow-md shadow-brand-700/10'
+          : 'border-border-subtle hover:border-border-subtle hover:shadow',
       )}
     >
       {/* Header: name and category badge */}
       <div className="flex items-start justify-between gap-2 mb-3">
-        <h4 className="text-sm font-semibold text-white leading-tight">
+        <h4 className="text-sm font-semibold text-text leading-tight">
           {model.name}
         </h4>
         <span
@@ -116,11 +116,11 @@ export function ModelCard({
       {/* Risk score visual */}
       <div className="mb-3">
         <div className="flex items-center gap-1.5 mb-1">
-          <Shield className="h-3.5 w-3.5 text-white/30" aria-hidden="true" />
-          <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+          <Shield className="h-3.5 w-3.5 text-text-faint" aria-hidden="true" />
+          <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
             Risk Score
           </span>
-          <span className="ml-auto text-xs font-bold tabular-nums text-white/60">
+          <span className="ml-auto text-xs font-bold tabular-nums text-text-muted">
             {model.riskScore}
           </span>
         </div>
@@ -134,11 +134,11 @@ export function ModelCard({
                   ? model.riskScore <= 30
                     ? 'bg-info-500'
                     : model.riskScore <= 60
-                      ? 'bg-teal-400'
+                      ? 'bg-brand-400'
                       : model.riskScore <= 80
                         ? 'bg-warning-500'
                         : 'bg-critical-500'
-                  : 'bg-white/[0.06]',
+                  : 'bg-surface-subtle',
               )}
             />
           ))}
@@ -148,20 +148,20 @@ export function ModelCard({
       {/* Performance metrics */}
       <div className="grid grid-cols-3 gap-x-3 gap-y-2 mb-3">
         <div>
-          <span className="text-[10px] text-white/50">1Y Return</span>
-          <p className="text-sm font-semibold tabular-nums text-white">
+          <span className="text-[10px] text-text-muted">1Y Return</span>
+          <p className="text-sm font-semibold tabular-nums text-text">
             {fmtPct(model.performance?.oneYear ?? 0, 1)}
           </p>
         </div>
         <div>
-          <span className="text-[10px] text-white/50">3Y Return</span>
-          <p className="text-sm font-semibold tabular-nums text-white">
+          <span className="text-[10px] text-text-muted">3Y Return</span>
+          <p className="text-sm font-semibold tabular-nums text-text">
             {fmtPct(model.performance?.threeYear ?? 0, 1)}
           </p>
         </div>
         <div>
-          <span className="text-[10px] text-white/50">5Y Return</span>
-          <p className="text-sm font-semibold tabular-nums text-white">
+          <span className="text-[10px] text-text-muted">5Y Return</span>
+          <p className="text-sm font-semibold tabular-nums text-text">
             {fmtPct(model.performance?.fiveYear ?? 0, 1)}
           </p>
         </div>
@@ -170,10 +170,10 @@ export function ModelCard({
       {/* Expense ratio */}
       <div className="mb-3">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+          <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
             Expense Ratio
           </span>
-          <span className="text-xs font-semibold tabular-nums text-white/60">
+          <span className="text-xs font-semibold tabular-nums text-text-muted">
             {fmtPct(model.expenseRatio ?? 0)}
           </span>
         </div>
@@ -181,7 +181,7 @@ export function ModelCard({
 
       {/* Allocation summary bar */}
       <div className="mb-3">
-        <span className="text-[10px] font-medium uppercase tracking-wide text-white/50 block mb-1.5">
+        <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted block mb-1.5">
           Allocation
         </span>
         <AllocationBar
@@ -197,13 +197,13 @@ export function ModelCard({
       {worstStress && (
         <div className="mb-4 rounded-md bg-transparent px-3 py-2">
           <div className="flex items-center gap-1.5 mb-0.5">
-            <AlertTriangle className="h-3 w-3 text-white/30" />
-            <span className="text-[10px] font-medium uppercase tracking-wide text-white/50">
+            <AlertTriangle className="h-3 w-3 text-text-faint" />
+            <span className="text-[10px] font-medium uppercase tracking-wide text-text-muted">
               Worst Scenario
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-white/50">
+            <span className="text-xs text-text-muted">
               {worstStress.scenarioLabel}
             </span>
             <span className="text-xs font-semibold tabular-nums text-critical-700">
@@ -221,8 +221,8 @@ export function ModelCard({
           className={cn(
             'w-full rounded-lg px-4 py-2 text-sm font-medium transition-colors',
             selected
-              ? 'bg-teal-500 text-white'
-              : 'border border-teal-500 bg-white/[0.07] text-teal-300 hover:bg-teal-500/10',
+              ? 'bg-accent-primary text-text'
+              : 'border border-accent-primary bg-surface-soft text-accent-primarySoft hover:bg-accent-primary/10',
           )}
         >
           {selected ? 'Selected' : 'Select Model'}

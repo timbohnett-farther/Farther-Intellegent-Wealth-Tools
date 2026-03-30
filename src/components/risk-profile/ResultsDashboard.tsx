@@ -31,15 +31,15 @@ export default function ResultsDashboard({ profile, onRestart }: ResultsDashboar
       <div className="card p-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-white/50">Band</span>
-            <span className="text-lg font-bold text-white">{profile.recommendedBand}</span>
-            <span className="text-sm text-white/50">{RISK_BAND_LABELS[profile.recommendedBand]}</span>
+            <span className="text-xs text-text-muted">Band</span>
+            <span className="text-lg font-bold text-text">{profile.recommendedBand}</span>
+            <span className="text-sm text-text-muted">{RISK_BAND_LABELS[profile.recommendedBand]}</span>
           </div>
-          <div className="h-8 w-px bg-white/[0.06]" />
-          <div className="flex items-center gap-4 text-xs text-white/50">
-            <span>Tolerance <strong className="text-white">{Math.round(profile.axisScores.tolerance)}</strong></span>
-            <span>Capacity <strong className="text-white">{Math.round(profile.axisScores.capacity)}</strong></span>
-            <span>Need <strong className="text-white">{(profile.axisScores.need * 100).toFixed(1)}%</strong></span>
+          <div className="h-8 w-px bg-surface-subtle" />
+          <div className="flex items-center gap-4 text-xs text-text-muted">
+            <span>Tolerance <strong className="text-text">{Math.round(profile.axisScores.tolerance)}</strong></span>
+            <span>Capacity <strong className="text-text">{Math.round(profile.axisScores.capacity)}</strong></span>
+            <span>Need <strong className="text-text">{(profile.axisScores.need * 100).toFixed(1)}%</strong></span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -58,14 +58,14 @@ export default function ResultsDashboard({ profile, onRestart }: ResultsDashboar
 
       {/* Tabs */}
       <div className="no-print overflow-x-auto">
-        <div className="flex gap-1 border-b border-white/[0.06] min-w-max">
+        <div className="flex gap-1 border-b border-border-subtle min-w-max">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               className={`px-4 py-2 text-sm whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'border-b-2 border-teal-500 text-teal-300 font-medium'
-                  : 'text-white/50 hover:text-white/60'
+                  ? 'border-b-2 border-accent-primary text-accent-primarySoft font-medium'
+                  : 'text-text-muted hover:text-text-muted'
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
@@ -112,13 +112,13 @@ export default function ResultsDashboard({ profile, onRestart }: ResultsDashboar
       <div className="flex items-center justify-center gap-4 pt-4 no-print">
         <button
           onClick={onRestart}
-          className="px-6 py-2.5 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-500 transition-colors"
+          className="px-6 py-2.5 bg-accent-primary text-text text-sm font-medium rounded-lg hover:bg-accent-primary transition-colors"
         >
           Retake Assessment
         </button>
         <button
           onClick={() => window.print()}
-          className="px-6 py-2.5 border border-white/[0.10] text-white/60 text-sm font-medium rounded-lg hover:bg-white/[0.04] transition-colors"
+          className="px-6 py-2.5 border border-border-subtle text-text-muted text-sm font-medium rounded-lg hover:bg-surface-subtle transition-colors"
         >
           Export PDF
         </button>

@@ -34,7 +34,7 @@ export function FormField({
       )}
 
       {!error && helperText && (
-        <p className="text-xs text-white/50">{helperText}</p>
+        <p className="text-xs text-text-muted">{helperText}</p>
       )}
     </div>
   );

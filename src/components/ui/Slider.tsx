@@ -36,12 +36,12 @@ function Slider({
       {(label || showValue) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <span className="text-xs font-medium text-white/60">
+            <span className="text-xs font-medium text-text-muted">
               {label}
             </span>
           )}
           {showValue && (
-            <span className="text-sm font-mono font-semibold text-teal-300">
+            <span className="text-sm font-mono font-semibold text-accent-primarySoft">
               {displayValue}
             </span>
           )}
@@ -58,11 +58,11 @@ function Slider({
           disabled={disabled}
           className={cn(
             "w-full h-2 rounded-full appearance-none cursor-pointer",
-            "bg-white/10",
+            "bg-surface-subtle",
             "[&::-webkit-slider-thumb]:appearance-none",
             "[&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5",
             "[&::-webkit-slider-thumb]:rounded-full",
-            "[&::-webkit-slider-thumb]:bg-teal-500 [&::-webkit-slider-thumb]:border-2",
+            "[&::-webkit-slider-thumb]:bg-accent-primary [&::-webkit-slider-thumb]:border-2",
             "[&::-webkit-slider-thumb]:border-[#1a1a1a] [&::-webkit-slider-thumb]:shadow-sm",
             "[&::-webkit-slider-thumb]:cursor-pointer",
             "[&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:duration-150",

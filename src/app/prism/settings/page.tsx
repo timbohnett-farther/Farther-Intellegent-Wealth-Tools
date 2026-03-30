@@ -13,21 +13,21 @@ const SETTINGS_SECTIONS = [
 export default function SettingsPage() {
   return (
     <div className="max-w-content mx-auto px-6 py-6">
-      <h1 className="text-2xl font-bold text-white mb-2">Settings</h1>
-      <p className="text-sm text-white/50 mb-8">Configure your Farther Prism platform settings.</p>
+      <h1 className="text-2xl font-bold text-text mb-2">Settings</h1>
+      <p className="text-sm text-text-muted mb-8">Configure your Farther Prism platform settings.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {SETTINGS_SECTIONS.map((section) => (
-          <div key={section.title} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 opacity-60">
+          <div key={section.title} className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 opacity-60">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-white/[0.06] flex items-center justify-center text-white/30">
+              <div className="w-10 h-10 rounded-lg bg-surface-subtle flex items-center justify-center text-text-faint">
                 {section.icon}
               </div>
               <div>
-                <h3 className="font-semibold text-white">{section.title}</h3>
-                <span className="text-[10px] text-white/30 font-medium">COMING SOON</span>
+                <h3 className="font-semibold text-text">{section.title}</h3>
+                <span className="text-[10px] text-text-faint font-medium">COMING SOON</span>
               </div>
             </div>
-            <p className="text-sm text-white/50">{section.description}</p>
+            <p className="text-sm text-text-muted">{section.description}</p>
           </div>
         ))}
       </div>

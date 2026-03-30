@@ -27,22 +27,22 @@ export default function QuestionCard({
       {/* Question header */}
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
-          <span className="inline-block px-2 py-0.5 rounded-md bg-teal-500/10 text-[11px] font-semibold text-teal-300 uppercase tracking-wide">
+          <span className="inline-block px-2 py-0.5 rounded-md bg-accent-primary/10 text-[11px] font-semibold text-accent-primarySoft uppercase tracking-wide">
             {categoryLabel}
           </span>
           {axisLabel && (
-            <span className="inline-block px-2 py-0.5 rounded-md bg-white/[0.06] text-[10px] font-medium text-white/50">
+            <span className="inline-block px-2 py-0.5 rounded-md bg-surface-subtle text-[10px] font-medium text-text-muted">
               {axisLabel}
             </span>
           )}
         </div>
-        <span className="text-xs text-white/30">
+        <span className="text-xs text-text-faint">
           {questionNumber} of {totalQuestions}
         </span>
       </div>
 
       {/* Question text */}
-      <h3 className="text-lg font-semibold text-white mt-3 mb-6 leading-relaxed">
+      <h3 className="text-lg font-semibold text-text mt-3 mb-6 leading-relaxed">
         {question.questionText}
       </h3>
 
@@ -57,25 +57,25 @@ export default function QuestionCard({
               onClick={() => onSelect(option.value)}
               className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all duration-150 ${
                 isSelected
-                  ? 'border-teal-500 bg-teal-500/10 ring-1 shadow-focus'
-                  : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10] hover:bg-white/[0.04]'
+                  ? 'border-accent-primary bg-accent-primary/10 ring-1 shadow-focus'
+                  : 'border-border-subtle bg-surface-soft hover:border-border-subtle hover:bg-surface-subtle'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                     isSelected
-                      ? 'border-teal-500 bg-teal-500'
-                      : 'border-white/[0.10]'
+                      ? 'border-accent-primary bg-accent-primary'
+                      : 'border-border-subtle'
                   }`}
                 >
                   {isSelected && (
-                    <div className="w-2 h-2 rounded-full bg-white" />
+                    <div className="w-2 h-2 rounded-full bg-text" />
                   )}
                 </div>
                 <span
                   className={`text-sm ${
-                    isSelected ? 'text-white font-medium' : 'text-white/60'
+                    isSelected ? 'text-text font-medium' : 'text-text-muted'
                   }`}
                 >
                   {option.label}

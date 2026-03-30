@@ -28,15 +28,15 @@ interface FunnelStep {
 // ---------------------------------------------------------------------------
 
 const STATUS_COLORS: Record<ProposalStatus, string> = {
-  DRAFT: 'bg-white/[0.06] text-white/60',
+  DRAFT: 'bg-surface-subtle text-text-muted',
   READY: 'bg-info-100 text-info-700',
   REVIEW: 'bg-info-100 text-info-700',
-  APPROVED: 'bg-teal-500/15 text-teal-300',
+  APPROVED: 'bg-accent-primary/15 text-accent-primarySoft',
   SENT: 'bg-warning-100 text-warning-700',
   VIEWED: 'bg-purple-100 text-purple-700',
   ACCEPTED: 'bg-success-100 text-success-700',
   DECLINED: 'bg-critical-100 text-critical-700',
-  EXPIRED: 'bg-white/[0.06] text-white/50',
+  EXPIRED: 'bg-surface-subtle text-text-muted',
 };
 
 const PROPOSAL_TYPES = ['All Types', 'New Client', 'Rebalance', 'Rollover', 'Transfer'];
@@ -58,11 +58,11 @@ function TableSkeleton() {
     <div className="space-y-3 animate-pulse">
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 py-3">
-          <div className="h-4 w-28 rounded bg-white/[0.06]" />
-          <div className="h-4 w-20 rounded bg-white/[0.06]" />
-          <div className="h-5 w-16 rounded-full bg-white/[0.06]" />
-          <div className="h-4 w-24 rounded bg-white/[0.06] flex-1" />
-          <div className="h-4 w-20 rounded bg-white/[0.06]" />
+          <div className="h-4 w-28 rounded bg-surface-subtle" />
+          <div className="h-4 w-20 rounded bg-surface-subtle" />
+          <div className="h-5 w-16 rounded-full bg-surface-subtle" />
+          <div className="h-4 w-24 rounded bg-surface-subtle flex-1" />
+          <div className="h-4 w-20 rounded bg-surface-subtle" />
         </div>
       ))}
     </div>
@@ -157,7 +157,7 @@ export default function ProposalsDashboardPage() {
 
   // Funnel
   const funnel: FunnelStep[] = [
-    { label: 'Created', count: proposals.length, color: 'bg-teal-500' },
+    { label: 'Created', count: proposals.length, color: 'bg-accent-primary' },
     { label: 'Sent', count: proposals.filter((p) => p.sentAt).length, color: 'bg-warning-500' },
     { label: 'Viewed', count: proposals.filter((p) => !!p.viewedAt).length, color: 'bg-purple-500' },
     { label: 'Accepted', count: proposals.filter((p) => p.status === 'ACCEPTED').length, color: 'bg-success-500' },
@@ -174,13 +174,13 @@ export default function ProposalsDashboardPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Portfolio Proposals</h1>
-          <p className="mt-1 text-sm text-white/50">Create, manage, and track portfolio proposals for your clients.</p>
+          <h1 className="text-2xl font-bold text-text">Portfolio Proposals</h1>
+          <p className="mt-1 text-sm text-text-muted">Create, manage, and track portfolio proposals for your clients.</p>
         </div>
         <button
           type="button"
           onClick={() => router.push('/tax-planning/proposals/new')}
-          className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-400"
+          className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-4 py-2.5 text-sm font-medium text-text shadow-sm transition-colors hover:bg-accent-primary/80"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -193,28 +193,28 @@ export default function ProposalsDashboardPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm animate-pulse">
-              <div className="h-4 w-24 rounded bg-white/[0.06] mb-3" />
-              <div className="h-8 w-20 rounded bg-white/[0.06]" />
+            <div key={i} className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm animate-pulse">
+              <div className="h-4 w-24 rounded bg-surface-subtle mb-3" />
+              <div className="h-8 w-20 rounded bg-surface-subtle" />
             </div>
           ))
         ) : stats ? (
           <>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-              <p className="text-sm font-medium text-white/50">Created (90d)</p>
-              <p className="mt-2 text-3xl font-bold text-white tabular-nums">{stats.totalCreated90d}</p>
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+              <p className="text-sm font-medium text-text-muted">Created (90d)</p>
+              <p className="mt-2 text-3xl font-bold text-text tabular-nums">{stats.totalCreated90d}</p>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-              <p className="text-sm font-medium text-white/50">Sent</p>
-              <p className="mt-2 text-3xl font-bold text-white tabular-nums">{stats.sent}</p>
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+              <p className="text-sm font-medium text-text-muted">Sent</p>
+              <p className="mt-2 text-3xl font-bold text-text tabular-nums">{stats.sent}</p>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-              <p className="text-sm font-medium text-white/50">Conversion Rate</p>
-              <p className="mt-2 text-3xl font-bold text-white tabular-nums">{fmtPct.format(stats.conversionRate)}</p>
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+              <p className="text-sm font-medium text-text-muted">Conversion Rate</p>
+              <p className="mt-2 text-3xl font-bold text-text tabular-nums">{fmtPct.format(stats.conversionRate)}</p>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-              <p className="text-sm font-medium text-white/50">AUM Won</p>
-              <p className="mt-2 text-3xl font-bold text-white tabular-nums">{fmt.format(stats.aumWon / 100)}</p>
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+              <p className="text-sm font-medium text-text-muted">AUM Won</p>
+              <p className="mt-2 text-3xl font-bold text-text tabular-nums">{fmt.format(stats.aumWon / 100)}</p>
             </div>
           </>
         ) : null}
@@ -228,7 +228,7 @@ export default function ProposalsDashboardPage() {
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value as ProposalStatus | 'ALL'); setPage(1); }}
-              className="border border-white/[0.10] rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 bg-white/[0.06]"
+              className="border border-border-subtle rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-accent-primary/80 bg-surface-subtle"
             >
               {STATUS_OPTIONS.map((s) => (
                 <option key={s} value={s}>{s === 'ALL' ? 'All Statuses' : s.replace(/_/g, ' ')}</option>
@@ -237,14 +237,14 @@ export default function ProposalsDashboardPage() {
             <select
               value={typeFilter}
               onChange={(e) => { setTypeFilter(e.target.value); setPage(1); }}
-              className="border border-white/[0.10] rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 bg-white/[0.06]"
+              className="border border-border-subtle rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-accent-primary/80 bg-surface-subtle"
             >
               {PROPOSAL_TYPES.map((t) => (
                 <option key={t} value={t}>{t}</option>
               ))}
             </select>
             <div className="relative flex-1">
-              <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
               <input
@@ -252,31 +252,31 @@ export default function ProposalsDashboardPage() {
                 placeholder="Search by client name..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full border border-white/[0.10] rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
+                className="w-full border border-border-subtle rounded-sm pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-accent-primary/80"
               />
             </div>
           </div>
 
           {/* Table */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm overflow-hidden">
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl shadow-sm overflow-hidden">
             {loading ? (
               <div className="p-6"><TableSkeleton /></div>
             ) : error ? (
               <div className="p-8 text-center">
                 <p className="text-sm text-critical-700">{error}</p>
-                <button type="button" onClick={fetchData} className="mt-3 text-sm font-medium text-teal-300 hover:text-teal-300">Try again</button>
+                <button type="button" onClick={fetchData} className="mt-3 text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft">Try again</button>
               </div>
             ) : paginated.length === 0 ? (
               <div className="p-12 text-center">
-                <svg className="mx-auto h-12 w-12 text-white/30 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <svg className="mx-auto h-12 w-12 text-text-faint mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                 </svg>
-                <p className="text-sm font-medium text-white/60">No proposals yet.</p>
-                <p className="mt-1 text-sm text-white/50">Create your first proposal to get started.</p>
+                <p className="text-sm font-medium text-text-muted">No proposals yet.</p>
+                <p className="mt-1 text-sm text-text-muted">Create your first proposal to get started.</p>
                 <button
                   type="button"
                   onClick={() => router.push('/tax-planning/proposals/new')}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-400"
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent-primary px-4 py-2 text-sm font-medium text-text hover:bg-accent-primary/80"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -291,29 +291,29 @@ export default function ProposalsDashboardPage() {
                     <thead className="bg-transparent">
                       <tr>
                         {['Client', 'Type', 'Status', 'AUM', 'Created', 'Sent', 'Viewed', 'Actions'].map((h) => (
-                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white/50">{h}</th>
+                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-limestone-100">
                       {paginated.map((p) => (
-                        <tr key={p.proposalId} className="transition-colors hover:bg-white/[0.04]">
-                          <td className="px-4 py-3 text-sm font-medium text-white whitespace-nowrap">
-                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-teal-300">
+                        <tr key={p.proposalId} className="transition-colors hover:bg-surface-subtle">
+                          <td className="px-4 py-3 text-sm font-medium text-text whitespace-nowrap">
+                            <Link href={`/tax-planning/proposals/${p.proposalId}`} className="hover:text-accent-primarySoft">
                               {p.clientName}
                             </Link>
                           </td>
-                          <td className="px-4 py-3 text-sm text-white/60 whitespace-nowrap">{p.title ?? '--'}</td>
+                          <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{p.title ?? '--'}</td>
                           <td className="px-4 py-3 whitespace-nowrap"><StatusBadge status={p.status} /></td>
-                          <td className="px-4 py-3 text-sm text-white/60 tabular-nums whitespace-nowrap">{fmt.format(((p.currentPortfolioValue ?? 0) as number) / 100)}</td>
-                          <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{formatDate(p.createdAt)}</td>
-                          <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{formatDate(p.sentAt ?? undefined)}</td>
-                          <td className="px-4 py-3 text-sm text-white/50 whitespace-nowrap">{formatDate(p.viewedAt)}</td>
+                          <td className="px-4 py-3 text-sm text-text-muted tabular-nums whitespace-nowrap">{fmt.format(((p.currentPortfolioValue ?? 0) as number) / 100)}</td>
+                          <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{formatDate(p.createdAt)}</td>
+                          <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{formatDate(p.sentAt ?? undefined)}</td>
+                          <td className="px-4 py-3 text-sm text-text-muted whitespace-nowrap">{formatDate(p.viewedAt)}</td>
                           <td className="px-4 py-3 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <Link
                                 href={`/tax-planning/proposals/${p.proposalId}`}
-                                className="text-sm font-medium text-teal-300 hover:text-teal-300"
+                                className="text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft"
                               >
                                 View
                               </Link>
@@ -323,7 +323,7 @@ export default function ProposalsDashboardPage() {
                                   navigator.clipboard.writeText(p.proposalId);
                                   addToast('Proposal ID copied', 'info');
                                 }}
-                                className="text-sm text-white/50 hover:text-white/60"
+                                className="text-sm text-text-muted hover:text-text-muted"
                               >
                                 Copy ID
                               </button>
@@ -336,8 +336,8 @@ export default function ProposalsDashboardPage() {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex items-center justify-between border-t border-white/[0.06] px-4 py-3">
-                  <p className="text-sm text-white/50">
+                <div className="flex items-center justify-between border-t border-border-subtle px-4 py-3">
+                  <p className="text-sm text-text-muted">
                     Showing {(page - 1) * PAGE_SIZE + 1}--{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}
                   </p>
                   <div className="flex items-center gap-2">
@@ -345,16 +345,16 @@ export default function ProposalsDashboardPage() {
                       type="button"
                       disabled={page <= 1}
                       onClick={() => setPage((p) => p - 1)}
-                      className="rounded-md border border-white/[0.10] px-3 py-1.5 text-sm font-medium text-white/60 disabled:opacity-40 hover:bg-white/[0.04]"
+                      className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-muted disabled:opacity-40 hover:bg-surface-subtle"
                     >
                       Previous
                     </button>
-                    <span className="text-sm text-white/50">Page {page} of {totalPages}</span>
+                    <span className="text-sm text-text-muted">Page {page} of {totalPages}</span>
                     <button
                       type="button"
                       disabled={page >= totalPages}
                       onClick={() => setPage((p) => p + 1)}
-                      className="rounded-md border border-white/[0.10] px-3 py-1.5 text-sm font-medium text-white/60 disabled:opacity-40 hover:bg-white/[0.04]"
+                      className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-muted disabled:opacity-40 hover:bg-surface-subtle"
                     >
                       Next
                     </button>
@@ -366,16 +366,16 @@ export default function ProposalsDashboardPage() {
         </div>
 
         {/* Conversion Funnel Sidebar */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-white mb-4">Conversion Funnel</h2>
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+          <h2 className="text-base font-semibold text-text mb-4">Conversion Funnel</h2>
           <div className="space-y-4">
             {funnel.map((step) => (
               <div key={step.label}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-white/60">{step.label}</span>
-                  <span className="text-sm font-semibold text-white tabular-nums">{step.count}</span>
+                  <span className="text-sm text-text-muted">{step.label}</span>
+                  <span className="text-sm font-semibold text-text tabular-nums">{step.count}</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-white/[0.06]">
+                <div className="h-2 w-full rounded-full bg-surface-subtle">
                   <div
                     className={`h-2 rounded-full transition-all ${step.color}`}
                     style={{ width: `${(step.count / maxFunnel) * 100}%` }}
@@ -385,9 +385,9 @@ export default function ProposalsDashboardPage() {
             ))}
           </div>
           {!loading && proposals.length > 0 && (
-            <div className="mt-6 border-t border-white/[0.06] pt-4">
-              <p className="text-xs text-white/50 mb-1">Overall Conversion</p>
-              <p className="text-2xl font-bold text-white tabular-nums">
+            <div className="mt-6 border-t border-border-subtle pt-4">
+              <p className="text-xs text-text-muted mb-1">Overall Conversion</p>
+              <p className="text-2xl font-bold text-text tabular-nums">
                 {proposals.length > 0
                   ? fmtPct.format(proposals.filter((p) => p.status === 'ACCEPTED').length / proposals.length)
                   : '0%'}

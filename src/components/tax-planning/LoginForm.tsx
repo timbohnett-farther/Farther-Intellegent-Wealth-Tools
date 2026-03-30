@@ -56,13 +56,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     <div className="w-full max-w-sm mx-auto">
       {/* Branding */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-teal-500 mb-4">
-          <span className="text-white font-bold text-lg">FT</span>
+        <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-accent-primary mb-4">
+          <span className="text-text font-bold text-lg">FT</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-text">
           Farther Tax Planning
         </h1>
-        <p className="mt-1 text-sm text-white/50">
+        <p className="mt-1 text-sm text-text-muted">
           Sign in to your account
         </p>
       </div>
@@ -81,7 +81,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="login-email"
-            className="text-sm font-medium text-white/60"
+            className="text-sm font-medium text-text-muted"
           >
             Email
           </label>
@@ -99,11 +99,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             disabled={loading}
             autoComplete="email"
             className={cn(
-              'h-10 w-full rounded-lg border-[1.5px] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white placeholder:text-white/30 transition-colors focus:outline-hidden focus:shadow-focus',
-              'disabled:cursor-not-allowed disabled:bg-transparent disabled:text-white/30',
+              'h-10 w-full rounded-lg border-[1.5px] bg-surface-soft backdrop-blur-xl px-3 text-sm text-text placeholder:text-text-faint transition-colors focus:outline-hidden focus:shadow-focus',
+              'disabled:cursor-not-allowed disabled:bg-transparent disabled:text-text-faint',
               validationErrors.email
                 ? 'border-critical-500 focus:border-critical-500'
-                : 'border-white/[0.06] focus:border-teal-500'
+                : 'border-border-subtle focus:border-accent-primary'
             )}
           />
           {validationErrors.email && (
@@ -115,7 +115,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="login-password"
-            className="text-sm font-medium text-white/60"
+            className="text-sm font-medium text-text-muted"
           >
             Password
           </label>
@@ -133,11 +133,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             disabled={loading}
             autoComplete="current-password"
             className={cn(
-              'h-10 w-full rounded-lg border-[1.5px] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white placeholder:text-white/30 transition-colors focus:outline-hidden focus:shadow-focus',
-              'disabled:cursor-not-allowed disabled:bg-transparent disabled:text-white/30',
+              'h-10 w-full rounded-lg border-[1.5px] bg-surface-soft backdrop-blur-xl px-3 text-sm text-text placeholder:text-text-faint transition-colors focus:outline-hidden focus:shadow-focus',
+              'disabled:cursor-not-allowed disabled:bg-transparent disabled:text-text-faint',
               validationErrors.password
                 ? 'border-critical-500 focus:border-critical-500'
-                : 'border-white/[0.06] focus:border-teal-500'
+                : 'border-border-subtle focus:border-accent-primary'
             )}
           />
           {validationErrors.password && (
@@ -153,10 +153,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             'inline-flex items-center justify-center gap-2 w-full h-10 rounded-lg text-sm font-medium transition-colors shadow-sm',
             'focus-visible:outline-hidden focus-visible:shadow-focus',
             'disabled:pointer-events-none disabled:opacity-45',
-            'bg-teal-500 text-white hover:bg-teal-400 active:bg-teal-600'
+            'bg-accent-primary text-text hover:bg-brand-400 active:bg-brand-600'
           )}
         >
-          {loading && <Spinner size="sm" className="text-white" />}
+          {loading && <Spinner size="sm" className="text-text" />}
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>

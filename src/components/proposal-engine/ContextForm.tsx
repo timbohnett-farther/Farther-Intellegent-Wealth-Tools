@@ -203,7 +203,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
       <div>
         <label
           htmlFor="client-name"
-          className="block text-sm font-medium text-white/60"
+          className="block text-sm font-medium text-text-muted"
         >
           Client Name
         </label>
@@ -214,10 +214,10 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           onChange={(e) => setClientName(e.target.value)}
           placeholder="Search or enter client name..."
           className={cn(
-            'mt-1.5 h-10 w-full rounded-lg border-[1.5px] bg-white/[0.07] backdrop-blur-xl px-3 text-sm text-white',
-            'placeholder:text-white/30 transition-colors',
-            'focus:outline-hidden focus:border-teal-500 focus:shadow-focus',
-            errors.clientName ? 'border-critical-500' : 'border-white/[0.06]',
+            'mt-1.5 h-10 w-full rounded-lg border-[1.5px] bg-surface-soft backdrop-blur-xl px-3 text-sm text-text',
+            'placeholder:text-text-faint transition-colors',
+            'focus:outline-hidden focus:border-accent-primary focus:shadow-focus',
+            errors.clientName ? 'border-critical-500' : 'border-border-subtle',
           )}
         />
         {errors.clientName && (
@@ -227,7 +227,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
 
       {/* Proposal Type Radio Cards */}
       <fieldset>
-        <legend className="block text-sm font-medium text-white/60 mb-3">
+        <legend className="block text-sm font-medium text-text-muted mb-3">
           Proposal Type
         </legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -241,8 +241,8 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
                 className={cn(
                   'relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 px-3 py-4 text-center transition-all',
                   isSelected
-                    ? 'border-teal-500 bg-teal-500/10 shadow-sm shadow-brand-700/10'
-                    : 'border-white/[0.06] bg-white/[0.07] hover:border-white/[0.10] hover:bg-white/[0.04]',
+                    ? 'border-accent-primary bg-accent-primary/10 shadow-sm shadow-brand-700/10'
+                    : 'border-border-subtle bg-surface-soft hover:border-border-subtle hover:bg-surface-subtle',
                 )}
               >
                 <input
@@ -256,18 +256,18 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
                 <Icon
                   className={cn(
                     'h-5 w-5',
-                    isSelected ? 'text-teal-300' : 'text-white/30',
+                    isSelected ? 'text-accent-primarySoft' : 'text-text-faint',
                   )}
                 />
                 <span
                   className={cn(
                     'text-xs font-semibold',
-                    isSelected ? 'text-teal-300' : 'text-white/60',
+                    isSelected ? 'text-accent-primarySoft' : 'text-text-muted',
                   )}
                 >
                   {opt.label}
                 </span>
-                <span className="text-[10px] text-white/50 leading-tight">
+                <span className="text-[10px] text-text-muted leading-tight">
                   {opt.description}
                 </span>
               </label>
@@ -280,7 +280,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
       <div>
         <label
           htmlFor="occasion"
-          className="block text-sm font-medium text-white/60"
+          className="block text-sm font-medium text-text-muted"
         >
           Occasion
         </label>
@@ -290,10 +290,10 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
             value={occasion}
             onChange={(e) => setOccasion(e.target.value)}
             className={cn(
-              'h-10 w-full appearance-none rounded-lg border-[1.5px] bg-white pl-3 pr-9 text-sm text-white',
-              'transition-colors focus:outline-hidden focus:border-teal-500 focus:shadow-focus',
-              errors.occasion ? 'border-critical-500' : 'border-white/[0.06]',
-              !occasion && 'text-white/30',
+              'h-10 w-full appearance-none rounded-lg border-[1.5px] bg-text pl-3 pr-9 text-sm text-text',
+              'transition-colors focus:outline-hidden focus:border-accent-primary focus:shadow-focus',
+              errors.occasion ? 'border-critical-500' : 'border-border-subtle',
+              !occasion && 'text-text-faint',
             )}
           >
             {OCCASIONS.map((o) => (
@@ -313,18 +313,18 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
         <div>
           <label
             htmlFor="assets-in-scope"
-            className="block text-sm font-medium text-white/60"
+            className="block text-sm font-medium text-text-muted"
           >
             Assets in Scope
           </label>
           <div
             className={cn(
-              'mt-1.5 flex items-center rounded-lg border-[1.5px] bg-white transition-colors',
-              'focus-within:border-teal-500 focus-within:shadow-focus',
-              errors.assetsInScope ? 'border-critical-500' : 'border-white/[0.06]',
+              'mt-1.5 flex items-center rounded-lg border-[1.5px] bg-text transition-colors',
+              'focus-within:border-accent-primary focus-within:shadow-focus',
+              errors.assetsInScope ? 'border-critical-500' : 'border-border-subtle',
             )}
           >
-            <span className="select-none pl-3 text-sm text-white/50">$</span>
+            <span className="select-none pl-3 text-sm text-text-muted">$</span>
             <input
               id="assets-in-scope"
               type="text"
@@ -333,7 +333,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
               onChange={handleAssetsChange}
               onBlur={handleAssetsBlur}
               placeholder="0"
-              className="h-10 w-full bg-transparent pl-1 pr-3 text-sm font-mono text-white outline-hidden tabular-nums placeholder:text-white/30"
+              className="h-10 w-full bg-transparent pl-1 pr-3 text-sm font-mono text-text outline-hidden tabular-nums placeholder:text-text-faint"
             />
           </div>
           {errors.assetsInScope && (
@@ -342,22 +342,22 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-white/60">
+          <label className="block text-sm font-medium text-text-muted">
             Relationship Tier
           </label>
-          <div className="mt-1.5 flex h-10 items-center rounded-lg border-[1.5px] border-white/[0.06] bg-transparent px-3">
+          <div className="mt-1.5 flex h-10 items-center rounded-lg border-[1.5px] border-border-subtle bg-transparent px-3">
             <span
               className={cn(
                 'text-sm font-semibold',
-                relationshipTier === 'INSTITUTIONAL' && 'text-teal-300',
-                relationshipTier === 'PRIVATE_CLIENT' && 'text-teal-300',
-                relationshipTier === 'PREMIUM' && 'text-white/60',
-                relationshipTier === 'STANDARD' && 'text-white/50',
+                relationshipTier === 'INSTITUTIONAL' && 'text-accent-primarySoft',
+                relationshipTier === 'PRIVATE_CLIENT' && 'text-accent-primarySoft',
+                relationshipTier === 'PREMIUM' && 'text-text-muted',
+                relationshipTier === 'STANDARD' && 'text-text-muted',
               )}
             >
               {TIERS.find((t) => t.value === relationshipTier)?.label ?? 'Standard'}
             </span>
-            <span className="ml-2 text-[10px] text-white/30">(auto-set by assets)</span>
+            <span className="ml-2 text-[10px] text-text-faint">(auto-set by assets)</span>
           </div>
         </div>
       </div>
@@ -366,7 +366,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
       <div>
         <label
           htmlFor="notes"
-          className="block text-sm font-medium text-white/60"
+          className="block text-sm font-medium text-text-muted"
         >
           Notes
         </label>
@@ -377,9 +377,9 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           placeholder="Add any context for this proposal..."
           rows={4}
           className={cn(
-            'mt-1.5 w-full rounded-lg border-[1.5px] border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-3 py-2.5 text-sm text-white',
-            'placeholder:text-white/30 transition-colors resize-none',
-            'focus:outline-hidden focus:border-teal-500 focus:shadow-focus',
+            'mt-1.5 w-full rounded-lg border-[1.5px] border-border-subtle bg-surface-soft backdrop-blur-xl px-3 py-2.5 text-sm text-text',
+            'placeholder:text-text-faint transition-colors resize-none',
+            'focus:outline-hidden focus:border-accent-primary focus:shadow-focus',
           )}
         />
       </div>
@@ -390,7 +390,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-white/50 hover:bg-white/[0.04] transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
             Back
@@ -401,7 +401,7 @@ export function ContextForm({ initialData, onSubmit, onBack }: ContextFormProps)
 
         <button
           type="submit"
-          className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-teal-400 active:bg-teal-600 transition-colors"
+          className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-6 py-2.5 text-sm font-medium text-text shadow-sm hover:bg-brand-400 active:bg-brand-600 transition-colors"
         >
           Next
           <ChevronRight className="h-4 w-4" />

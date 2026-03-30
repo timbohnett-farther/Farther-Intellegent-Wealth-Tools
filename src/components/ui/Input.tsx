@@ -6,14 +6,14 @@ import { cn } from "@/lib/utils/cn";
 
 const inputVariants = tv({
   base: [
-    "w-full h-10 px-3.5 rounded-md text-sm text-white",
-    "bg-white/[0.06]",
+    "w-full h-10 px-3.5 rounded-md text-sm text-text",
+    "bg-surface-subtle",
     "outline-hidden transition-all duration-150",
-    "border-[1.5px] border-white/[0.10]",
-    "placeholder:text-white/30",
-    "hover:border-white/20",
-    "focus:border-teal-500 focus:shadow-[0_0_0_3px_rgba(78,112,130,0.25)]",
-    "disabled:bg-white/[0.03] disabled:text-white/20 disabled:cursor-not-allowed",
+    "border-[1.5px] border-border-subtle",
+    "placeholder:text-text-faint",
+    "hover:border-border-strong",
+    "focus:border-accent-primary focus:shadow-[0_0_0_3px_rgba(78,112,130,0.25)]",
+    "disabled:bg-surface-soft disabled:text-text-faint disabled:cursor-not-allowed",
   ],
   variants: {
     hasError: {

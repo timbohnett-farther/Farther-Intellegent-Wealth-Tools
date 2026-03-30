@@ -77,9 +77,9 @@ function fileIcon(type: string) {
     case 'png':
     case 'jpg':
     case 'jpeg':
-      return <Image size={18} className="text-teal-300" />;
+      return <Image size={18} className="text-accent-primarySoft" />;
     default:
-      return <File size={18} className="text-white/30" />;
+      return <File size={18} className="text-text-faint" />;
   }
 }
 
@@ -107,14 +107,14 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white/[0.07] rounded-modal shadow-xl w-full max-w-lg mx-4 p-6">
+      <div className="bg-surface-soft rounded-modal shadow-xl w-full max-w-lg mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-lg font-semibold text-text">
             Upload Document
           </h3>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-white/[0.06] text-white/30"
+            className="p-1 rounded hover:bg-surface-subtle text-text-faint"
           >
             <X size={20} />
           </button>
@@ -126,27 +126,27 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors ${
             isDragOver
-              ? 'border-brand-500 bg-teal-500/10'
-              : 'border-white/[0.10] hover:border-white/[0.10]'
+              ? 'border-brand-500 bg-accent-primary/10'
+              : 'border-border-subtle hover:border-border-subtle'
           }`}
         >
-          <Upload size={32} className="mx-auto text-white/30 mb-3" />
-          <p className="text-sm text-white/50">
+          <Upload size={32} className="mx-auto text-text-faint mb-3" />
+          <p className="text-sm text-text-muted">
             Drag and drop files here, or{' '}
-            <button className="text-teal-300 font-medium hover:underline">
+            <button className="text-accent-primarySoft font-medium hover:underline">
               browse
             </button>
           </p>
-          <p className="text-xs text-white/30 mt-2">
+          <p className="text-xs text-text-faint mt-2">
             PDF, XLSX, CSV, PNG, JPG up to 25 MB
           </p>
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-white/60 mb-1">
+          <label className="block text-sm font-medium text-text-muted mb-1">
             Folder
           </label>
-          <select className="w-full border border-white/[0.10] rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-teal-500">
+          <select className="w-full border border-border-subtle rounded-input px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-accent-primary">
             {FOLDERS.map((f) => (
               <option key={f.key} value={f.key}>
                 {f.label}
@@ -158,11 +158,11 @@ function UploadDropzone({ onClose }: { onClose: () => void }) {
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-white/60 bg-white/[0.07] border border-white/[0.10] rounded-lg hover:bg-white/[0.04]"
+            className="px-4 py-2 text-sm font-medium text-text-muted bg-surface-soft border border-border-subtle rounded-lg hover:bg-surface-subtle"
           >
             Cancel
           </button>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400">
+          <button className="px-4 py-2 text-sm font-medium text-text bg-accent-primary rounded-lg hover:bg-accent-primary/80">
             Upload
           </button>
         </div>
@@ -188,10 +188,10 @@ export default function ClientVaultPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Document Vault</h1>
+        <h1 className="text-2xl font-bold text-text">Document Vault</h1>
         <button
           onClick={() => setShowUpload(true)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-lg hover:bg-teal-400 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-text bg-accent-primary rounded-lg hover:bg-accent-primary/80 transition-colors"
         >
           <Upload size={16} />
           Upload Document
@@ -202,36 +202,36 @@ export default function ClientVaultPage() {
       <div className="relative max-w-md">
         <Search
           size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-text-faint"
         />
         <input
           type="text"
           placeholder="Search documents..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500 bg-white/[0.06]"
+          className="w-full pl-9 pr-4 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary bg-surface-subtle"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Folder Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
+          <div className="bg-surface-soft rounded-card border border-border-subtle overflow-hidden">
             <div className="px-4 py-3 border-b border-limestone-100">
-              <h2 className="text-sm font-semibold text-white">Folders</h2>
+              <h2 className="text-sm font-semibold text-text">Folders</h2>
             </div>
             <nav className="p-2">
               <button
                 onClick={() => setActiveFolder(null)}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
                   activeFolder === null
-                    ? 'bg-teal-500/10 text-teal-300 font-medium'
-                    : 'text-white/50 hover:bg-white/[0.04]'
+                    ? 'bg-accent-primary/10 text-accent-primarySoft font-medium'
+                    : 'text-text-muted hover:bg-surface-subtle'
                 }`}
               >
                 <Folder size={16} />
                 All Documents
-                <span className="ml-auto text-xs text-white/30">
+                <span className="ml-auto text-xs text-text-faint">
                   {DOCUMENTS.length}
                 </span>
               </button>
@@ -241,13 +241,13 @@ export default function ClientVaultPage() {
                   onClick={() => setActiveFolder(folder.key)}
                   className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
                     activeFolder === folder.key
-                      ? 'bg-teal-500/10 text-teal-300 font-medium'
-                      : 'text-white/50 hover:bg-white/[0.04]'
+                      ? 'bg-accent-primary/10 text-accent-primarySoft font-medium'
+                      : 'text-text-muted hover:bg-surface-subtle'
                   }`}
                 >
                   <Folder size={16} />
                   {folder.label}
-                  <span className="ml-auto text-xs text-white/30">
+                  <span className="ml-auto text-xs text-text-faint">
                     {folder.count}
                   </span>
                 </button>
@@ -258,9 +258,9 @@ export default function ClientVaultPage() {
 
         {/* Document List */}
         <div className="lg:col-span-3">
-          <div className="bg-white/[0.07] rounded-card border border-white/[0.06] overflow-hidden">
+          <div className="bg-surface-soft rounded-card border border-border-subtle overflow-hidden">
             {/* Header */}
-            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-limestone-100 text-xs font-medium text-white/50 uppercase tracking-wider">
+            <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-limestone-100 text-xs font-medium text-text-muted uppercase tracking-wider">
               <span className="col-span-5">Name</span>
               <span className="col-span-2">Type</span>
               <span className="col-span-2">Date</span>
@@ -270,7 +270,7 @@ export default function ClientVaultPage() {
 
             {/* Rows */}
             {filteredDocs.length === 0 ? (
-              <div className="px-6 py-12 text-center text-sm text-white/50">
+              <div className="px-6 py-12 text-center text-sm text-text-muted">
                 No documents found.
               </div>
             ) : (
@@ -278,34 +278,34 @@ export default function ClientVaultPage() {
                 {filteredDocs.map((doc) => (
                   <div
                     key={doc.id}
-                    className="grid grid-cols-12 gap-4 px-6 py-3 items-center hover:bg-white/[0.04] transition-colors"
+                    className="grid grid-cols-12 gap-4 px-6 py-3 items-center hover:bg-surface-subtle transition-colors"
                   >
                     <div className="col-span-5 flex items-center gap-2 min-w-0">
                       {fileIcon(doc.fileType)}
-                      <span className="text-sm text-white truncate">
+                      <span className="text-sm text-text truncate">
                         {doc.fileName}
                       </span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-xs font-medium text-white/50 uppercase">
+                      <span className="text-xs font-medium text-text-muted uppercase">
                         {doc.fileType}
                       </span>
                     </div>
-                    <div className="col-span-2 text-xs text-white/50">
+                    <div className="col-span-2 text-xs text-text-muted">
                       {formatDate(doc.uploadedDate)}
                     </div>
-                    <div className="col-span-1 text-xs text-white/50">
+                    <div className="col-span-1 text-xs text-text-muted">
                       {formatFileSize(doc.fileSize)}
                     </div>
                     <div className="col-span-2 flex items-center justify-end gap-1">
                       <button
-                        className="p-1.5 rounded hover:bg-white/[0.06] text-white/30 hover:text-white/50"
+                        className="p-1.5 rounded hover:bg-surface-subtle text-text-faint hover:text-text-muted"
                         title="View"
                       >
                         <Eye size={16} />
                       </button>
                       <button
-                        className="p-1.5 rounded hover:bg-white/[0.06] text-white/30 hover:text-white/50"
+                        className="p-1.5 rounded hover:bg-surface-subtle text-text-faint hover:text-text-muted"
                         title="Download"
                       >
                         <Download size={16} />

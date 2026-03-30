@@ -112,14 +112,14 @@ export default function ReportPreviewPage() {
   if (loading) {
     return (
       <div className="space-y-6 bg-canvas">
-        <div className="h-8 w-48 rounded bg-white/[0.06] animate-pulse" />
-        <div className="h-12 rounded-lg bg-white/[0.06] animate-pulse" />
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-3">
-          <div className="h-4 w-40 rounded bg-white/[0.06] animate-pulse" />
-          <div className="h-4 w-56 rounded bg-white/[0.06] animate-pulse" />
-          <div className="h-4 w-48 rounded bg-white/[0.06] animate-pulse" />
+        <div className="h-8 w-48 rounded bg-surface-subtle animate-pulse" />
+        <div className="h-12 rounded-lg bg-surface-subtle animate-pulse" />
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm space-y-3">
+          <div className="h-4 w-40 rounded bg-surface-subtle animate-pulse" />
+          <div className="h-4 w-56 rounded bg-surface-subtle animate-pulse" />
+          <div className="h-4 w-48 rounded bg-surface-subtle animate-pulse" />
         </div>
-        <div className="h-[400px] rounded-lg bg-white/[0.06] animate-pulse" />
+        <div className="h-[400px] rounded-lg bg-surface-subtle animate-pulse" />
       </div>
     );
   }
@@ -141,7 +141,7 @@ export default function ReportPreviewPage() {
           <button
             type="button"
             onClick={fetchData}
-            className="mt-4 inline-flex h-10 items-center rounded-lg bg-teal-500 px-5 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
+            className="mt-4 inline-flex h-10 items-center rounded-lg bg-accent-primary px-5 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
           >
             Retry
           </button>
@@ -178,7 +178,7 @@ export default function ReportPreviewPage() {
       <button
         type="button"
         onClick={() => router.push(`/tax-planning/scenarios/${scenarioId}`)}
-        className="inline-flex items-center gap-2 text-sm font-medium text-white/50 hover:text-white/60 transition-colors"
+        className="inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-text-muted transition-colors"
       >
         <svg
           className="h-4 w-4"
@@ -197,7 +197,7 @@ export default function ReportPreviewPage() {
       </button>
 
       {/* Page title */}
-      <h1 className="text-2xl font-bold text-white">Scenario Report</h1>
+      <h1 className="text-2xl font-bold text-text">Scenario Report</h1>
 
       {/* Info banner */}
       <div className="flex items-center gap-3 rounded-lg border border-info-300 bg-info-50 px-4 py-3">
@@ -220,32 +220,32 @@ export default function ReportPreviewPage() {
       </div>
 
       {/* Report metadata */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-        <h2 className="mb-4 text-base font-semibold text-white">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+        <h2 className="mb-4 text-base font-semibold text-text">
           Report Details
         </h2>
         <dl className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-white/50">
+            <dt className="text-xs font-medium uppercase tracking-wide text-text-muted">
               Scenario Name
             </dt>
-            <dd className="mt-1 text-sm font-medium text-white">
+            <dd className="mt-1 text-sm font-medium text-text">
               {metadata?.scenarioName ?? scenario.name}
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-white/50">
+            <dt className="text-xs font-medium uppercase tracking-wide text-text-muted">
               Household
             </dt>
-            <dd className="mt-1 text-sm font-medium text-white">
+            <dd className="mt-1 text-sm font-medium text-text">
               {metadata?.householdName ?? '--'}
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wide text-white/50">
+            <dt className="text-xs font-medium uppercase tracking-wide text-text-muted">
               Generated Date
             </dt>
-            <dd className="mt-1 text-sm font-medium text-white">
+            <dd className="mt-1 text-sm font-medium text-text">
               {metadata?.generatedDate
                 ? formatDate(metadata.generatedDate)
                 : '--'}
@@ -264,7 +264,7 @@ export default function ReportPreviewPage() {
             type="button"
             onClick={handleDownloadPdf}
             disabled
-            className="inline-flex h-10 items-center gap-2 rounded-lg bg-teal-500 px-5 text-sm font-medium text-white opacity-50 cursor-not-allowed"
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-accent-primary px-5 text-sm font-medium text-text opacity-50 cursor-not-allowed"
           >
             <svg
               className="h-4 w-4"
@@ -281,7 +281,7 @@ export default function ReportPreviewPage() {
             </svg>
             Download PDF
           </button>
-          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden rounded-lg bg-[#1a1a1a] px-3 py-1.5 text-xs text-white shadow-lg group-hover:block whitespace-nowrap">
+          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden rounded-lg bg-[#3D5A6A] px-3 py-1.5 text-xs text-text shadow-lg group-hover:block whitespace-nowrap">
             Coming in Stage 2
           </span>
         </div>
@@ -289,7 +289,7 @@ export default function ReportPreviewPage() {
         <button
           type="button"
           onClick={() => setShareOpen(true)}
-          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
+          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-5 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
         >
           <svg
             className="h-4 w-4"
@@ -310,7 +310,7 @@ export default function ReportPreviewPage() {
         <button
           type="button"
           onClick={handlePrint}
-          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
+          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-5 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
         >
           <svg
             className="h-4 w-4"

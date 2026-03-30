@@ -35,19 +35,19 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
             "border-[1.5px] border-transparent transition-colors duration-200",
             "focus-visible:outline-hidden focus-visible:shadow-focus",
             "disabled:cursor-not-allowed",
-            checked ? "bg-teal-500" : "bg-white/20"
+            checked ? "bg-accent-primary" : "bg-surface-subtle"
           )}
         >
           <span
             className={cn(
-              "pointer-events-none block h-3.5 w-3.5 rounded-full bg-white shadow-xs",
+              "pointer-events-none block h-3.5 w-3.5 rounded-full bg-text shadow-xs",
               "transition-transform duration-200",
               checked ? "translate-x-4" : "translate-x-0.5"
             )}
           />
         </button>
         {label && (
-          <span className="text-sm text-white/60">{label}</span>
+          <span className="text-sm text-text-muted">{label}</span>
         )}
       </label>
     );

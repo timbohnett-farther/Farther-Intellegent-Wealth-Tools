@@ -85,10 +85,10 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-white">
+        <h3 className="text-sm font-semibold text-text">
           Proposal Sections
         </h3>
-        <span className="text-xs text-white/50">
+        <span className="text-xs text-text-muted">
           {sorted.filter((s) => s.included).length} of {sorted.length} included
         </span>
       </div>
@@ -104,15 +104,15 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
               className={cn(
                 'flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors',
                 section.included
-                  ? 'border-white/[0.06] bg-white/[0.07]'
+                  ? 'border-border-subtle bg-surface-soft'
                   : 'border-limestone-100 bg-transparent opacity-60',
                 section.required && 'border-brand-100',
               )}
             >
               {/* Drag handle / order indicator */}
-              <div className="shrink-0 text-white/30">
+              <div className="shrink-0 text-text-faint">
                 {section.required ? (
-                  <Lock className="h-4 w-4 text-teal-300" />
+                  <Lock className="h-4 w-4 text-accent-primarySoft" />
                 ) : (
                   <GripVertical className="h-4 w-4" />
                 )}
@@ -124,14 +124,14 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                   className={cn(
                     'text-sm',
                     section.included
-                      ? 'font-medium text-white'
-                      : 'text-white/50',
+                      ? 'font-medium text-text'
+                      : 'text-text-muted',
                   )}
                 >
                   {section.label}
                 </span>
                 {section.required && (
-                  <span className="ml-2 text-[10px] font-semibold uppercase tracking-wide text-teal-300">
+                  <span className="ml-2 text-[10px] font-semibold uppercase tracking-wide text-accent-primarySoft">
                     Required
                   </span>
                 )}
@@ -144,7 +144,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                   onClick={() => handleToggle(section.key)}
                   className={cn(
                     'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors',
-                    section.included ? 'bg-teal-500' : 'bg-white/[0.10]',
+                    section.included ? 'bg-accent-primary' : 'bg-surface-strong',
                   )}
                   role="switch"
                   aria-checked={section.included}
@@ -152,7 +152,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                 >
                   <span
                     className={cn(
-                      'inline-block h-3.5 w-3.5 rounded-full bg-white/[0.07] backdrop-blur-xl shadow-sm transition-transform',
+                      'inline-block h-3.5 w-3.5 rounded-full bg-surface-soft backdrop-blur-xl shadow-sm transition-transform',
                       section.included ? 'translate-x-4.5' : 'translate-x-1',
                     )}
                   />
@@ -169,7 +169,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                     'rounded p-1 transition-colors',
                     isFirst
                       ? 'text-charcoal-200 cursor-not-allowed'
-                      : 'text-white/30 hover:bg-white/[0.06] hover:text-white/60',
+                      : 'text-text-faint hover:bg-surface-subtle hover:text-text-muted',
                   )}
                   aria-label={`Move ${section.label} up`}
                 >
@@ -183,7 +183,7 @@ export function SectionBuilder({ sections, onChange }: SectionBuilderProps) {
                     'rounded p-1 transition-colors',
                     isLast
                       ? 'text-charcoal-200 cursor-not-allowed'
-                      : 'text-white/30 hover:bg-white/[0.06] hover:text-white/60',
+                      : 'text-text-faint hover:bg-surface-subtle hover:text-text-muted',
                   )}
                   aria-label={`Move ${section.label} down`}
                 >

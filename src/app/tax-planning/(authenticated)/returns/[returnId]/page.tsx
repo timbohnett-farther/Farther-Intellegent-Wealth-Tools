@@ -169,26 +169,26 @@ export default function ReturnOverviewPage() {
     return (
       <div className="space-y-6 bg-canvas">
         {/* Title skeleton */}
-        <div className="h-8 w-72 rounded bg-white/[0.06] animate-pulse" />
+        <div className="h-8 w-72 rounded bg-surface-subtle animate-pulse" />
 
         {/* Summary cards skeleton */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm"
+              className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm"
             >
-              <div className="h-3 w-20 rounded bg-white/[0.06] animate-pulse mb-3" />
-              <div className="h-6 w-32 rounded bg-white/[0.06] animate-pulse" />
+              <div className="h-3 w-20 rounded bg-surface-subtle animate-pulse mb-3" />
+              <div className="h-6 w-32 rounded bg-surface-subtle animate-pulse" />
             </div>
           ))}
         </div>
 
         {/* Table skeleton */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
           <div className="space-y-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-4 rounded bg-white/[0.06] animate-pulse" />
+              <div key={i} className="h-4 rounded bg-surface-subtle animate-pulse" />
             ))}
           </div>
         </div>
@@ -213,7 +213,7 @@ export default function ReturnOverviewPage() {
           <button
             type="button"
             onClick={fetchData}
-            className="mt-4 inline-flex h-10 items-center rounded-lg bg-teal-500 px-5 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
+            className="mt-4 inline-flex h-10 items-center rounded-lg bg-accent-primary px-5 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
           >
             Retry
           </button>
@@ -230,53 +230,53 @@ export default function ReturnOverviewPage() {
     <div className="space-y-6 bg-canvas">
       {/* Page title */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-text">
           {taxReturn.tax_year} Tax Return &ndash;{' '}
           {FILING_STATUS_LABELS[taxReturn.filing_status] ?? taxReturn.filing_status}
         </h1>
-        <p className="mt-1 text-sm text-white/50">
+        <p className="mt-1 text-sm text-text-muted">
           Return ID: {taxReturn.return_id}
         </p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Filing Status
           </p>
-          <p className="mt-1 text-lg font-semibold text-white">
+          <p className="mt-1 text-lg font-semibold text-text">
             {FILING_STATUS_LABELS[taxReturn.filing_status] ?? taxReturn.filing_status}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Adjusted Gross Income
           </p>
-          <p className="mt-1 text-lg font-semibold text-white">
+          <p className="mt-1 text-lg font-semibold text-text">
             {taxReturn.agi_cents != null
               ? fmtCurrency(taxReturn.agi_cents as number)
               : '--'}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Taxable Income
           </p>
-          <p className="mt-1 text-lg font-semibold text-white">
+          <p className="mt-1 text-lg font-semibold text-text">
             {taxReturn.taxable_income_cents != null
               ? fmtCurrency(taxReturn.taxable_income_cents as number)
               : '--'}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
             Total Tax
           </p>
-          <p className="mt-1 text-lg font-semibold text-white">
+          <p className="mt-1 text-lg font-semibold text-text">
             {(() => {
               const taxLine = lines.find((l) =>
                 l.taxLineRef.includes('l16:tax'),
@@ -297,12 +297,12 @@ export default function ReturnOverviewPage() {
 
       {/* Extracted fields table */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold text-white">
+        <h2 className="mb-3 text-lg font-semibold text-text">
           Extracted Fields
         </h2>
         {lines.length === 0 ? (
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-8 text-center shadow-sm">
-            <p className="text-sm text-white/50">
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-8 text-center shadow-sm">
+            <p className="text-sm text-text-muted">
               No extracted fields available for this return.
             </p>
           </div>
@@ -312,18 +312,18 @@ export default function ReturnOverviewPage() {
       </div>
 
       {/* Actions */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-semibold text-white">Actions</h2>
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+        <h2 className="mb-4 text-lg font-semibold text-text">Actions</h2>
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={handleCreateScenario}
             disabled={creatingScenario}
-            className="inline-flex h-10 items-center gap-2 rounded-lg bg-teal-500 px-5 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-accent-primary px-5 text-sm font-medium text-text hover:bg-accent-primary/80 disabled:opacity-50 disabled:pointer-events-none transition-colors"
           >
             {creatingScenario ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-text border-t-transparent" />
                 Creating...
               </>
             ) : (
@@ -335,7 +335,7 @@ export default function ReturnOverviewPage() {
             <button
               type="button"
               onClick={() => setShowScenarios((v) => !v)}
-              className="inline-flex h-10 items-center rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
+              className="inline-flex h-10 items-center rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-5 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
             >
               View Scenarios ({scenarios.length})
             </button>
@@ -352,11 +352,11 @@ export default function ReturnOverviewPage() {
                 onClick={() =>
                   router.push(`/tax-planning/scenarios/${s.scenario_id}`)
                 }
-                className="flex w-full items-center justify-between rounded-lg border border-white/[0.06] bg-transparent px-4 py-3 text-left text-sm transition-colors hover:bg-white/[0.06]"
+                className="flex w-full items-center justify-between rounded-lg border border-border-subtle bg-transparent px-4 py-3 text-left text-sm transition-colors hover:bg-surface-subtle"
               >
-                <span className="font-medium text-white">{s.name}</span>
+                <span className="font-medium text-text">{s.name}</span>
                 {s.is_baseline && (
-                  <span className="rounded-full bg-teal-500/15 px-2 py-0.5 text-[10px] font-semibold text-teal-300">
+                  <span className="rounded-full bg-accent-primary/15 px-2 py-0.5 text-[10px] font-semibold text-accent-primarySoft">
                     Baseline
                   </span>
                 )}

@@ -67,7 +67,7 @@ function DirectionIcon({
   isImprovement: boolean;
 }) {
   if (direction === 'neutral') {
-    return <Minus className="h-4 w-4 text-white/30" />;
+    return <Minus className="h-4 w-4 text-text-faint" />;
   }
   if (direction === 'up') {
     return (
@@ -107,15 +107,15 @@ function MetricRow({
   delta,
 }: MetricRowProps) {
   return (
-    <div className="grid grid-cols-[1fr_1fr_auto] items-center gap-4 rounded-lg px-4 py-3 hover:bg-white/[0.04] transition-colors">
+    <div className="grid grid-cols-[1fr_1fr_auto] items-center gap-4 rounded-lg px-4 py-3 hover:bg-surface-subtle transition-colors">
       <div>
         <div className="flex items-center gap-2 mb-0.5">
-          <Icon className="h-3.5 w-3.5 text-white/30" aria-hidden="true" />
-          <span className="text-xs font-medium uppercase tracking-wide text-white/50">
+          <Icon className="h-3.5 w-3.5 text-text-faint" aria-hidden="true" />
+          <span className="text-xs font-medium uppercase tracking-wide text-text-muted">
             {label}
           </span>
         </div>
-        <p className="text-sm font-semibold tabular-nums text-white pl-5.5">
+        <p className="text-sm font-semibold tabular-nums text-text pl-5.5">
           {currentValue}
         </p>
       </div>
@@ -125,13 +125,13 @@ function MetricRow({
             'text-sm font-semibold tabular-nums',
             direction !== 'neutral' && isImprovement && 'text-success-700',
             direction !== 'neutral' && !isImprovement && 'text-critical-700',
-            direction === 'neutral' && 'text-white',
+            direction === 'neutral' && 'text-text',
           )}
         >
           {proposedValue}
         </p>
         {delta && (
-          <span className="text-[10px] text-white/50">{delta}</span>
+          <span className="text-[10px] text-text-muted">{delta}</span>
         )}
       </div>
       <DirectionIcon direction={direction} isImprovement={isImprovement} />
@@ -180,17 +180,17 @@ export function SideBySideComparison({
       {/* Column headers */}
       <div className="grid grid-cols-[1fr_1fr_auto] gap-4 px-4">
         <div>
-          <h3 className="text-sm font-semibold text-white">{currentLabel}</h3>
+          <h3 className="text-sm font-semibold text-text">{currentLabel}</h3>
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-teal-300">{proposedLabel}</h3>
+          <h3 className="text-sm font-semibold text-accent-primarySoft">{proposedLabel}</h3>
         </div>
         <div className="w-4" />
       </div>
 
       {/* Allocation comparison */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
-        <span className="text-xs font-medium uppercase tracking-wide text-white/50 block mb-3">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
+        <span className="text-xs font-medium uppercase tracking-wide text-text-muted block mb-3">
           Allocation Comparison
         </span>
         <div className="grid grid-cols-[1fr_1fr_auto] gap-4">
@@ -219,7 +219,7 @@ export function SideBySideComparison({
       </div>
 
       {/* Metrics comparison rows */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl shadow-sm divide-y divide-limestone-100">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl shadow-sm divide-y divide-limestone-100">
         <MetricRow
           label="Expense Ratio"
           icon={Percent}

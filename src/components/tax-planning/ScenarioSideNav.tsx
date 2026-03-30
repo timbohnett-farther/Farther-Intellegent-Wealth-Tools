@@ -28,7 +28,7 @@ export const ScenarioSideNav: React.FC<ScenarioSideNavProps> = ({
   return (
     <nav className="flex flex-col w-full" aria-label="Scenario navigation">
       <div className="mb-2 px-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-white/50">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-text-muted">
           Scenarios
         </h3>
       </div>
@@ -46,15 +46,15 @@ export const ScenarioSideNav: React.FC<ScenarioSideNavProps> = ({
                 className={cn(
                   'flex items-center gap-2 w-full px-3 py-2.5 text-sm rounded-r-lg transition-colors text-left',
                   isActive
-                    ? 'border-l-[3px] border-teal-500 bg-teal-500/10 text-teal-300 font-semibold pl-[9px]'
-                    : 'border-l-[3px] border-transparent text-white/60 hover:bg-white/[0.04] hover:text-white pl-[9px]'
+                    ? 'border-l-[3px] border-accent-primary bg-accent-primary/10 text-accent-primarySoft font-semibold pl-[9px]'
+                    : 'border-l-[3px] border-transparent text-text-muted hover:bg-surface-subtle hover:text-text pl-[9px]'
                 )}
               >
                 {scenario.isBaseline && (
                   <Star
                     className={cn(
                       'h-4 w-4 flex-shrink-0',
-                      isActive ? 'text-teal-300 fill-brand-700' : 'text-warning-500 fill-warning-500'
+                      isActive ? 'text-accent-primarySoft fill-brand-700' : 'text-warning-500 fill-warning-500'
                     )}
                   />
                 )}
@@ -66,11 +66,11 @@ export const ScenarioSideNav: React.FC<ScenarioSideNavProps> = ({
       </ul>
 
       {/* New Scenario button */}
-      <div className="mt-3 px-3 pt-3 border-t border-white/[0.06]">
+      <div className="mt-3 px-3 pt-3 border-t border-border-subtle">
         <button
           type="button"
           onClick={onCreateNew}
-          className="inline-flex items-center gap-2 w-full h-9 px-3 rounded-lg border-[1.5px] border-dashed border-white/[0.10] text-sm font-medium text-white/60 hover:border-brand-500 hover:text-teal-300 hover:bg-teal-500/10/30 transition-colors justify-center"
+          className="inline-flex items-center gap-2 w-full h-9 px-3 rounded-lg border-[1.5px] border-dashed border-border-subtle text-sm font-medium text-text-muted hover:border-brand-500 hover:text-accent-primarySoft hover:bg-accent-primary/10/30 transition-colors justify-center"
         >
           <Plus className="h-4 w-4" />
           New Scenario

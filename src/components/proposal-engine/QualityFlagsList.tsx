@@ -50,8 +50,8 @@ function getFlagStyle(severity: FlagSeverity): FlagStyle {
     case 'LOW':
       return {
         bgClass: 'bg-transparent',
-        borderClass: 'border-white/[0.06]',
-        iconColor: 'text-white/30',
+        borderClass: 'border-border-subtle',
+        iconColor: 'text-text-faint',
         icon: AlertTriangle,
         textWeight: 'font-normal',
         opacity: 'opacity-75',
@@ -133,19 +133,19 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
-                      'text-sm text-white',
+                      'text-sm text-text',
                       style.textWeight,
                     )}
                   >
                     {flag.title}
                   </span>
 
-                  <span className="shrink-0 rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white/50">
+                  <span className="shrink-0 rounded bg-surface-subtle px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
                     {CATEGORY_LABELS[flag.category] ?? flag.category}
                   </span>
                 </div>
 
-                <p className="mt-0.5 text-xs text-white/50 leading-relaxed">
+                <p className="mt-0.5 text-xs text-text-muted leading-relaxed">
                   {flag.description}
                 </p>
 
@@ -155,7 +155,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
                     {flag.affectedTickers.map((ticker) => (
                       <span
                         key={ticker}
-                        className="inline-block rounded bg-white/70 px-1.5 py-0.5 text-[10px] font-mono font-medium text-white/60"
+                        className="inline-block rounded bg-surface-soft px-1.5 py-0.5 text-[10px] font-mono font-medium text-text-muted"
                       >
                         {ticker}
                       </span>
@@ -165,7 +165,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
 
                 {/* Recommendation */}
                 {flag.recommendation && (
-                  <p className="mt-1.5 text-xs text-white/50 italic">
+                  <p className="mt-1.5 text-xs text-text-muted italic">
                     Recommendation: {flag.recommendation}
                   </p>
                 )}
@@ -177,7 +177,7 @@ export function QualityFlagsList({ flags }: QualityFlagsListProps) {
                   'shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase',
                   flag.severity === 'HIGH' && 'bg-warning-200 text-warning-800',
                   flag.severity === 'MEDIUM' && 'bg-warning-100 text-warning-700',
-                  flag.severity === 'LOW' && 'bg-white/[0.06] text-white/50',
+                  flag.severity === 'LOW' && 'bg-surface-subtle text-text-muted',
                   flag.severity === 'OPPORTUNITY' && 'bg-success-100 text-success-700',
                 )}
               >

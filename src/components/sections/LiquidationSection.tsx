@@ -13,7 +13,7 @@ export default function LiquidationSection({ data }: Props) {
     <div className="space-y-4">
       {/* Tax Impact of Liquidation */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Tax Impact of Liquidation</h3>
         </div>
         <div className="divide-y divide-limestone-100">
@@ -25,7 +25,7 @@ export default function LiquidationSection({ data }: Props) {
             ['State Capital Gains Tax', formatCurrency(data.stateTax)],
           ].map(([label, value], i) => (
             <div key={i} className="flex justify-between px-4 py-2.5 text-sm">
-              <span className="text-white/50">{label}</span>
+              <span className="text-text-muted">{label}</span>
               <span className="font-medium">{value}</span>
             </div>
           ))}
@@ -34,7 +34,7 @@ export default function LiquidationSection({ data }: Props) {
             <span className="text-critical-700">{formatCurrency(data.totalTax)}</span>
           </div>
           <div className="flex justify-between px-4 py-2.5 text-sm">
-            <span className="text-white/50">Net After-Tax Proceeds</span>
+            <span className="text-text-muted">Net After-Tax Proceeds</span>
             <span className="font-medium">{formatCurrency(data.netAfterTaxProceeds)}</span>
           </div>
         </div>
@@ -43,14 +43,14 @@ export default function LiquidationSection({ data }: Props) {
       {/* Gross-Up Calculation */}
       <div className="card p-4">
         <h3 className="font-semibold text-sm mb-3">Gross-Up Required</h3>
-        <p className="text-xs text-white/50 mb-3">To receive the requested net amount, you must sell more to cover taxes.</p>
+        <p className="text-xs text-text-muted mb-3">To receive the requested net amount, you must sell more to cover taxes.</p>
         <div className="grid grid-cols-2 gap-3">
           <div className="text-center p-3 bg-orange-50 rounded-lg">
-            <p className="text-xs text-white/50 mb-1">Must Sell (Gross-Up)</p>
+            <p className="text-xs text-text-muted mb-1">Must Sell (Gross-Up)</p>
             <p className="text-xl font-bold text-orange-700">{formatCurrency(data.grossUpAmount)}</p>
           </div>
           <div className="text-center p-3 bg-critical-50 rounded-lg">
-            <p className="text-xs text-white/50 mb-1">Total Tax on Gross-Up</p>
+            <p className="text-xs text-text-muted mb-1">Total Tax on Gross-Up</p>
             <p className="text-xl font-bold text-critical-700">{formatCurrency(data.grossUpTax)}</p>
           </div>
         </div>
@@ -58,20 +58,20 @@ export default function LiquidationSection({ data }: Props) {
 
       {/* AGI Impact */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">AGI Impact Analysis</h3>
         </div>
         <div className="divide-y divide-limestone-100">
           <div className="flex justify-between px-4 py-2.5 text-sm">
-            <span className="text-white/50">Current AGI</span>
+            <span className="text-text-muted">Current AGI</span>
             <span className="font-medium">{formatCurrency(data.agiImpact.currentAGI)}</span>
           </div>
           <div className="flex justify-between px-4 py-2.5 text-sm">
-            <span className="text-white/50">AGI After Sale</span>
+            <span className="text-text-muted">AGI After Sale</span>
             <span className="font-medium text-critical-500">{formatCurrency(data.agiImpact.agiAfterSale)}</span>
           </div>
           <div className="flex justify-between px-4 py-2.5 text-sm">
-            <span className="text-white/50">IRMAA Medicare Surcharge</span>
+            <span className="text-text-muted">IRMAA Medicare Surcharge</span>
             <span className="font-medium text-critical-500">
               {data.agiImpact.irmaaSurcharge > 0 ? formatCurrency(data.agiImpact.irmaaSurcharge) + '/yr' : 'No impact'}
             </span>
@@ -81,38 +81,38 @@ export default function LiquidationSection({ data }: Props) {
 
       {/* Total Cost Comparison */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Total Economic Cost: Sell vs. Borrow</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-4 py-2 font-medium text-white/50">Cost Component</th>
+                <th className="text-left px-4 py-2 font-medium text-text-muted">Cost Component</th>
                 <th className="text-right px-4 py-2 font-medium text-critical-500">Sell Assets</th>
-                <th className="text-right px-4 py-2 font-medium text-teal-300">Box Spread</th>
+                <th className="text-right px-4 py-2 font-medium text-accent-primarySoft">Box Spread</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-t border-limestone-100">
                 <td className="px-4 py-2">Capital Gains Tax</td>
                 <td className="px-4 py-2 text-right text-critical-500">{formatCurrency(data.totalTax)}</td>
-                <td className="px-4 py-2 text-right text-teal-300">$0</td>
+                <td className="px-4 py-2 text-right text-accent-primarySoft">$0</td>
               </tr>
               <tr className="border-t border-limestone-100">
                 <td className="px-4 py-2">IRMAA Surcharge</td>
                 <td className="px-4 py-2 text-right text-critical-500">{formatCurrency(data.agiImpact.irmaaSurcharge)}</td>
-                <td className="px-4 py-2 text-right text-teal-300">$0</td>
+                <td className="px-4 py-2 text-right text-accent-primarySoft">$0</td>
               </tr>
               <tr className="border-t border-limestone-100">
                 <td className="px-4 py-2">Interest Cost (after-tax)</td>
                 <td className="px-4 py-2 text-right">$0</td>
                 <td className="px-4 py-2 text-right">{formatCurrency(data.totalCostComparison.borrowTotal)}</td>
               </tr>
-              <tr className="border-t-2 border-white/[0.10] bg-transparent font-semibold">
+              <tr className="border-t-2 border-border-subtle bg-transparent font-semibold">
                 <td className="px-4 py-2">Total Economic Cost</td>
                 <td className="px-4 py-2 text-right text-critical-700">{formatCurrency(data.totalCostComparison.sellTotal)}</td>
-                <td className="px-4 py-2 text-right text-teal-300">{formatCurrency(data.totalCostComparison.borrowTotal)}</td>
+                <td className="px-4 py-2 text-right text-accent-primarySoft">{formatCurrency(data.totalCostComparison.borrowTotal)}</td>
               </tr>
               <tr className="bg-success-50 font-bold">
                 <td className="px-4 py-2 text-success-700">Net Advantage of Borrowing</td>

@@ -95,7 +95,7 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onDismiss }) => {
         type="button"
         onClick={() => onDismiss(toast.id)}
         className={cn(
-          'flex-shrink-0 rounded p-0.5 transition-colors hover:bg-white/50',
+          'flex-shrink-0 rounded p-0.5 transition-colors hover:bg-surface-subtle0',
           TEXT_MAP[toast.type]
         )}
         aria-label="Dismiss notification"

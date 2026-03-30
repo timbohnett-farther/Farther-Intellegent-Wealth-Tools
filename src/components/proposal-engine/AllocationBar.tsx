@@ -37,26 +37,26 @@ const SEGMENTS: Segment[] = [
   {
     key: 'equity',
     label: 'Equity',
-    color: 'bg-teal-500',
-    textColor: 'text-white',
+    color: 'bg-accent-primary',
+    textColor: 'text-text',
   },
   {
     key: 'fixedIncome',
     label: 'Fixed Income',
     color: 'bg-info-500',
-    textColor: 'text-white',
+    textColor: 'text-text',
   },
   {
     key: 'alternatives',
     label: 'Alternatives',
     color: 'bg-warning-500',
-    textColor: 'text-white',
+    textColor: 'text-text',
   },
   {
     key: 'cash',
     label: 'Cash',
     color: 'bg-limestone-400',
-    textColor: 'text-white',
+    textColor: 'text-text',
   },
 ];
 
@@ -120,8 +120,8 @@ export function AllocationBar({
 
         {/* Empty state */}
         {activeSegments.length === 0 && (
-          <div className="flex h-full w-full items-center justify-center bg-white/[0.06]">
-            <span className="text-xs text-white/30">No allocation</span>
+          <div className="flex h-full w-full items-center justify-center bg-surface-subtle">
+            <span className="text-xs text-text-faint">No allocation</span>
           </div>
         )}
       </div>
@@ -139,10 +139,10 @@ export function AllocationBar({
                   className={cn('inline-block h-2.5 w-2.5 rounded-sm', seg.color)}
                   aria-hidden="true"
                 />
-                <span className="text-xs text-white/60">
+                <span className="text-xs text-text-muted">
                   {seg.label}
                 </span>
-                <span className="text-xs font-medium tabular-nums text-white/50">
+                <span className="text-xs font-medium tabular-nums text-text-muted">
                   {pct.toFixed(1)}%
                 </span>
               </div>

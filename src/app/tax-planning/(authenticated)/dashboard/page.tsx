@@ -30,9 +30,9 @@ interface RecentActivity {
 
 function StatCardSkeleton() {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm animate-pulse">
-      <div className="h-4 w-24 rounded bg-white/[0.06] mb-3" />
-      <div className="h-8 w-16 rounded bg-white/[0.06]" />
+    <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm animate-pulse">
+      <div className="h-4 w-24 rounded bg-surface-subtle mb-3" />
+      <div className="h-8 w-16 rounded bg-surface-subtle" />
     </div>
   );
 }
@@ -42,10 +42,10 @@ function ActivitySkeleton() {
     <div className="space-y-3">
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex items-center gap-3 animate-pulse">
-          <div className="h-8 w-8 rounded-full bg-white/[0.06]" />
+          <div className="h-8 w-8 rounded-full bg-surface-subtle" />
           <div className="flex-1">
-            <div className="h-4 w-3/4 rounded bg-white/[0.06] mb-1" />
-            <div className="h-3 w-1/3 rounded bg-white/[0.06]" />
+            <div className="h-4 w-3/4 rounded bg-surface-subtle mb-1" />
+            <div className="h-3 w-1/3 rounded bg-surface-subtle" />
           </div>
         </div>
       ))}
@@ -66,14 +66,14 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, color }: StatCardProps) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
+    <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-sm font-medium text-white/50">{label}</p>
+        <p className="text-sm font-medium text-text-muted">{label}</p>
         <div className={`flex items-center justify-center h-10 w-10 rounded-lg ${color}`}>
           {icon}
         </div>
       </div>
-      <p className="text-3xl font-bold text-white tabular-nums">{value}</p>
+      <p className="text-3xl font-bold text-text tabular-nums">{value}</p>
     </div>
   );
 }
@@ -87,7 +87,7 @@ function getActivityIcon(type: RecentActivity['type']): React.ReactNode {
   switch (type) {
     case 'household':
       return (
-        <svg className={`${base} text-teal-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className={`${base} text-accent-primarySoft`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
         </svg>
       );
@@ -115,7 +115,7 @@ function getActivityIcon(type: RecentActivity['type']): React.ReactNode {
 function getActivityBg(type: RecentActivity['type']): string {
   switch (type) {
     case 'household':
-      return 'bg-teal-500/10';
+      return 'bg-accent-primary/10';
     case 'return':
       return 'bg-info-100';
     case 'document':
@@ -267,10 +267,10 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-text">
           Welcome back, {user?.first_name || 'there'}
         </h1>
-        <p className="mt-1 text-sm text-white/50">
+        <p className="mt-1 text-sm text-text-muted">
           Here is an overview of your tax planning activity.
         </p>
       </div>
@@ -290,7 +290,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={fetchDashboardData}
-              className="mt-3 text-sm font-medium text-teal-300 hover:text-teal-300"
+              className="mt-3 text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft"
             >
               Try again
             </button>
@@ -300,9 +300,9 @@ export default function DashboardPage() {
             <StatCard
               label="Total Households"
               value={stats.totalHouseholds}
-              color="bg-teal-500/10"
+              color="bg-accent-primary/10"
               icon={
-                <svg className="h-5 w-5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="h-5 w-5 text-accent-primarySoft" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                 </svg>
               }
@@ -344,22 +344,22 @@ export default function DashboardPage() {
       {/* Quick Actions + Recent Activity */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Quick Actions */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-text mb-4">Quick Actions</h2>
           <div className="space-y-3">
             <button
               type="button"
               onClick={() => router.push('/tax-planning/households')}
-              className="flex w-full items-center gap-3 rounded-lg border border-white/[0.06] px-4 py-3 text-left transition-colors hover:border-teal-300 hover:bg-teal-500/10/30"
+              className="flex w-full items-center gap-3 rounded-lg border border-border-subtle px-4 py-3 text-left transition-colors hover:border-accent-primarySoft hover:bg-accent-primary/10/30"
             >
-              <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-teal-500/10">
-                <svg className="h-4 w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-accent-primary/10">
+                <svg className="h-4 w-4 text-accent-primarySoft" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-white">Upload Return</p>
-                <p className="text-xs text-white/50">Upload a new tax return PDF</p>
+                <p className="text-sm font-medium text-text">Upload Return</p>
+                <p className="text-xs text-text-muted">Upload a new tax return PDF</p>
               </div>
             </button>
 
@@ -369,7 +369,7 @@ export default function DashboardPage() {
                 router.push('/tax-planning/households');
                 addToast('Navigate to Households to create a new one', 'info');
               }}
-              className="flex w-full items-center gap-3 rounded-lg border border-white/[0.06] px-4 py-3 text-left transition-colors hover:border-teal-300 hover:bg-teal-500/10/30"
+              className="flex w-full items-center gap-3 rounded-lg border border-border-subtle px-4 py-3 text-left transition-colors hover:border-accent-primarySoft hover:bg-accent-primary/10/30"
             >
               <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-success-100">
                 <svg className="h-4 w-4 text-success-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -377,15 +377,15 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-white">Create Household</p>
-                <p className="text-xs text-white/50">Set up a new household</p>
+                <p className="text-sm font-medium text-text">Create Household</p>
+                <p className="text-xs text-text-muted">Set up a new household</p>
               </div>
             </button>
 
             <button
               type="button"
               onClick={() => router.push('/tax-planning/households')}
-              className="flex w-full items-center gap-3 rounded-lg border border-white/[0.06] px-4 py-3 text-left transition-colors hover:border-teal-300 hover:bg-teal-500/10/30"
+              className="flex w-full items-center gap-3 rounded-lg border border-border-subtle px-4 py-3 text-left transition-colors hover:border-accent-primarySoft hover:bg-accent-primary/10/30"
             >
               <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-info-100">
                 <svg className="h-4 w-4 text-info-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -393,26 +393,26 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium text-white">View All Households</p>
-                <p className="text-xs text-white/50">Browse and manage households</p>
+                <p className="text-sm font-medium text-text">View All Households</p>
+                <p className="text-xs text-text-muted">Browse and manage households</p>
               </div>
             </button>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="lg:col-span-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-white mb-4">Recent Activity</h2>
+        <div className="lg:col-span-2 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-text mb-4">Recent Activity</h2>
 
           {loading ? (
             <ActivitySkeleton />
           ) : recentActivity.length === 0 ? (
             <div className="py-8 text-center">
-              <svg className="mx-auto h-10 w-10 text-white/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="mx-auto h-10 w-10 text-text-faint mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-sm text-white/50">No recent activity</p>
-              <p className="text-xs text-white/30 mt-1">
+              <p className="text-sm text-text-muted">No recent activity</p>
+              <p className="text-xs text-text-faint mt-1">
                 Activity will appear here as you work with households and returns.
               </p>
             </div>
@@ -421,16 +421,16 @@ export default function DashboardPage() {
               {recentActivity.map((activity) => (
                 <li
                   key={activity.id}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-white/[0.04]"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-surface-subtle"
                 >
                   <div className={`flex items-center justify-center h-8 w-8 rounded-full flex-shrink-0 ${getActivityBg(activity.type)}`}>
                     {getActivityIcon(activity.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white truncate">
+                    <p className="text-sm text-text truncate">
                       {activity.description}
                     </p>
-                    <p className="text-xs text-white/30">
+                    <p className="text-xs text-text-faint">
                       {formatTimestamp(activity.timestamp)}
                     </p>
                   </div>

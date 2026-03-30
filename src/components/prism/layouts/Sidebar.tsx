@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils/cn';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import {
   LayoutDashboard,
   Users,
@@ -16,9 +17,7 @@ import {
   HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Plus,
 } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface NavItem {
   label: string;
@@ -82,33 +81,33 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen flex flex-col transition-all duration-200 z-40 bg-white dark:bg-transparent',
+        'fixed left-0 top-0 h-screen flex flex-col transition-all duration-200 z-40',
         collapsed ? 'w-sidebar-collapsed' : 'w-sidebar'
       )}
       style={{
-        background: 'var(--sidebar-bg, rgba(42, 42, 42, 0.95))',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderRight: '1px solid var(--sidebar-border, rgba(229, 231, 235, 1))',
+        background: 'var(--s-sidebar-bg)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderRight: '1px solid var(--s-border-subtle)',
       }}
     >
       {/* Sidebar Header */}
       <div
         className="h-16 flex items-center gap-3 px-4 flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}
+        style={{ borderBottom: '1px solid var(--s-border-subtle)' }}
       >
         <div
           className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ background: 'linear-gradient(135deg, #4E7082, #A8CED3)' }}
         >
-          <span className="text-white font-bold text-sm">FP</span>
+          <span className="text-text-onBrand font-bold text-sm">FP</span>
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-white font-serif">
+            <h1 className="text-sm font-bold tracking-tight whitespace-nowrap text-text font-serif">
               Farther Prism
             </h1>
-            <p className="text-[10px] text-white/30">Financial Planning</p>
+            <p className="text-[10px] text-text-faint">Financial Planning</p>
           </div>
         )}
       </div>
@@ -120,13 +119,13 @@ export function Sidebar() {
             {/* Section label */}
             {section.label && !collapsed && (
               <div className="px-4 pt-4 pb-1.5">
-                <span className="text-[10px] font-semibold text-white/30 uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-text-faint uppercase tracking-wider">
                   {section.label}
                 </span>
               </div>
             )}
             {section.label && collapsed && (
-              <div className="my-2 mx-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }} />
+              <div className="my-2 mx-3" style={{ borderTop: '1px solid var(--s-border-subtle)' }} />
             )}
 
             {section.items.map((item) => {
@@ -146,19 +145,19 @@ export function Sidebar() {
                     className={cn(
                       'flex items-center gap-3 h-[44px] px-4 mx-2 rounded-lg text-sm transition-colors relative',
                       isActive
-                        ? 'text-white font-semibold'
-                        : 'text-white/50 font-medium hover:text-white hover:bg-white/[0.04]'
+                        ? 'text-text font-semibold'
+                        : 'text-text-muted font-medium hover:text-text'
                     )}
                     style={isActive ? {
-                      background: 'linear-gradient(135deg, rgba(78, 112, 130, 0.25), rgba(78, 112, 130, 0.15))',
-                      borderLeft: '3px solid #4E7082',
+                      background: 'var(--s-nav-active-bg)',
+                      borderLeft: '3px solid var(--s-nav-active-border)',
                       paddingLeft: '13px',
-                    } : undefined}
+                    } : {}}
                   >
                     <span
                       className={cn(
                         'flex-shrink-0 transition-colors',
-                        isActive ? 'text-teal-300' : 'text-white/40'
+                        isActive ? 'text-accent-primarySoft' : 'text-text-faint'
                       )}
                     >
                       {item.icon}
@@ -167,7 +166,7 @@ export function Sidebar() {
                       <>
                         <span className="flex-1">{item.label}</span>
                         {item.badge != null && (
-                          <span className="bg-critical-500 text-white text-[11px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1">
+                          <span className="bg-critical-500 text-text-onBrand text-[11px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1">
                             {item.badge}
                           </span>
                         )}
@@ -175,7 +174,7 @@ export function Sidebar() {
                           <ChevronRight
                             size={14}
                             className={cn(
-                              'transition-transform text-white/20',
+                              'transition-transform text-text-faint',
                               isExpanded && 'rotate-90'
                             )}
                           />
@@ -194,9 +193,10 @@ export function Sidebar() {
                           className={cn(
                             'block px-3 py-1.5 text-xs rounded-md transition-colors',
                             pathname === child.href
-                              ? 'text-teal-300 bg-teal-500/15 font-semibold'
-                              : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                              ? 'text-accent-primarySoft font-semibold'
+                              : 'text-text-muted hover:text-text'
                           )}
+                          style={pathname === child.href ? { background: 'var(--s-nav-active-bg)' } : {}}
                         >
                           {child.label}
                         </Link>
@@ -210,26 +210,24 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Theme Toggle */}
-      {!collapsed && (
-        <div className="px-3 py-2 flex-shrink-0" style={{ borderTop: '1px solid rgba(229, 231, 235, 0.5) dark:border-white/[0.06]' }}>
-          <ThemeToggle />
-        </div>
-      )}
-
-      {/* Sidebar Footer */}
-      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(229, 231, 235, 0.5)' }}>
+      {/* Theme Toggle + User */}
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid var(--s-border-subtle)' }}>
+        {!collapsed && (
+          <div className="flex items-center justify-between mb-3">
+            <ThemeToggle />
+          </div>
+        )}
         {!collapsed ? (
           <div className="flex items-center gap-3">
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ background: 'rgba(78, 112, 130, 0.20)' }}
             >
-              <span className="text-teal-300 text-xs font-semibold">JD</span>
+              <span className="text-accent-primarySoft text-xs font-semibold">JD</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">John Doe</p>
-              <p className="text-[10px] text-white/40 truncate">Senior Advisor</p>
+              <p className="text-sm font-medium text-text truncate">John Doe</p>
+              <p className="text-[10px] text-text-faint truncate">Senior Advisor</p>
             </div>
           </div>
         ) : (
@@ -238,7 +236,7 @@ export function Sidebar() {
               className="w-8 h-8 rounded-full flex items-center justify-center"
               style={{ background: 'rgba(78, 112, 130, 0.20)' }}
             >
-              <span className="text-teal-300 text-xs font-semibold">JD</span>
+              <span className="text-accent-primarySoft text-xs font-semibold">JD</span>
             </div>
           </div>
         )}
@@ -247,8 +245,8 @@ export function Sidebar() {
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center py-3 text-white/20 hover:text-white/60 transition-colors"
-        style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}
+        className="flex items-center justify-center py-3 text-text-faint hover:text-text-muted transition-colors"
+        style={{ borderTop: '1px solid var(--s-border-subtle)' }}
       >
         {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>

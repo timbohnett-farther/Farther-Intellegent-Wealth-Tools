@@ -16,8 +16,8 @@ const SAMPLE_PLANS = [
 ];
 
 const statusColors: Record<string, string> = {
-  active: 'bg-success-100 text-success-700', draft: 'bg-white/[0.06] text-white/50',
-  needs_review: 'bg-warning-100 text-warning-700', archived: 'bg-white/[0.06] text-white/50',
+  active: 'bg-success-100 text-success-700', draft: 'bg-surface-subtle text-text-muted',
+  needs_review: 'bg-warning-100 text-warning-700', archived: 'bg-surface-subtle text-text-muted',
 };
 const statusLabels: Record<string, string> = {
   active: 'Active', draft: 'Draft', needs_review: 'Needs Review', archived: 'Archived',
@@ -36,10 +36,10 @@ export default function PlansPage() {
   return (
     <div className="max-w-content mx-auto px-6 py-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-white">Plans</h1>
+        <h1 className="text-2xl font-bold text-text">Plans</h1>
         <Link
           href="/prism/plans?new=true"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-400 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-accent-primary text-text text-sm font-medium rounded-lg hover:bg-accent-primary/80 transition-colors"
         >
           <Plus size={16} /> New Plan
         </Link>
@@ -47,15 +47,15 @@ export default function PlansPage() {
 
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-faint" />
           <input
             type="text" placeholder="Search plans or clients..."
             value={search} onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-white/[0.06] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-teal-500 bg-white/[0.06]"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-border-subtle rounded-lg focus:outline-hidden focus:ring-2 focus:ring-accent-primary bg-surface-subtle"
           />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-white/[0.06] rounded-lg bg-white/[0.06] focus:outline-hidden focus:ring-2 focus:ring-teal-500">
+          className="px-3 py-2 text-sm border border-border-subtle rounded-lg bg-surface-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-primary">
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
           <option value="draft">Draft</option>
@@ -69,22 +69,22 @@ export default function PlansPage() {
           <Link
             key={plan.id}
             href={`/prism/plans/${plan.id}`}
-            className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 hover:shadow-md hover:border-brand-200 transition-all group"
+            className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 hover:shadow-md hover:border-brand-200 transition-all group"
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2">
-                <FileText size={18} className="text-white/30" />
+                <FileText size={18} className="text-text-faint" />
                 <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[plan.status]}`}>
                   {statusLabels[plan.status]}
                 </span>
               </div>
-              <ChevronRight size={14} className="text-white/30 group-hover:text-teal-300" />
+              <ChevronRight size={14} className="text-text-faint group-hover:text-accent-primarySoft" />
             </div>
-            <h3 className="font-semibold text-white mb-0.5 group-hover:text-teal-300 transition-colors">{plan.planName}</h3>
-            <p className="text-sm text-white/50 mb-3">{plan.clientName}</p>
+            <h3 className="font-semibold text-text mb-0.5 group-hover:text-accent-primarySoft transition-colors">{plan.planName}</h3>
+            <p className="text-sm text-text-muted mb-3">{plan.clientName}</p>
 
             <div className="flex items-center justify-between text-xs">
-              <span className="text-white/30">Updated {plan.lastUpdated}</span>
+              <span className="text-text-faint">Updated {plan.lastUpdated}</span>
               {plan.successRate !== null && (
                 <span className={`font-semibold ${plan.successRate >= 85 ? 'text-success-500' : plan.successRate >= 70 ? 'text-warning-500' : 'text-critical-500'}`}
                   style={{ fontFeatureSettings: '"tnum"' }}>
@@ -96,12 +96,12 @@ export default function PlansPage() {
             {/* Completion bar */}
             <div className="mt-3">
               <div className="flex items-center justify-between text-[10px] mb-1">
-                <span className="text-white/30">Completion</span>
-                <span className="text-white/50 font-medium" style={{ fontFeatureSettings: '"tnum"' }}>{plan.completionScore}%</span>
+                <span className="text-text-faint">Completion</span>
+                <span className="text-text-muted font-medium" style={{ fontFeatureSettings: '"tnum"' }}>{plan.completionScore}%</span>
               </div>
-              <div className="w-full h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-surface-subtle rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${plan.completionScore >= 90 ? 'bg-success-500' : plan.completionScore >= 60 ? 'bg-teal-500' : plan.completionScore >= 40 ? 'bg-warning-500' : 'bg-white/20'}`}
+                  className={`h-full rounded-full ${plan.completionScore >= 90 ? 'bg-success-500' : plan.completionScore >= 60 ? 'bg-accent-primary' : plan.completionScore >= 40 ? 'bg-warning-500' : 'bg-surface-subtle'}`}
                   style={{ width: `${plan.completionScore}%` }}
                 />
               </div>

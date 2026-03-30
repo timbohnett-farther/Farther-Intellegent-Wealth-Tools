@@ -25,18 +25,18 @@ export default function OpportunityCostSection({ data }: Props) {
       <div className="card p-4 bg-linear-to-r from-brand-50 to-success-50">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
           <div>
-            <p className="text-xs text-white/50 uppercase tracking-wider">Break-Even Return</p>
-            <p className="text-3xl font-bold text-teal-300">{formatPercent(data.breakEvenReturn)}</p>
-            <p className="text-xs text-white/50 mt-1">
+            <p className="text-xs text-text-muted uppercase tracking-wider">Break-Even Return</p>
+            <p className="text-3xl font-bold text-accent-primarySoft">{formatPercent(data.breakEvenReturn)}</p>
+            <p className="text-xs text-text-muted mt-1">
               If your portfolio earns more than this annually, borrowing via box spread is mathematically superior to selling.
             </p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-white/50 uppercase tracking-wider">Net Wealth Advantage</p>
+            <p className="text-xs text-text-muted uppercase tracking-wider">Net Wealth Advantage</p>
             <p className={`text-3xl font-bold ${data.wealthDifference > 0 ? 'text-success-700' : 'text-critical-700'}`}>
               {formatCurrency(data.wealthDifference)}
             </p>
-            <p className="text-xs text-white/50 mt-1">Borrowing vs. selling at term end</p>
+            <p className="text-xs text-text-muted mt-1">Borrowing vs. selling at term end</p>
           </div>
         </div>
       </div>
@@ -60,18 +60,18 @@ export default function OpportunityCostSection({ data }: Props) {
 
       {/* Missed Market Days Analysis */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Missed Market Days Analysis</h3>
-          <p className="text-xs text-white/50 mt-1">Impact of selling and missing the best market days</p>
+          <p className="text-xs text-text-muted mt-1">Impact of selling and missing the best market days</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-3 py-2 font-medium text-white/50">Scenario</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Adj. Return</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Wealth if Sold</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Wealth if Borrowed</th>
+                <th className="text-left px-3 py-2 font-medium text-text-muted">Scenario</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Adj. Return</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Wealth if Sold</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Wealth if Borrowed</th>
                 <th className="text-right px-3 py-2 font-medium text-success-500">Advantage</th>
               </tr>
             </thead>

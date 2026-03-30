@@ -24,9 +24,9 @@ export function SectionHeader({
       )}
     >
       <div className="min-w-0">
-        <h2 className="text-lg font-bold text-white">{title}</h2>
+        <h2 className="text-lg font-bold text-text">{title}</h2>
         {subtitle && (
-          <p className="mt-0.5 text-sm text-white/50">{subtitle}</p>
+          <p className="mt-0.5 text-sm text-text-muted">{subtitle}</p>
         )}
       </div>
 

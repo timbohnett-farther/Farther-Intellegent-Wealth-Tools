@@ -200,19 +200,19 @@ export default function AuditLogPage() {
   if (loading && events.length === 0) {
     return (
       <div className="space-y-6 bg-canvas">
-        <div className="h-8 w-32 rounded bg-white/[0.06] animate-pulse" />
+        <div className="h-8 w-32 rounded bg-surface-subtle animate-pulse" />
         {/* Filter bar skeleton */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
           <div className="flex flex-wrap gap-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-9 w-40 rounded bg-white/[0.06] animate-pulse" />
+              <div key={i} className="h-9 w-40 rounded bg-surface-subtle animate-pulse" />
             ))}
           </div>
         </div>
         {/* Table skeleton */}
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-3">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm space-y-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-5 rounded bg-white/[0.06] animate-pulse" />
+            <div key={i} className="h-5 rounded bg-surface-subtle animate-pulse" />
           ))}
         </div>
       </div>
@@ -234,7 +234,7 @@ export default function AuditLogPage() {
           <button
             type="button"
             onClick={fetchAuditEvents}
-            className="mt-4 inline-flex h-10 items-center rounded-lg bg-teal-500 px-5 text-sm font-medium text-white hover:bg-teal-400 transition-colors"
+            className="mt-4 inline-flex h-10 items-center rounded-lg bg-accent-primary px-5 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
           >
             Retry
           </button>
@@ -284,15 +284,15 @@ export default function AuditLogPage() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Audit Log</h1>
-          <p className="mt-1 text-sm text-white/50">
+          <h1 className="text-2xl font-bold text-text">Audit Log</h1>
+          <p className="mt-1 text-sm text-text-muted">
             {totalEvents.toLocaleString()} total event{totalEvents !== 1 ? 's' : ''}
           </p>
         </div>
         <button
           type="button"
           onClick={handleExportCsv}
-          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl px-5 text-sm font-medium text-white/60 hover:bg-white/[0.04] transition-colors"
+          className="inline-flex h-10 items-center gap-2 rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-5 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
         >
           <svg
             className="h-4 w-4"
@@ -320,8 +320,8 @@ export default function AuditLogPage() {
 
       {/* Loading overlay for subsequent loads */}
       {loading && events.length > 0 && (
-        <div className="flex items-center gap-2 text-sm text-white/50">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+        <div className="flex items-center gap-2 text-sm text-text-muted">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent-primary border-t-transparent" />
           Refreshing...
         </div>
       )}
@@ -336,9 +336,9 @@ export default function AuditLogPage() {
 
       {/* Empty state */}
       {!loading && events.length === 0 && (
-        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-12 text-center shadow-sm">
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-12 text-center shadow-sm">
           <svg
-            className="mx-auto h-10 w-10 text-white/30"
+            className="mx-auto h-10 w-10 text-text-faint"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -350,10 +350,10 @@ export default function AuditLogPage() {
               d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
             />
           </svg>
-          <p className="mt-3 text-sm font-medium text-white/60">
+          <p className="mt-3 text-sm font-medium text-text-muted">
             No audit events found
           </p>
-          <p className="mt-1 text-xs text-white/50">
+          <p className="mt-1 text-xs text-text-muted">
             Try adjusting your filters or check back later.
           </p>
         </div>

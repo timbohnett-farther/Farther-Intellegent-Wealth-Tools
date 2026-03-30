@@ -39,7 +39,7 @@ function AllocationBar({ allocation }: { allocation: ModelAllocation }) {
         {entries.map(([key, value]) => (
           <div
             key={key}
-            className="flex items-center justify-center text-white text-[9px] font-semibold transition-all"
+            className="flex items-center justify-center text-text text-[9px] font-semibold transition-all"
             style={{ width: `${value}%`, backgroundColor: ALLOC_COLORS[key].color, minWidth: value > 3 ? undefined : 0 }}
             title={`${ALLOC_COLORS[key].label}: ${value}%`}
           >
@@ -51,7 +51,7 @@ function AllocationBar({ allocation }: { allocation: ModelAllocation }) {
         {entries.map(([key, value]) => (
           <div key={key} className="flex items-center gap-1">
             <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: ALLOC_COLORS[key].color }} />
-            <span className="text-[10px] text-white/50">{ALLOC_COLORS[key].label} {value}%</span>
+            <span className="text-[10px] text-text-muted">{ALLOC_COLORS[key].label} {value}%</span>
           </div>
         ))}
       </div>
@@ -62,8 +62,8 @@ function AllocationBar({ allocation }: { allocation: ModelAllocation }) {
 function MetricCard({ label, value, suffix, highlight }: { label: string; value: string; suffix?: string; highlight?: boolean }) {
   return (
     <div className="text-center">
-      <p className="text-[10px] text-white/50 mb-0.5">{label}</p>
-      <p className={`text-sm font-bold ${highlight ? 'text-teal-300' : 'text-white'}`}>
+      <p className="text-[10px] text-text-muted mb-0.5">{label}</p>
+      <p className={`text-sm font-bold ${highlight ? 'text-accent-primarySoft' : 'text-text'}`}>
         {value}{suffix}
       </p>
     </div>
@@ -86,10 +86,10 @@ function ColumnCard({
   return (
     <div className={`card p-5 ${isRecommended ? 'ring-2 shadow-focus border-brand-200' : ''}`}>
       {isRecommended && (
-        <div className="text-[10px] font-semibold text-teal-300 uppercase tracking-wider mb-2">Recommended</div>
+        <div className="text-[10px] font-semibold text-accent-primarySoft uppercase tracking-wider mb-2">Recommended</div>
       )}
-      <h5 className="text-sm font-semibold text-white mb-1">{label}</h5>
-      <p className="text-xs text-white/50 mb-4">
+      <h5 className="text-sm font-semibold text-text mb-1">{label}</h5>
+      <p className="text-xs text-text-muted mb-4">
         Band {portfolio.band} — {RISK_BAND_LABELS[portfolio.band]}
       </p>
 
@@ -111,11 +111,11 @@ function ColumnCard({
 
       {/* Crash scenarios */}
       <div className="mt-4 pt-4 border-t border-limestone-100">
-        <p className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-2">Crash Scenarios</p>
+        <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2">Crash Scenarios</p>
         <div className="space-y-1.5">
           {backtest.crashScenarios.map((crash, i) => (
             <div key={i} className="flex items-center justify-between text-xs">
-              <span className="text-white/50">{crash.name}</span>
+              <span className="text-text-muted">{crash.name}</span>
               <span className="font-semibold text-critical-500">{crash.loss.toFixed(0)}%</span>
             </div>
           ))}
@@ -141,12 +141,12 @@ function ReturnChart({ backtests }: { backtests: BacktestResult[] }) {
 
   return (
     <div className="card p-5">
-      <h5 className="text-sm font-semibold text-white/60 mb-1">Historical Annual Returns (1994–2025)</h5>
+      <h5 className="text-sm font-semibold text-text-muted mb-1">Historical Annual Returns (1994–2025)</h5>
       <div className="flex items-center gap-4 mb-3">
         {backtests.map((_, i) => (
           <div key={i} className="flex items-center gap-1.5">
             <div className="w-3 h-1 rounded-full" style={{ backgroundColor: colors[i] }} />
-            <span className="text-[10px] text-white/50">{labels[i]}</span>
+            <span className="text-[10px] text-text-muted">{labels[i]}</span>
           </div>
         ))}
       </div>
@@ -210,10 +210,10 @@ export default function BacktestComparison({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-semibold text-white/60">Portfolio Comparison — Move Risk ±1 Band</h4>
+        <h4 className="text-sm font-semibold text-text-muted">Portfolio Comparison — Move Risk ±1 Band</h4>
         <button
           onClick={() => setShowChart(!showChart)}
-          className="text-xs text-teal-300 hover:text-teal-300"
+          className="text-xs text-accent-primarySoft hover:text-accent-primarySoft"
         >
           {showChart ? 'Hide Chart' : 'Show Chart'}
         </button>
@@ -248,7 +248,7 @@ export default function BacktestComparison({
         />
       )}
 
-      <p className="text-[10px] text-white/30">
+      <p className="text-[10px] text-text-faint">
         Historical performance is based on index proxies and does not represent actual portfolio returns.
         Past performance does not guarantee future results.
       </p>

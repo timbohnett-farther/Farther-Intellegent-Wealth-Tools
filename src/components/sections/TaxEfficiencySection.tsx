@@ -20,19 +20,19 @@ export default function TaxEfficiencySection({ data }: Props) {
       {/* After-Tax Rate Card */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="card p-4 text-center bg-linear-to-b from-brand-50 to-white">
-          <p className="text-xs text-white/50 mb-1">Blended 1256 Tax Rate</p>
-          <p className="text-2xl font-bold text-teal-300">{formatPercent(data.blended1256Rate)}</p>
-          <p className="text-[10px] text-white/30 mt-1">60% LTCG / 40% STCG</p>
+          <p className="text-xs text-text-muted mb-1">Blended 1256 Tax Rate</p>
+          <p className="text-2xl font-bold text-accent-primarySoft">{formatPercent(data.blended1256Rate)}</p>
+          <p className="text-[10px] text-text-faint mt-1">60% LTCG / 40% STCG</p>
         </div>
         <div className="card p-4 text-center bg-linear-to-b from-success-50 to-white">
-          <p className="text-xs text-white/50 mb-1">After-Tax Effective Rate</p>
+          <p className="text-xs text-text-muted mb-1">After-Tax Effective Rate</p>
           <p className="text-2xl font-bold text-success-700">{formatPercent(data.afterTaxRate)}</p>
-          <p className="text-[10px] text-white/30 mt-1">All-in rate x (1 - blended rate)</p>
+          <p className="text-[10px] text-text-faint mt-1">All-in rate x (1 - blended rate)</p>
         </div>
         <div className="card p-4 text-center bg-linear-to-b from-emerald-50 to-white">
-          <p className="text-xs text-white/50 mb-1">Total Tax Savings</p>
+          <p className="text-xs text-text-muted mb-1">Total Tax Savings</p>
           <p className="text-2xl font-bold text-emerald-700">{formatCurrency(data.totalTaxSavings)}</p>
-          <p className="text-[10px] text-white/30 mt-1">Over the loan term</p>
+          <p className="text-[10px] text-text-faint mt-1">Over the loan term</p>
         </div>
       </div>
 
@@ -40,26 +40,26 @@ export default function TaxEfficiencySection({ data }: Props) {
       <div className={`card p-3 text-sm ${data.deductionType === 'full' ? 'border-success-200 bg-success-50' : data.deductionType === 'partial' ? 'border-warning-200 bg-warning-50' : 'border-critical-200 bg-critical-50'}`}>
         <p className="font-medium">{deductionLabel[data.deductionType]}</p>
         {data.carryforward > 0 && (
-          <p className="text-xs mt-1 text-white/50">Capital loss carryforward: {formatCurrency(data.carryforward)}</p>
+          <p className="text-xs mt-1 text-text-muted">Capital loss carryforward: {formatCurrency(data.carryforward)}</p>
         )}
       </div>
 
       {/* Annual Mark-to-Market Deduction Schedule */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Annual Mark-to-Market Deduction Schedule</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-3 py-2 font-medium text-white/50">Year</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Accrued Interest</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">LT Loss (60%)</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">ST Loss (40%)</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Gains Offset</th>
+                <th className="text-left px-3 py-2 font-medium text-text-muted">Year</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Accrued Interest</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">LT Loss (60%)</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">ST Loss (40%)</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Gains Offset</th>
                 <th className="text-right px-3 py-2 font-medium text-success-500">Tax Savings</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Net Cost</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Net Cost</th>
               </tr>
             </thead>
             <tbody>
@@ -76,7 +76,7 @@ export default function TaxEfficiencySection({ data }: Props) {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-white/[0.10] bg-transparent font-semibold">
+              <tr className="border-t-2 border-border-subtle bg-transparent font-semibold">
                 <td className="px-3 py-2">Total</td>
                 <td className="px-3 py-2 text-right">{formatCurrency(data.annualSchedule.reduce((s, r) => s + r.accruedInterest, 0))}</td>
                 <td className="px-3 py-2 text-right">{formatCurrency(data.annualSchedule.reduce((s, r) => s + r.ltLoss, 0))}</td>
@@ -92,14 +92,14 @@ export default function TaxEfficiencySection({ data }: Props) {
 
       {/* Grand Comparison: Tax-Deductible vs Non-Deductible */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">After-Tax Cost: Deductible vs. Non-Deductible Interest</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-3 py-2 font-medium text-white/50">Method</th>
+                <th className="text-left px-3 py-2 font-medium text-text-muted">Method</th>
                 <th className="text-right px-3 py-2 font-medium">Pre-Tax Interest</th>
                 <th className="text-right px-3 py-2 font-medium text-success-500">Tax Benefit</th>
                 <th className="text-right px-3 py-2 font-medium">After-Tax Cost</th>
@@ -108,10 +108,10 @@ export default function TaxEfficiencySection({ data }: Props) {
             </thead>
             <tbody>
               {[
-                { name: 'Box Spread', ...data.grandComparison.boxSpread, color: 'text-teal-300', isSelf: true },
-                { name: 'Margin Loan', ...data.grandComparison.marginLoan, color: 'text-white/50', isSelf: false },
+                { name: 'Box Spread', ...data.grandComparison.boxSpread, color: 'text-accent-primarySoft', isSelf: true },
+                { name: 'Margin Loan', ...data.grandComparison.marginLoan, color: 'text-text-muted', isSelf: false },
                 { name: 'SBLOC', ...data.grandComparison.sbloc, color: 'text-orange-600', isSelf: false },
-                { name: 'HELOC', ...data.grandComparison.heloc, color: 'text-teal-300', isSelf: false },
+                { name: 'HELOC', ...data.grandComparison.heloc, color: 'text-accent-primarySoft', isSelf: false },
               ].map((row) => (
                 <tr key={row.name} className="border-t border-limestone-100">
                   <td className={`px-3 py-2 font-medium ${row.color}`}>{row.name}</td>

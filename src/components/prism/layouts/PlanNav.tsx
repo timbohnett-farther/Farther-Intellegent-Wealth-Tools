@@ -42,21 +42,21 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
     <div
       className="sticky top-16 z-20"
       style={{
-        background: 'rgba(255, 255, 255, 0.03)',
+        background: 'var(--s-surface-soft)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '2px solid rgba(255, 255, 255, 0.06)',
+        borderBottom: '2px solid var(--s-border-subtle)',
       }}
     >
       {/* Plan header */}
       <div className="px-7 pt-3 pb-2 flex items-center gap-2 text-sm">
-        <Link href="/prism/clients" className="text-white/50 hover:text-teal-300 transition-colors">
+        <Link href="/prism/clients" className="text-text-muted hover:text-accent-primarySoft transition-colors">
           Clients
         </Link>
-        <span className="text-white/20">/</span>
-        <span className="font-semibold text-white">{clientName}</span>
-        <span className="text-white/20">&mdash;</span>
-        <span className="text-white/50">{planName}</span>
+        <span className="text-text-faint">/</span>
+        <span className="font-semibold text-text">{clientName}</span>
+        <span className="text-text-faint">&mdash;</span>
+        <span className="text-text-muted">{planName}</span>
       </div>
 
       {/* Tab navigation */}
@@ -75,8 +75,8 @@ export function PlanNav({ planId, clientName, planName }: PlanNavProps) {
                 className={cn(
                   'px-5 py-3.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
                   isActive
-                    ? 'border-teal-500 text-teal-300 font-bold'
-                    : 'border-transparent text-white/50 hover:text-white hover:border-white/20'
+                    ? 'border-accent-primary text-accent-primarySoft font-bold'
+                    : 'border-transparent text-text-muted hover:text-text hover:border-border-strong'
                 )}
               >
                 {tab.label}

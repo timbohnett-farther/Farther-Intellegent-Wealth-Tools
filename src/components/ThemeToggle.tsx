@@ -1,28 +1,41 @@
-"use client";
+'use client';
 
-import { RiSunLine, RiMoonLine } from "@remixicon/react";
-import { useTheme } from "@/lib/theme-provider";
+import { useTheme } from './ThemeProvider';
+import { Sun, Moon, Monitor } from 'lucide-react';
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+
+  const options = [
+    { value: 'light' as const, icon: Sun, label: 'Light' },
+    { value: 'dark' as const, icon: Moon, label: 'Dark' },
+    { value: 'system' as const, icon: Monitor, label: 'System' },
+  ];
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="flex items-center gap-2 w-full px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white/90 hover:bg-gray-100 dark:hover:bg-white/5"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    <div
+      className="inline-flex items-center gap-0.5 rounded-lg p-0.5"
+      style={{ background: 'var(--s-surface-subtle)' }}
+      role="radiogroup"
+      aria-label="Theme"
     >
-      {theme === "dark" ? (
-        <>
-          <RiSunLine className="w-5 h-5" />
-          <span>Light Mode</span>
-        </>
-      ) : (
-        <>
-          <RiMoonLine className="w-5 h-5" />
-          <span>Dark Mode</span>
-        </>
-      )}
-    </button>
+      {options.map(({ value, icon: Icon, label }) => (
+        <button
+          key={value}
+          role="radio"
+          aria-checked={theme === value}
+          aria-label={label}
+          onClick={() => setTheme(value)}
+          className="flex items-center justify-center w-8 h-8 rounded-md transition-all duration-150"
+          style={{
+            background: theme === value ? 'var(--s-card-bg)' : 'transparent',
+            color: theme === value ? 'var(--s-text)' : 'var(--s-text-faint)',
+            boxShadow: theme === value ? 'var(--s-card-shadow)' : 'none',
+          }}
+        >
+          <Icon size={14} />
+        </button>
+      ))}
+    </div>
   );
 }

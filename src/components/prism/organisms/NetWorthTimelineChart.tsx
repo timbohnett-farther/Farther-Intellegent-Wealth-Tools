@@ -93,22 +93,22 @@ function TimelineTooltip({
   }
 
   return (
-    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-white/[0.07] backdrop-blur-xl px-3 py-2 text-xs shadow-md">
-      <p className="mb-1.5 font-semibold text-white">
+    <div className="rounded-lg border border-[rgba(255,255,255,0.06)] bg-surface-soft backdrop-blur-xl px-3 py-2 text-xs shadow-md">
+      <p className="mb-1.5 font-semibold text-text">
         Year {label} (Age {dataPoint.clientAge})
       </p>
       <table className="w-full">
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
-              <td className="pr-3 flex items-center gap-1.5 text-white/50">
+              <td className="pr-3 flex items-center gap-1.5 text-text-muted">
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: row.color }}
                 />
                 {row.label}
               </td>
-              <td className="text-right tabular-nums font-medium text-white">
+              <td className="text-right tabular-nums font-medium text-text">
                 {formatCurrency(row.value)}
               </td>
             </tr>

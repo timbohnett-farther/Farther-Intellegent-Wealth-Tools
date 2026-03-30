@@ -42,37 +42,37 @@ export default function CashFlowSection({ data }: Props) {
       {/* Cash Flow Savings Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="card p-4 text-center bg-linear-to-b from-success-50 to-white">
-          <p className="text-xs text-white/50 mb-1">Monthly Cash Flow Freed</p>
+          <p className="text-xs text-text-muted mb-1">Monthly Cash Flow Freed</p>
           <p className="text-2xl font-bold text-success-700">{formatCurrency(data.monthlyPaymentComparison.monthlySavings)}</p>
-          <p className="text-xs text-white/30 mt-1">vs. margin loan monthly payments</p>
+          <p className="text-xs text-text-faint mt-1">vs. margin loan monthly payments</p>
         </div>
         <div className="card p-4 text-center bg-linear-to-b from-brand-50 to-white">
-          <p className="text-xs text-white/50 mb-1">Reinvestment Value of Savings</p>
-          <p className="text-2xl font-bold text-teal-300">{formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)}</p>
-          <p className="text-xs text-white/30 mt-1">FV if monthly savings reinvested</p>
+          <p className="text-xs text-text-muted mb-1">Reinvestment Value of Savings</p>
+          <p className="text-2xl font-bold text-accent-primarySoft">{formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)}</p>
+          <p className="text-xs text-text-faint mt-1">FV if monthly savings reinvested</p>
         </div>
       </div>
 
       {/* Box Spread Cash Flow Timeline */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Box Spread Cash Flow Timeline</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-3 py-2 font-medium text-white/50">Date</th>
-                <th className="text-left px-3 py-2 font-medium text-white/50">Description</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Cash Flow</th>
-                <th className="text-right px-3 py-2 font-medium text-white/50">Running Balance</th>
+                <th className="text-left px-3 py-2 font-medium text-text-muted">Date</th>
+                <th className="text-left px-3 py-2 font-medium text-text-muted">Description</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Cash Flow</th>
+                <th className="text-right px-3 py-2 font-medium text-text-muted">Running Balance</th>
               </tr>
             </thead>
             <tbody>
               {data.boxSpread.map((row, i) => (
                 <tr key={i} className={`border-t border-limestone-100 ${row.cashFlow < 0 ? 'bg-critical-50' : row.cashFlow > 0 ? 'bg-success-50' : ''}`}>
                   <td className="px-3 py-2 font-medium">{row.date}</td>
-                  <td className="px-3 py-2 text-white/50">{row.description}</td>
+                  <td className="px-3 py-2 text-text-muted">{row.description}</td>
                   <td className={`px-3 py-2 text-right font-medium ${row.cashFlow > 0 ? 'text-success-500' : row.cashFlow < 0 ? 'text-critical-500' : ''}`}>
                     {row.cashFlow !== 0 ? formatCurrency(row.cashFlow) : '--'}
                   </td>
@@ -85,8 +85,8 @@ export default function CashFlowSection({ data }: Props) {
       </div>
 
       {/* Key Insight */}
-      <div className="card p-4 bg-teal-500/10 border-brand-200">
-        <p className="text-sm text-teal-300">
+      <div className="card p-4 bg-accent-primary/10 border-brand-200">
+        <p className="text-sm text-accent-primarySoft">
           <span className="font-semibold">Key Insight:</span> Box spread borrowers pay $0/month during the loan term,
           freeing up {formatCurrency(data.monthlyPaymentComparison.monthlySavings)}/month compared to a margin loan.
           If reinvested, these savings could grow to {formatCurrency(data.monthlyPaymentComparison.reinvestmentValue)} by maturity.

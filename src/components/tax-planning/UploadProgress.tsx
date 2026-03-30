@@ -18,7 +18,7 @@ export interface UploadProgressProps {
 function getStatusIcon(status: UploadFileProgress['status']) {
   switch (status) {
     case 'uploading':
-      return <Upload className="h-4 w-4 text-teal-300" />;
+      return <Upload className="h-4 w-4 text-accent-primarySoft" />;
     case 'processing':
       return <Loader2 className="h-4 w-4 text-info-700 animate-spin" />;
     case 'done':
@@ -44,7 +44,7 @@ function getStatusLabel(status: UploadFileProgress['status']): string {
 function getProgressBarColor(status: UploadFileProgress['status']): string {
   switch (status) {
     case 'uploading':
-      return 'bg-teal-500';
+      return 'bg-accent-primary';
     case 'processing':
       return 'bg-info-500';
     case 'done':
@@ -62,12 +62,12 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
       {files.map((file, index) => (
         <div
           key={`${file.name}-${index}`}
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm"
+          className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm"
         >
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2 min-w-0">
-              <FileText className="h-4 w-4 flex-shrink-0 text-white/30" />
-              <span className="text-sm font-medium text-white truncate">
+              <FileText className="h-4 w-4 flex-shrink-0 text-text-faint" />
+              <span className="text-sm font-medium text-text truncate">
                 {file.name}
               </span>
             </div>
@@ -79,7 +79,7 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
                   'text-xs font-medium',
                   file.status === 'done' && 'text-success-700',
                   file.status === 'error' && 'text-critical-700',
-                  file.status === 'uploading' && 'text-teal-300',
+                  file.status === 'uploading' && 'text-accent-primarySoft',
                   file.status === 'processing' && 'text-info-700'
                 )}
               >
@@ -89,7 +89,7 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
           </div>
 
           {/* Progress bar */}
-          <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-surface-subtle">
             <div
               className={cn(
                 'h-full rounded-full transition-all duration-300 ease-out',
@@ -101,7 +101,7 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({ files }) => {
 
           {/* Progress percentage */}
           <div className="mt-1 text-right">
-            <span className="text-xs tabular-nums text-white/50">
+            <span className="text-xs tabular-nums text-text-muted">
               {Math.round(file.progress)}%
             </span>
           </div>

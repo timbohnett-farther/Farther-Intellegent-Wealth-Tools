@@ -30,37 +30,37 @@ export default function MonteCarloSection({ data }: Props) {
       {/* Probability Dashboard */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">Margin Call Probability</p>
+          <p className="text-xs text-text-muted">Margin Call Probability</p>
           <p className={`text-2xl font-bold ${data.probabilityOfMarginCall < 5 ? 'text-safe' : data.probabilityOfMarginCall < 15 ? 'text-warning' : 'text-danger'}`}>
             {formatPercentValue(data.probabilityOfMarginCall, 1)}
           </p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">Portfolio Grows</p>
+          <p className="text-xs text-text-muted">Portfolio Grows</p>
           <p className="text-2xl font-bold text-safe">{formatPercentValue(data.probabilityPortfolioGrows, 1)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">Median Terminal Portfolio</p>
-          <p className="text-2xl font-bold text-teal-300">{formatCurrency(data.medianTerminalPortfolio)}</p>
+          <p className="text-xs text-text-muted">Median Terminal Portfolio</p>
+          <p className="text-2xl font-bold text-accent-primarySoft">{formatCurrency(data.medianTerminalPortfolio)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">Median Net Wealth</p>
+          <p className="text-xs text-text-muted">Median Net Wealth</p>
           <p className="text-2xl font-bold text-success-700">{formatCurrency(data.medianNetWealth)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">5th Percentile (Worst)</p>
+          <p className="text-xs text-text-muted">5th Percentile (Worst)</p>
           <p className="text-2xl font-bold text-warning-500">{formatCurrency(data.percentiles.p5)}</p>
         </div>
         <div className="card p-3 text-center">
-          <p className="text-xs text-white/50">95th Percentile (Best)</p>
-          <p className="text-2xl font-bold text-teal-300">{formatCurrency(data.percentiles.p95)}</p>
+          <p className="text-xs text-text-muted">95th Percentile (Best)</p>
+          <p className="text-2xl font-bold text-accent-primarySoft">{formatCurrency(data.percentiles.p95)}</p>
         </div>
       </div>
 
       {/* Fan Chart */}
       <div className="card p-4">
         <h3 className="font-semibold text-sm mb-1">Portfolio Value Projection (5,000 Simulations)</h3>
-        <p className="text-xs text-white/50 mb-3">Shaded bands show 5th-95th and 25th-75th percentile ranges</p>
+        <p className="text-xs text-text-muted mb-3">Shaded bands show 5th-95th and 25th-75th percentile ranges</p>
         <ResponsiveContainer width="100%" height={350}>
           <AreaChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -93,15 +93,15 @@ export default function MonteCarloSection({ data }: Props) {
 
       {/* Percentile Table */}
       <div className="card overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] bg-transparent">
+        <div className="px-4 py-3 border-b border-border-subtle bg-transparent">
           <h3 className="font-semibold text-sm">Terminal Portfolio Distribution</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-transparent border-b">
-                <th className="text-left px-4 py-2 font-medium text-white/50">Percentile</th>
-                <th className="text-right px-4 py-2 font-medium text-white/50">Terminal Portfolio</th>
+                <th className="text-left px-4 py-2 font-medium text-text-muted">Percentile</th>
+                <th className="text-right px-4 py-2 font-medium text-text-muted">Terminal Portfolio</th>
               </tr>
             </thead>
             <tbody>

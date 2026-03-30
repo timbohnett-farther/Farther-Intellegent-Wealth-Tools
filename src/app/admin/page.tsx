@@ -116,21 +116,21 @@ export default function AdminOverviewPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-teal-300' },
-          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-teal-300' },
+          { label: 'Total Advisors', value: `${FIRM_STATS.totalAdvisors}`, sub: `${FIRM_STATS.activeAdvisors} active`, icon: Users, color: 'text-accent-primarySoft' },
+          { label: 'Total Clients', value: `${FIRM_STATS.totalClients}`, sub: `${FIRM_STATS.totalPlans} plans`, icon: FileText, color: 'text-accent-primarySoft' },
           { label: 'Firm AUM', value: fmtCompact(FIRM_STATS.totalAUM), sub: 'Across all plans', icon: DollarSign, color: 'text-success-500' },
-          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-teal-300' },
+          { label: 'Avg Success Rate', value: `${(FIRM_STATS.avgSuccessRate * 100).toFixed(0)}%`, sub: `${FIRM_STATS.activePlans} active plans`, icon: TrendingUp, color: 'text-accent-primarySoft' },
           { label: 'Open Alerts', value: `${FIRM_STATS.criticalAlerts + FIRM_STATS.warningAlerts}`, sub: `${FIRM_STATS.criticalAlerts} critical`, icon: AlertTriangle, color: 'text-critical-500' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-4">
+            <div key={kpi.label} className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-medium text-white/50">{kpi.label}</p>
+                <p className="text-xs font-medium text-text-muted">{kpi.label}</p>
                 <Icon size={16} className={kpi.color} />
               </div>
-              <p className="text-xl font-bold text-white">{kpi.value}</p>
-              <p className="text-xs text-white/30 mt-0.5">{kpi.sub}</p>
+              <p className="text-xl font-bold text-text">{kpi.value}</p>
+              <p className="text-xs text-text-faint mt-0.5">{kpi.sub}</p>
             </div>
           );
         })}
@@ -138,8 +138,8 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Monthly activity */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-4">Monthly Activity</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-text mb-4">Monthly Activity</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={MONTHLY_ACTIVITY}>
@@ -157,8 +157,8 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Success rate distribution */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-4">Plan Success Rate Distribution</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-text mb-4">Plan Success Rate Distribution</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={SUCCESS_DISTRIBUTION}>
@@ -179,30 +179,30 @@ export default function AdminOverviewPage() {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Top advisors */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5 col-span-2">
-          <h3 className="text-sm font-semibold text-white mb-3">Advisor Performance</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5 col-span-2">
+          <h3 className="text-sm font-semibold text-text mb-3">Advisor Performance</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-limestone-100 text-left">
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Advisor</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Clients</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Plans</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase text-right">Avg Success</th>
-                <th className="pb-2 text-xs font-medium text-white/50 uppercase">Last Active</th>
+                <th className="pb-2 text-xs font-medium text-text-muted uppercase">Advisor</th>
+                <th className="pb-2 text-xs font-medium text-text-muted uppercase text-right">Clients</th>
+                <th className="pb-2 text-xs font-medium text-text-muted uppercase text-right">Plans</th>
+                <th className="pb-2 text-xs font-medium text-text-muted uppercase text-right">Avg Success</th>
+                <th className="pb-2 text-xs font-medium text-text-muted uppercase">Last Active</th>
               </tr>
             </thead>
             <tbody>
               {ADVISOR_PERFORMANCE.map((a) => (
                 <tr key={a.name} className="border-b border-limestone-50">
-                  <td className="py-2.5 font-medium text-white">{a.name}</td>
-                  <td className="py-2.5 text-white/50 text-right">{a.clients}</td>
-                  <td className="py-2.5 text-white/50 text-right">{a.plans}</td>
+                  <td className="py-2.5 font-medium text-text">{a.name}</td>
+                  <td className="py-2.5 text-text-muted text-right">{a.clients}</td>
+                  <td className="py-2.5 text-text-muted text-right">{a.plans}</td>
                   <td className="py-2.5 text-right">
                     <span className={`font-medium ${a.avgSuccess >= 80 ? 'text-success-500' : a.avgSuccess >= 70 ? 'text-warning-500' : 'text-critical-500'}`}>
                       {a.avgSuccess}%
                     </span>
                   </td>
-                  <td className="py-2.5 text-white/50">{a.lastLogin}</td>
+                  <td className="py-2.5 text-text-muted">{a.lastLogin}</td>
                 </tr>
               ))}
             </tbody>
@@ -210,8 +210,8 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Client distribution */}
-        <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-          <h3 className="text-sm font-semibold text-white mb-3">Clients by Wealth Tier</h3>
+        <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-text mb-3">Clients by Wealth Tier</h3>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -229,7 +229,7 @@ export default function AdminOverviewPage() {
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
                 </span>
-                <span className="font-medium text-white/60">{d.value}</span>
+                <span className="font-medium text-text-muted">{d.value}</span>
               </div>
             ))}
           </div>
@@ -237,10 +237,10 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Integration status */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
+      <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-white">Integration Status</h3>
-          <button className="inline-flex items-center gap-1 text-xs font-medium text-teal-300 hover:text-teal-300">
+          <h3 className="text-sm font-semibold text-text">Integration Status</h3>
+          <button className="inline-flex items-center gap-1 text-xs font-medium text-accent-primarySoft hover:text-accent-primarySoft">
             <RefreshCw size={12} /> Sync All
           </button>
         </div>
@@ -255,8 +255,8 @@ export default function AdminOverviewPage() {
                 <WifiOff size={16} className="text-critical-500 flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{int.name}</p>
-                <p className="text-xs text-white/50">
+                <p className="text-sm font-medium text-text truncate">{int.name}</p>
+                <p className="text-xs text-text-muted">
                   {int.lastSync}{int.accounts ? ` · ${int.accounts.toLocaleString()} accounts` : ''}
                 </p>
               </div>
@@ -271,8 +271,8 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Plans needing review */}
-      <div className="bg-white/[0.07] rounded-xl border border-white/[0.06] shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-white mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
+      <div className="bg-surface-soft rounded-xl border border-border-subtle shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-text mb-3">Plans Needing Review ({FIRM_STATS.plansNeedingReview})</h3>
         <div className="space-y-2">
           {[
             { client: 'Robert Johnson', advisor: 'James Wilson', lastReview: '14 months ago', successRate: 64, reason: 'Success rate below 70%' },
@@ -285,12 +285,12 @@ export default function AdminOverviewPage() {
               <div className="flex items-center gap-3">
                 <AlertTriangle size={14} className={p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'} />
                 <div>
-                  <p className="text-sm font-medium text-white">{p.client}</p>
-                  <p className="text-xs text-white/50">{p.advisor} · Last review: {p.lastReview}</p>
+                  <p className="text-sm font-medium text-text">{p.client}</p>
+                  <p className="text-xs text-text-muted">{p.advisor} · Last review: {p.lastReview}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-white/50">{p.reason}</span>
+                <span className="text-xs text-text-muted">{p.reason}</span>
                 <span className={`text-sm font-bold ${p.successRate < 70 ? 'text-critical-500' : 'text-warning-500'}`}>{p.successRate}%</span>
               </div>
             </div>

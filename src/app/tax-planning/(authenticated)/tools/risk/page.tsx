@@ -174,42 +174,42 @@ export default function RiskAssessmentToolPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Risk Assessment</h1>
-          <p className="mt-1 text-sm text-white/50">Complete the questionnaire to determine a client&apos;s risk profile and recommended allocation.</p>
+          <h1 className="text-2xl font-bold text-text">Risk Assessment</h1>
+          <p className="mt-1 text-sm text-text-muted">Complete the questionnaire to determine a client&apos;s risk profile and recommended allocation.</p>
         </div>
         <div className="flex items-center gap-3">
           {isComplete && (
-            <button type="button" onClick={handleReset} className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] px-4 py-2.5 text-sm font-medium text-white/60 hover:bg-white/[0.04]">
+            <button type="button" onClick={handleReset} className="inline-flex items-center gap-2 rounded-lg border border-border-subtle px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-subtle">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
               </svg>
               Start Over
             </button>
           )}
-          <Link href="/tax-planning/proposals" className="text-sm font-medium text-white/50 hover:text-white/60">Back to Proposals</Link>
+          <Link href="/tax-planning/proposals" className="text-sm font-medium text-text-muted hover:text-text-muted">Back to Proposals</Link>
         </div>
       </div>
 
       {/* Client selector */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
-        <label className="block text-sm font-medium text-white/60 mb-1">Client</label>
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
+        <label className="block text-sm font-medium text-text-muted mb-1">Client</label>
         <input
           type="text"
           value={clientSelector}
           onChange={(e) => setClientSelector(e.target.value)}
           placeholder="Enter client name or ID..."
-          className="w-full max-w-md border border-white/[0.10] rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400"
+          className="w-full max-w-md border border-border-subtle rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-accent-primary/80"
         />
       </div>
 
       {/* Progress bar */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-4 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-white/60">Progress</span>
-          <span className="text-sm font-semibold text-white tabular-nums">{answeredCount}/{totalQuestions} questions</span>
+          <span className="text-sm font-medium text-text-muted">Progress</span>
+          <span className="text-sm font-semibold text-text tabular-nums">{answeredCount}/{totalQuestions} questions</span>
         </div>
-        <div className="h-2 w-full rounded-full bg-white/[0.06]">
-          <div className="h-2 rounded-full bg-teal-500 transition-all" style={{ width: `${(answeredCount / totalQuestions) * 100}%` }} />
+        <div className="h-2 w-full rounded-full bg-surface-subtle">
+          <div className="h-2 rounded-full bg-accent-primary transition-all" style={{ width: `${(answeredCount / totalQuestions) * 100}%` }} />
         </div>
       </div>
 
@@ -219,8 +219,8 @@ export default function RiskAssessmentToolPage() {
           {!isComplete ? (
             <>
               {RISK_QUESTIONS.map((q, qi) => (
-                <div key={q.id} className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-                  <p className="text-sm font-medium text-white mb-3">{qi + 1}. {q.text}</p>
+                <div key={q.id} className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+                  <p className="text-sm font-medium text-text mb-3">{qi + 1}. {q.text}</p>
                   <div className="space-y-2">
                     {q.options.map((opt) => {
                       const isSelected = answers[q.id]?.answer === opt.label;
@@ -228,14 +228,14 @@ export default function RiskAssessmentToolPage() {
                         <label
                           key={opt.label}
                           className={`flex items-center gap-3 rounded-lg border px-4 py-3 cursor-pointer transition-all ${
-                            isSelected ? 'border-teal-500 bg-teal-500/10' : 'border-white/[0.06] hover:border-white/[0.10] hover:bg-white/[0.04]'
+                            isSelected ? 'border-accent-primary bg-accent-primary/10' : 'border-border-subtle hover:border-border-subtle hover:bg-surface-subtle'
                           }`}
                         >
                           <input type="radio" name={q.id} checked={isSelected} onChange={() => handleAnswer(q.id, opt.label, opt.score)} className="sr-only" />
-                          <div className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${isSelected ? 'border-teal-500 bg-teal-500' : 'border-white/[0.10]'}`}>
-                            {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                          <div className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${isSelected ? 'border-accent-primary bg-accent-primary' : 'border-border-subtle'}`}>
+                            {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-text" />}
                           </div>
-                          <span className={`text-sm ${isSelected ? 'text-teal-300 font-medium' : 'text-white/60'}`}>{opt.label}</span>
+                          <span className={`text-sm ${isSelected ? 'text-accent-primarySoft font-medium' : 'text-text-muted'}`}>{opt.label}</span>
                         </label>
                       );
                     })}
@@ -247,53 +247,53 @@ export default function RiskAssessmentToolPage() {
                   type="button"
                   onClick={handleComplete}
                   disabled={!allAnswered}
-                  className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-6 py-2.5 text-sm font-medium text-text hover:bg-accent-primary/80 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Complete Assessment
                 </button>
               </div>
             </>
           ) : (
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-6 shadow-sm space-y-6">
-              <h2 className="text-lg font-semibold text-white">Assessment Results</h2>
+            <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 shadow-sm space-y-6">
+              <h2 className="text-lg font-semibold text-text">Assessment Results</h2>
 
               {/* 3D Risk Profile Display */}
               <div className="text-center">
-                <div className="inline-flex h-24 w-24 items-center justify-center rounded-full bg-teal-500/10 mb-3">
-                  <span className="text-3xl font-bold text-teal-300">{computedScore}</span>
+                <div className="inline-flex h-24 w-24 items-center justify-center rounded-full bg-accent-primary/10 mb-3">
+                  <span className="text-3xl font-bold text-accent-primarySoft">{computedScore}</span>
                 </div>
-                <p className="text-lg font-semibold text-white">{riskLabel.replace(/_/g, ' ')}</p>
+                <p className="text-lg font-semibold text-text">{riskLabel.replace(/_/g, ' ')}</p>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="rounded-lg bg-transparent p-4 text-center">
-                  <p className="text-xs text-white/50">Behavioral</p>
-                  <p className="text-xl font-bold text-white">{computedScore}</p>
+                  <p className="text-xs text-text-muted">Behavioral</p>
+                  <p className="text-xl font-bold text-text">{computedScore}</p>
                 </div>
                 <div className="rounded-lg bg-transparent p-4 text-center">
-                  <p className="text-xs text-white/50">Capacity</p>
-                  <p className="text-xl font-bold text-white">{Math.round(computedScore * 0.9)}</p>
+                  <p className="text-xs text-text-muted">Capacity</p>
+                  <p className="text-xl font-bold text-text">{Math.round(computedScore * 0.9)}</p>
                 </div>
                 <div className="rounded-lg bg-transparent p-4 text-center">
-                  <p className="text-xs text-white/50">Required Return</p>
-                  <p className="text-xl font-bold text-white">{(4 + (computedScore / 100) * 6).toFixed(1)}%</p>
+                  <p className="text-xs text-text-muted">Required Return</p>
+                  <p className="text-xl font-bold text-text">{(4 + (computedScore / 100) * 6).toFixed(1)}%</p>
                 </div>
               </div>
 
               {/* Allocation */}
               <div>
-                <h3 className="text-sm font-semibold text-white/60 mb-3">Recommended Allocation</h3>
+                <h3 className="text-sm font-semibold text-text-muted mb-3">Recommended Allocation</h3>
                 <div className="flex h-6 w-full overflow-hidden rounded-full">
-                  <div className="bg-teal-500" style={{ width: `${allocation.equity}%` }} />
+                  <div className="bg-accent-primary" style={{ width: `${allocation.equity}%` }} />
                   <div className="bg-info-500" style={{ width: `${allocation.fixedIncome}%` }} />
                   <div className="bg-warning-500" style={{ width: `${allocation.alternatives}%` }} />
-                  <div className="bg-white/[0.10]" style={{ width: `${allocation.cash}%` }} />
+                  <div className="bg-surface-strong" style={{ width: `${allocation.cash}%` }} />
                 </div>
-                <div className="mt-2 flex flex-wrap gap-4 text-xs text-white/50">
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-teal-500" />Equity {allocation.equity}%</span>
+                <div className="mt-2 flex flex-wrap gap-4 text-xs text-text-muted">
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-accent-primary" />Equity {allocation.equity}%</span>
                   <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-info-500" />Fixed Income {allocation.fixedIncome}%</span>
                   <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-warning-500" />Alts {allocation.alternatives}%</span>
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-white/[0.10]" />Cash {allocation.cash}%</span>
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-surface-strong" />Cash {allocation.cash}%</span>
                 </div>
               </div>
 
@@ -302,7 +302,7 @@ export default function RiskAssessmentToolPage() {
                 <button
                   type="button"
                   onClick={handleUseInProposal}
-                  className="inline-flex items-center gap-2 rounded-lg bg-teal-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-400"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-5 py-2.5 text-sm font-medium text-text hover:bg-accent-primary/80"
                 >
                   Use in Proposal
                 </button>
@@ -310,11 +310,11 @@ export default function RiskAssessmentToolPage() {
                   type="button"
                   onClick={handleSaveProfile}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] px-5 py-2.5 text-sm font-medium text-white/60 hover:bg-white/[0.04] disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-border-subtle px-5 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-subtle disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save Profile'}
                 </button>
-                <button type="button" onClick={handleReset} className="text-sm font-medium text-white/50 hover:text-white/60">Start Over</button>
+                <button type="button" onClick={handleReset} className="text-sm font-medium text-text-muted hover:text-text-muted">Start Over</button>
               </div>
             </div>
           )}
@@ -323,57 +323,57 @@ export default function RiskAssessmentToolPage() {
         {/* Sidebar */}
         <div className="space-y-4">
           {/* Live score */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm sticky top-4">
-            <h3 className="text-sm font-semibold text-white mb-4">Risk Profile</h3>
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm sticky top-4">
+            <h3 className="text-sm font-semibold text-text mb-4">Risk Profile</h3>
             <div className="text-center mb-4">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-teal-500/10">
-                <span className="text-2xl font-bold text-teal-300">{computedScore}</span>
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent-primary/10">
+                <span className="text-2xl font-bold text-accent-primarySoft">{computedScore}</span>
               </div>
-              <p className="text-xs text-white/50 mt-1">
+              <p className="text-xs text-text-muted mt-1">
                 <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${RISK_LABEL_COLORS[riskLabel]}`}>
                   {riskLabel.replace(/_/g, ' ')}
                 </span>
               </p>
             </div>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-white/50">Questions Answered</span><span className="font-medium text-white tabular-nums">{answeredCount}/{totalQuestions}</span></div>
+              <div className="flex justify-between"><span className="text-text-muted">Questions Answered</span><span className="font-medium text-text tabular-nums">{answeredCount}/{totalQuestions}</span></div>
             </div>
             <div className="mt-4 pt-4 border-t border-limestone-100">
-              <p className="text-[10px] font-medium uppercase text-white/30 mb-2">Suggested Allocation</p>
+              <p className="text-[10px] font-medium uppercase text-text-faint mb-2">Suggested Allocation</p>
               <div className="flex h-3 w-full overflow-hidden rounded-full">
-                <div className="bg-teal-500" style={{ width: `${allocation.equity}%` }} />
+                <div className="bg-accent-primary" style={{ width: `${allocation.equity}%` }} />
                 <div className="bg-info-500" style={{ width: `${allocation.fixedIncome}%` }} />
                 <div className="bg-warning-500" style={{ width: `${allocation.alternatives}%` }} />
-                <div className="bg-white/[0.10]" style={{ width: `${allocation.cash}%` }} />
+                <div className="bg-surface-strong" style={{ width: `${allocation.cash}%` }} />
               </div>
               <div className="mt-2 grid grid-cols-2 gap-1 text-[10px]">
-                <div className="flex justify-between"><span className="text-white/30">Equity</span><span className="font-semibold text-white/60">{allocation.equity}%</span></div>
-                <div className="flex justify-between"><span className="text-white/30">Fixed Inc</span><span className="font-semibold text-white/60">{allocation.fixedIncome}%</span></div>
-                <div className="flex justify-between"><span className="text-white/30">Alts</span><span className="font-semibold text-white/60">{allocation.alternatives}%</span></div>
-                <div className="flex justify-between"><span className="text-white/30">Cash</span><span className="font-semibold text-white/60">{allocation.cash}%</span></div>
+                <div className="flex justify-between"><span className="text-text-faint">Equity</span><span className="font-semibold text-text-muted">{allocation.equity}%</span></div>
+                <div className="flex justify-between"><span className="text-text-faint">Fixed Inc</span><span className="font-semibold text-text-muted">{allocation.fixedIncome}%</span></div>
+                <div className="flex justify-between"><span className="text-text-faint">Alts</span><span className="font-semibold text-text-muted">{allocation.alternatives}%</span></div>
+                <div className="flex justify-between"><span className="text-text-faint">Cash</span><span className="font-semibold text-text-muted">{allocation.cash}%</span></div>
               </div>
             </div>
           </div>
 
           {/* Past assessments */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-white mb-3">Past Assessments</h3>
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-text mb-3">Past Assessments</h3>
             {loadingHistory ? (
               <div className="space-y-2 animate-pulse">
-                {[1, 2, 3].map((i) => <div key={i} className="h-10 rounded bg-white/[0.06]" />)}
+                {[1, 2, 3].map((i) => <div key={i} className="h-10 rounded bg-surface-subtle" />)}
               </div>
             ) : pastAssessments.length === 0 ? (
-              <p className="text-xs text-white/50">No past assessments found.</p>
+              <p className="text-xs text-text-muted">No past assessments found.</p>
             ) : (
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {pastAssessments.map((a) => (
                   <div key={a.assessmentId} className="flex items-center justify-between rounded-md bg-transparent px-3 py-2">
                     <div>
-                      <p className="text-xs font-medium text-white">{a.clientName}</p>
-                      <p className="text-[10px] text-white/50">{formatDate(a.createdAt)}</p>
+                      <p className="text-xs font-medium text-text">{a.clientName}</p>
+                      <p className="text-[10px] text-text-muted">{formatDate(a.createdAt)}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-white">{a.compositeScore}</p>
+                      <p className="text-sm font-bold text-text">{a.compositeScore}</p>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${RISK_LABEL_COLORS[a.riskLabel]}`}>
                         {a.riskLabel.replace(/_/g, ' ')}
                       </span>

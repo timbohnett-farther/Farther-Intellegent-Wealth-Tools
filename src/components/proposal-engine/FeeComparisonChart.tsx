@@ -70,14 +70,14 @@ function FeeBreakdownCard({
       className={cn(
         'rounded-lg border p-5 shadow-sm',
         variant === 'proposed'
-          ? 'border-brand-200 bg-teal-500/5'
-          : 'border-white/[0.06] bg-white/[0.07]',
+          ? 'border-brand-200 bg-accent-primary/5'
+          : 'border-border-subtle bg-surface-soft',
       )}
     >
       <h4
         className={cn(
           'text-sm font-semibold mb-4',
-          variant === 'proposed' ? 'text-teal-300' : 'text-white',
+          variant === 'proposed' ? 'text-accent-primarySoft' : 'text-text',
         )}
       >
         {label}
@@ -87,28 +87,28 @@ function FeeBreakdownCard({
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between">
             <div>
-              <span className="text-xs text-white/50">{row.label}</span>
-              <span className="ml-1.5 text-[10px] text-white/30">
+              <span className="text-xs text-text-muted">{row.label}</span>
+              <span className="ml-1.5 text-[10px] text-text-faint">
                 ({fmtPct(row.rate)})
               </span>
             </div>
-            <span className="text-sm font-medium tabular-nums text-white">
+            <span className="text-sm font-medium tabular-nums text-text">
               {fmtMoney(row.dollars)}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 border-t border-white/[0.06] pt-3">
+      <div className="mt-4 border-t border-border-subtle pt-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wide text-white/50">
+          <span className="text-xs font-semibold uppercase tracking-wide text-text-muted">
             Total All-In
           </span>
           <div className="text-right">
-            <p className="text-lg font-bold tabular-nums text-white">
+            <p className="text-lg font-bold tabular-nums text-text">
               {fmtPct(breakdown.totalRate)}
             </p>
-            <p className="text-xs tabular-nums text-white/50">
+            <p className="text-xs tabular-nums text-text-muted">
               {fmtMoney(breakdown.totalDollars)}/yr
             </p>
           </div>
@@ -160,19 +160,19 @@ export function FeeComparisonChart({ analysis }: FeeComparisonChartProps) {
       </div>
 
       {/* Fee rate visual bar */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
-        <h4 className="text-sm font-semibold text-white mb-4">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
+        <h4 className="text-sm font-semibold text-text mb-4">
           Fee Rate Comparison
         </h4>
         <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-white/50">Current</span>
-              <span className="text-xs font-semibold tabular-nums text-white/60">
+              <span className="text-xs text-text-muted">Current</span>
+              <span className="text-xs font-semibold tabular-nums text-text-muted">
                 {fmtPct(analysis.current.totalRate)} ({fmtBps(analysis.current.totalRate)})
               </span>
             </div>
-            <div className="h-6 w-full rounded-md bg-white/[0.06] overflow-hidden">
+            <div className="h-6 w-full rounded-md bg-surface-subtle overflow-hidden">
               <div
                 className="h-full rounded-md bg-charcoal-400 transition-all duration-500"
                 style={{
@@ -183,14 +183,14 @@ export function FeeComparisonChart({ analysis }: FeeComparisonChartProps) {
           </div>
           <div>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-white/50">Proposed</span>
-              <span className="text-xs font-semibold tabular-nums text-teal-300">
+              <span className="text-xs text-text-muted">Proposed</span>
+              <span className="text-xs font-semibold tabular-nums text-accent-primarySoft">
                 {fmtPct(analysis.proposed.totalRate)} ({fmtBps(analysis.proposed.totalRate)})
               </span>
             </div>
-            <div className="h-6 w-full rounded-md bg-white/[0.06] overflow-hidden">
+            <div className="h-6 w-full rounded-md bg-surface-subtle overflow-hidden">
               <div
-                className="h-full rounded-md bg-teal-500 transition-all duration-500"
+                className="h-full rounded-md bg-accent-primary transition-all duration-500"
                 style={{
                   width: `${(analysis.proposed.totalRate / maxRate) * 100}%`,
                 }}
@@ -209,42 +209,42 @@ export function FeeComparisonChart({ analysis }: FeeComparisonChartProps) {
       </div>
 
       {/* Compounding impact table */}
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.07] backdrop-blur-xl p-5 shadow-sm">
+      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="h-4 w-4 text-teal-300" />
-          <h4 className="text-sm font-semibold text-white">
+          <TrendingUp className="h-4 w-4 text-accent-primarySoft" />
+          <h4 className="text-sm font-semibold text-text">
             Compounding Impact of Lower Fees
           </h4>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b border-white/[0.06]">
+            <thead className="border-b border-border-subtle">
               <tr>
-                <th className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Year
                 </th>
-                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Current Wealth
                 </th>
-                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Proposed Wealth
                 </th>
-                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-white/50">
+                <th className="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                   Benefit
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-limestone-100">
               {analysis.compoundingImpact.map((row) => (
-                <tr key={row.years} className="hover:bg-white/[0.04] transition-colors">
-                  <td className="px-3 py-2.5 font-medium text-white">
+                <tr key={row.years} className="hover:bg-surface-subtle transition-colors">
+                  <td className="px-3 py-2.5 font-medium text-text">
                     {row.years} yr{row.years !== 1 ? 's' : ''}
                   </td>
-                  <td className="px-3 py-2.5 text-right tabular-nums text-white/60">
+                  <td className="px-3 py-2.5 text-right tabular-nums text-text-muted">
                     {fmtMoney(row.currentWealth)}
                   </td>
-                  <td className="px-3 py-2.5 text-right tabular-nums text-white/60">
+                  <td className="px-3 py-2.5 text-right tabular-nums text-text-muted">
                     {fmtMoney(row.proposedWealth)}
                   </td>
                   <td className="px-3 py-2.5 text-right tabular-nums font-semibold text-success-700">
