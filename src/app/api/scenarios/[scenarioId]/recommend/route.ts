@@ -1,0 +1,54 @@
+/**
+ * POST /api/scenarios/:scenarioId/recommend
+ *
+ * Mark scenario as recommended
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { recommendScenario } from '@/lib/scenario-planning/scenario-service';
+import { RecommendScenarioRequestSchema, type ApiErrorResponse } from '@/lib/scenario-planning/schemas';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { scenarioId: string } }
+) {
+  try {
+    const { scenarioId } = params;
+
+    // Parse and validate request body
+    const body = await request.json();
+    const validatedRequest = RecommendScenarioRequestSchema.parse(body);
+
+    // Get user ID from auth
+    const userId = request.headers.get('x-user-id') || 'system';
+
+    // Recommend scenario
+    const scenario = await recommendScenario(scenarioId, userId, validatedRequest.reason);
+
+    return NextResponse.json(scenario, { status: 200 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const errorResponse: ApiErrorResponse = {
+        error: 'Validation Error',
+        message: 'Invalid request data',
+        statusCode: 400,
+        details: error.errors,
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
+    }
+
+    console.error(`[API] Error in POST /api/scenarios/${params.scenarioId}/recommend:`, error);
+
+    const errorResponse: ApiErrorResponse = {
+      error: 'Internal Server Error',
+      message: error instanceof Error ? error.message : 'An unexpected error occurred',
+      statusCode: 500,
+    };
+
+    return NextResponse.json(errorResponse, { status: 500 });
+  }
+}

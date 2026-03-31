@@ -97,6 +97,9 @@ model Household {
   opportunityDetectionRuns OpportunityDetectionRun[]
   opportunities            Opportunity[]
 
+  // Phase 5: Scenario Planning Workspace relations
+  planningScenarios        PlanningScenario[]
+
   @@map("households")
 }
 
@@ -259,6 +262,9 @@ model Plan {
 
   // Tax Intelligence relations
   taxScenarios          TaxScenario[]
+
+  // Phase 5: Scenario Planning Workspace relations
+  planningScenarios     PlanningScenario[]
 
   @@index([status])
   @@map("plans")
@@ -2327,6 +2333,9 @@ model Opportunity {
   // Relations
   auditEvents         OpportunityAuditEvent[]
 
+  // Phase 5: Scenario Planning Workspace relations
+  planningScenarios   PlanningScenario[]
+
   detectedAt          DateTime @default(now()) @map("detected_at")
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
@@ -2399,4 +2408,183 @@ model OpportunityRule {
   @@index([category])
   @@index([isActive, priority])
   @@map("opportunity_rules")
+}
+
+// ==================== PHASE 5: SCENARIO PLANNING WORKSPACE ====================
+
+model PlanningScenario {
+  id                  String   @id @default(cuid())
+
+  // Household and tax year context
+  householdId         String   @map("household_id")
+  household           Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  planId              String?  @map("plan_id")
+  plan                Plan?    @relation(fields: [planId], references: [id], onDelete: SetNull)
+  taxYear             Int      @map("tax_year")
+
+  // Baseline references
+  baselineSnapshotId  String   @map("baseline_snapshot_id")
+  baselineRunId       String   @map("baseline_run_id")
+
+  // Scenario references
+  scenarioSnapshotId  String   @map("scenario_snapshot_id")
+  scenarioRunId       String   @map("scenario_run_id")
+
+  // Scenario metadata
+  scenarioType        String   @map("scenario_type") // "roth_conversion" | "charitable" | "capital_gains" | "payments" | "retirement_income" | "transition" | "custom"
+  title               String
+  description         String?
+
+  // Origin tracking
+  originatingOpportunityId String? @map("originating_opportunity_id")
+  opportunity         Opportunity? @relation(fields: [originatingOpportunityId], references: [id], onDelete: SetNull)
+
+  // Scenario data (JSON fields)
+  overridesJson       String   @map("overrides_json") // Array of ScenarioOverride
+  assumptionsJson     String   @map("assumptions_json") // Array of ScenarioAssumption
+  warningsJson        String   @map("warnings_json") // Array of warning strings
+  blockersJson        String?  @map("blockers_json") // Array of MissingInfoItem (optional)
+
+  // Notes
+  notes               String?
+
+  // Lifecycle
+  status              String   @default("draft") // "draft" | "ready_for_review" | "reviewed" | "recommended" | "presented" | "archived" | "superseded"
+  recommended         Boolean  @default(false)
+
+  // Versioning
+  version             Int      @default(1)
+  supersededBy        String?  @map("superseded_by")
+
+  // Attribution
+  createdBy           String   @map("created_by")
+  publishedAt         DateTime? @map("published_at")
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  notes_relation      ScenarioNote[]
+  auditEvents         ScenarioAuditEvent[]
+  comparisonsAsBaseline ScenarioComparison[] @relation("BaselineScenario")
+  comparisonsAsComparison ScenarioComparison[] @relation("ComparisonScenarios")
+
+  @@index([householdId, taxYear])
+  @@index([planId])
+  @@index([status])
+  @@index([recommended])
+  @@index([originatingOpportunityId])
+  @@map("planning_scenarios")
+}
+
+model ScenarioNote {
+  id                  String   @id @default(cuid())
+  scenarioId          String   @map("scenario_id")
+  scenario            PlanningScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  noteType            String   @map("note_type") // "advisor_internal" | "meeting_prep" | "assumption" | "compliance"
+  body                String
+
+  createdBy           String   @map("created_by")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([scenarioId])
+  @@index([noteType])
+  @@map("scenario_notes")
+}
+
+model ScenarioComparison {
+  id                  String   @id @default(cuid())
+
+  // Context
+  householdId         String   @map("household_id")
+  taxYear             Int      @map("tax_year")
+
+  // Baseline
+  baselineScenarioId  String   @map("baseline_scenario_id")
+  baselineScenario    PlanningScenario @relation("BaselineScenario", fields: [baselineScenarioId], references: [id], onDelete: Cascade)
+
+  // Comparison scenarios
+  comparisonScenarioIds String @map("comparison_scenario_ids_json") // JSON array of scenario IDs
+  comparisonScenarios PlanningScenario[] @relation("ComparisonScenarios")
+
+  // Comparison payload (complete comparison data)
+  comparisonPayloadJson String @map("comparison_payload_json")
+
+  // Interpretation
+  interpretationNotes String?  @map("interpretation_notes_json") // JSON array of interpretation strings
+  warnings            String?  @map("warnings_json") // JSON array of warning strings
+
+  createdBy           String   @map("created_by")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@index([householdId, taxYear])
+  @@index([baselineScenarioId])
+  @@map("scenario_comparisons")
+}
+
+model ScenarioTemplate {
+  id                  String   @id @default(cuid())
+
+  // Template identity
+  templateName        String   @unique @map("template_name")
+  scenarioType        String   @map("scenario_type") // "roth_conversion" | "charitable" | "capital_gains" | etc.
+
+  // Metadata
+  name                String
+  description         String
+
+  // Template definition (JSON)
+  requiredFields      String   @map("required_fields_json") // JSON array of required field names
+  seedOverrides       String   @map("seed_overrides_json") // JSON array of partial ScenarioOverride objects
+  seedAssumptions     String   @map("seed_assumptions_json") // JSON array of partial ScenarioAssumption objects
+  linkedOpportunityTypes String @map("linked_opportunity_types_json") // JSON array of opportunity types
+
+  // Control
+  isActive            Boolean  @default(true) @map("is_active")
+  displayOrder        Int      @default(0) @map("display_order")
+
+  createdBy           String   @map("created_by")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([scenarioType])
+  @@index([isActive, displayOrder])
+  @@map("scenario_templates")
+}
+
+model ScenarioAuditEvent {
+  id                  String   @id @default(cuid())
+
+  // Event metadata
+  eventType           String   @map("event_type") // "created" | "updated" | "calculated" | "validation_failed" | "recommended" | "archived" | "superseded" | "converted_to_report" | "converted_to_task"
+
+  // Related scenario
+  scenarioId          String   @map("scenario_id")
+  scenario            PlanningScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  // Actor
+  actor               String
+  actorType           String   @map("actor_type") // "advisor" | "system" | "client"
+
+  // Changes (JSON snapshots)
+  changesBefore       String?  @map("changes_before_json")
+  changesAfter        String?  @map("changes_after_json")
+
+  // Metadata
+  metadata            String?  @map("metadata_json")
+
+  // Request context
+  ipAddress           String?  @map("ip_address")
+  userAgent           String?  @map("user_agent")
+  sessionId           String?  @map("session_id")
+
+  timestamp           DateTime @default(now())
+
+  @@index([scenarioId])
+  @@index([eventType])
+  @@index([actor])
+  @@index([timestamp])
+  @@map("scenario_audit_events")
 }
