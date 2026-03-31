@@ -41,56 +41,62 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       return NextResponse.json(errorResponse, { status: 404 });
     }
 
-    // TODO (Sprint 4): Integrate Claude API for summary generation
-    // - Load tax knowledge base (IRS publications)
-    // - Build prompt with opportunity details, evidence, and context
-    // - Call Claude API with structured output
-    // - Validate citations against knowledge base
-    // - Extract citations and summary
-    // - Store in database
+    // Parse opportunity fields
+    const evidence = JSON.parse(opportunity.evidence as string);
+    const score = JSON.parse(opportunity.score as string);
+    const context = JSON.parse(opportunity.context as string);
 
-    // Placeholder response for Sprint 3
-    const placeholderSummary = `
-**Tax Planning Opportunity: ${opportunity.title}**
+    // Build full opportunity object
+    const fullOpportunity = {
+      id: opportunity.id,
+      detectionRunId: opportunity.detectionRunId,
+      householdId: opportunity.householdId,
+      taxYear: opportunity.taxYear,
+      ruleName: opportunity.ruleName,
+      ruleVersion: opportunity.ruleVersion,
+      category: opportunity.category as any,
+      priority: opportunity.priority as any,
+      rank: opportunity.rank,
+      title: opportunity.title,
+      summary: opportunity.summary,
+      estimatedValue: opportunity.estimatedValue ?? undefined,
+      confidence: opportunity.confidence as any,
+      evidence,
+      score,
+      finalScore: opportunity.finalScore,
+      context,
+      isDuplicate: opportunity.isDuplicate,
+      duplicateOfId: opportunity.duplicateOfId ?? undefined,
+      suppressionReason: opportunity.suppressionReason ?? undefined,
+      status: opportunity.status as any,
+      detectedAt: opportunity.detectedAt,
+      reviewedAt: opportunity.reviewedAt ?? undefined,
+      implementedAt: opportunity.implementedAt ?? undefined,
+      dismissedAt: opportunity.dismissedAt ?? undefined,
+      dismissedReason: opportunity.dismissedReason ?? undefined,
+      createdAt: opportunity.createdAt,
+      updatedAt: opportunity.updatedAt,
+    };
 
-This opportunity was detected based on your ${opportunity.taxYear} tax return analysis.
+    // Generate AI summary
+    const { generateAiSummary } = await import('@/lib/opportunity-engine/ai-service');
+    const aiResult = await generateAiSummary({
+      opportunity: fullOpportunity,
+      includeComparisons: validatedRequest.includeComparisons,
+      includeCitations: validatedRequest.includeCitations,
+    });
 
-**Key Findings:**
-- Category: ${opportunity.category}
-- Priority: ${opportunity.priority}
-- Estimated Value: $${(opportunity.estimatedValue ?? 0).toLocaleString()}
-- Confidence: ${opportunity.confidence}
-
-**Next Steps:**
-1. Review the evidence and scoring details
-2. Consult with your tax professional
-3. Consider implementing this strategy before year-end
-
-**Important:** This is a preliminary analysis. Consult a qualified tax professional before making any tax-related decisions.
-
----
-*AI-generated summary (placeholder for Sprint 4)*
-    `.trim();
-
-    const placeholderCitations = [
-      {
-        source: 'IRS Publication 590-B',
-        section: 'Distributions from IRAs',
-        url: 'https://www.irs.gov/publications/p590b',
-      },
-      {
-        source: 'IRS Publication 554',
-        section: 'Tax Guide for Seniors',
-        url: 'https://www.irs.gov/publications/p554',
-      },
-    ];
+    // Log hallucinations if detected
+    if (aiResult.hallucinations.length > 0) {
+      console.warn('[AI Summary] Hallucinations detected:', aiResult.hallucinations);
+    }
 
     // Build response
     const response: GenerateAiSummaryResponse = {
       opportunityId: id,
-      summary: placeholderSummary,
-      citations: validatedRequest.includeCitations ? placeholderCitations : undefined,
-      generatedAt: new Date(),
+      summary: aiResult.summary,
+      citations: validatedRequest.includeCitations ? aiResult.citations : undefined,
+      generatedAt: aiResult.generatedAt,
     };
 
     return NextResponse.json(response, { status: 200 });
