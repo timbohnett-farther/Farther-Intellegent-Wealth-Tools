@@ -74,6 +74,21 @@ npm run dev
 
 ---
 
+## Development Workflow Rules
+
+### Sprint Completion Protocol
+**CRITICAL: Always push to main after completing each sprint.**
+
+After completing any sprint or phase:
+1. ✅ Commit all changes with descriptive message
+2. ✅ **Immediately push to origin/main** (`git push origin main`)
+3. ✅ Verify push succeeded
+4. ✅ Update documentation if needed
+
+**Rationale:** Ensures work is backed up immediately and available to team. Never leave completed sprints unpushed.
+
+---
+
 ## Reminder: Cross-Repo Communication
 
 If you need to work on advisor operations, billing analytics, or marketing features, **STOP** and switch to the appropriate repository. Do NOT implement those features here.
