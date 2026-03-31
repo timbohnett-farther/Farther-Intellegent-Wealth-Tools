@@ -48,6 +48,23 @@ const TOOLS: ToolCard[] = [
     tags: ['Options', 'Lending', 'Tax Planning', 'Risk Analysis'],
   },
   {
+    title: 'TALS What-If Calculator',
+    description:
+      'Compare Tax-Aware Long-Short strategies from 8 providers across 13 tiers. Model tax alpha, diversification timelines, cost breakdowns, and after-tax wealth projections for concentrated stock positions.',
+    href: '/tals-calculator',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+        <path d="M12 6v6l4 2" />
+        <path d="M16 16l2 2" />
+        <path d="M8 16l-2 2" />
+      </svg>
+    ),
+    color: 'from-brand-500 to-brand-800',
+    tags: ['TALS', 'Tax Alpha', 'Long/Short', 'Concentrated Stock'],
+  },
+  {
     title: 'Farther Focus — Risk Profile',
     description:
       'FINRA and CFP Board compliant risk assessment across 7 dimensions. Weighted scoring with contradiction detection, confidence metrics, and automated asset allocation recommendations from a 395-question bank.',
