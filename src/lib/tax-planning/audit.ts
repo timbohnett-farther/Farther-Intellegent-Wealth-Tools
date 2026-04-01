@@ -35,7 +35,12 @@ type AuditEventKey =
   | 'integration.token.rotated'
   | 'integration.token.revoked'
   | 'security.data_export'
-  | 'security.privacy_notice_sent';
+  | 'security.privacy_notice_sent'
+  | 'copilot.ask'
+  | 'copilot.answer.reviewed'
+  | 'copilot.answer.approved'
+  | 'copilot.answer.discarded'
+  | 'copilot.answer.superseded';
 
 // ==================== ID Generation ====================
 

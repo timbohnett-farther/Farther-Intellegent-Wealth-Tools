@@ -25,6 +25,7 @@ import type {
   TaxYear,
   TaxLineRef,
 } from './types';
+import type { CopilotAnswer } from './copilot/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -50,6 +51,7 @@ class TaxPlanningStore {
   private overrides: Map<string, ScenarioOverride> = new Map();
   private calcRuns: Map<string, CalcRun> = new Map();
   private calcLines: Map<string, CalcLine> = new Map();
+  private copilotAnswers: Map<string, CopilotAnswer> = new Map();
 
   // ==================================================================
   // Firm CRUD
@@ -342,6 +344,52 @@ class TaxPlanningStore {
   upsertCalcLine(calcLine: CalcLine): CalcLine {
     this.calcLines.set(calcLine.calc_line_id, clone(calcLine));
     return clone(calcLine);
+  }
+
+  // ==================================================================
+  // CopilotAnswer CRUD
+  // ==================================================================
+
+  getCopilotAnswer(answerId: string): CopilotAnswer | undefined {
+    const a = this.copilotAnswers.get(answerId);
+    return a ? clone(a) : undefined;
+  }
+
+  listCopilotAnswers(filters?: {
+    householdId?: string;
+    promptFamily?: string;
+    reviewState?: string;
+    limit?: number;
+    offset?: number;
+  }): { answers: CopilotAnswer[]; total: number } {
+    let result = Array.from(this.copilotAnswers.values());
+    if (filters?.householdId) {
+      result = result.filter((a) => a.household_id === filters.householdId);
+    }
+    if (filters?.promptFamily) {
+      result = result.filter((a) => a.prompt_family === filters.promptFamily);
+    }
+    if (filters?.reviewState) {
+      result = result.filter((a) => a.review_state === filters.reviewState);
+    }
+    // Sort newest first
+    result.sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
+    const total = result.length;
+    const offset = filters?.offset ?? 0;
+    const limit = filters?.limit ?? 50;
+    const page = result.slice(offset, offset + limit);
+    return { answers: clone(page), total };
+  }
+
+  upsertCopilotAnswer(answer: CopilotAnswer): CopilotAnswer {
+    this.copilotAnswers.set(answer.answer_id, clone(answer));
+    return clone(answer);
+  }
+
+  deleteCopilotAnswer(answerId: string): boolean {
+    return this.copilotAnswers.delete(answerId);
   }
 
   // ==================================================================

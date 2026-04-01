@@ -29,7 +29,11 @@ type Permission =
   | 'export:pdf'
   | 'admin:settings'
   | 'admin:audit'
-  | 'integrations:manage';
+  | 'integrations:manage'
+  | 'copilot:ask'
+  | 'copilot:read'
+  | 'copilot:review'
+  | 'copilot:admin';
 
 // ==================== Role-Permission Matrix ====================
 
@@ -59,6 +63,10 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'admin:settings',
     'admin:audit',
     'integrations:manage',
+    'copilot:ask',
+    'copilot:read',
+    'copilot:review',
+    'copilot:admin',
   ],
   ADVISOR: [
     'households:read',
@@ -72,6 +80,9 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'compute:run',
     'compute:read',
     'export:pdf',
+    'copilot:ask',
+    'copilot:read',
+    'copilot:review',
   ],
   PARAPLANNER: [
     'households:read',
@@ -85,6 +96,9 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'compute:run',
     'compute:read',
     'export:pdf',
+    'copilot:ask',
+    'copilot:read',
+    'copilot:review',
   ],
   OPS: [
     'households:read',
@@ -92,11 +106,13 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'docs:write',
     'returns:read',
     'admin:audit',
+    'copilot:read',
   ],
   READONLY: [
     'households:read',
     'docs:read',
     'returns:read',
+    'copilot:read',
   ],
   CLIENT: [
     'households:read',
