@@ -122,7 +122,7 @@ export function listQueueItems(filters?: {
   }
 
   if (filters?.requiredRoleId) {
-    items = items.filter((i) => i.requiredRoleIds.includes(filters.requiredRoleId));
+    items = items.filter((i) => i.requiredRoleIds.includes(filters.requiredRoleId!));
   }
 
   // Sort newest first
