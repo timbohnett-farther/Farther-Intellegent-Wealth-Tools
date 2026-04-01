@@ -75,7 +75,7 @@ export const DeliverableUpdateRequestSchema = z.object({
         blockId: z.string(),
         blockType: z.string(),
         title: z.string().optional(),
-        content: z.record(z.unknown()),
+        content: z.record(z.string(), z.unknown()),
         sourceRefs: z.array(z.string()),
         order: z.number().int().min(0),
       })
@@ -96,7 +96,7 @@ export const DeliverableApproveRequestSchema = z.object({
  */
 export const DeliverableExportRequestSchema = z.object({
   exportType: DeliverableExportTypeSchema,
-  options: z.record(z.unknown()).optional(),
+  options: z.record(z.string(), z.unknown()).optional(),
 });
 
 /**

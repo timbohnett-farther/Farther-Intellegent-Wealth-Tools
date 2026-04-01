@@ -8,6 +8,7 @@
 // =============================================================================
 
 import { store } from '../store';
+import type { MoneyCents } from '../types';
 import type {
   DeliverableSourcePackage,
   DeliverableType,

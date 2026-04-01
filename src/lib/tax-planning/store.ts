@@ -27,6 +27,15 @@ import type {
 } from './types';
 import type { CopilotAnswer } from './copilot/types';
 import type { Deliverable, DeliverableExport } from './deliverables/types';
+import type {
+  WorkflowTask,
+  WorkflowRun,
+  RecommendationExecutionStatus,
+  CRMSyncPayload,
+  CPACoordinationRequest,
+  ReminderRecord,
+  EscalationRecord,
+} from './workflow/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -55,6 +64,13 @@ class TaxPlanningStore {
   private copilotAnswers: Map<string, CopilotAnswer> = new Map();
   private deliverables: Map<string, Deliverable> = new Map();
   private deliverableExports: Map<string, DeliverableExport> = new Map();
+  private workflowTasks: Map<string, WorkflowTask> = new Map();
+  private workflowRuns: Map<string, WorkflowRun> = new Map();
+  private recommendationStatuses: Map<string, RecommendationExecutionStatus> = new Map();
+  private crmSyncPayloads: Map<string, CRMSyncPayload> = new Map();
+  private cpaRequests: Map<string, CPACoordinationRequest> = new Map();
+  private reminderRecords: Map<string, ReminderRecord> = new Map();
+  private escalationRecords: Map<string, EscalationRecord> = new Map();
 
   // ==================================================================
   // Firm CRUD
@@ -476,6 +492,228 @@ class TaxPlanningStore {
   }
 
   // ==================================================================
+  // WorkflowTask CRUD
+  // ==================================================================
+
+  getWorkflowTask(taskId: string): WorkflowTask | undefined {
+    const t = this.workflowTasks.get(taskId);
+    return t ? clone(t) : undefined;
+  }
+
+  listWorkflowTasks(filters?: {
+    householdId?: string;
+    taxYear?: number;
+    workflowRunId?: string;
+    status?: string;
+    taskType?: string;
+    ownerUserId?: string;
+  }): WorkflowTask[] {
+    let result = Array.from(this.workflowTasks.values());
+    if (filters?.householdId) {
+      result = result.filter((t) => t.householdId === filters.householdId);
+    }
+    if (filters?.taxYear) {
+      result = result.filter((t) => t.taxYear === filters.taxYear);
+    }
+    if (filters?.workflowRunId) {
+      result = result.filter((t) => t.workflowRunId === filters.workflowRunId);
+    }
+    if (filters?.status) {
+      result = result.filter((t) => t.status === filters.status);
+    }
+    if (filters?.taskType) {
+      result = result.filter((t) => t.taskType === filters.taskType);
+    }
+    if (filters?.ownerUserId) {
+      result = result.filter((t) => t.ownerUserId === filters.ownerUserId);
+    }
+    // Sort newest first
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return clone(result);
+  }
+
+  upsertWorkflowTask(task: WorkflowTask): WorkflowTask {
+    this.workflowTasks.set(task.taskId, clone(task));
+    return clone(task);
+  }
+
+  // ==================================================================
+  // WorkflowRun CRUD
+  // ==================================================================
+
+  getWorkflowRun(workflowRunId: string): WorkflowRun | undefined {
+    const w = this.workflowRuns.get(workflowRunId);
+    return w ? clone(w) : undefined;
+  }
+
+  listWorkflowRuns(filters?: {
+    householdId?: string;
+    taxYear?: number;
+    workflowType?: string;
+    status?: string;
+  }): WorkflowRun[] {
+    let result = Array.from(this.workflowRuns.values());
+    if (filters?.householdId) {
+      result = result.filter((w) => w.householdId === filters.householdId);
+    }
+    if (filters?.taxYear) {
+      result = result.filter((w) => w.taxYear === filters.taxYear);
+    }
+    if (filters?.workflowType) {
+      result = result.filter((w) => w.workflowType === filters.workflowType);
+    }
+    if (filters?.status) {
+      result = result.filter((w) => w.status === filters.status);
+    }
+    // Sort newest first
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return clone(result);
+  }
+
+  upsertWorkflowRun(workflow: WorkflowRun): WorkflowRun {
+    this.workflowRuns.set(workflow.workflowRunId, clone(workflow));
+    return clone(workflow);
+  }
+
+  // ==================================================================
+  // RecommendationExecutionStatus CRUD
+  // ==================================================================
+
+  getRecommendationExecutionStatus(recommendationId: string): RecommendationExecutionStatus | undefined {
+    const r = this.recommendationStatuses.get(recommendationId);
+    return r ? clone(r) : undefined;
+  }
+
+  listRecommendationExecutionStatuses(filters?: {
+    householdId?: string;
+    taxYear?: number;
+    status?: string;
+  }): RecommendationExecutionStatus[] {
+    let result = Array.from(this.recommendationStatuses.values());
+    if (filters?.householdId) {
+      result = result.filter((r) => r.householdId === filters.householdId);
+    }
+    if (filters?.taxYear) {
+      result = result.filter((r) => r.taxYear === filters.taxYear);
+    }
+    if (filters?.status) {
+      result = result.filter((r) => r.status === filters.status);
+    }
+    // Sort newest first
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return clone(result);
+  }
+
+  upsertRecommendationExecutionStatus(rec: RecommendationExecutionStatus): RecommendationExecutionStatus {
+    this.recommendationStatuses.set(rec.recommendationId, clone(rec));
+    return clone(rec);
+  }
+
+  // ==================================================================
+  // CRMSyncPayload CRUD
+  // ==================================================================
+
+  getCRMSyncPayload(payloadId: string): CRMSyncPayload | undefined {
+    const c = this.crmSyncPayloads.get(payloadId);
+    return c ? clone(c) : undefined;
+  }
+
+  listCRMSyncPayloads(filters?: {
+    householdId?: string;
+    payloadType?: string;
+    syncStatus?: string;
+  }): CRMSyncPayload[] {
+    let result = Array.from(this.crmSyncPayloads.values());
+    if (filters?.householdId) {
+      result = result.filter((c) => c.householdId === filters.householdId);
+    }
+    if (filters?.payloadType) {
+      result = result.filter((c) => c.payloadType === filters.payloadType);
+    }
+    if (filters?.syncStatus) {
+      result = result.filter((c) => c.syncStatus === filters.syncStatus);
+    }
+    // Sort newest first
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return clone(result);
+  }
+
+  upsertCRMSyncPayload(payload: CRMSyncPayload): CRMSyncPayload {
+    this.crmSyncPayloads.set(payload.payloadId, clone(payload));
+    return clone(payload);
+  }
+
+  // ==================================================================
+  // CPACoordinationRequest CRUD
+  // ==================================================================
+
+  getCPACoordinationRequest(requestId: string): CPACoordinationRequest | undefined {
+    const r = this.cpaRequests.get(requestId);
+    return r ? clone(r) : undefined;
+  }
+
+  listCPACoordinationRequests(filters?: {
+    householdId?: string;
+    taxYear?: number;
+    status?: string;
+  }): CPACoordinationRequest[] {
+    let result = Array.from(this.cpaRequests.values());
+    if (filters?.householdId) {
+      result = result.filter((r) => r.householdId === filters.householdId);
+    }
+    if (filters?.taxYear) {
+      result = result.filter((r) => r.taxYear === filters.taxYear);
+    }
+    if (filters?.status) {
+      result = result.filter((r) => r.status === filters.status);
+    }
+    // Sort newest first
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return clone(result);
+  }
+
+  upsertCPACoordinationRequest(request: CPACoordinationRequest): CPACoordinationRequest {
+    this.cpaRequests.set(request.requestId, clone(request));
+    return clone(request);
+  }
+
+  // ==================================================================
+  // ReminderRecord CRUD
+  // ==================================================================
+
+  getReminderRecord(reminderId: string): ReminderRecord | undefined {
+    const r = this.reminderRecords.get(reminderId);
+    return r ? clone(r) : undefined;
+  }
+
+  listReminderRecords(): ReminderRecord[] {
+    return clone(Array.from(this.reminderRecords.values()));
+  }
+
+  upsertReminderRecord(reminder: ReminderRecord): ReminderRecord {
+    this.reminderRecords.set(reminder.reminderId, clone(reminder));
+    return clone(reminder);
+  }
+
+  // ==================================================================
+  // EscalationRecord CRUD
+  // ==================================================================
+
+  getEscalationRecord(escalationId: string): EscalationRecord | undefined {
+    const e = this.escalationRecords.get(escalationId);
+    return e ? clone(e) : undefined;
+  }
+
+  listEscalationRecords(): EscalationRecord[] {
+    return clone(Array.from(this.escalationRecords.values()));
+  }
+
+  upsertEscalationRecord(escalation: EscalationRecord): EscalationRecord {
+    this.escalationRecords.set(escalation.escalationId, clone(escalation));
+    return clone(escalation);
+  }
+
+  // ==================================================================
   // Seed Demo Data
   // ==================================================================
 
@@ -666,6 +904,45 @@ class TaxPlanningStore {
     ];
     for (const s of scenarios) {
       this.scenarios.set(s.scenario_id, s);
+    }
+
+    // ---- Calc Runs ----
+    const calcRuns: CalcRun[] = [
+      {
+        calc_run_id: 'calc-run-001',
+        scenario_id: 'scenario-001',
+        status: 'SUCCESS',
+        computed_at: now,
+        error_message: undefined,
+      },
+    ];
+    for (const cr of calcRuns) {
+      this.calcRuns.set(cr.calc_run_id, cr);
+    }
+
+    // ---- Calc Lines ----
+    const calcLines: CalcLine[] = [
+      {
+        calc_line_id: 'calc-line-001',
+        calc_run_id: 'calc-run-001',
+        metric_id: 'f1040:l11:agi',
+        value_cents: 18500000 as MoneyCents,
+      },
+      {
+        calc_line_id: 'calc-line-002',
+        calc_run_id: 'calc-run-001',
+        metric_id: 'f1040:l15:taxable_income',
+        value_cents: 15500000 as MoneyCents,
+      },
+      {
+        calc_line_id: 'calc-line-003',
+        calc_run_id: 'calc-run-001',
+        metric_id: 'f1040:l16:tax',
+        value_cents: 2475000 as MoneyCents,
+      },
+    ];
+    for (const cl of calcLines) {
+      this.calcLines.set(cl.calc_line_id, cl);
     }
 
     // ---- Extracted Fields for Smith 2025 Return ----

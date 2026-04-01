@@ -38,7 +38,14 @@ type Permission =
   | 'deliverables:write'
   | 'deliverables:approve'
   | 'deliverables:export'
-  | 'deliverables:admin';
+  | 'deliverables:admin'
+  | 'workflow:read'
+  | 'workflow:write'
+  | 'workflow:admin'
+  | 'crm:write'
+  | 'crm:read'
+  | 'cpa:write'
+  | 'cpa:read';
 
 // ==================== Role-Permission Matrix ====================
 
@@ -77,6 +84,13 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'deliverables:approve',
     'deliverables:export',
     'deliverables:admin',
+    'workflow:read',
+    'workflow:write',
+    'workflow:admin',
+    'crm:write',
+    'crm:read',
+    'cpa:write',
+    'cpa:read',
   ],
   ADVISOR: [
     'households:read',
@@ -97,6 +111,12 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'deliverables:write',
     'deliverables:approve',
     'deliverables:export',
+    'workflow:read',
+    'workflow:write',
+    'crm:write',
+    'crm:read',
+    'cpa:write',
+    'cpa:read',
   ],
   PARAPLANNER: [
     'households:read',
@@ -116,6 +136,10 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'deliverables:read',
     'deliverables:write',
     'deliverables:export',
+    'workflow:read',
+    'workflow:write',
+    'crm:read',
+    'cpa:read',
   ],
   OPS: [
     'households:read',
@@ -125,6 +149,9 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'admin:audit',
     'copilot:read',
     'deliverables:read',
+    'workflow:read',
+    'crm:read',
+    'cpa:read',
   ],
   READONLY: [
     'households:read',
@@ -132,6 +159,7 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'returns:read',
     'copilot:read',
     'deliverables:read',
+    'workflow:read',
   ],
   CLIENT: [
     'households:read',

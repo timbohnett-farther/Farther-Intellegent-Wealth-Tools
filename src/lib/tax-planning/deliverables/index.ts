@@ -58,3 +58,25 @@ export {
 export { assembleDeliverable } from './assembly';
 
 export { validateDeliverable, isSourcePackageComplete } from './validation';
+
+export {
+  canTransitionDeliverable,
+  getAllowedTransitions,
+  isTerminalDeliverableState,
+  transitionDeliverable,
+  approveDeliverable,
+  reviewDeliverable,
+} from './approval';
+
+export {
+  exportDeliverable,
+  generateExportPayload,
+  getExportHistory,
+  getExport,
+} from './export-service';
+
+export {
+  supersedeDeliverable,
+  checkDeliverableStaleness,
+  batchCheckDeliverableStaleness,
+} from './supersede';

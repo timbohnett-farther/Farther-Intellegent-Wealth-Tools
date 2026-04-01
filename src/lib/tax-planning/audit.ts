@@ -47,7 +47,21 @@ type AuditEventKey =
   | 'deliverable.approved'
   | 'deliverable.exported'
   | 'deliverable.archived'
-  | 'deliverable.superseded';
+  | 'deliverable.superseded'
+  | 'task.created'
+  | 'task.updated'
+  | 'task.completed'
+  | 'task.assigned'
+  | 'workflow.created'
+  | 'workflow.updated'
+  | 'workflow.completed'
+  | 'recommendation.status_updated'
+  | 'crm_sync.created'
+  | 'crm_sync.sent'
+  | 'crm_sync.failed'
+  | 'cpa_request.created'
+  | 'cpa_request.updated'
+  | 'cpa_request.completed';
 
 // ==================== ID Generation ====================
 
