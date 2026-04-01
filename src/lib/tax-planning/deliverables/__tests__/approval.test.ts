@@ -12,6 +12,7 @@ import {
   reviewDeliverable,
 } from '../approval';
 import type { Deliverable } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Approval State Machine', () => {
   beforeEach(() => {

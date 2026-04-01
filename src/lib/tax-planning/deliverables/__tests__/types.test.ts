@@ -10,6 +10,7 @@ import type {
   DeliverableSectionBlock,
   DeliverableTemplate,
 } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Types', () => {
   it('should have valid DeliverableStatus union', () => {

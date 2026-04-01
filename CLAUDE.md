@@ -80,12 +80,23 @@ npm run dev
 **CRITICAL: Always push to main after completing each sprint.**
 
 After completing any sprint or phase:
-1. ✅ Commit all changes with descriptive message
-2. ✅ **Immediately push to origin/main** (`git push origin main`)
-3. ✅ Verify push succeeded
-4. ✅ Update documentation if needed
+1. ✅ Run `npm run build` — if it fails, fix errors before proceeding
+2. ✅ Run `npx vitest run` on the affected directory — all tests must pass
+3. ✅ Commit all changes with descriptive message
+4. ✅ **Immediately push to origin/main** (`git push origin main`)
+5. ✅ Verify push succeeded
+6. ✅ Update documentation if needed
 
-**Rationale:** Ensures work is backed up immediately and available to team. Never leave completed sprints unpushed.
+### Test-Deploy Rule
+**CRITICAL: Always test-deploy (build + test) after each build. Only push to main if both pass. If either fails, fix errors first.**
+
+```bash
+npm run build          # Must pass with zero errors
+npx vitest run         # Must pass with zero test failures
+git push origin main   # Only after both checks pass
+```
+
+**Rationale:** Ensures work is backed up immediately and available to team. Never leave completed sprints unpushed. Never push broken builds.
 
 ---
 

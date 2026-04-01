@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { store } from '../../store';
 import { supersedeDeliverable, checkDeliverableStaleness, batchCheckDeliverableStaleness } from '../supersede';
 import type { Deliverable } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Supersede Logic', () => {
   beforeEach(() => {

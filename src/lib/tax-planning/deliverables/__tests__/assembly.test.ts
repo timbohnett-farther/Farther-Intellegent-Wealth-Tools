@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { store } from '../../store';
 import { assembleDeliverable } from '../assembly';
 import type { DeliverableCreateRequest } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Assembly', () => {
   beforeEach(() => {

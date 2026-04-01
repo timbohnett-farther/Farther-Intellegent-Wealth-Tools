@@ -16,6 +16,7 @@ import {
   buildAppendixBlock,
 } from '../block-builders';
 import type { DeliverableSourcePackage, DeliverableSectionBlueprint } from '../types';
+import type { TaxYear } from '../../types';
 
 const mockSourcePackage: DeliverableSourcePackage = {
   packageId: 'pkg-001',

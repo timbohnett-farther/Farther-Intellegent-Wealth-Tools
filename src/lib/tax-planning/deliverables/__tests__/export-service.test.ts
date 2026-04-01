@@ -6,6 +6,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { store } from '../../store';
 import { exportDeliverable, generateExportPayload, getExportHistory } from '../export-service';
 import type { Deliverable } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Export Service', () => {
   beforeEach(() => {

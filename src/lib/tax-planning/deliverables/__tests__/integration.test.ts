@@ -10,6 +10,7 @@ import { reviewDeliverable, approveDeliverable } from '../approval';
 import { exportDeliverable } from '../export-service';
 import { supersedeDeliverable } from '../supersede';
 import type { DeliverableCreateRequest } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Lifecycle Integration', () => {
   beforeEach(() => {

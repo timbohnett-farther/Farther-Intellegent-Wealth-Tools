@@ -7,6 +7,7 @@ import { store } from '../../store';
 import { validateDeliverable } from '../validation';
 import { assembleDeliverable } from '../assembly';
 import type { Deliverable, DeliverableCreateRequest } from '../types';
+import type { TaxYear } from '../../types';
 
 describe('Deliverable Validation', () => {
   beforeEach(() => {
