@@ -911,9 +911,15 @@ class TaxPlanningStore {
       {
         calc_run_id: 'calc-run-001',
         scenario_id: 'scenario-001',
-        status: 'SUCCESS',
+        engine_version: '1.0.0',
+        policy_version: 'policy-2025-v1',
+        status: 'OK',
         computed_at: now,
-        error_message: undefined,
+        metrics: {
+          'federal.total_tax': 2475000 as MoneyCents,
+          'federal.agi': 18500000 as MoneyCents,
+          'federal.taxable_income': 15500000 as MoneyCents,
+        },
       },
     ];
     for (const cr of calcRuns) {
@@ -927,18 +933,21 @@ class TaxPlanningStore {
         calc_run_id: 'calc-run-001',
         metric_id: 'f1040:l11:agi',
         value_cents: 18500000 as MoneyCents,
+        source: 'computed',
       },
       {
         calc_line_id: 'calc-line-002',
         calc_run_id: 'calc-run-001',
         metric_id: 'f1040:l15:taxable_income',
         value_cents: 15500000 as MoneyCents,
+        source: 'computed',
       },
       {
         calc_line_id: 'calc-line-003',
         calc_run_id: 'calc-run-001',
         metric_id: 'f1040:l16:tax',
         value_cents: 2475000 as MoneyCents,
+        source: 'computed',
       },
     ];
     for (const cl of calcLines) {
