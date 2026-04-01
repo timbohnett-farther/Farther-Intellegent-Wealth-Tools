@@ -36,6 +36,18 @@ import type {
   ReminderRecord,
   EscalationRecord,
 } from './workflow/types';
+import type {
+  PlatformRole,
+  PermissionPolicy,
+  AccessScope,
+  ApprovalPolicy,
+  AIGovernancePolicy,
+  TemplateGovernanceRecord,
+  AdminSetting,
+  ReviewQueueItem,
+  GovernanceAuditEvent,
+  FeatureFlag,
+} from './governance/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -71,6 +83,16 @@ class TaxPlanningStore {
   private cpaRequests: Map<string, CPACoordinationRequest> = new Map();
   private reminderRecords: Map<string, ReminderRecord> = new Map();
   private escalationRecords: Map<string, EscalationRecord> = new Map();
+  private platformRoles: Map<string, PlatformRole> = new Map();
+  private permissionPolicies: Map<string, PermissionPolicy> = new Map();
+  private accessScopes: Map<string, AccessScope> = new Map();
+  private approvalPolicies: Map<string, ApprovalPolicy> = new Map();
+  private aiGovernancePolicies: Map<string, AIGovernancePolicy> = new Map();
+  private templateGovernanceRecords: Map<string, TemplateGovernanceRecord> = new Map();
+  private adminSettings: Map<string, AdminSetting> = new Map();
+  private reviewQueueItems: Map<string, ReviewQueueItem> = new Map();
+  private governanceAuditEvents: Map<string, GovernanceAuditEvent> = new Map();
+  private featureFlags: Map<string, FeatureFlag> = new Map();
 
   // ==================================================================
   // Firm CRUD
@@ -714,6 +736,66 @@ class TaxPlanningStore {
   }
 
   // ==================================================================
+  // Governance Objects - Generic CRUD
+  // ==================================================================
+
+  /**
+   * Generic getter for governance objects.
+   */
+  getGovernanceObject<T>(type: string, id: string): T | undefined {
+    const map = this.getGovernanceMap(type);
+    const obj = map.get(id);
+    return obj ? clone(obj) : undefined;
+  }
+
+  /**
+   * Generic lister for governance objects.
+   */
+  listGovernanceObjects<T>(type: string): T[] {
+    const map = this.getGovernanceMap(type);
+    return clone(Array.from(map.values()));
+  }
+
+  /**
+   * Generic upsert for governance objects.
+   */
+  upsertGovernanceObject<T>(type: string, id: string, obj: T): T {
+    const map = this.getGovernanceMap(type);
+    map.set(id, clone(obj));
+    return clone(obj);
+  }
+
+  /**
+   * Returns the appropriate Map for a governance object type.
+   */
+  private getGovernanceMap(type: string): Map<string, unknown> {
+    switch (type) {
+      case 'platform_roles':
+        return this.platformRoles as Map<string, unknown>;
+      case 'permission_policies':
+        return this.permissionPolicies as Map<string, unknown>;
+      case 'access_scopes':
+        return this.accessScopes as Map<string, unknown>;
+      case 'approval_policies':
+        return this.approvalPolicies as Map<string, unknown>;
+      case 'ai_governance_policies':
+        return this.aiGovernancePolicies as Map<string, unknown>;
+      case 'template_governance_records':
+        return this.templateGovernanceRecords as Map<string, unknown>;
+      case 'admin_settings':
+        return this.adminSettings as Map<string, unknown>;
+      case 'review_queue_items':
+        return this.reviewQueueItems as Map<string, unknown>;
+      case 'governance_audit_events':
+        return this.governanceAuditEvents as Map<string, unknown>;
+      case 'feature_flags':
+        return this.featureFlags as Map<string, unknown>;
+      default:
+        throw new Error(`Unknown governance object type: ${type}`);
+    }
+  }
+
+  // ==================================================================
   // Seed Demo Data
   // ==================================================================
 
@@ -1013,6 +1095,221 @@ class TaxPlanningStore {
     ];
     for (const f of extractedFields) {
       this.extractedFields.set(f.field_id, f);
+    }
+
+    // ==================================================================
+    // Governance Seed Data
+    // ==================================================================
+
+    // ---- Platform Roles ----
+    const roles: PlatformRole[] = [
+      {
+        roleId: 'role-001',
+        name: 'firm_admin',
+        description: 'Full administrative access to firm resources',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-002',
+        name: 'compliance_reviewer',
+        description: 'Can review and approve deliverables for compliance',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-003',
+        name: 'advisor',
+        description: 'Primary client-facing role with full planning access',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-004',
+        name: 'associate_advisor',
+        description: 'Junior advisor with limited approval authority',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-005',
+        name: 'planner',
+        description: 'Technical planning support role',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-006',
+        name: 'service_ops',
+        description: 'Operations and service support',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        roleId: 'role-007',
+        name: 'read_only_auditor',
+        description: 'Read-only access for audit and compliance',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+    ];
+    for (const r of roles) {
+      this.platformRoles.set(r.roleId, r);
+    }
+
+    // ---- Permission Policies ----
+    const policies: PermissionPolicy[] = [
+      {
+        policyId: 'policy-001',
+        name: 'Admin Full Access',
+        description: 'Grants all permissions to admin role',
+        roleIds: ['ADMIN'],
+        permissions: [
+          'households:read',
+          'households:write',
+          'docs:read',
+          'docs:write',
+          'returns:read',
+          'returns:write',
+          'scenarios:read',
+          'scenarios:write',
+          'compute:run',
+          'compute:read',
+          'export:pdf',
+          'admin:settings',
+          'admin:audit',
+          'integrations:manage',
+          'copilot:ask',
+          'copilot:read',
+          'copilot:review',
+          'copilot:admin',
+          'deliverables:read',
+          'deliverables:write',
+          'deliverables:approve',
+          'deliverables:export',
+          'deliverables:admin',
+          'workflow:read',
+          'workflow:write',
+          'workflow:admin',
+          'crm:write',
+          'crm:read',
+          'cpa:write',
+          'cpa:read',
+          'governance:admin',
+          'governance:read',
+          'governance:review',
+          'governance:settings',
+        ],
+        status: 'active',
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        policyId: 'policy-002',
+        name: 'Advisor Standard Access',
+        description: 'Standard permissions for advisor role',
+        roleIds: ['ADVISOR'],
+        permissions: [
+          'households:read',
+          'households:write',
+          'docs:read',
+          'docs:write',
+          'returns:read',
+          'returns:write',
+          'scenarios:read',
+          'scenarios:write',
+          'compute:run',
+          'compute:read',
+          'export:pdf',
+          'copilot:ask',
+          'copilot:read',
+          'copilot:review',
+          'deliverables:read',
+          'deliverables:write',
+          'deliverables:approve',
+          'deliverables:export',
+          'workflow:read',
+          'workflow:write',
+          'crm:write',
+          'crm:read',
+          'cpa:write',
+          'cpa:read',
+          'governance:read',
+        ],
+        status: 'active',
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        policyId: 'policy-003',
+        name: 'OPS Support Access',
+        description: 'Operations team permissions',
+        roleIds: ['OPS'],
+        permissions: [
+          'households:read',
+          'docs:read',
+          'docs:write',
+          'returns:read',
+          'admin:audit',
+          'copilot:read',
+          'deliverables:read',
+          'workflow:read',
+          'crm:read',
+          'cpa:read',
+          'governance:read',
+          'governance:review',
+        ],
+        status: 'active',
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+    ];
+    for (const p of policies) {
+      this.permissionPolicies.set(p.policyId, p);
+    }
+
+    // ---- Access Scopes ----
+    const scopes: AccessScope[] = [
+      {
+        scopeId: 'scope-001',
+        userId: 'user-001',
+        scopeType: 'firm',
+        scopeRefId: 'firm-001',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        scopeId: 'scope-002',
+        userId: 'user-002',
+        scopeType: 'firm',
+        scopeRefId: 'firm-001',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+      {
+        scopeId: 'scope-003',
+        userId: 'user-002',
+        scopeType: 'household',
+        scopeRefId: 'hh-001',
+        status: 'active',
+        createdAt: now,
+        updatedAt: now,
+      },
+    ];
+    for (const s of scopes) {
+      this.accessScopes.set(s.scopeId, s);
     }
   }
 }

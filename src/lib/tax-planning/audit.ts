@@ -61,7 +61,18 @@ type AuditEventKey =
   | 'crm_sync.failed'
   | 'cpa_request.created'
   | 'cpa_request.updated'
-  | 'cpa_request.completed';
+  | 'cpa_request.completed'
+  | 'governance.role.updated'
+  | 'governance.permission.updated'
+  | 'governance.scope.updated'
+  | 'governance.approval_policy.updated'
+  | 'governance.ai_policy.updated'
+  | 'governance.template.updated'
+  | 'governance.setting.updated'
+  | 'governance.feature_flag.updated'
+  | 'governance.review.created'
+  | 'governance.review.completed'
+  | 'governance.authorization.denied';
 
 // ==================== ID Generation ====================
 
