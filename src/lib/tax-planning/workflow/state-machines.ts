@@ -19,7 +19,7 @@ import type {
 
 const TASK_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
   new: ['assigned', 'in_progress', 'canceled'],
-  assigned: ['in_progress', 'canceled'],
+  assigned: ['in_progress', 'completed', 'canceled'],
   in_progress: ['waiting', 'blocked', 'completed', 'deferred', 'canceled'],
   waiting: ['in_progress', 'blocked', 'completed', 'canceled'],
   blocked: ['in_progress', 'waiting', 'deferred', 'canceled'],
@@ -68,7 +68,7 @@ export function getValidTaskTransitions(status: TaskStatus): TaskStatus[] {
 // =====================================================================
 
 const WORKFLOW_TRANSITIONS: Record<WorkflowStatus, WorkflowStatus[]> = {
-  new: ['active', 'canceled'],
+  new: ['active', 'completed', 'canceled'],
   active: ['waiting', 'blocked', 'completed', 'deferred', 'canceled'],
   waiting: ['active', 'blocked', 'completed', 'canceled'],
   blocked: ['active', 'waiting', 'deferred', 'canceled'],
