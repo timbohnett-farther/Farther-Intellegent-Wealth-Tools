@@ -26,6 +26,7 @@ import type {
   TaxLineRef,
 } from './types';
 import type { CopilotAnswer } from './copilot/types';
+import type { Deliverable, DeliverableExport } from './deliverables/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -52,6 +53,8 @@ class TaxPlanningStore {
   private calcRuns: Map<string, CalcRun> = new Map();
   private calcLines: Map<string, CalcLine> = new Map();
   private copilotAnswers: Map<string, CopilotAnswer> = new Map();
+  private deliverables: Map<string, Deliverable> = new Map();
+  private deliverableExports: Map<string, DeliverableExport> = new Map();
 
   // ==================================================================
   // Firm CRUD
@@ -390,6 +393,86 @@ class TaxPlanningStore {
 
   deleteCopilotAnswer(answerId: string): boolean {
     return this.copilotAnswers.delete(answerId);
+  }
+
+  // ==================================================================
+  // Deliverable CRUD
+  // ==================================================================
+
+  getDeliverable(deliverableId: string): Deliverable | undefined {
+    const d = this.deliverables.get(deliverableId);
+    return d ? clone(d) : undefined;
+  }
+
+  listDeliverables(filters?: {
+    householdId?: string;
+    taxYear?: number;
+    deliverableType?: string;
+    status?: string;
+    audienceMode?: string;
+    limit?: number;
+    offset?: number;
+  }): { deliverables: Deliverable[]; total: number } {
+    let result = Array.from(this.deliverables.values());
+    if (filters?.householdId) {
+      result = result.filter((d) => d.householdId === filters.householdId);
+    }
+    if (filters?.taxYear) {
+      result = result.filter((d) => d.taxYear === filters.taxYear);
+    }
+    if (filters?.deliverableType) {
+      result = result.filter((d) => d.deliverableType === filters.deliverableType);
+    }
+    if (filters?.status) {
+      result = result.filter((d) => d.status === filters.status);
+    }
+    if (filters?.audienceMode) {
+      result = result.filter((d) => d.audienceMode === filters.audienceMode);
+    }
+    // Sort newest first
+    result.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+    const total = result.length;
+    const offset = filters?.offset ?? 0;
+    const limit = filters?.limit ?? 50;
+    const page = result.slice(offset, offset + limit);
+    return { deliverables: clone(page), total };
+  }
+
+  upsertDeliverable(deliverable: Deliverable): Deliverable {
+    this.deliverables.set(deliverable.deliverableId, clone(deliverable));
+    return clone(deliverable);
+  }
+
+  deleteDeliverable(deliverableId: string): boolean {
+    return this.deliverables.delete(deliverableId);
+  }
+
+  // ==================================================================
+  // DeliverableExport CRUD
+  // ==================================================================
+
+  getDeliverableExport(exportId: string): DeliverableExport | undefined {
+    const e = this.deliverableExports.get(exportId);
+    return e ? clone(e) : undefined;
+  }
+
+  listDeliverableExports(deliverableId?: string): DeliverableExport[] {
+    let result = Array.from(this.deliverableExports.values());
+    if (deliverableId) {
+      result = result.filter((e) => e.deliverableId === deliverableId);
+    }
+    // Sort newest first
+    result.sort(
+      (a, b) => new Date(b.exportedAt).getTime() - new Date(a.exportedAt).getTime(),
+    );
+    return clone(result);
+  }
+
+  upsertDeliverableExport(deliverableExport: DeliverableExport): DeliverableExport {
+    this.deliverableExports.set(deliverableExport.exportId, clone(deliverableExport));
+    return clone(deliverableExport);
   }
 
   // ==================================================================

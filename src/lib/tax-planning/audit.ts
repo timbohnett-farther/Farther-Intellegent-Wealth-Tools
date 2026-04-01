@@ -40,7 +40,14 @@ type AuditEventKey =
   | 'copilot.answer.reviewed'
   | 'copilot.answer.approved'
   | 'copilot.answer.discarded'
-  | 'copilot.answer.superseded';
+  | 'copilot.answer.superseded'
+  | 'deliverable.created'
+  | 'deliverable.updated'
+  | 'deliverable.reviewed'
+  | 'deliverable.approved'
+  | 'deliverable.exported'
+  | 'deliverable.archived'
+  | 'deliverable.superseded';
 
 // ==================== ID Generation ====================
 

@@ -33,7 +33,12 @@ type Permission =
   | 'copilot:ask'
   | 'copilot:read'
   | 'copilot:review'
-  | 'copilot:admin';
+  | 'copilot:admin'
+  | 'deliverables:read'
+  | 'deliverables:write'
+  | 'deliverables:approve'
+  | 'deliverables:export'
+  | 'deliverables:admin';
 
 // ==================== Role-Permission Matrix ====================
 
@@ -67,6 +72,11 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'copilot:read',
     'copilot:review',
     'copilot:admin',
+    'deliverables:read',
+    'deliverables:write',
+    'deliverables:approve',
+    'deliverables:export',
+    'deliverables:admin',
   ],
   ADVISOR: [
     'households:read',
@@ -83,6 +93,10 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'copilot:ask',
     'copilot:read',
     'copilot:review',
+    'deliverables:read',
+    'deliverables:write',
+    'deliverables:approve',
+    'deliverables:export',
   ],
   PARAPLANNER: [
     'households:read',
@@ -99,6 +113,9 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'copilot:ask',
     'copilot:read',
     'copilot:review',
+    'deliverables:read',
+    'deliverables:write',
+    'deliverables:export',
   ],
   OPS: [
     'households:read',
@@ -107,12 +124,14 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'returns:read',
     'admin:audit',
     'copilot:read',
+    'deliverables:read',
   ],
   READONLY: [
     'households:read',
     'docs:read',
     'returns:read',
     'copilot:read',
+    'deliverables:read',
   ],
   CLIENT: [
     'households:read',
