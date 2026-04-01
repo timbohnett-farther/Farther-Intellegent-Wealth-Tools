@@ -48,6 +48,11 @@ import type {
   GovernanceAuditEvent,
   FeatureFlag,
 } from './governance/types';
+import type {
+  MetricDefinition,
+  KPIValue,
+  ValueAttribution,
+} from './analytics/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -62,27 +67,27 @@ function clone<T>(value: T): T {
 // ==================== TaxPlanningStore ====================
 
 class TaxPlanningStore {
-  private firms: Map<string, Firm> = new Map();
-  private users: Map<string, User> = new Map();
-  private households: Map<string, Household> = new Map();
-  private persons: Map<string, Person> = new Map();
-  private documents: Map<string, ReturnDocument> = new Map();
-  private extractedFields: Map<string, ExtractedField> = new Map();
-  private taxReturns: Map<string, TaxReturn> = new Map();
-  private scenarios: Map<string, Scenario> = new Map();
-  private overrides: Map<string, ScenarioOverride> = new Map();
-  private calcRuns: Map<string, CalcRun> = new Map();
-  private calcLines: Map<string, CalcLine> = new Map();
-  private copilotAnswers: Map<string, CopilotAnswer> = new Map();
-  private deliverables: Map<string, Deliverable> = new Map();
-  private deliverableExports: Map<string, DeliverableExport> = new Map();
-  private workflowTasks: Map<string, WorkflowTask> = new Map();
-  private workflowRuns: Map<string, WorkflowRun> = new Map();
-  private recommendationStatuses: Map<string, RecommendationExecutionStatus> = new Map();
-  private crmSyncPayloads: Map<string, CRMSyncPayload> = new Map();
-  private cpaRequests: Map<string, CPACoordinationRequest> = new Map();
-  private reminderRecords: Map<string, ReminderRecord> = new Map();
-  private escalationRecords: Map<string, EscalationRecord> = new Map();
+  private firmsMap: Map<string, Firm> = new Map();
+  private usersMap: Map<string, User> = new Map();
+  private householdsMap: Map<string, Household> = new Map();
+  private personsMap: Map<string, Person> = new Map();
+  private documentsMap: Map<string, ReturnDocument> = new Map();
+  private extractedFieldsMap: Map<string, ExtractedField> = new Map();
+  private taxReturnsMap: Map<string, TaxReturn> = new Map();
+  private scenariosMap: Map<string, Scenario> = new Map();
+  private overridesMap: Map<string, ScenarioOverride> = new Map();
+  private calcRunsMap: Map<string, CalcRun> = new Map();
+  private calcLinesMap: Map<string, CalcLine> = new Map();
+  private copilotAnswersMap: Map<string, CopilotAnswer> = new Map();
+  private deliverablesMap: Map<string, Deliverable> = new Map();
+  private deliverableExportsMap: Map<string, DeliverableExport> = new Map();
+  private workflowTasksMap: Map<string, WorkflowTask> = new Map();
+  private workflowRunsMap: Map<string, WorkflowRun> = new Map();
+  private recommendationStatusesMap: Map<string, RecommendationExecutionStatus> = new Map();
+  private crmSyncPayloadsMap: Map<string, CRMSyncPayload> = new Map();
+  private cpaRequestsMap: Map<string, CPACoordinationRequest> = new Map();
+  private reminderRecordsMap: Map<string, ReminderRecord> = new Map();
+  private escalationRecordsMap: Map<string, EscalationRecord> = new Map();
   private platformRoles: Map<string, PlatformRole> = new Map();
   private permissionPolicies: Map<string, PermissionPolicy> = new Map();
   private accessScopes: Map<string, AccessScope> = new Map();
@@ -93,22 +98,25 @@ class TaxPlanningStore {
   private reviewQueueItems: Map<string, ReviewQueueItem> = new Map();
   private governanceAuditEvents: Map<string, GovernanceAuditEvent> = new Map();
   private featureFlags: Map<string, FeatureFlag> = new Map();
+  private metricDefinitions: Map<string, MetricDefinition> = new Map();
+  private kpiValues: Map<string, KPIValue> = new Map();
+  private valueAttributionsMap: Map<string, ValueAttribution> = new Map();
 
   // ==================================================================
   // Firm CRUD
   // ==================================================================
 
   getFirm(firmId: string): Firm | undefined {
-    const firm = this.firms.get(firmId);
+    const firm = this.firmsMap.get(firmId);
     return firm ? clone(firm) : undefined;
   }
 
   listFirms(): Firm[] {
-    return clone(Array.from(this.firms.values()));
+    return clone(Array.from(this.firmsMap.values()));
   }
 
   upsertFirm(firm: Firm): Firm {
-    this.firms.set(firm.firm_id, clone(firm));
+    this.firmsMap.set(firm.firm_id, clone(firm));
     return clone(firm);
   }
 
@@ -117,12 +125,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getUser(userId: string): User | undefined {
-    const user = this.users.get(userId);
+    const user = this.usersMap.get(userId);
     return user ? clone(user) : undefined;
   }
 
   getUserByEmail(email: string): User | undefined {
-    for (const user of this.users.values()) {
+    for (const user of this.usersMap.values()) {
       if (user.email === email.toLowerCase()) {
         return clone(user);
       }
@@ -131,7 +139,7 @@ class TaxPlanningStore {
   }
 
   listUsers(firmId?: string): User[] {
-    let result = Array.from(this.users.values());
+    let result = Array.from(this.usersMap.values());
     if (firmId) {
       result = result.filter((u) => u.firm_id === firmId);
     }
@@ -139,7 +147,7 @@ class TaxPlanningStore {
   }
 
   upsertUser(user: User): User {
-    this.users.set(user.user_id, clone(user));
+    this.usersMap.set(user.user_id, clone(user));
     return clone(user);
   }
 
@@ -148,7 +156,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getHousehold(householdId: string): Household | undefined {
-    const hh = this.households.get(householdId);
+    const hh = this.householdsMap.get(householdId);
     return hh ? clone(hh) : undefined;
   }
 
@@ -156,7 +164,7 @@ class TaxPlanningStore {
     firmId?: string;
     q?: string;
   }): Household[] {
-    let result = Array.from(this.households.values());
+    let result = Array.from(this.householdsMap.values());
     if (filters?.firmId) {
       result = result.filter((h) => h.firm_id === filters.firmId);
     }
@@ -170,12 +178,12 @@ class TaxPlanningStore {
   }
 
   upsertHousehold(household: Household): Household {
-    this.households.set(household.household_id, clone(household));
+    this.householdsMap.set(household.household_id, clone(household));
     return clone(household);
   }
 
   deleteHousehold(householdId: string): boolean {
-    return this.households.delete(householdId);
+    return this.householdsMap.delete(householdId);
   }
 
   // ==================================================================
@@ -183,12 +191,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getPerson(personId: string): Person | undefined {
-    const p = this.persons.get(personId);
+    const p = this.personsMap.get(personId);
     return p ? clone(p) : undefined;
   }
 
   listPersons(householdId?: string): Person[] {
-    let result = Array.from(this.persons.values());
+    let result = Array.from(this.personsMap.values());
     if (householdId) {
       result = result.filter((p) => p.household_id === householdId);
     }
@@ -196,7 +204,7 @@ class TaxPlanningStore {
   }
 
   upsertPerson(person: Person): Person {
-    this.persons.set(person.person_id, clone(person));
+    this.personsMap.set(person.person_id, clone(person));
     return clone(person);
   }
 
@@ -205,12 +213,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getDocument(docId: string): ReturnDocument | undefined {
-    const doc = this.documents.get(docId);
+    const doc = this.documentsMap.get(docId);
     return doc ? clone(doc) : undefined;
   }
 
   listDocuments(householdId?: string): ReturnDocument[] {
-    let result = Array.from(this.documents.values());
+    let result = Array.from(this.documentsMap.values());
     if (householdId) {
       result = result.filter((d) => d.household_id === householdId);
     }
@@ -218,7 +226,7 @@ class TaxPlanningStore {
   }
 
   upsertDocument(doc: ReturnDocument): ReturnDocument {
-    this.documents.set(doc.doc_id, clone(doc));
+    this.documentsMap.set(doc.doc_id, clone(doc));
     return clone(doc);
   }
 
@@ -227,12 +235,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getExtractedField(fieldId: string): ExtractedField | undefined {
-    const f = this.extractedFields.get(fieldId);
+    const f = this.extractedFieldsMap.get(fieldId);
     return f ? clone(f) : undefined;
   }
 
   listExtractedFields(docId?: string): ExtractedField[] {
-    let result = Array.from(this.extractedFields.values());
+    let result = Array.from(this.extractedFieldsMap.values());
     if (docId) {
       result = result.filter((f) => f.doc_id === docId);
     }
@@ -244,12 +252,12 @@ class TaxPlanningStore {
    * that belong to the return's household + tax year combination.
    */
   listExtractedFieldsByReturn(returnId: string): ExtractedField[] {
-    const taxReturn = this.taxReturns.get(returnId);
+    const taxReturn = this.taxReturnsMap.get(returnId);
     if (!taxReturn) return [];
 
     // Find all documents for this household + tax year
     const docIds: string[] = [];
-    for (const doc of this.documents.values()) {
+    for (const doc of this.documentsMap.values()) {
       if (
         doc.household_id === taxReturn.household_id &&
         doc.tax_year === taxReturn.tax_year
@@ -260,7 +268,7 @@ class TaxPlanningStore {
 
     let result: ExtractedField[] = [];
     for (const docId of docIds) {
-      const fields = Array.from(this.extractedFields.values()).filter(
+      const fields = Array.from(this.extractedFieldsMap.values()).filter(
         (f) => f.doc_id === docId
       );
       result = result.concat(fields);
@@ -269,7 +277,7 @@ class TaxPlanningStore {
   }
 
   upsertExtractedField(field: ExtractedField): ExtractedField {
-    this.extractedFields.set(field.field_id, clone(field));
+    this.extractedFieldsMap.set(field.field_id, clone(field));
     return clone(field);
   }
 
@@ -278,12 +286,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getTaxReturn(returnId: string): TaxReturn | undefined {
-    const r = this.taxReturns.get(returnId);
+    const r = this.taxReturnsMap.get(returnId);
     return r ? clone(r) : undefined;
   }
 
   listTaxReturns(householdId?: string): TaxReturn[] {
-    let result = Array.from(this.taxReturns.values());
+    let result = Array.from(this.taxReturnsMap.values());
     if (householdId) {
       result = result.filter((r) => r.household_id === householdId);
     }
@@ -291,7 +299,7 @@ class TaxPlanningStore {
   }
 
   upsertTaxReturn(taxReturn: TaxReturn): TaxReturn {
-    this.taxReturns.set(taxReturn.return_id, clone(taxReturn));
+    this.taxReturnsMap.set(taxReturn.return_id, clone(taxReturn));
     return clone(taxReturn);
   }
 
@@ -300,12 +308,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getScenario(scenarioId: string): Scenario | undefined {
-    const s = this.scenarios.get(scenarioId);
+    const s = this.scenariosMap.get(scenarioId);
     return s ? clone(s) : undefined;
   }
 
   listScenarios(returnId?: string): Scenario[] {
-    let result = Array.from(this.scenarios.values());
+    let result = Array.from(this.scenariosMap.values());
     if (returnId) {
       result = result.filter((s) => s.return_id === returnId);
     }
@@ -313,7 +321,7 @@ class TaxPlanningStore {
   }
 
   upsertScenario(scenario: Scenario): Scenario {
-    this.scenarios.set(scenario.scenario_id, clone(scenario));
+    this.scenariosMap.set(scenario.scenario_id, clone(scenario));
     return clone(scenario);
   }
 
@@ -322,12 +330,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getOverride(overrideId: string): ScenarioOverride | undefined {
-    const o = this.overrides.get(overrideId);
+    const o = this.overridesMap.get(overrideId);
     return o ? clone(o) : undefined;
   }
 
   listOverrides(scenarioId?: string): ScenarioOverride[] {
-    let result = Array.from(this.overrides.values());
+    let result = Array.from(this.overridesMap.values());
     if (scenarioId) {
       result = result.filter((o) => o.scenario_id === scenarioId);
     }
@@ -335,12 +343,12 @@ class TaxPlanningStore {
   }
 
   upsertOverride(override: ScenarioOverride): ScenarioOverride {
-    this.overrides.set(override.override_id, clone(override));
+    this.overridesMap.set(override.override_id, clone(override));
     return clone(override);
   }
 
   deleteOverride(overrideId: string): boolean {
-    return this.overrides.delete(overrideId);
+    return this.overridesMap.delete(overrideId);
   }
 
   // ==================================================================
@@ -348,12 +356,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getCalcRun(calcRunId: string): CalcRun | undefined {
-    const r = this.calcRuns.get(calcRunId);
+    const r = this.calcRunsMap.get(calcRunId);
     return r ? clone(r) : undefined;
   }
 
   listCalcRuns(scenarioId?: string): CalcRun[] {
-    let result = Array.from(this.calcRuns.values());
+    let result = Array.from(this.calcRunsMap.values());
     if (scenarioId) {
       result = result.filter((r) => r.scenario_id === scenarioId);
     }
@@ -361,7 +369,7 @@ class TaxPlanningStore {
   }
 
   upsertCalcRun(calcRun: CalcRun): CalcRun {
-    this.calcRuns.set(calcRun.calc_run_id, clone(calcRun));
+    this.calcRunsMap.set(calcRun.calc_run_id, clone(calcRun));
     return clone(calcRun);
   }
 
@@ -370,12 +378,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getCalcLine(calcLineId: string): CalcLine | undefined {
-    const l = this.calcLines.get(calcLineId);
+    const l = this.calcLinesMap.get(calcLineId);
     return l ? clone(l) : undefined;
   }
 
   listCalcLines(calcRunId?: string): CalcLine[] {
-    let result = Array.from(this.calcLines.values());
+    let result = Array.from(this.calcLinesMap.values());
     if (calcRunId) {
       result = result.filter((l) => l.calc_run_id === calcRunId);
     }
@@ -383,7 +391,7 @@ class TaxPlanningStore {
   }
 
   upsertCalcLine(calcLine: CalcLine): CalcLine {
-    this.calcLines.set(calcLine.calc_line_id, clone(calcLine));
+    this.calcLinesMap.set(calcLine.calc_line_id, clone(calcLine));
     return clone(calcLine);
   }
 
@@ -392,7 +400,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getCopilotAnswer(answerId: string): CopilotAnswer | undefined {
-    const a = this.copilotAnswers.get(answerId);
+    const a = this.copilotAnswersMap.get(answerId);
     return a ? clone(a) : undefined;
   }
 
@@ -403,7 +411,7 @@ class TaxPlanningStore {
     limit?: number;
     offset?: number;
   }): { answers: CopilotAnswer[]; total: number } {
-    let result = Array.from(this.copilotAnswers.values());
+    let result = Array.from(this.copilotAnswersMap.values());
     if (filters?.householdId) {
       result = result.filter((a) => a.household_id === filters.householdId);
     }
@@ -425,12 +433,12 @@ class TaxPlanningStore {
   }
 
   upsertCopilotAnswer(answer: CopilotAnswer): CopilotAnswer {
-    this.copilotAnswers.set(answer.answer_id, clone(answer));
+    this.copilotAnswersMap.set(answer.answer_id, clone(answer));
     return clone(answer);
   }
 
   deleteCopilotAnswer(answerId: string): boolean {
-    return this.copilotAnswers.delete(answerId);
+    return this.copilotAnswersMap.delete(answerId);
   }
 
   // ==================================================================
@@ -438,7 +446,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getDeliverable(deliverableId: string): Deliverable | undefined {
-    const d = this.deliverables.get(deliverableId);
+    const d = this.deliverablesMap.get(deliverableId);
     return d ? clone(d) : undefined;
   }
 
@@ -451,7 +459,7 @@ class TaxPlanningStore {
     limit?: number;
     offset?: number;
   }): { deliverables: Deliverable[]; total: number } {
-    let result = Array.from(this.deliverables.values());
+    let result = Array.from(this.deliverablesMap.values());
     if (filters?.householdId) {
       result = result.filter((d) => d.householdId === filters.householdId);
     }
@@ -479,12 +487,12 @@ class TaxPlanningStore {
   }
 
   upsertDeliverable(deliverable: Deliverable): Deliverable {
-    this.deliverables.set(deliverable.deliverableId, clone(deliverable));
+    this.deliverablesMap.set(deliverable.deliverableId, clone(deliverable));
     return clone(deliverable);
   }
 
   deleteDeliverable(deliverableId: string): boolean {
-    return this.deliverables.delete(deliverableId);
+    return this.deliverablesMap.delete(deliverableId);
   }
 
   // ==================================================================
@@ -492,12 +500,12 @@ class TaxPlanningStore {
   // ==================================================================
 
   getDeliverableExport(exportId: string): DeliverableExport | undefined {
-    const e = this.deliverableExports.get(exportId);
+    const e = this.deliverableExportsMap.get(exportId);
     return e ? clone(e) : undefined;
   }
 
   listDeliverableExports(deliverableId?: string): DeliverableExport[] {
-    let result = Array.from(this.deliverableExports.values());
+    let result = Array.from(this.deliverableExportsMap.values());
     if (deliverableId) {
       result = result.filter((e) => e.deliverableId === deliverableId);
     }
@@ -509,7 +517,7 @@ class TaxPlanningStore {
   }
 
   upsertDeliverableExport(deliverableExport: DeliverableExport): DeliverableExport {
-    this.deliverableExports.set(deliverableExport.exportId, clone(deliverableExport));
+    this.deliverableExportsMap.set(deliverableExport.exportId, clone(deliverableExport));
     return clone(deliverableExport);
   }
 
@@ -518,7 +526,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getWorkflowTask(taskId: string): WorkflowTask | undefined {
-    const t = this.workflowTasks.get(taskId);
+    const t = this.workflowTasksMap.get(taskId);
     return t ? clone(t) : undefined;
   }
 
@@ -530,7 +538,7 @@ class TaxPlanningStore {
     taskType?: string;
     ownerUserId?: string;
   }): WorkflowTask[] {
-    let result = Array.from(this.workflowTasks.values());
+    let result = Array.from(this.workflowTasksMap.values());
     if (filters?.householdId) {
       result = result.filter((t) => t.householdId === filters.householdId);
     }
@@ -555,7 +563,7 @@ class TaxPlanningStore {
   }
 
   upsertWorkflowTask(task: WorkflowTask): WorkflowTask {
-    this.workflowTasks.set(task.taskId, clone(task));
+    this.workflowTasksMap.set(task.taskId, clone(task));
     return clone(task);
   }
 
@@ -564,7 +572,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getWorkflowRun(workflowRunId: string): WorkflowRun | undefined {
-    const w = this.workflowRuns.get(workflowRunId);
+    const w = this.workflowRunsMap.get(workflowRunId);
     return w ? clone(w) : undefined;
   }
 
@@ -574,7 +582,7 @@ class TaxPlanningStore {
     workflowType?: string;
     status?: string;
   }): WorkflowRun[] {
-    let result = Array.from(this.workflowRuns.values());
+    let result = Array.from(this.workflowRunsMap.values());
     if (filters?.householdId) {
       result = result.filter((w) => w.householdId === filters.householdId);
     }
@@ -593,7 +601,7 @@ class TaxPlanningStore {
   }
 
   upsertWorkflowRun(workflow: WorkflowRun): WorkflowRun {
-    this.workflowRuns.set(workflow.workflowRunId, clone(workflow));
+    this.workflowRunsMap.set(workflow.workflowRunId, clone(workflow));
     return clone(workflow);
   }
 
@@ -602,7 +610,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getRecommendationExecutionStatus(recommendationId: string): RecommendationExecutionStatus | undefined {
-    const r = this.recommendationStatuses.get(recommendationId);
+    const r = this.recommendationStatusesMap.get(recommendationId);
     return r ? clone(r) : undefined;
   }
 
@@ -611,7 +619,7 @@ class TaxPlanningStore {
     taxYear?: number;
     status?: string;
   }): RecommendationExecutionStatus[] {
-    let result = Array.from(this.recommendationStatuses.values());
+    let result = Array.from(this.recommendationStatusesMap.values());
     if (filters?.householdId) {
       result = result.filter((r) => r.householdId === filters.householdId);
     }
@@ -627,7 +635,7 @@ class TaxPlanningStore {
   }
 
   upsertRecommendationExecutionStatus(rec: RecommendationExecutionStatus): RecommendationExecutionStatus {
-    this.recommendationStatuses.set(rec.recommendationId, clone(rec));
+    this.recommendationStatusesMap.set(rec.recommendationId, clone(rec));
     return clone(rec);
   }
 
@@ -636,7 +644,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getCRMSyncPayload(payloadId: string): CRMSyncPayload | undefined {
-    const c = this.crmSyncPayloads.get(payloadId);
+    const c = this.crmSyncPayloadsMap.get(payloadId);
     return c ? clone(c) : undefined;
   }
 
@@ -645,7 +653,7 @@ class TaxPlanningStore {
     payloadType?: string;
     syncStatus?: string;
   }): CRMSyncPayload[] {
-    let result = Array.from(this.crmSyncPayloads.values());
+    let result = Array.from(this.crmSyncPayloadsMap.values());
     if (filters?.householdId) {
       result = result.filter((c) => c.householdId === filters.householdId);
     }
@@ -661,7 +669,7 @@ class TaxPlanningStore {
   }
 
   upsertCRMSyncPayload(payload: CRMSyncPayload): CRMSyncPayload {
-    this.crmSyncPayloads.set(payload.payloadId, clone(payload));
+    this.crmSyncPayloadsMap.set(payload.payloadId, clone(payload));
     return clone(payload);
   }
 
@@ -670,7 +678,7 @@ class TaxPlanningStore {
   // ==================================================================
 
   getCPACoordinationRequest(requestId: string): CPACoordinationRequest | undefined {
-    const r = this.cpaRequests.get(requestId);
+    const r = this.cpaRequestsMap.get(requestId);
     return r ? clone(r) : undefined;
   }
 
@@ -679,7 +687,7 @@ class TaxPlanningStore {
     taxYear?: number;
     status?: string;
   }): CPACoordinationRequest[] {
-    let result = Array.from(this.cpaRequests.values());
+    let result = Array.from(this.cpaRequestsMap.values());
     if (filters?.householdId) {
       result = result.filter((r) => r.householdId === filters.householdId);
     }
@@ -695,7 +703,7 @@ class TaxPlanningStore {
   }
 
   upsertCPACoordinationRequest(request: CPACoordinationRequest): CPACoordinationRequest {
-    this.cpaRequests.set(request.requestId, clone(request));
+    this.cpaRequestsMap.set(request.requestId, clone(request));
     return clone(request);
   }
 
@@ -704,16 +712,16 @@ class TaxPlanningStore {
   // ==================================================================
 
   getReminderRecord(reminderId: string): ReminderRecord | undefined {
-    const r = this.reminderRecords.get(reminderId);
+    const r = this.reminderRecordsMap.get(reminderId);
     return r ? clone(r) : undefined;
   }
 
   listReminderRecords(): ReminderRecord[] {
-    return clone(Array.from(this.reminderRecords.values()));
+    return clone(Array.from(this.reminderRecordsMap.values()));
   }
 
   upsertReminderRecord(reminder: ReminderRecord): ReminderRecord {
-    this.reminderRecords.set(reminder.reminderId, clone(reminder));
+    this.reminderRecordsMap.set(reminder.reminderId, clone(reminder));
     return clone(reminder);
   }
 
@@ -722,18 +730,131 @@ class TaxPlanningStore {
   // ==================================================================
 
   getEscalationRecord(escalationId: string): EscalationRecord | undefined {
-    const e = this.escalationRecords.get(escalationId);
+    const e = this.escalationRecordsMap.get(escalationId);
     return e ? clone(e) : undefined;
   }
 
   listEscalationRecords(): EscalationRecord[] {
-    return clone(Array.from(this.escalationRecords.values()));
+    return clone(Array.from(this.escalationRecordsMap.values()));
   }
 
   upsertEscalationRecord(escalation: EscalationRecord): EscalationRecord {
-    this.escalationRecords.set(escalation.escalationId, clone(escalation));
+    this.escalationRecordsMap.set(escalation.escalationId, clone(escalation));
     return clone(escalation);
   }
+
+  // ==================================================================
+  // Analytics — MetricDefinition CRUD
+  // ==================================================================
+
+  getMetricDefinition(metricId: string): MetricDefinition | undefined {
+    const m = this.metricDefinitions.get(metricId);
+    return m ? clone(m) : undefined;
+  }
+
+  listMetricDefinitions(): MetricDefinition[] {
+    return clone(Array.from(this.metricDefinitions.values()));
+  }
+
+  upsertMetricDefinition(metric: MetricDefinition): MetricDefinition {
+    this.metricDefinitions.set(metric.metricId, clone(metric));
+    return clone(metric);
+  }
+
+  // ==================================================================
+  // Analytics — KPIValue CRUD
+  // ==================================================================
+
+  getKPIValue(key: string): KPIValue | undefined {
+    const k = this.kpiValues.get(key);
+    return k ? clone(k) : undefined;
+  }
+
+  listKPIValues(): KPIValue[] {
+    return clone(Array.from(this.kpiValues.values()));
+  }
+
+  upsertKPIValue(kpi: KPIValue): KPIValue {
+    // Key by metricId + scopeType + scopeRefId + periodStart
+    const key = `${kpi.metricId}:${kpi.scopeType}:${kpi.scopeRefId}:${kpi.periodStart}`;
+    this.kpiValues.set(key, clone(kpi));
+    return clone(kpi);
+  }
+
+  // ==================================================================
+  // Analytics — ValueAttribution CRUD
+  // ==================================================================
+
+  getValueAttribution(attributionId: string): ValueAttribution | undefined {
+    const v = this.valueAttributionsMap.get(attributionId);
+    return v ? clone(v) : undefined;
+  }
+
+  listValueAttributions(householdId?: string): ValueAttribution[] {
+    let result = Array.from(this.valueAttributionsMap.values());
+    if (householdId) {
+      result = result.filter((v) => v.household_id === householdId);
+    }
+    return clone(result);
+  }
+
+  upsertValueAttribution(attribution: ValueAttribution): ValueAttribution {
+    this.valueAttributionsMap.set(attribution.attributionId, clone(attribution));
+    return clone(attribution);
+  }
+
+  // ==================================================================
+  // Analytics — Accessor Helpers (Alias Pattern)
+  // ==================================================================
+
+  /**
+   * Public accessor objects for analytics queries.
+   * These provide findAll/findById aliases for consistency with analytics code.
+   */
+  public readonly users = {
+    findAll: () => this.listUsers(),
+  };
+
+  public readonly households = {
+    findAll: () => this.listHouseholds(),
+  };
+
+  public readonly scenarios = {
+    findAll: () => this.listScenarios(),
+    findById: (id: string) => this.getScenario(id),
+  };
+
+  public readonly calcRuns = {
+    findAll: () => this.listCalcRuns(),
+    findByScenario: (scenarioId: string) => {
+      const runs = this.listCalcRuns(scenarioId);
+      return runs.length > 0 ? runs[0] : undefined;
+    },
+  };
+
+  public readonly deliverables = {
+    findAll: () => this.listDeliverables().deliverables,
+  };
+
+  public readonly workflowTasks = {
+    findAll: () => this.listWorkflowTasks(),
+  };
+
+  public readonly cpaRequests = {
+    findAll: () => this.listCPACoordinationRequests(),
+  };
+
+  public readonly recommendationStatuses = {
+    findAll: () => this.listRecommendationExecutionStatuses(),
+  };
+
+  public readonly copilotAnswers = {
+    findAll: () => this.listCopilotAnswers().answers,
+  };
+
+  public readonly valueAttributions = {
+    findAll: () => this.listValueAttributions(),
+  };
 
   // ==================================================================
   // Governance Objects - Generic CRUD
@@ -810,7 +931,7 @@ class TaxPlanningStore {
       created_at: now,
       updated_at: now,
     };
-    this.firms.set(firm.firm_id, firm);
+    this.firmsMap.set(firm.firm_id, firm);
 
     // ---- Users ----
     const users: User[] = [
@@ -846,7 +967,7 @@ class TaxPlanningStore {
       },
     ];
     for (const u of users) {
-      this.users.set(u.user_id, u);
+      this.usersMap.set(u.user_id, u);
     }
 
     // ---- Households ----
@@ -877,7 +998,7 @@ class TaxPlanningStore {
       },
     ];
     for (const h of households) {
-      this.households.set(h.household_id, h);
+      this.householdsMap.set(h.household_id, h);
     }
 
     // ---- Persons ----
@@ -924,7 +1045,7 @@ class TaxPlanningStore {
       },
     ];
     for (const p of persons) {
-      this.persons.set(p.person_id, p);
+      this.personsMap.set(p.person_id, p);
     }
 
     // ---- Return Documents ----
@@ -953,7 +1074,7 @@ class TaxPlanningStore {
       },
     ];
     for (const d of documents) {
-      this.documents.set(d.doc_id, d);
+      this.documentsMap.set(d.doc_id, d);
     }
 
     // ---- Tax Returns ----
@@ -970,7 +1091,7 @@ class TaxPlanningStore {
       },
     ];
     for (const r of taxReturns) {
-      this.taxReturns.set(r.return_id, r);
+      this.taxReturnsMap.set(r.return_id, r);
     }
 
     // ---- Scenarios ----
@@ -985,7 +1106,7 @@ class TaxPlanningStore {
       },
     ];
     for (const s of scenarios) {
-      this.scenarios.set(s.scenario_id, s);
+      this.scenariosMap.set(s.scenario_id, s);
     }
 
     // ---- Calc Runs ----
@@ -1005,7 +1126,7 @@ class TaxPlanningStore {
       },
     ];
     for (const cr of calcRuns) {
-      this.calcRuns.set(cr.calc_run_id, cr);
+      this.calcRunsMap.set(cr.calc_run_id, cr);
     }
 
     // ---- Calc Lines ----
@@ -1033,7 +1154,7 @@ class TaxPlanningStore {
       },
     ];
     for (const cl of calcLines) {
-      this.calcLines.set(cl.calc_line_id, cl);
+      this.calcLinesMap.set(cl.calc_line_id, cl);
     }
 
     // ---- Extracted Fields for Smith 2025 Return ----
@@ -1094,7 +1215,7 @@ class TaxPlanningStore {
       },
     ];
     for (const f of extractedFields) {
-      this.extractedFields.set(f.field_id, f);
+      this.extractedFieldsMap.set(f.field_id, f);
     }
 
     // ==================================================================

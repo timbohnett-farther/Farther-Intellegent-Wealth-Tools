@@ -72,7 +72,10 @@ type AuditEventKey =
   | 'governance.feature_flag.updated'
   | 'governance.review.created'
   | 'governance.review.completed'
-  | 'governance.authorization.denied';
+  | 'governance.authorization.denied'
+  | 'analytics.metric.calculated'
+  | 'analytics.dashboard.refreshed'
+  | 'analytics.value.attributed';
 
 // ==================== ID Generation ====================
 
