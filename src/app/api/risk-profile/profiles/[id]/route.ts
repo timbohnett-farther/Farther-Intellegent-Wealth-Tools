@@ -13,7 +13,7 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const profile = await prisma.riskProfile.findUnique({
+    const profile = await (prisma as any).riskProfile.findUnique({
       where: { id },
       include: {
         session: {

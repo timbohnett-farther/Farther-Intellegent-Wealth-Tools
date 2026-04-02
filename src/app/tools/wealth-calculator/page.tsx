@@ -277,7 +277,7 @@ export default function WealthCalculatorPage() {
   const [monthlyContribution, setMonthlyContribution] = useState(2000);
   const [investmentType, setInvestmentType] = useState<keyof typeof INVESTMENT_TYPES>('diversified');
   const [timeHorizon, setTimeHorizon] = useState(20);
-  const [includeCorrectioncorrection, setIncludeCorrection] = useState(false);
+  const [includeCorrection, setIncludeCorrection] = useState(false);
   const [correctionScenario, setCorrectionScenario] = useState<keyof typeof CORRECTION_SCENARIOS>('crisis2008');
   const [correctionTiming, setCorrectionTiming] = useState(5);
 

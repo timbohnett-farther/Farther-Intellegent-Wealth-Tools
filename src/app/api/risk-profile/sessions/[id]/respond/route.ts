@@ -32,7 +32,7 @@ export async function POST(
     }
 
     // Verify session exists and is in progress
-    const session = await prisma.questionnaireSession.findUnique({
+    const session = await (prisma as any).questionnaireSession.findUnique({
       where: { id: sessionId },
     });
 
@@ -48,7 +48,7 @@ export async function POST(
     }
 
     // Upsert response (allow re-answering)
-    const response = await prisma.sessionResponse.create({
+    const response = await (prisma as any).sessionResponse.create({
       data: {
         sessionId,
         questionItemId,
@@ -64,7 +64,7 @@ export async function POST(
     });
 
     // Update session completion percentage
-    const responseCount = await prisma.sessionResponse.count({
+    const responseCount = await (prisma as any).sessionResponse.count({
       where: { sessionId },
     });
     const completionPct = Math.min(
@@ -72,7 +72,7 @@ export async function POST(
       (responseCount / session.totalQuestions) * 100,
     );
 
-    await prisma.questionnaireSession.update({
+    await (prisma as any).questionnaireSession.update({
       where: { id: sessionId },
       data: { completionPct },
     });

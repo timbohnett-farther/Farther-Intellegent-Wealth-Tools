@@ -23,7 +23,7 @@ export async function POST(
     }
 
     // Verify session exists and is in progress
-    const session = await prisma.questionnaireSession.findUnique({
+    const session = await (prisma as any).questionnaireSession.findUnique({
       where: { id: sessionId },
     });
 
@@ -45,7 +45,7 @@ export async function POST(
     );
 
     // Mark session as completed
-    await prisma.questionnaireSession.update({
+    await (prisma as any).questionnaireSession.update({
       where: { id: sessionId },
       data: {
         status: 'completed',
@@ -56,7 +56,7 @@ export async function POST(
     });
 
     // Create risk profile
-    const profile = await prisma.riskProfile.create({
+    const profile = await (prisma as any).riskProfile.create({
       data: {
         clientId: session.clientId,
         status: 'active',
@@ -69,7 +69,7 @@ export async function POST(
     });
 
     // Create initial profile version
-    await prisma.profileVersion.create({
+    await (prisma as any).profileVersion.create({
       data: {
         profileId: profile.id,
         version: 1,
@@ -81,7 +81,7 @@ export async function POST(
     });
 
     // Link profile back to session
-    await prisma.questionnaireSession.update({
+    await (prisma as any).questionnaireSession.update({
       where: { id: sessionId },
       data: { profileId: profile.id },
     });

@@ -14,7 +14,7 @@ export async function GET(
     const { id } = await params;
 
     // Verify profile exists
-    const profile = await prisma.riskProfile.findUnique({
+    const profile = await (prisma as any).riskProfile.findUnique({
       where: { id },
     });
 
@@ -23,13 +23,13 @@ export async function GET(
     }
 
     // Fetch all versions ordered by version number
-    const versions = await prisma.profileVersion.findMany({
+    const versions = await (prisma as any).profileVersion.findMany({
       where: { profileId: id },
       orderBy: { version: 'desc' },
     });
 
     // Parse JSON fields
-    const parsed = versions.map((v) => ({
+    const parsed = versions.map((v: any) => ({
       ...v,
       previousScores: v.previousScores ? JSON.parse(v.previousScores) : null,
       newScores: JSON.parse(v.newScores),

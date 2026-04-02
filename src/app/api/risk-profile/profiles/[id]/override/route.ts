@@ -23,7 +23,7 @@ export async function PATCH(
     }
 
     // Fetch current profile
-    const existing = await prisma.riskProfile.findUnique({
+    const existing = await (prisma as any).riskProfile.findUnique({
       where: { id },
     });
 
@@ -35,7 +35,7 @@ export async function PATCH(
     const newVersion = existing.version + 1;
 
     // Update profile with override
-    const updated = await prisma.riskProfile.update({
+    const updated = await (prisma as any).riskProfile.update({
       where: { id },
       data: {
         composite: JSON.stringify(newComposite),
@@ -46,7 +46,7 @@ export async function PATCH(
     });
 
     // Create version record for audit trail
-    await prisma.profileVersion.create({
+    await (prisma as any).profileVersion.create({
       data: {
         profileId: id,
         version: newVersion,

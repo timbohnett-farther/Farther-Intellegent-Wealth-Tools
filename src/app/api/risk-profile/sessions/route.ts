@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = await prisma.questionnaireSession.create({
+    const session = await (prisma as any).questionnaireSession.create({
       data: {
         clientId: clientId ?? null,
         wealthTier,
