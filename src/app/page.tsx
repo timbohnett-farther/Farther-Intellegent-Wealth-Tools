@@ -81,11 +81,42 @@ const TOOLS: ToolCard[] = [
     tags: ['Risk Profile', 'Compliance', 'Questionnaire', 'Allocation'],
   },
   {
-    title: 'Securities-Based Lending Analyzer',
+    title: 'What Your Money Becomes™',
     description:
-      'Evaluate securities-backed lines of credit (SBLOCs) with detailed LTV analysis, collateral eligibility screening, and rate comparisons across custodians.',
-    href: '#',
-    status: 'coming_soon',
+      'Time value of money calculator showing how savings, market returns, and compound interest create wealth over time. Features milestone timeline showing value created by markets alone (excluding principal), market correction scenarios, and multiple investment profiles.',
+    href: '/tools/wealth-calculator',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v20" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+    color: 'from-success-500 to-success-800',
+    tags: ['Wealth Planning', 'Compounding', 'Time Value', 'Projections'],
+  },
+  {
+    title: '401(k) Rollover Analyzer',
+    description:
+      'Comprehensive 401(k) plan evaluation and rollover analysis. Score retirement plans across 27 criteria including fees, investment options, and features. Generate compliant documentation, benchmark against industry standards, and build data-driven rollover recommendations.',
+    href: '/tax-planning/rollover',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        <polyline points="3.29 7 12 12 20.71 7" />
+        <line x1="12" y1="22" x2="12" y2="12" />
+      </svg>
+    ),
+    color: 'from-brand-600 to-brand-800',
+    tags: ['Retirement', '401(k)', 'Rollover', 'Plan Analysis', 'Documentation'],
+  },
+  {
+    title: 'Debt IQ — Strategic Debt Analysis',
+    description:
+      'Comprehensive debt optimization platform analyzing mortgage, securities-backed lending, credit cards, auto loans, student debt, and business financing. Calculate after-tax cost of debt, model payoff strategies, identify refinancing opportunities, and quantify tax deductions across 6 debt categories.',
+    href: '/tax-planning/debt-iq',
+    status: 'live',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M2 17a5 5 0 0 0 10 0c0-2.76-2.24-5-5-5s-5 2.24-5 5Z" />
@@ -94,6 +125,40 @@ const TOOLS: ToolCard[] = [
       </svg>
     ),
     color: 'from-warning-500 to-warning-700',
+    tags: ['Debt', 'Optimization', 'Tax Strategy', 'Refinancing'],
+  },
+  {
+    title: 'Tax Intelligence Platform',
+    description:
+      'OCR-powered tax document extraction with deterministic tax calculation engine. Upload tax documents (1040, K-1, W-2, 1099s), extract line-by-line data with confidence scoring, run baseline and scenario calculations, detect optimization opportunities with AI explanations, and generate compliant deliverables.',
+    href: '/tax-planning/intelligence',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+        <polyline points="10 9 9 9 8 9" />
+      </svg>
+    ),
+    color: 'from-brand-500 to-brand-700',
+    tags: ['OCR', 'Tax Documents', 'Calculation Engine', 'AI Analysis'],
+  },
+  {
+    title: 'Securities-Based Lending Analyzer',
+    description:
+      'Evaluate securities-backed lines of credit (SBLOCs) with detailed LTV analysis, collateral eligibility screening, and rate comparisons across custodians.',
+    href: '#',
+    status: 'coming_soon',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+      </svg>
+    ),
+    color: 'from-success-600 to-success-800',
     tags: ['SBLOC', 'Collateral', 'Lending'],
   },
   {
