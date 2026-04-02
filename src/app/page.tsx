@@ -146,6 +146,22 @@ const TOOLS: ToolCard[] = [
     tags: ['OCR', 'Tax Documents', 'Calculation Engine', 'AI Analysis'],
   },
   {
+    title: 'Interstate Tax Migration Calculator',
+    description:
+      'Illustrate annual and multi-year tax impact of relocating from 9 high-tax states to any U.S. state, D.C., or Puerto Rico. Compare state income tax, capital gains treatment, estate tax exposure, and Act 60 scenarios. Educational planning tool with AI-powered tax rules updates and compliance disclosures.',
+    href: '/tax-planning/relocation',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    ),
+    color: 'from-accent-primary to-accent-primarySoft',
+    tags: ['State Tax', 'Relocation', 'Estate Tax', 'Puerto Rico', 'Tax Migration'],
+  },
+  {
     title: 'Securities-Based Lending Analyzer',
     description:
       'Evaluate securities-backed lines of credit (SBLOCs) with detailed LTV analysis, collateral eligibility screening, and rate comparisons across custodians.',
