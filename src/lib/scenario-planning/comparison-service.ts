@@ -344,8 +344,7 @@ function generateWarnings(rowComparisons: ComparisonRow[]): string[] {
  * @returns Parsed tax output
  */
 async function loadTaxOutput(runId: string): Promise<any> {
-  // @ts-expect-error - TaxCalculationRun model added in Phase 5A migration
-  const run = await prisma.taxCalculationRun.findUnique({
+  const run = await (prisma as any).taxCalculationRun.findUnique({
     where: { id: runId },
   });
 
