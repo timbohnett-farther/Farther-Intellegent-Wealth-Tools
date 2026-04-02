@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { PlanSearchResult } from '@/lib/rollover-engine/types';
 
 interface PlanSearchInputProps {
-  token: string;
+  token?: string;
   onSelect: (plan: PlanSearchResult) => void;
   placeholder?: string;
 }
@@ -32,9 +32,14 @@ export function PlanSearchInput({
 
       setLoading(true);
       try {
+        const headers: HeadersInit = {};
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const res = await fetch(
           `/api/v1/rollover/plans/search?q=${encodeURIComponent(searchQuery)}`,
-          { headers: { Authorization: `Bearer ${token}` } },
+          { headers },
         );
         if (res.ok) {
           const data = await res.json();
