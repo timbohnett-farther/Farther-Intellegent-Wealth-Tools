@@ -253,8 +253,7 @@ async function persistCalculationRun(params: {
   executionOrder: string[];
   computeTimeMs: number;
 }): Promise<void> {
-  // @ts-expect-error - TaxCalculationRun model added in Phase 5A migration
-  await prisma.taxCalculationRun.create({
+  await (prisma as any).taxCalculationRun.create({
     data: {
       id: params.runId,
       scenarioId: params.scenarioId,
