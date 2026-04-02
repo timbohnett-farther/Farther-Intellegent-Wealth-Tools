@@ -53,6 +53,16 @@ import type {
   KPIValue,
   ValueAttribution,
 } from './analytics/types';
+import type {
+  RolloverPlan,
+  RolloverAnalysis,
+  RolloverScore,
+  BenchmarkEntry,
+  NarrativeOutput,
+  RolloverReport,
+  ScrapeJob,
+  HubSpotDealSync,
+} from '../rollover-engine/types';
 
 // ==================== Deep Clone Helper ====================
 
@@ -101,6 +111,16 @@ class TaxPlanningStore {
   private metricDefinitions: Map<string, MetricDefinition> = new Map();
   private kpiValues: Map<string, KPIValue> = new Map();
   private valueAttributionsMap: Map<string, ValueAttribution> = new Map();
+
+  // Rollover Engine Maps
+  private rolloverPlansMap: Map<string, RolloverPlan> = new Map();
+  private rolloverAnalysesMap: Map<string, RolloverAnalysis> = new Map();
+  private rolloverScoresMap: Map<string, RolloverScore> = new Map();
+  private rolloverBenchmarksMap: Map<string, BenchmarkEntry> = new Map();
+  private rolloverNarrativesMap: Map<string, NarrativeOutput> = new Map();
+  private rolloverReportsMap: Map<string, RolloverReport> = new Map();
+  private rolloverScrapeJobsMap: Map<string, ScrapeJob> = new Map();
+  private rolloverHubSpotSyncsMap: Map<string, HubSpotDealSync> = new Map();
 
   // ==================================================================
   // Firm CRUD
@@ -914,6 +934,240 @@ class TaxPlanningStore {
       default:
         throw new Error(`Unknown governance object type: ${type}`);
     }
+  }
+
+  // ==================================================================
+  // Rollover Engine — RolloverPlan CRUD
+  // ==================================================================
+
+  getRolloverPlan(planId: string): RolloverPlan | undefined {
+    const p = this.rolloverPlansMap.get(planId);
+    return p ? clone(p) : undefined;
+  }
+
+  listRolloverPlans(filters?: {
+    ein?: string;
+    q?: string;
+    planType?: string;
+    limit?: number;
+  }): RolloverPlan[] {
+    let result = Array.from(this.rolloverPlansMap.values());
+    if (filters?.ein) {
+      result = result.filter((p) => p.ein === filters.ein);
+    }
+    if (filters?.q) {
+      const query = filters.q.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.plan_name.toLowerCase().includes(query) ||
+          p.sponsor_name.toLowerCase().includes(query) ||
+          p.ein.includes(query) ||
+          p.recordkeeper.toLowerCase().includes(query),
+      );
+    }
+    if (filters?.planType) {
+      result = result.filter((p) => p.plan_type === filters.planType);
+    }
+    const limit = filters?.limit ?? 50;
+    return clone(result.slice(0, limit));
+  }
+
+  upsertRolloverPlan(plan: RolloverPlan): RolloverPlan {
+    this.rolloverPlansMap.set(plan.plan_id, clone(plan));
+    return clone(plan);
+  }
+
+  // ==================================================================
+  // Rollover Engine — RolloverAnalysis CRUD
+  // ==================================================================
+
+  getRolloverAnalysis(analysisId: string): RolloverAnalysis | undefined {
+    const a = this.rolloverAnalysesMap.get(analysisId);
+    return a ? clone(a) : undefined;
+  }
+
+  listRolloverAnalyses(filters?: {
+    firmId?: string;
+    advisorId?: string;
+    householdId?: string;
+    status?: string;
+    limit?: number;
+    offset?: number;
+  }): { analyses: RolloverAnalysis[]; total: number } {
+    let result = Array.from(this.rolloverAnalysesMap.values());
+    if (filters?.firmId) {
+      result = result.filter((a) => a.firm_id === filters.firmId);
+    }
+    if (filters?.advisorId) {
+      result = result.filter((a) => a.advisor_id === filters.advisorId);
+    }
+    if (filters?.householdId) {
+      result = result.filter((a) => a.household_id === filters.householdId);
+    }
+    if (filters?.status) {
+      result = result.filter((a) => a.status === filters.status);
+    }
+    result.sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
+    const total = result.length;
+    const offset = filters?.offset ?? 0;
+    const limit = filters?.limit ?? 50;
+    const page = result.slice(offset, offset + limit);
+    return { analyses: clone(page), total };
+  }
+
+  upsertRolloverAnalysis(analysis: RolloverAnalysis): RolloverAnalysis {
+    this.rolloverAnalysesMap.set(analysis.analysis_id, clone(analysis));
+    return clone(analysis);
+  }
+
+  deleteRolloverAnalysis(analysisId: string): boolean {
+    return this.rolloverAnalysesMap.delete(analysisId);
+  }
+
+  // ==================================================================
+  // Rollover Engine — RolloverScore CRUD
+  // ==================================================================
+
+  getRolloverScore(scoreId: string): RolloverScore | undefined {
+    const s = this.rolloverScoresMap.get(scoreId);
+    return s ? clone(s) : undefined;
+  }
+
+  getRolloverScoreByAnalysis(analysisId: string): RolloverScore | undefined {
+    for (const score of this.rolloverScoresMap.values()) {
+      if (score.analysis_id === analysisId) {
+        return clone(score);
+      }
+    }
+    return undefined;
+  }
+
+  upsertRolloverScore(score: RolloverScore): RolloverScore {
+    this.rolloverScoresMap.set(score.score_id, clone(score));
+    return clone(score);
+  }
+
+  // ==================================================================
+  // Rollover Engine — BenchmarkEntry CRUD
+  // ==================================================================
+
+  getRolloverBenchmark(benchmarkId: string): BenchmarkEntry | undefined {
+    const b = this.rolloverBenchmarksMap.get(benchmarkId);
+    return b ? clone(b) : undefined;
+  }
+
+  listRolloverBenchmarks(filters?: {
+    planSizeTier?: string;
+    metricName?: string;
+  }): BenchmarkEntry[] {
+    let result = Array.from(this.rolloverBenchmarksMap.values());
+    if (filters?.planSizeTier) {
+      result = result.filter((b) => b.plan_size_tier === filters.planSizeTier);
+    }
+    if (filters?.metricName) {
+      result = result.filter((b) => b.metric_name === filters.metricName);
+    }
+    return clone(result);
+  }
+
+  upsertRolloverBenchmark(benchmark: BenchmarkEntry): BenchmarkEntry {
+    this.rolloverBenchmarksMap.set(benchmark.benchmark_id, clone(benchmark));
+    return clone(benchmark);
+  }
+
+  // ==================================================================
+  // Rollover Engine — NarrativeOutput CRUD
+  // ==================================================================
+
+  getRolloverNarrative(narrativeId: string): NarrativeOutput | undefined {
+    const n = this.rolloverNarrativesMap.get(narrativeId);
+    return n ? clone(n) : undefined;
+  }
+
+  getRolloverNarrativeByAnalysis(analysisId: string): NarrativeOutput | undefined {
+    for (const n of this.rolloverNarrativesMap.values()) {
+      if (n.analysis_id === analysisId) {
+        return clone(n);
+      }
+    }
+    return undefined;
+  }
+
+  upsertRolloverNarrative(narrative: NarrativeOutput): NarrativeOutput {
+    this.rolloverNarrativesMap.set(narrative.narrative_id, clone(narrative));
+    return clone(narrative);
+  }
+
+  // ==================================================================
+  // Rollover Engine — RolloverReport CRUD
+  // ==================================================================
+
+  getRolloverReport(reportId: string): RolloverReport | undefined {
+    const r = this.rolloverReportsMap.get(reportId);
+    return r ? clone(r) : undefined;
+  }
+
+  listRolloverReports(analysisId?: string): RolloverReport[] {
+    let result = Array.from(this.rolloverReportsMap.values());
+    if (analysisId) {
+      result = result.filter((r) => r.analysis_id === analysisId);
+    }
+    result.sort(
+      (a, b) => new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime(),
+    );
+    return clone(result);
+  }
+
+  upsertRolloverReport(report: RolloverReport): RolloverReport {
+    this.rolloverReportsMap.set(report.report_id, clone(report));
+    return clone(report);
+  }
+
+  // ==================================================================
+  // Rollover Engine — ScrapeJob CRUD
+  // ==================================================================
+
+  getScrapeJob(jobId: string): ScrapeJob | undefined {
+    const j = this.rolloverScrapeJobsMap.get(jobId);
+    return j ? clone(j) : undefined;
+  }
+
+  listScrapeJobs(analysisId?: string): ScrapeJob[] {
+    let result = Array.from(this.rolloverScrapeJobsMap.values());
+    if (analysisId) {
+      result = result.filter((j) => j.analysis_id === analysisId);
+    }
+    return clone(result);
+  }
+
+  upsertScrapeJob(job: ScrapeJob): ScrapeJob {
+    this.rolloverScrapeJobsMap.set(job.job_id, clone(job));
+    return clone(job);
+  }
+
+  // ==================================================================
+  // Rollover Engine — HubSpotDealSync CRUD
+  // ==================================================================
+
+  getHubSpotDealSync(syncId: string): HubSpotDealSync | undefined {
+    const s = this.rolloverHubSpotSyncsMap.get(syncId);
+    return s ? clone(s) : undefined;
+  }
+
+  getHubSpotDealSyncByAnalysis(analysisId: string): HubSpotDealSync | undefined {
+    for (const s of this.rolloverHubSpotSyncsMap.values()) {
+      if (s.analysis_id === analysisId) {
+        return clone(s);
+      }
+    }
+    return undefined;
+  }
+
+  upsertHubSpotDealSync(sync: HubSpotDealSync): HubSpotDealSync {
+    this.rolloverHubSpotSyncsMap.set(sync.sync_id, clone(sync));
+    return clone(sync);
   }
 
   // ==================================================================

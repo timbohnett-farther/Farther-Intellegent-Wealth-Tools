@@ -130,12 +130,12 @@ describe('requirePermission()', () => {
 // =============================================================================
 
 describe('getRolePermissions()', () => {
-  it('returns all 36 permissions for ADMIN', () => {
-    expect(getRolePermissions('ADMIN')).toHaveLength(36);
+  it('returns all 40 permissions for ADMIN', () => {
+    expect(getRolePermissions('ADMIN')).toHaveLength(40);
   });
 
-  it('returns 8 permissions for READONLY', () => {
-    expect(getRolePermissions('READONLY')).toHaveLength(8);
+  it('returns 9 permissions for READONLY', () => {
+    expect(getRolePermissions('READONLY')).toHaveLength(9);
   });
 
   it('returns 3 permissions for CLIENT', () => {
