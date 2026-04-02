@@ -44,8 +44,11 @@ export const QBIDeductionModule: TaxCalculationModule = {
     const taxableIncomeBeforeQBI = Math.max(0, agi - totalDeduction);
 
     // Get QBI-related inputs
-    const qualifiedBusinessIncome = inputs.qualifiedBusinessIncome || 0;
-    const isSpecifiedServiceBusiness = inputs.isSpecifiedServiceBusiness || false;
+    // Use K-1 QBI if available, otherwise use business income
+    const k1QBI = inputs.k1Section199AQualifiedBusinessIncome || 0;
+    const businessIncome = Math.max(0, inputs.businessIncomeLoss || 0);
+    const qualifiedBusinessIncome = k1QBI || businessIncome;
+    const isSpecifiedServiceBusiness = false; // TODO: Add to TaxInputs interface
 
     // If no QBI, skip calculation
     if (qualifiedBusinessIncome === 0) {

@@ -5,10 +5,26 @@
  * Applies versioned mapping configuration and field transformations.
  */
 
-import type { TaxInputSnapshot, TaxInputValues, ValidationMessage, MissingInput } from '@/types';
+import type { TaxInputSnapshot, TaxInputs, FilingStatus } from '@/types';
 import type { ApprovedFact } from '@/generated/prisma/client';
 import { MAPPING_CONFIG_2025, type FieldMapping, type CompoundMapping } from './mapping-config-2025';
 import * as transforms from '../transformers/field-transforms';
+
+// Local types for snapshot building (not exported from @/types)
+interface ValidationMessage {
+  code: string;
+  severity: string;
+  field: string;
+  message: string;
+  details?: any;
+}
+
+interface MissingInput {
+  field: string;
+  reasonCode: string;
+  message: string;
+  blocking: boolean;
+}
 
 export interface SnapshotBuilderOptions {
   taxYear: number;
@@ -37,7 +53,7 @@ export async function buildSnapshot(
   const mappingConfig = MAPPING_CONFIG_2025; // TODO: Version selector based on taxYear
 
   // Initialize result containers
-  const inputs: Partial<TaxInputValues> = {};
+  const inputs: Partial<TaxInputs> = {};
   const warnings: ValidationMessage[] = [];
   const missingInputs: MissingInput[] = [];
   const sourceFactVersions: Record<string, number> = {};
@@ -151,15 +167,11 @@ export async function buildSnapshot(
     taxYear,
     filingStatus,
     taxpayers,
-    inputs: inputs as TaxInputValues,
+    inputs: inputs as TaxInputs,
     sourceFactVersions,
-    sourceFactIds,
-    unresolvedFlags: [],
-    missingInputs,
-    warnings,
-    createdAt: new Date().toISOString(),
-    createdBy: 'system', // TODO: Pass actual user ID
-    sourceFactVersionSignature,
+    missingInputs: missingInputs.map(m => m.field),
+    warnings: warnings.map(w => w.message),
+    createdAt: new Date(),
   };
 
   return {
@@ -237,7 +249,7 @@ function applyCompoundTransform(
  * Detect filing status from facts
  * TODO: Should come from HouseholdProfile in production
  */
-function detectFilingStatus(factsByField: Map<string, ApprovedFact>): string {
+function detectFilingStatus(factsByField: Map<string, ApprovedFact>): FilingStatus {
   const filingStatusFact = factsByField.get('filing_status');
 
   if (filingStatusFact) {
@@ -245,26 +257,26 @@ function detectFilingStatus(factsByField: Map<string, ApprovedFact>): string {
 
     // Map common variations
     if (normalized.includes('MARRIED') && normalized.includes('JOINT')) {
-      return 'MFJ';
+      return 'married_filing_jointly';
     }
     if (normalized.includes('MARRIED') && normalized.includes('SEPARATE')) {
-      return 'MFS';
+      return 'married_filing_separately';
     }
     if (normalized.includes('SINGLE')) {
-      return 'SINGLE';
+      return 'single';
     }
     if (normalized.includes('HEAD')) {
-      return 'HOH';
+      return 'head_of_household';
     }
     if (normalized.includes('QUALIFYING') && normalized.includes('SURVIV')) {
-      return 'QSS';
+      return 'qualifying_surviving_spouse';
     }
 
-    return 'MFJ'; // Default
+    return 'married_filing_jointly'; // Default
   }
 
-  // Default to MFJ if not specified
-  return 'MFJ';
+  // Default to married_filing_jointly if not specified
+  return 'married_filing_jointly';
 }
 
 /**
@@ -323,7 +335,18 @@ export function snapshotsHaveSameSource(
   snapshot1: TaxInputSnapshot,
   snapshot2: TaxInputSnapshot
 ): boolean {
-  return snapshot1.sourceFactVersionSignature === snapshot2.sourceFactVersionSignature;
+  // Compare sourceFactVersions
+  const keys1 = Object.keys(snapshot1.sourceFactVersions).sort();
+  const keys2 = Object.keys(snapshot2.sourceFactVersions).sort();
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (let i = 0; i < keys1.length; i++) {
+    if (keys1[i] !== keys2[i]) return false;
+    if (snapshot1.sourceFactVersions[keys1[i]] !== snapshot2.sourceFactVersions[keys2[i]]) return false;
+  }
+
+  return true;
 }
 
 /**

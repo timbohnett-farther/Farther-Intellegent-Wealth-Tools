@@ -89,7 +89,6 @@ export async function POST(request: NextRequest) {
         sourceFactVersions: JSON.stringify(result.snapshot.sourceFactVersions),
         missingInputs: JSON.stringify(result.snapshot.missingInputs),
         warnings: JSON.stringify(result.snapshot.warnings),
-        createdBy: createdBy || 'system',
       },
     });
 
@@ -158,7 +157,6 @@ export async function GET(request: NextRequest) {
       taxYear: snapshot.taxYear,
       filingStatus: snapshot.filingStatus,
       createdAt: snapshot.createdAt.toISOString(),
-      createdBy: snapshot.createdBy || 'system',
       missingInputCount: snapshot.missingInputs
         ? JSON.parse(snapshot.missingInputs).length
         : 0,

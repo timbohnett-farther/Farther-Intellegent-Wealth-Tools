@@ -1,0 +1,23 @@
+
+> farther-intelligent-wealth-tools@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/opportunities/[id]/status/route.ts:74:9
+Type error: Object literal may only specify known properties, and 'actor' does not exist in type 'Without<OpportunityAuditEventCreateInput, OpportunityAuditEventUncheckedCreateInput> & OpportunityAuditEventUncheckedCreateInput'.
+
+[0m [90m 72 |[39m         opportunityId[33m:[39m id[33m,[39m[0m
+[0m [90m 73 |[39m         eventType[33m:[39m [32m'status_changed'[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 74 |[39m         actor[33m:[39m validatedRequest[33m.[39mupdatedBy[33m,[39m[0m
+[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 75 |[39m         actorType[33m:[39m [32m'user'[39m[33m,[39m[0m
+[0m [90m 76 |[39m         changesBefore[33m:[39m [33mJSON[39m[33m.[39mstringify({ status[33m:[39m existing[33m.[39mstatus })[33m,[39m[0m
+[0m [90m 77 |[39m         changesAfter[33m:[39m [33mJSON[39m[33m.[39mstringify({ status[33m:[39m validatedRequest[33m.[39mstatus })[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

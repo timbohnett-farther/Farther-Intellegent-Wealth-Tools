@@ -8,10 +8,24 @@
 import type {
   TaxInputSnapshot,
   TaxRulesPackage,
-  ValidationMessage,
-  UnsupportedItem,
   TraceStep,
 } from '@/types';
+
+// Local types for module system (not in @/types)
+export interface ValidationMessage {
+  code: string;
+  severity: 'info' | 'warning' | 'error' | 'soft_fail' | 'hard_fail';
+  field?: string;
+  message: string;
+  details?: any;
+}
+
+export interface UnsupportedItem {
+  code: string;
+  message: string;
+  impact: 'none' | 'low' | 'medium' | 'high';
+  relatedFields?: string[];
+}
 
 /**
  * Calculation context passed through all modules
@@ -73,16 +87,26 @@ export function createTraceStep(
   dependencies: string[] = [],
   notes: string[] = []
 ): TraceStep {
+  // Convert warnings to string array
+  const warningStrings = warnings.map(w => w.message);
+
+  // Convert string dependencies to numbers if possible, otherwise empty
+  const dependencyNumbers = dependencies
+    .map(d => parseInt(d.replace(/^\D+/, ''), 10))
+    .filter(n => !isNaN(n));
+
   return {
-    stepId: `${moduleName}_${stepNumber}`,
-    stepOrder: stepNumber,
+    stepNumber,
     moduleName,
-    ruleReference,
-    inputsUsed: inputs,
-    outputsProduced: outputs,
-    warnings,
-    dependencies,
-    notes,
+    operation: ruleReference,
+    inputs: inputs.reduce((acc, input) => {
+      acc[input.field] = input.value;
+      return acc;
+    }, {} as Record<string, any>),
+    formula: notes.join('; ') || ruleReference,
+    result: outputs,
+    warnings: warningStrings,
+    dependencies: dependencyNumbers,
   };
 }
 

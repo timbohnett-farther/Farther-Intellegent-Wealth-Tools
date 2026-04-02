@@ -19,11 +19,22 @@ import type {
   ScenarioCalculationContext,
   CreateScenarioFromTemplateRequest,
 } from '@/types/scenario-planning';
+import type { TaxInputSnapshot } from '@/types/tax-engine';
+import { buildScenarioSnapshot, ScenarioSnapshot } from './snapshot-builder';
+import { validateScenarioForCalculation } from './validation';
+import { calculateScenario } from './tax-engine-adapter';
+import {
+  emitScenarioCreated,
+  emitScenarioCalculated,
+  emitScenarioUpdated,
+} from './scenario-events';
 
 // ==================== SCENARIO CREATION ====================
 
 /**
  * Create a new planning scenario from baseline
+ *
+ * PHASE 5A ENHANCED: Now integrates with tax engine for real calculations
  *
  * @param request Scenario creation request
  * @param createdBy User ID
@@ -33,32 +44,58 @@ export async function createScenario(
   request: CreateScenarioRequest,
   createdBy: string
 ): Promise<PlanningScenario> {
-  // Validate request
-  const validation = validateScenarioRequest(request);
-  if (!validation.valid) {
-    throw new Error(`Scenario validation failed: ${validation.errors.map(e => e.message).join(', ')}`);
+  // Step 1: Fetch baseline snapshot from database
+  const baselineSnapshot = await fetchBaselineSnapshot(request.baselineSnapshotId);
+
+  // Step 2: Validate scenario with Phase 5A validation layer
+  const validationResult = validateScenarioForCalculation(baselineSnapshot, request.overrides);
+
+  if (!validationResult.canProceed) {
+    throw new Error(
+      `Scenario validation failed (hard_fail): ${validationResult.errors
+        .filter((e) => e.severity === 'hard_fail')
+        .map((e) => e.message)
+        .join(', ')}`
+    );
   }
 
-  // Generate scenario title if not provided
-  const title = request.title || generateScenarioTitle(request.scenarioType, request.overrides);
+  // Step 3: Build scenario snapshot (apply overrides to baseline)
+  const snapshotBuildResult = buildScenarioSnapshot(
+    baselineSnapshot,
+    request.overrides,
+    'temp' // Will be replaced with real scenario ID
+  );
 
-  // Create scenario record
+  if (!snapshotBuildResult.snapshot) {
+    throw new Error(
+      `Snapshot build failed: ${snapshotBuildResult.errors.join(', ')}`
+    );
+  }
+
+  // Step 4: Generate scenario title if not provided
+  const title =
+    request.title || generateScenarioTitle(request.scenarioType, request.overrides);
+
+  // Step 5: Create scenario record
   const scenario = await prisma.planningScenario.create({
     data: {
       householdId: request.householdId,
       taxYear: request.taxYear,
       baselineSnapshotId: request.baselineSnapshotId,
       baselineRunId: request.baselineRunId,
-      scenarioSnapshotId: '', // Will be set after calculation
-      scenarioRunId: '', // Will be set after calculation
+      scenarioSnapshotId: '', // Will be set after calculation completes
+      scenarioRunId: '', // Will be set after calculation completes
       scenarioType: request.scenarioType,
       title,
       description: request.description || null,
       originatingOpportunityId: request.originatingOpportunityId || null,
       overridesJson: JSON.stringify(request.overrides),
       assumptionsJson: JSON.stringify(request.assumptions || []),
-      warningsJson: JSON.stringify(validation.warnings.map(w => w.message)),
-      blockersJson: null,
+      warningsJson: JSON.stringify([
+        ...validationResult.warnings.map((w) => w.message),
+        ...snapshotBuildResult.warnings,
+      ]),
+      blockersJson: JSON.stringify(validationResult.blockers),
       notes: request.notes || null,
       status: 'draft',
       recommended: false,
@@ -67,7 +104,28 @@ export async function createScenario(
     },
   });
 
-  // Create audit event
+  // Step 6: Rebuild snapshot with actual scenario ID
+  const finalSnapshot = buildScenarioSnapshot(
+    baselineSnapshot,
+    request.overrides,
+    scenario.id
+  );
+
+  // Step 7: Trigger async calculation (non-blocking)
+  calculateScenarioAsync(scenario.id, finalSnapshot.snapshot!).catch((error) => {
+    console.error(`Failed to calculate scenario ${scenario.id}:`, error);
+  });
+
+  // Step 8: Emit scenario.created event
+  emitScenarioCreated({
+    scenarioId: scenario.id,
+    householdId: request.householdId,
+    taxYear: request.taxYear,
+    scenarioType: request.scenarioType,
+    createdBy,
+  });
+
+  // Step 9: Create audit event
   await createAuditEvent({
     eventType: 'created',
     scenarioId: scenario.id,
@@ -76,7 +134,7 @@ export async function createScenario(
     changesAfter: scenario,
   });
 
-  // Parse JSON fields for return
+  // Step 10: Parse JSON fields for return
   return parsePlanningScenario(scenario);
 }
 
@@ -597,4 +655,111 @@ async function createAuditEvent(params: {
       metadata: params.metadata ? JSON.stringify(params.metadata) : null,
     },
   });
+}
+
+// ==================== PHASE 5A HELPER FUNCTIONS ====================
+
+/**
+ * Fetch and parse baseline snapshot from database
+ *
+ * @param snapshotId - Baseline snapshot ID
+ * @returns Parsed TaxInputSnapshot
+ */
+async function fetchBaselineSnapshot(snapshotId: string): Promise<TaxInputSnapshot> {
+  const snapshot = await prisma.taxInputSnapshot.findUnique({
+    where: { id: snapshotId },
+  });
+
+  if (!snapshot) {
+    throw new Error(`Baseline snapshot ${snapshotId} not found`);
+  }
+
+  // Parse JSON fields
+  return {
+    ...snapshot,
+    snapshotId: snapshot.id, // Add missing snapshotId field
+    taxpayers: JSON.parse(snapshot.taxpayers as string),
+    inputs: JSON.parse(snapshot.inputs as string),
+    missingInputs: snapshot.missingInputs ? JSON.parse(snapshot.missingInputs as string) : [],
+    warnings: snapshot.warnings ? JSON.parse(snapshot.warnings as string) : [],
+    sourceFactVersions: JSON.parse(snapshot.sourceFactVersions as string),
+  } as unknown as TaxInputSnapshot;
+}
+
+/**
+ * Calculate scenario asynchronously (non-blocking)
+ *
+ * Invokes Phase 3 tax engine, persists results, and updates scenario record
+ * with snapshot ID and run ID.
+ *
+ * @param scenarioId - Scenario ID
+ * @param snapshot - Scenario snapshot with overrides applied
+ */
+async function calculateScenarioAsync(
+  scenarioId: string,
+  snapshot: ScenarioSnapshot
+): Promise<void> {
+  try {
+    // Invoke tax engine adapter
+    const result = await calculateScenario(snapshot, scenarioId);
+
+    // Update scenario with calculation results
+    await prisma.planningScenario.update({
+      where: { id: scenarioId },
+      data: {
+        scenarioSnapshotId: snapshot.snapshotId,
+        scenarioRunId: result.scenarioRunId,
+        status: 'ready_for_review',
+        warningsJson: JSON.stringify(result.warnings),
+      },
+    });
+
+    // Emit calculated event
+    emitScenarioCalculated({
+      scenarioId,
+      scenarioRunId: result.scenarioRunId,
+      householdId: snapshot.householdId,
+      taxYear: snapshot.taxYear,
+      totalTax: result.taxOutput.summary.totalTax,
+      computeTimeMs: result.computeTimeMs,
+    });
+
+    // Create audit event
+    await createAuditEvent({
+      eventType: 'calculated',
+      scenarioId,
+      actor: 'system',
+      actorType: 'system',
+      metadata: {
+        scenarioRunId: result.scenarioRunId,
+        computeTimeMs: result.computeTimeMs,
+        totalTax: result.taxOutput.summary.totalTax,
+      },
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+    // Update scenario with error status
+    await prisma.planningScenario.update({
+      where: { id: scenarioId },
+      data: {
+        status: 'draft',
+        warningsJson: JSON.stringify([`Calculation failed: ${errorMessage}`]),
+      },
+    });
+
+    // Create audit event for failure
+    await createAuditEvent({
+      eventType: 'validation_failed',
+      scenarioId,
+      actor: 'system',
+      actorType: 'system',
+      metadata: {
+        error: errorMessage,
+      },
+    });
+
+    // Re-throw for logging
+    throw error;
+  }
 }

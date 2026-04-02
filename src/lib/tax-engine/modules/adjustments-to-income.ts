@@ -42,27 +42,27 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
     const adjustments: Record<string, number> = {};
 
     // Traditional IRA contributions (deductible portion)
-    const iraContributionsDeductible = inputs.iraContributionsDeductible || 0;
-    if (iraContributionsDeductible > 0) {
+    const iraContributionDeduction = inputs.iraContributionDeduction || 0;
+    if (iraContributionDeduction > 0) {
       // Validate against IRA limits from rules
       const iraLimits = rules.retirementContributions?.traditionalIRA;
       if (iraLimits) {
         const maxContribution = iraLimits.totalWithCatchUp || iraLimits.limit || 7000;
-        if (iraContributionsDeductible > maxContribution) {
+        if (iraContributionDeduction > maxContribution) {
           context = addWarning(
             context,
             'IRA_CONTRIBUTION_EXCEEDS_LIMIT',
             'warning',
-            `IRA contribution ($${iraContributionsDeductible}) exceeds annual limit ($${maxContribution})`,
-            'iraContributionsDeductible',
-            { provided: iraContributionsDeductible, limit: maxContribution }
+            `IRA contribution ($${iraContributionDeduction}) exceeds annual limit ($${maxContribution})`,
+            'iraContributionDeduction',
+            { provided: iraContributionDeduction, limit: maxContribution }
           );
-          adjustments.iraContributionsDeductible = maxContribution;
+          adjustments.iraContributionDeduction = maxContribution;
         } else {
-          adjustments.iraContributionsDeductible = iraContributionsDeductible;
+          adjustments.iraContributionDeduction = iraContributionDeduction;
         }
       } else {
-        adjustments.iraContributionsDeductible = iraContributionsDeductible;
+        adjustments.iraContributionDeduction = iraContributionDeduction;
       }
     }
 
@@ -86,41 +86,41 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
     }
 
     // HSA contributions (deductible portion)
-    const hsaContributionsDeductible = inputs.hsaContributionsDeductible || 0;
-    if (hsaContributionsDeductible > 0) {
+    const hsaDeduction = inputs.hsaDeduction || 0;
+    if (hsaDeduction > 0) {
       // Validate against HSA limits from rules
       const hsaLimits = rules.retirementContributions?.hsa;
       if (hsaLimits) {
         // Assume individual for now (would need household composition to determine family)
         const maxContribution = hsaLimits.individual + (hsaLimits.catchUpAmount || 0);
-        if (hsaContributionsDeductible > maxContribution) {
+        if (hsaDeduction > maxContribution) {
           context = addWarning(
             context,
             'HSA_CONTRIBUTION_EXCEEDS_LIMIT',
             'warning',
-            `HSA contribution ($${hsaContributionsDeductible}) exceeds individual limit ($${maxContribution})`,
-            'hsaContributionsDeductible',
-            { provided: hsaContributionsDeductible, limit: maxContribution }
+            `HSA contribution ($${hsaDeduction}) exceeds individual limit ($${maxContribution})`,
+            'hsaDeduction',
+            { provided: hsaDeduction, limit: maxContribution }
           );
-          adjustments.hsaContributionsDeductible = maxContribution;
+          adjustments.hsaDeduction = maxContribution;
         } else {
-          adjustments.hsaContributionsDeductible = hsaContributionsDeductible;
+          adjustments.hsaDeduction = hsaDeduction;
         }
       } else {
-        adjustments.hsaContributionsDeductible = hsaContributionsDeductible;
+        adjustments.hsaDeduction = hsaDeduction;
       }
     }
 
-    // Self-employed health insurance
-    const selfEmployedHealthInsurance = inputs.selfEmployedHealthInsurance || 0;
-    if (selfEmployedHealthInsurance > 0) {
-      adjustments.selfEmployedHealthInsurance = selfEmployedHealthInsurance;
-    }
+    // Self-employed health insurance - TODO: Add to TaxInputs interface
+    // const selfEmployedHealthInsurance = inputs.selfEmployedHealthInsurance || 0;
+    // if (selfEmployedHealthInsurance > 0) {
+    //   adjustments.selfEmployedHealthInsurance = selfEmployedHealthInsurance;
+    // }
 
     // Self-employed retirement (SEP, SIMPLE, qualified plans)
-    const selfEmployedRetirement = inputs.selfEmployedRetirement || 0;
+    const selfEmployedRetirement = inputs.selfEmployedSepSimple || 0;
     if (selfEmployedRetirement > 0) {
-      adjustments.selfEmployedRetirement = selfEmployedRetirement;
+      adjustments.selfEmployedSepSimple = selfEmployedRetirement;
     }
 
     // Educator expenses (capped at $300 per person, $600 MFJ if both educators)
@@ -149,9 +149,9 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
     }
 
     // Moving expenses (military only, post-TCJA)
-    const movingExpensesMilitary = inputs.movingExpensesMilitary || 0;
-    if (movingExpensesMilitary > 0) {
-      adjustments.movingExpensesMilitary = movingExpensesMilitary;
+    const movingExpensesArmedForces = inputs.movingExpensesArmedForces || 0;
+    if (movingExpensesArmedForces > 0) {
+      adjustments.movingExpensesArmedForces = movingExpensesArmedForces;
     }
 
     // Other adjustments (catch-all)
@@ -178,14 +178,14 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
       notes.push('No adjustments to income');
     } else {
       notes.push(`Total adjustments: $${totalAdjustments.toLocaleString()}`);
-      if (adjustments.iraContributionsDeductible) {
-        notes.push(`  - IRA contributions: $${adjustments.iraContributionsDeductible.toLocaleString()}`);
+      if (adjustments.iraContributionDeduction) {
+        notes.push(`  - IRA contributions: $${adjustments.iraContributionDeduction.toLocaleString()}`);
       }
       if (adjustments.studentLoanInterest) {
         notes.push(`  - Student loan interest: $${adjustments.studentLoanInterest.toLocaleString()}`);
       }
-      if (adjustments.hsaContributionsDeductible) {
-        notes.push(`  - HSA contributions: $${adjustments.hsaContributionsDeductible.toLocaleString()}`);
+      if (adjustments.hsaDeduction) {
+        notes.push(`  - HSA contributions: $${adjustments.hsaDeduction.toLocaleString()}`);
       }
       if (adjustments.selfEmployedHealthInsurance) {
         notes.push(

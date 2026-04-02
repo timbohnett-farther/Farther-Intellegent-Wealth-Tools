@@ -34,12 +34,10 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Parse JSON fields
-    const evidence = JSON.parse(opportunity.evidence as string);
-    const score = JSON.parse(opportunity.score as string);
-    const context = JSON.parse(opportunity.context as string);
-    const statusHistory = opportunity.statusHistory
-      ? JSON.parse(opportunity.statusHistory as string)
-      : [];
+    const evidence = JSON.parse(opportunity.evidenceJson as string);
+    const score = JSON.parse(opportunity.scoreJson as string);
+    const context = JSON.parse(opportunity.contextJson as string);
+    const statusHistory: any[] = []; // TODO: Derive from audit events or remove
 
     // Build response
     const response: GetOpportunityResponse = {

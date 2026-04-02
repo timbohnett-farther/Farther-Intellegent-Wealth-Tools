@@ -29,19 +29,19 @@ export const IncomeAggregationModule: TaxCalculationModule = {
     const tips = inputs.tips || 0;
     const taxableInterest = inputs.taxableInterest || 0;
     const ordinaryDividends = inputs.ordinaryDividends || 0;
-    const businessIncome = inputs.businessIncome || 0;
-    const rentalIncome = inputs.rentalIncome || 0;
-    const unemploymentIncome = inputs.unemploymentIncome || 0;
+    const businessIncomeLoss = inputs.businessIncomeLoss || 0;
+    const scheduleE = inputs.scheduleE || 0;
+    const unemploymentCompensation = inputs.unemploymentCompensation || 0;
     const otherIncome = inputs.otherIncome || 0;
 
     // Retirement income
     const iraDistributionsTaxable = inputs.iraDistributionsTaxable || 0;
-    const pensionIncomeTaxable = inputs.pensionIncomeTaxable || 0;
-    const socialSecurityTotal = inputs.socialSecurityTotal || 0;
+    const pensionsAnnuitiesTaxable = inputs.pensionsAnnuitiesTaxable || 0;
+    const socialSecurityBenefits = inputs.socialSecurityBenefits || 0;
 
     // Preferential income (qualified dividends, capital gains)
     const qualifiedDividends = inputs.qualifiedDividends || 0;
-    const capitalGainLossNet = inputs.capitalGainLossNet || 0;
+    const capitalGainLoss = inputs.capitalGainLoss || 0;
 
     // Calculate totals
     const wagesTotal = wages + salaries + tips;
@@ -50,19 +50,19 @@ export const IncomeAggregationModule: TaxCalculationModule = {
       wagesTotal +
       taxableInterest +
       (ordinaryDividends - qualifiedDividends) + // Ordinary portion of dividends
-      businessIncome +
-      rentalIncome +
-      unemploymentIncome +
+      businessIncomeLoss +
+      scheduleE +
+      unemploymentCompensation +
       otherIncome;
 
-    const retirementIncomeGross = iraDistributionsTaxable + pensionIncomeTaxable;
+    const retirementIncomeGross = iraDistributionsTaxable + pensionsAnnuitiesTaxable;
 
     // Preferential income (taxed at capital gains rates)
-    const preferentialIncomeGross = qualifiedDividends + Math.max(0, capitalGainLossNet);
+    const preferentialIncomeGross = qualifiedDividends + Math.max(0, capitalGainLoss);
 
     // Gross income (before adjustments)
     const grossIncome =
-      ordinaryIncomeGross + retirementIncomeGross + preferentialIncomeGross + socialSecurityTotal;
+      ordinaryIncomeGross + retirementIncomeGross + preferentialIncomeGross + socialSecurityBenefits;
 
     // Provisional income for Social Security taxability calculation
     // Provisional = AGI + Tax-exempt interest + 50% of SS benefits
@@ -72,14 +72,14 @@ export const IncomeAggregationModule: TaxCalculationModule = {
       retirementIncomeGross +
       preferentialIncomeGross +
       taxExemptInterest +
-      socialSecurityTotal * 0.5;
+      socialSecurityBenefits * 0.5;
 
     // Store in intermediates
     context = setIntermediate(context, 'wagesTotal', wagesTotal);
     context = setIntermediate(context, 'ordinaryIncomeGross', ordinaryIncomeGross);
     context = setIntermediate(context, 'retirementIncomeGross', retirementIncomeGross);
     context = setIntermediate(context, 'preferentialIncomeGross', preferentialIncomeGross);
-    context = setIntermediate(context, 'socialSecurityGross', socialSecurityTotal);
+    context = setIntermediate(context, 'socialSecurityGross', socialSecurityBenefits);
     context = setIntermediate(context, 'grossIncome', grossIncome);
     context = setIntermediate(context, 'provisionalIncomeForSS', provisionalIncomeForSS);
     context = setIntermediate(context, 'taxExemptInterest', taxExemptInterest);
@@ -96,13 +96,13 @@ export const IncomeAggregationModule: TaxCalculationModule = {
         { field: 'taxableInterest', value: taxableInterest },
         { field: 'ordinaryDividends', value: ordinaryDividends },
         { field: 'qualifiedDividends', value: qualifiedDividends },
-        { field: 'capitalGainLossNet', value: capitalGainLossNet },
-        { field: 'businessIncome', value: businessIncome },
-        { field: 'rentalIncome', value: rentalIncome },
+        { field: 'capitalGainLoss', value: capitalGainLoss },
+        { field: 'businessIncomeLoss', value: businessIncomeLoss },
+        { field: 'scheduleE', value: scheduleE },
         { field: 'iraDistributionsTaxable', value: iraDistributionsTaxable },
-        { field: 'pensionIncomeTaxable', value: pensionIncomeTaxable },
-        { field: 'socialSecurityTotal', value: socialSecurityTotal },
-        { field: 'unemploymentIncome', value: unemploymentIncome },
+        { field: 'pensionsAnnuitiesTaxable', value: pensionsAnnuitiesTaxable },
+        { field: 'socialSecurityBenefits', value: socialSecurityBenefits },
+        { field: 'unemploymentCompensation', value: unemploymentCompensation },
         { field: 'otherIncome', value: otherIncome },
         { field: 'taxExemptInterest', value: taxExemptInterest },
       ],
@@ -111,7 +111,7 @@ export const IncomeAggregationModule: TaxCalculationModule = {
         ordinaryIncomeGross,
         retirementIncomeGross,
         preferentialIncomeGross,
-        socialSecurityGross: socialSecurityTotal,
+        socialSecurityGross: socialSecurityBenefits,
         grossIncome,
         provisionalIncomeForSS,
       },

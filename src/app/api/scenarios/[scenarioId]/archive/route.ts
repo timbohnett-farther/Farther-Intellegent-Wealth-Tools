@@ -25,7 +25,7 @@ export async function POST(
     return NextResponse.json(scenario, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Validation Error', details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Validation Error', details: error.issues }, { status: 400 });
     }
 
     console.error(`[API] Error:`, error);

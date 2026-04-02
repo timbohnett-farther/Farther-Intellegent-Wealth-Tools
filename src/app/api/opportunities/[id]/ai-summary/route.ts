@@ -42,9 +42,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     // Parse opportunity fields
-    const evidence = JSON.parse(opportunity.evidence as string);
-    const score = JSON.parse(opportunity.score as string);
-    const context = JSON.parse(opportunity.context as string);
+    const evidence = JSON.parse(opportunity.evidenceJson as string);
+    const score = JSON.parse(opportunity.scoreJson as string);
+    const context = JSON.parse(opportunity.contextJson as string);
 
     // Build full opportunity object
     const fullOpportunity = {
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         error: 'Validation Error',
         message: 'Invalid request data',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

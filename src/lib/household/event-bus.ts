@@ -82,7 +82,14 @@ export type HouseholdEventType =
   | 'hubspot.sync_completed'
   // Review events
   | 'review.scheduled'
-  | 'review.completed';
+  | 'review.completed'
+  // Scenario events (Phase 5A)
+  | 'scenario.created'
+  | 'scenario.updated'
+  | 'scenario.calculated'
+  | 'scenario.recommended'
+  | 'scenario.archived'
+  | 'scenario.comparison_created';
 
 // =====================================================================
 // Event Schema

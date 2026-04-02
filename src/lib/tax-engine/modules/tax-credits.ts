@@ -46,15 +46,16 @@ export const TaxCreditsModule: TaxCalculationModule = {
 
     // Get credit inputs from snapshot
     const childTaxCreditAmount = inputs.childTaxCredit || 0;
-    const childAndDependentCareCredit = inputs.childAndDependentCareCredit || 0;
-    const earnedIncomeTaxCredit = inputs.earnedIncomeTaxCredit || 0;
+    const childDependentCareCredit = inputs.childDependentCareCredit || 0;
+    // EITC calculation not yet implemented - would need earned income and dependents
+    const earnedIncomeTaxCredit = 0; // TODO: Implement EITC calculation
     const educationCredits = inputs.educationCredits || 0;
     const foreignTaxCredit = inputs.foreignTaxCredit || 0;
     const otherCredits = inputs.otherCredits || 0;
 
     // Non-refundable credits (can only reduce tax to $0)
     const nonRefundableCredits =
-      childAndDependentCareCredit + educationCredits + foreignTaxCredit + otherCredits;
+      childDependentCareCredit + educationCredits + foreignTaxCredit + otherCredits;
 
     // Partially refundable credits (Child Tax Credit)
     // CTC is non-refundable up to tax liability, then partially refundable via ACTC
@@ -122,8 +123,8 @@ export const TaxCreditsModule: TaxCalculationModule = {
     if (nonRefundableCredits > 0) {
       notes.push('');
       notes.push('Other non-refundable credits:');
-      if (childAndDependentCareCredit > 0)
-        notes.push(`  Child & Dependent Care: $${childAndDependentCareCredit.toLocaleString()}`);
+      if (childDependentCareCredit > 0)
+        notes.push(`  Child & Dependent Care: $${childDependentCareCredit.toLocaleString()}`);
       if (educationCredits > 0)
         notes.push(`  Education credits: $${educationCredits.toLocaleString()}`);
       if (foreignTaxCredit > 0)

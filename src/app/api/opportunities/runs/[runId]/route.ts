@@ -50,19 +50,18 @@ export async function GET(request: NextRequest, { params }: { params: { runId: s
         totalRulesPassed: detectionRun.totalRulesPassed,
         opportunitiesDetected: detectionRun.opportunitiesDetected,
         highPriorityCount: detectionRun.highPriorityCount,
-        totalEstimatedValue: detectionRun.totalEstimatedValue,
+        estimatedValueTotal: detectionRun.estimatedValueTotal ?? undefined,
         computeTimeMs: detectionRun.computeTimeMs,
         status: detectionRun.status as any,
         error: detectionRun.error ?? undefined,
-        startedAt: detectionRun.startedAt,
-        completedAt: detectionRun.completedAt ?? undefined,
+        completedAt: detectionRun.completedAt,
         createdAt: detectionRun.createdAt,
       },
       opportunities: detectionRun.opportunities.map((opp) => {
-        const evidence = JSON.parse(opp.evidence as string);
-        const score = JSON.parse(opp.score as string);
-        const context = JSON.parse(opp.context as string);
-        const statusHistory = opp.statusHistory ? JSON.parse(opp.statusHistory as string) : [];
+        const evidence = JSON.parse(opp.evidenceJson as string);
+        const score = JSON.parse(opp.scoreJson as string);
+        const context = JSON.parse(opp.contextJson as string);
+        const statusHistory: any[] = []; // TODO: Derive from audit events or remove
 
         return {
           id: opp.id,

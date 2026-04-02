@@ -78,10 +78,10 @@ export async function GET(
     // Build response
     const response: ListHouseholdOpportunitiesResponse = {
       opportunities: opportunities.map((opp) => {
-        const evidence = JSON.parse(opp.evidence as string);
-        const score = JSON.parse(opp.score as string);
-        const context = JSON.parse(opp.context as string);
-        const statusHistory = opp.statusHistory ? JSON.parse(opp.statusHistory as string) : [];
+        const evidence = JSON.parse(opp.evidenceJson as string);
+        const score = JSON.parse(opp.scoreJson as string);
+        const context = JSON.parse(opp.contextJson as string);
+        const statusHistory: any[] = []; // TODO: Derive from audit events or remove
 
         return {
           id: opp.id,
@@ -127,7 +127,7 @@ export async function GET(
         error: 'Validation Error',
         message: 'Invalid query parameters',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

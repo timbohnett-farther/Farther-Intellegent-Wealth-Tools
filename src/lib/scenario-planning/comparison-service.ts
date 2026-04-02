@@ -334,31 +334,72 @@ function generateWarnings(rowComparisons: ComparisonRow[]): string[] {
  *
  * Note: This is a placeholder. Would integrate with Phase 3 tax calculation system.
  */
+/**
+ * Load tax output from calculation run (Phase 5A - INTEGRATED)
+ *
+ * Fetches real tax calculation results from TaxCalculationRun table.
+ * No more mock data!
+ *
+ * @param runId - Tax calculation run ID
+ * @returns Parsed tax output
+ */
 async function loadTaxOutput(runId: string): Promise<any> {
-  // TODO: Integrate with Phase 3 calculation run system
-  // For now, return mock data
+  // @ts-expect-error - TaxCalculationRun model added in Phase 5A migration
+  const run = await prisma.taxCalculationRun.findUnique({
+    where: { id: runId },
+  });
+
+  if (!run) {
+    throw new Error(`Tax calculation run ${runId} not found`);
+  }
+
+  // Parse tax output JSON
+  const taxOutput = JSON.parse(run.taxOutputJson);
+
+  // Extract key fields for comparison
   return {
-    wages: 150000,
-    interestIncome: 500,
-    dividendIncome: 2000,
-    capitalGains: 5000,
-    iraDistributions: 0,
-    agi: 157500,
-    deductionMethod: 'standard',
-    standardDeduction: 29200,
-    itemizedDeductions: 0,
-    totalDeductions: 29200,
-    taxableIncome: 128300,
-    ordinaryTax: 20500,
-    preferentialTax: 750,
-    niit: 380,
-    totalTax: 21630,
-    withholdingTotal: 22000,
-    estimatedPaymentsTotal: 0,
-    totalPayments: 22000,
-    refundOrBalanceDue: 370,
-    effectiveTaxRate: 0.1374,
-    marginalTaxRate: 0.22,
+    // Income sources
+    wages: taxOutput.summary.wages || 0,
+    interestIncome: taxOutput.summary.interestIncome || 0,
+    dividendIncome: taxOutput.summary.dividendIncome || 0,
+    capitalGains: taxOutput.summary.capitalGains || 0,
+    iraDistributions: taxOutput.summary.iraDistributions || 0,
+    businessIncome: taxOutput.summary.businessIncome || 0,
+    rentalIncome: taxOutput.summary.rentalIncome || 0,
+    socialSecurity: taxOutput.summary.socialSecurity || 0,
+
+    // AGI
+    agi: taxOutput.summary.agi,
+
+    // Deductions
+    deductionMethod: taxOutput.deductionBreakdown.deductionMethod,
+    standardDeduction: taxOutput.deductionBreakdown.standardDeduction,
+    itemizedDeductions: taxOutput.deductionBreakdown.itemizedDeduction,
+    totalDeductions:
+      taxOutput.deductionBreakdown.deductionMethod === 'standard'
+        ? taxOutput.deductionBreakdown.standardDeduction
+        : taxOutput.deductionBreakdown.itemizedDeduction,
+
+    // Taxable income
+    taxableIncome: taxOutput.summary.taxableIncome,
+
+    // Tax components
+    ordinaryTax: taxOutput.taxCalculation.ordinaryIncomeTax,
+    preferentialTax: taxOutput.taxCalculation.preferentialIncomeTax,
+    niit: taxOutput.taxCalculation.niit,
+    totalTax: taxOutput.summary.totalTax,
+
+    // Payments
+    withholdingTotal: taxOutput.payments.withheld,
+    estimatedPaymentsTotal: taxOutput.payments.estimated,
+    totalPayments: taxOutput.payments.total,
+
+    // Refund/due
+    refundOrBalanceDue: taxOutput.summary.refundOrBalanceDue,
+
+    // Rates
+    effectiveTaxRate: taxOutput.summary.effectiveTaxRate / 100, // Convert percentage to decimal
+    marginalTaxRate: taxOutput.summary.marginalTaxRate / 100, // Convert percentage to decimal
   };
 }
 

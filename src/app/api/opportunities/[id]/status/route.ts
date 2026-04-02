@@ -41,24 +41,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       return NextResponse.json(errorResponse, { status: 404 });
     }
 
-    // Build status history entry
-    const statusHistory = existing.statusHistory
-      ? JSON.parse(existing.statusHistory as string)
-      : [];
-
-    const newHistoryEntry = {
-      status: validatedRequest.status,
-      timestamp: new Date(),
-      updatedBy: validatedRequest.updatedBy,
-      notes: validatedRequest.notes,
-    };
-
-    statusHistory.push(newHistoryEntry);
+    // TODO: Replace with OpportunityAuditEvent insertion for proper status history tracking
+    // The statusHistory field doesn't exist in the schema - use audit events instead
 
     // Prepare update data
     const updateData: any = {
       status: validatedRequest.status,
-      statusHistory: JSON.stringify(statusHistory),
       updatedAt: new Date(),
     };
 
@@ -81,23 +69,25 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     // Create audit event
     await prisma.opportunityAuditEvent.create({
       data: {
+        eventId: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
         opportunityId: id,
         eventType: 'status_changed',
-        actor: validatedRequest.updatedBy,
-        actorType: 'user',
-        changesBefore: JSON.stringify({ status: existing.status }),
-        changesAfter: JSON.stringify({ status: validatedRequest.status }),
-        metadata: JSON.stringify({
+        payloadJson: JSON.stringify({
+          actor: validatedRequest.updatedBy,
+          actorType: 'user',
+          changesBefore: { status: existing.status },
+          changesAfter: { status: validatedRequest.status },
           notes: validatedRequest.notes,
         }),
-        timestamp: new Date(),
+        source: 'opportunity-status-api',
+        triggeredBy: validatedRequest.updatedBy,
       },
     });
 
     // Parse JSON fields for response
-    const evidence = JSON.parse(updated.evidence as string);
-    const score = JSON.parse(updated.score as string);
-    const context = JSON.parse(updated.context as string);
+    const evidence = JSON.parse(updated.evidenceJson as string);
+    const score = JSON.parse(updated.scoreJson as string);
+    const context = JSON.parse(updated.contextJson as string);
 
     // Build response
     const response: UpdateOpportunityStatusResponse = {
@@ -123,7 +113,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         duplicateOfId: updated.duplicateOfId ?? undefined,
         suppressionReason: updated.suppressionReason ?? undefined,
         status: updated.status as any,
-        statusHistory,
+        statusHistory: [], // TODO: Query from OpportunityAuditEvent table
         detectedAt: updated.detectedAt,
         reviewedAt: updated.reviewedAt ?? undefined,
         implementedAt: updated.implementedAt ?? undefined,
@@ -142,7 +132,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         error: 'Validation Error',
         message: 'Invalid request data',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

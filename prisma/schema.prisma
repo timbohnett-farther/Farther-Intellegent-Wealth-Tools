@@ -2468,6 +2468,7 @@ model PlanningScenario {
   auditEvents         ScenarioAuditEvent[]
   comparisonsAsBaseline ScenarioComparison[] @relation("BaselineScenario")
   comparisonsAsComparison ScenarioComparison[] @relation("ComparisonScenarios")
+  calculationRuns     TaxCalculationRun[]
 
   @@index([householdId, taxYear])
   @@index([planId])
@@ -2587,4 +2588,42 @@ model ScenarioAuditEvent {
   @@index([actor])
   @@index([timestamp])
   @@map("scenario_audit_events")
+}
+
+// ==================== TAX CALCULATION RUNS (Phase 5A) ====================
+
+model TaxCalculationRun {
+  id                   String   @id @default(cuid())
+
+  // Scenario reference
+  scenarioId           String?  @map("scenario_id")
+  scenario             PlanningScenario? @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  // Snapshot reference
+  snapshotId           String   @map("snapshot_id")
+
+  // Tax calculation context
+  taxYear              Int      @map("tax_year")
+  runType              String   @map("run_type") // "baseline" | "scenario"
+
+  // Tax output (UI-friendly format)
+  taxOutputJson        String   @map("tax_output_json")
+
+  // Full calculation trace (for debugging and audit)
+  intermediatesJson    String   @map("intermediates_json")
+  traceJson            String   @map("trace_json")
+  warningsJson         String?  @map("warnings_json")
+  unsupportedItemsJson String?  @map("unsupported_items_json")
+  executionOrder       String   @map("execution_order") // JSON array
+
+  // Performance metrics
+  computeTimeMs        Int      @map("compute_time_ms")
+
+  createdAt            DateTime @default(now()) @map("created_at")
+
+  @@index([scenarioId])
+  @@index([snapshotId])
+  @@index([taxYear])
+  @@index([runType])
+  @@map("tax_calculation_runs")
 }

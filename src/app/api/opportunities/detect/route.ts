@@ -11,9 +11,9 @@ import { z } from 'zod';
 import { opportunityDetectionOrchestrator } from '@/lib/opportunity-engine';
 import {
   DetectOpportunitiesRequestSchema,
-  type DetectOpportunitiesResponse,
   type ApiErrorResponse,
 } from '@/lib/opportunity-engine/schemas';
+import type { DetectOpportunitiesResponse } from '@/types/opportunity-engine';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -29,27 +29,12 @@ export async function POST(request: NextRequest) {
 
     // Return successful response
     const response: DetectOpportunitiesResponse = {
-      detectionRun: {
-        id: result.detectionRunId,
-        calculationRunId: validatedRequest.calculationRunId,
-        householdId: result.householdId,
-        taxYear: result.taxYear,
-        rulesVersion: result.rulesVersion,
-        totalRulesEvaluated: result.totalRulesEvaluated,
-        totalRulesPassed: result.totalRulesPassed,
-        opportunitiesDetected: result.opportunityCount,
-        highPriorityCount: result.highPriorityCount,
-        totalEstimatedValue: result.totalEstimatedValue,
-        computeTimeMs: result.computeTimeMs,
-        status: 'completed',
-        startedAt: new Date(),
-        completedAt: new Date(),
-        createdAt: new Date(),
-      },
-      opportunities: result.opportunities.map((opp) => ({
-        ...opp,
-        statusHistory: [],
-      })),
+      detectionRunId: result.detectionRunId,
+      opportunitiesDetected: result.opportunitiesDetected,
+      highPriorityCount: result.highPriorityCount,
+      estimatedValueTotal: result.estimatedValueTotal,
+      computeTimeMs: result.computeTimeMs,
+      opportunities: result.opportunities as any, // Type mismatch: OpportunityCategory types need alignment
     };
 
     return NextResponse.json(response, { status: 200 });
@@ -60,7 +45,7 @@ export async function POST(request: NextRequest) {
         error: 'Validation Error',
         message: 'Invalid request data',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

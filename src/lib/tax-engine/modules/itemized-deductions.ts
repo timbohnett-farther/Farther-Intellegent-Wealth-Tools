@@ -39,7 +39,7 @@ export const ItemizedDeductionsModule: TaxCalculationModule = {
     const saltCap = deductionLimits?.saltCap || 10000;
     const mortgageInterestCap = deductionLimits?.mortgageInterestCap || 750000;
     const charitableCashLimit = deductionLimits?.charitableCashLimit || 0.6;
-    const charitableNoncashLimit = deductionLimits?.charitableNoncashLimit || 0.3;
+    const charitablePropertyLimit = deductionLimits?.charitablePropertyLimit || 0.3;
     const medicalExpenseFloor = deductionLimits?.medicalExpenseFloor || 0.075;
 
     const itemizedBreakdown: Record<string, number> = {};
@@ -153,7 +153,7 @@ export const ItemizedDeductionsModule: TaxCalculationModule = {
     }
 
     if (charitableNoncash > 0) {
-      const noncashLimit = agi * charitableNoncashLimit;
+      const noncashLimit = agi * charitablePropertyLimit;
       deductibleCharitableNoncash = Math.min(charitableNoncash, noncashLimit);
 
       if (charitableNoncash > noncashLimit) {
@@ -162,7 +162,7 @@ export const ItemizedDeductionsModule: TaxCalculationModule = {
           'CHARITABLE_NONCASH_LIMITED',
           'info',
           `Charitable noncash contributions ($${charitableNoncash.toLocaleString()}) limited to ${(
-            charitableNoncashLimit * 100
+            charitablePropertyLimit * 100
           ).toFixed(0)}% AGI ($${noncashLimit.toLocaleString()})`,
           'charitableNoncashContributions',
           { charitableNoncash, limit: noncashLimit, carryforward: charitableNoncash - noncashLimit }

@@ -73,7 +73,6 @@ export async function GET(
         missingInputs,
         warnings,
         createdAt: snapshot.createdAt.toISOString(),
-        createdBy: snapshot.createdBy || 'system',
         approvedAt: snapshot.approvedAt?.toISOString() || null,
         approvedBy: snapshot.approvedBy || null,
       },

@@ -43,19 +43,12 @@ export const OpportunityConfidenceSchema = z.enum(['high', 'medium', 'low']);
  */
 export const DetectOpportunitiesRequestSchema = z.object({
   calculationRunId: z.string().min(1, 'Calculation run ID is required'),
+  rulesVersion: z.string().optional(),
   options: z
     .object({
-      minPriority: z.number().min(0).max(100).optional(),
+      includeAiEnhancement: z.boolean().optional(),
       maxOpportunities: z.number().int().positive().optional(),
-      categories: z.array(OpportunityCategorySchema).optional(),
-      sortBy: z
-        .array(
-          z.object({
-            field: z.enum(['finalScore', 'estimatedValue', 'priority', 'detectedAt']),
-            direction: z.enum(['asc', 'desc']),
-          })
-        )
-        .optional(),
+      minPriority: z.enum(['low', 'medium', 'high']).optional(),
     })
     .optional(),
 });
@@ -162,7 +155,7 @@ export const OpportunitySchema = z.object({
   evidence: z.array(EvidenceSchema),
   score: CompositeScoreSchema,
   finalScore: z.number().min(0).max(100),
-  context: z.record(z.any()),
+  context: z.record(z.string(), z.any()),
   isDuplicate: z.boolean(),
   duplicateOfId: z.string().optional(),
   suppressionReason: z.string().optional(),
@@ -199,12 +192,11 @@ export const OpportunityDetectionRunSchema = z.object({
   totalRulesPassed: z.number().int(),
   opportunitiesDetected: z.number().int(),
   highPriorityCount: z.number().int(),
-  totalEstimatedValue: z.number(),
+  estimatedValueTotal: z.number().optional(), // matches Prisma schema
   computeTimeMs: z.number().int(),
   status: z.enum(['pending', 'running', 'completed', 'failed']),
   error: z.string().optional(),
-  startedAt: z.date(),
-  completedAt: z.date().optional(),
+  completedAt: z.date(),
   createdAt: z.date(),
 });
 

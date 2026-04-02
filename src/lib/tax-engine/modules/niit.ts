@@ -77,19 +77,15 @@ export const NIITModule: TaxCalculationModule = {
     // This includes: interest, dividends, capital gains, rents, royalties, passive income
     const taxableInterest = inputs.taxableInterest || 0;
     const ordinaryDividends = inputs.ordinaryDividends || 0;
-    const shortTermCapitalGains = inputs.shortTermCapitalGains || 0;
-    const longTermCapitalGains = inputs.longTermCapitalGains || 0;
-    const rentalIncome = inputs.rentalIncome || 0;
-    const royaltyIncome = inputs.royaltyIncome || 0;
+    const capitalGains = Math.max(0, inputs.capitalGainLoss || 0); // Only positive gains
+    const scheduleEIncome = Math.max(0, inputs.scheduleE || 0); // Rental, royalty, etc (only positive)
 
     // Net investment income = sum of investment income sources
     const netInvestmentIncome =
       taxableInterest +
       ordinaryDividends +
-      shortTermCapitalGains +
-      longTermCapitalGains +
-      rentalIncome +
-      royaltyIncome;
+      capitalGains +
+      scheduleEIncome;
 
     // NIIT applies to the LESSER of:
     // 1. Net investment income
@@ -122,12 +118,8 @@ export const NIITModule: TaxCalculationModule = {
       notes.push('Net investment income components:');
       if (taxableInterest > 0) notes.push(`  Taxable interest: $${taxableInterest.toLocaleString()}`);
       if (ordinaryDividends > 0) notes.push(`  Ordinary dividends: $${ordinaryDividends.toLocaleString()}`);
-      if (shortTermCapitalGains > 0)
-        notes.push(`  Short-term capital gains: $${shortTermCapitalGains.toLocaleString()}`);
-      if (longTermCapitalGains > 0)
-        notes.push(`  Long-term capital gains: $${longTermCapitalGains.toLocaleString()}`);
-      if (rentalIncome > 0) notes.push(`  Rental income: $${rentalIncome.toLocaleString()}`);
-      if (royaltyIncome > 0) notes.push(`  Royalty income: $${royaltyIncome.toLocaleString()}`);
+      if (capitalGains > 0) notes.push(`  Capital gains: $${capitalGains.toLocaleString()}`);
+      if (scheduleEIncome > 0) notes.push(`  Schedule E income (rental, royalty, etc): $${scheduleEIncome.toLocaleString()}`);
 
       notes.push('');
       notes.push(`Total net investment income: $${netInvestmentIncome.toLocaleString()}`);

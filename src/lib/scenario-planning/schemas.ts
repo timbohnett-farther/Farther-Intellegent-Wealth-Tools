@@ -111,7 +111,7 @@ export const CreateScenarioFromTemplateRequestSchema = z.object({
   baselineSnapshotId: z.string(),
   baselineRunId: z.string(),
   templateId: z.string(),
-  templateInputs: z.record(z.any()),
+  templateInputs: z.record(z.string(), z.any()),
   originatingOpportunityId: z.string().optional(),
 });
 

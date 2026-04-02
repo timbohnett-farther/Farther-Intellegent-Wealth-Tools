@@ -168,7 +168,7 @@ function buildUserPrompt(request: AiSummaryRequest): string {
 
   const evidence = opportunity.evidence
     .map(
-      (e) => `- ${e.label}: ${e.displayValue}${e.source ? ` (Source: ${e.source})` : ''}`
+      (e) => `- ${e.label}: ${e.displayValue}${e.sourceField ? ` (Source: ${e.sourceField})` : ''}`
     )
     .join('\n');
 

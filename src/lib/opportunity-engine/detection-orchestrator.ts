@@ -181,6 +181,7 @@ export class OpportunityDetectionOrchestrator {
     }
 
     // Parse JSON fields
+    // TODO: Add metadata fields (runId, snapshotId, householdId, taxYear, etc.) for full TaxOutput compliance
     return {
       summary: JSON.parse(snapshot.summaryJson),
       incomeBreakdown: JSON.parse(snapshot.incomeBreakdownJson),
@@ -189,7 +190,7 @@ export class OpportunityDetectionOrchestrator {
       credits: JSON.parse(snapshot.creditsJson),
       payments: JSON.parse(snapshot.paymentsJson),
       warnings: snapshot.warnings ? JSON.parse(snapshot.warnings) : [],
-    };
+    } as TaxOutput; // Type cast - partial implementation for opportunity detection
   }
 
   /**
@@ -219,8 +220,7 @@ export class OpportunityDetectionOrchestrator {
           take: 1,
           orderBy: { createdAt: 'desc' },
           include: {
-            retirementAccounts: true,
-            taxableAccounts: true,
+            accounts: true,
           },
         },
       },
@@ -240,8 +240,12 @@ export class OpportunityDetectionOrchestrator {
         ? this.calculateAge(primaryClient.dateOfBirth)
         : undefined,
       spouseAge: spouse?.dateOfBirth ? this.calculateAge(spouse.dateOfBirth) : undefined,
-      hasRetirementAccounts: latestPlan ? latestPlan.retirementAccounts.length > 0 : undefined,
-      hasTaxableAccounts: latestPlan ? latestPlan.taxableAccounts.length > 0 : undefined,
+      hasRetirementAccounts: latestPlan
+        ? latestPlan.accounts.some(a => ['401k', 'ira', 'roth_ira', 'pension', '403b', '457b'].includes(a.accountType))
+        : undefined,
+      hasTaxableAccounts: latestPlan
+        ? latestPlan.accounts.some(a => a.accountType === 'taxable')
+        : undefined,
       stateOfResidence: primaryClient?.state ?? undefined,
     };
   }
@@ -295,8 +299,8 @@ export class OpportunityDetectionOrchestrator {
     // Sort by criteria
     const sorted = [...opportunities].sort((a, b) => {
       for (const sort of criteria.sortBy) {
-        const aValue = a[sort.field] ?? 0;
-        const bValue = b[sort.field] ?? 0;
+        const aValue = Number(a[sort.field] ?? 0);
+        const bValue = Number(b[sort.field] ?? 0);
 
         if (aValue !== bValue) {
           return sort.direction === 'desc' ? bValue - aValue : aValue - bValue;

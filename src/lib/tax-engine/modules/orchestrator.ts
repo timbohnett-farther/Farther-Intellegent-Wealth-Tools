@@ -82,7 +82,11 @@ export async function runTaxCalculation(
     snapshot,
     rules,
     intermediates: {},
-    warnings: snapshot.warnings || [],
+    warnings: (snapshot.warnings || []).map(w => ({
+      code: 'SNAPSHOT_WARNING',
+      severity: 'warning' as const,
+      message: w,
+    })),
     unsupportedItems: [],
     traceSteps: [],
     executedModules: [],
