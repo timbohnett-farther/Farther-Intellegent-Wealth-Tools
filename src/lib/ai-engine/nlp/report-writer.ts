@@ -1,6 +1,9 @@
 // ==================== REPORT WRITER ====================
 // Template-based report section generation for financial planning reports.
 // Produces formatted text sections that can be assembled into full reports.
+// AI-enhanced version available via the AI gateway.
+
+import { callAI, isAIAvailable } from '../../ai/gateway';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -357,4 +360,74 @@ export function generateReportSection(
   }
 
   return generateDefaultSection(sectionType, data);
+}
+
+// ---------------------------------------------------------------------------
+// AI-ENHANCED VERSION
+// ---------------------------------------------------------------------------
+
+const SECTION_SYSTEM_PROMPTS: Record<string, string> = {
+  executive_summary: `You are a senior financial advisor writing the Executive Summary section of a comprehensive financial plan report. Provide a clear overview of the client's financial position, plan confidence, portfolio value, net worth, and key findings. Be specific with numbers. 2-3 paragraphs.`,
+
+  retirement: `You are a retirement planning specialist writing the Retirement Analysis section of a financial plan report. Cover retirement timeline, income projections (Social Security, portfolio income), expense projections, and an assessment of plan sustainability. Use specific numbers and percentages. 2-3 paragraphs.`,
+
+  tax: `You are a tax planning specialist writing the Tax Analysis section of a financial plan report. Cover current year tax summary, effective and marginal rates, and planning opportunities (Roth conversions, tax-loss harvesting). Include specific dollar amounts. 2-3 paragraphs.`,
+
+  portfolio: `You are an investment analyst writing the Portfolio Analysis section of a financial plan report. Cover total portfolio value, current vs. target asset allocation, drift analysis, and rebalancing recommendations. Use specific percentages. 2-3 paragraphs.`,
+
+  estate: `You are an estate planning specialist writing the Estate Planning section of a financial plan report. Cover gross estate value, federal exemption, taxable estate estimate, estate tax projections, and document review status. Include specific dollar amounts. 2-3 paragraphs.`,
+
+  insurance: `You are an insurance analyst writing the Insurance Analysis section of a financial plan report. Cover life insurance, disability, and long-term care gaps. Include coverage amounts, shortfalls, and recommendations. 2-3 paragraphs.`,
+
+  goals: `You are a financial planner writing the Goal Funding Analysis section of a financial plan report. Summarize each goal's funding status, identify at-risk goals, and provide recommendations for underfunded goals. Be specific with funded ratios. 2-3 paragraphs.`,
+};
+
+const DEFAULT_SECTION_PROMPT = `You are a financial advisor writing a section of a comprehensive financial plan report. Summarize the provided data in clear, professional prose. Be specific with numbers. 2-3 paragraphs.`;
+
+/**
+ * AI-enhanced report section generation.
+ * Falls back to the template-based `generateReportSection()` on any error.
+ */
+export async function generateReportSectionEnhanced(
+  sectionType: string,
+  data: Record<string, unknown>,
+): Promise<string> {
+  if (!isAIAvailable()) {
+    return generateReportSection(sectionType, data);
+  }
+
+  try {
+    const systemPrompt = SECTION_SYSTEM_PROMPTS[sectionType] ?? DEFAULT_SECTION_PROMPT;
+
+    const dataEntries = Object.entries(data)
+      .map(([key, value]) => {
+        const label = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
+        if (typeof value === 'number') {
+          return `${label}: ${value > 100 ? `$${value.toLocaleString()}` : value}`;
+        }
+        if (typeof value === 'string' || typeof value === 'boolean') {
+          return `${label}: ${value}`;
+        }
+        if (Array.isArray(value)) {
+          return `${label}: ${JSON.stringify(value)}`;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .join('\n');
+
+    const userPrompt = `Write the "${sectionType.replace(/_/g, ' ').toUpperCase()}" section using this data:\n\n${dataEntries}\n\nWrite in plain text (no markdown). Use the section title as a header.`;
+
+    const response = await callAI({
+      systemPrompt,
+      userPrompt,
+      temperature: 0.3,
+      maxTokens: 1536,
+    });
+
+    return response.text.trim();
+  } catch (error) {
+    console.warn(`[ReportWriter] AI generation failed for "${sectionType}", falling back to template:`, error);
+    return generateReportSection(sectionType, data);
+  }
 }

@@ -1,11 +1,13 @@
 // ==================== PLAN NARRATOR ====================
 // Generates plain-English executive summaries of financial plan results.
-// Uses template-based generation (no external AI API calls).
+// Template-based generation with optional AI-enhanced version via gateway.
 
 import type {
   PlanNarratorInput,
   PlanNarrative,
 } from '../types';
+
+import { callAI, isAIAvailable } from '../../ai/gateway';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -238,4 +240,71 @@ export function narratePlanSummary(results: PlanNarratorInput): PlanNarrative {
     generatedAt: new Date().toISOString(),
     modelUsed: 'template-v1',
   };
+}
+
+// ---------------------------------------------------------------------------
+// AI-ENHANCED VERSION
+// ---------------------------------------------------------------------------
+
+const NARRATOR_SYSTEM_PROMPT = `You are a senior financial advisor writing a client-facing executive summary for a wealth management platform called "Farther Prism."
+
+Your narrative must:
+1. Be written in clear, professional English suitable for high-net-worth clients
+2. Cover plan health (Monte Carlo success rate), portfolio overview, goal funding status, and key alerts/insights
+3. Use specific numbers and percentages — never vague language
+4. Be 3-4 paragraphs long
+5. Close with a forward-looking recommendation (next steps or reassurance)
+6. Maintain a confident but measured tone — acknowledge risks without causing alarm
+7. Never use markdown formatting — plain text only`;
+
+/**
+ * AI-enhanced plan narrative generation.
+ * Sends plan data to the AI gateway for a natural-language executive summary.
+ * Falls back to the template-based `narratePlanSummary()` on any error.
+ */
+export async function narratePlanSummaryEnhanced(
+  results: PlanNarratorInput,
+): Promise<PlanNarrative> {
+  if (!isAIAvailable()) {
+    return narratePlanSummary(results);
+  }
+
+  try {
+    const userPrompt = `Generate an executive summary for the following financial plan:
+
+CLIENT: ${results.clientName}, age ${results.clientAge}${results.spouseAge !== null ? `, spouse age ${results.spouseAge}` : ''}
+RETIREMENT YEAR: ${results.retirementYear} (current year: ${results.currentYear})
+MONTE CARLO SUCCESS RATE: ${(results.successRate * 100).toFixed(1)}% (previous: ${(results.previousSuccessRate * 100).toFixed(1)}%)
+TOTAL PORTFOLIO: $${results.totalPortfolioValue.toLocaleString()}
+NET WORTH: $${results.netWorth.toLocaleString()}
+ANNUAL INCOME: $${results.annualIncome.toLocaleString()}
+ANNUAL EXPENSES: $${results.annualExpenses.toLocaleString()}
+
+GOALS (${results.goalsSummary.length}):
+${results.goalsSummary.map(g => `- ${g.goalName}: ${g.status} (${(g.fundedRatio * 100).toFixed(0)}% funded)`).join('\n') || 'None'}
+
+TOP ALERTS (${results.topAlerts.length}):
+${results.topAlerts.slice(0, 3).map(a => `- [${a.severity}] ${a.title}: ${a.recommendedAction}`).join('\n') || 'None'}
+
+TOP INSIGHTS (${results.topInsights.length}):
+${results.topInsights.slice(0, 3).map(i => `- ${i.title}: est. ${i.estimatedImpact.type} of $${i.estimatedImpact.amount.toLocaleString()} (${i.estimatedImpact.timeframe})`).join('\n') || 'None'}
+
+Write a 3-4 paragraph executive summary.`;
+
+    const response = await callAI({
+      systemPrompt: NARRATOR_SYSTEM_PROMPT,
+      userPrompt,
+      temperature: 0.4,
+      maxTokens: 2048,
+    });
+
+    return {
+      executiveSummary: response.text.trim(),
+      generatedAt: new Date().toISOString(),
+      modelUsed: `${response.provider}/${response.model}`,
+    };
+  } catch (error) {
+    console.warn('[PlanNarrator] AI generation failed, falling back to template:', error);
+    return narratePlanSummary(results);
+  }
 }

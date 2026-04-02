@@ -2,13 +2,12 @@
 // Update Engine — AI Analyzer
 // =============================================================================
 //
-// Provides AI-assisted analysis of tax table changes using template-based
-// stubs. In production, these functions would call GPT-4o via the OpenAI API.
-// All functions are structured to return the same interfaces that the real
-// AI integration would produce.
+// Provides AI-assisted analysis of tax table changes. Template-based stubs
+// for synchronous use, with async AI-enhanced versions via the AI gateway.
 // =============================================================================
 
 import type { ChangeItem, TaxTableType } from '../types';
+import { callAI, extractJSON, isAIAvailable } from '../../ai/gateway';
 
 // ==================== Interfaces ====================
 
@@ -348,4 +347,83 @@ function groupBy<T>(items: T[], keyFn: (item: T) => string): Map<string, T[]> {
     map.set(key, group);
   }
   return map;
+}
+
+// ==================== AI-ENHANCED ANALYSIS ====================
+
+const ANALYZER_SYSTEM_PROMPT = `You are a tax law expert analyzing changes to US tax tables for a wealth management platform called "Farther Prism."
+
+Your analysis must:
+1. Identify the specific IRC section, Rev. Proc., or regulation affected
+2. Explain the change in clear, advisor-facing language
+3. List all affected tax code provisions
+4. Provide a concrete recommended action for financial advisors
+5. Assess confidence in the analysis (0-1)
+
+Return ONLY a valid JSON object:
+{
+  "summary": "Detailed analysis of the change and its implications",
+  "legalCitation": "IRC Section / Rev. Proc. / regulation citation",
+  "effectiveDate": "YYYY-MM-DD",
+  "affectedProvisions": ["provision 1", "provision 2"],
+  "recommendedAction": "What advisors should do",
+  "confidence": 0.0 to 1.0
+}`;
+
+/**
+ * AI-enhanced tax change analysis.
+ * Falls back to the template-based `analyzeChangeWithAI()` on any error.
+ */
+export async function analyzeChangeWithAIEnhanced(
+  change: ChangeItem,
+): Promise<AIAnalysisResult> {
+  if (!isAIAvailable()) {
+    return analyzeChangeWithAI(change);
+  }
+
+  try {
+    const userPrompt = `Analyze this tax table change:
+
+Type: ${change.type}
+Table: ${change.tableType}
+Source: ${change.source}
+Effective Date: ${change.effectiveDate}
+Description: ${change.description}
+Severity: ${change.severity}
+Auto-approvable: ${change.autoApprovable}
+${change.billNumber ? `Bill Number: ${change.billNumber}` : ''}
+${change.billStatus ? `Bill Status: ${change.billStatus}` : ''}
+
+New Data: ${JSON.stringify(change.newData)}
+Previous Data: ${change.previousData ? JSON.stringify(change.previousData) : 'N/A'}
+
+Affected Tables: ${change.affectedTables.join(', ')}`;
+
+    const response = await callAI({
+      systemPrompt: ANALYZER_SYSTEM_PROMPT,
+      userPrompt,
+      temperature: 0.2,
+      maxTokens: 1536,
+      jsonMode: true,
+    });
+
+    const parsed = extractJSON<AIAnalysisResult>(response.text);
+
+    // Validate required fields
+    if (!parsed.summary || !parsed.legalCitation || !parsed.effectiveDate) {
+      throw new Error('AI response missing required fields');
+    }
+
+    return {
+      summary: parsed.summary,
+      legalCitation: parsed.legalCitation,
+      effectiveDate: parsed.effectiveDate,
+      affectedProvisions: parsed.affectedProvisions ?? [],
+      recommendedAction: parsed.recommendedAction ?? 'Review change and determine appropriate action.',
+      confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.85,
+    };
+  } catch (error) {
+    console.warn('[AIAnalyzer] AI analysis failed, falling back to template:', error);
+    return analyzeChangeWithAI(change);
+  }
 }

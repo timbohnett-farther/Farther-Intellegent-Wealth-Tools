@@ -67,9 +67,9 @@ export { recommendRebalancing } from './recommendations/rebalancing-recommender'
 export { generateEstateAlerts } from './recommendations/estate-alert-engine';
 
 // ── NLP ───────────────────────────────────────────────────────────────────
-export { narratePlanSummary } from './nlp/plan-narrator';
-export { composeClientEmail } from './nlp/email-composer';
-export { generateReportSection } from './nlp/report-writer';
+export { narratePlanSummary, narratePlanSummaryEnhanced } from './nlp/plan-narrator';
+export { composeClientEmail, composeClientEmailEnhanced } from './nlp/email-composer';
+export { generateReportSection, generateReportSectionEnhanced } from './nlp/report-writer';
 
 // ── Forecasting ───────────────────────────────────────────────────────────
 export { modelTaxLawChange } from './forecasting/tax-law-impact';
