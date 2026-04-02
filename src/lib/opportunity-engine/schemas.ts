@@ -162,7 +162,7 @@ export const OpportunitySchema = z.object({
   evidence: z.array(EvidenceSchema),
   score: CompositeScoreSchema,
   finalScore: z.number().min(0).max(100),
-  context: z.record(z.any()),
+  context: z.record(z.string(), z.any()),
   isDuplicate: z.boolean(),
   duplicateOfId: z.string().optional(),
   suppressionReason: z.string().optional(),

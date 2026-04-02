@@ -68,8 +68,8 @@ describe('Tax Calculation Orchestrator', () => {
 
       const result = await runTaxCalculation(snapshot, FEDERAL_RULES_2025_V1);
 
-      // Verify correct number of modules executed
-      expect(result.executionOrder).toHaveLength(9);
+      // Verify correct number of modules executed (all 15 modules)
+      expect(result.executionOrder).toHaveLength(15);
 
       // Verify required dependencies are satisfied
       expect(result.executionOrder[0]).toBe('filing_status_resolver'); // Must be first (no dependencies)
@@ -450,8 +450,8 @@ describe('Tax Calculation Orchestrator', () => {
       expect(result.context.intermediates.agi).toBe(70000);
       expect(result.context.intermediates.deductionType).toBe('standard');
       expect(result.context.intermediates.taxableIncome).toBe(55000);
-      expect(result.executionOrder).toHaveLength(9);
-      expect(result.context.traceSteps).toHaveLength(9);
+      expect(result.executionOrder).toHaveLength(15);
+      expect(result.context.traceSteps).toHaveLength(15);
     });
 
     it('should execute complete pipeline for retiree with Social Security', async () => {
@@ -489,7 +489,7 @@ describe('Tax Calculation Orchestrator', () => {
 
       const result = await runTaxCalculation(snapshot, FEDERAL_RULES_2025_V1);
 
-      expect(result.context.traceSteps).toHaveLength(9);
+      expect(result.context.traceSteps).toHaveLength(15);
 
       // Verify trace step structure
       for (const step of result.context.traceSteps) {

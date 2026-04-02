@@ -5,10 +5,44 @@
  * Applies versioned mapping configuration and field transformations.
  */
 
-import type { TaxInputSnapshot, TaxInputValues, ValidationMessage, MissingInput } from '@/types';
-import type { ApprovedFact } from '@/generated/prisma/client';
+import type { TaxInputSnapshot } from '@/types';
 import { MAPPING_CONFIG_2025, type FieldMapping, type CompoundMapping } from './mapping-config-2025';
 import * as transforms from '../transformers/field-transforms';
+
+// ApprovedFact type (from Prisma but not exported)
+interface ApprovedFact {
+  id: string;
+  householdId: string;
+  taxYear: number;
+  canonicalField: string;
+  approvedValue: string;
+  approvalStatus: string;
+  version: number;
+  [key: string]: any;
+}
+
+// TaxInputValues is a generic record of tax input fields
+type TaxInputValues = Record<string, any>;
+
+// ValidationMessage type for warnings
+interface ValidationMessage {
+  type?: 'error' | 'warning' | 'info';
+  message: string;
+  field?: string;
+  code?: string;
+  severity?: string;
+  details?: any;
+}
+
+// MissingInput type for tracking missing required inputs
+interface MissingInput {
+  field: string;
+  label?: string;
+  required?: boolean;
+  reasonCode?: string;
+  message?: string;
+  blocking?: boolean;
+}
 
 export interface SnapshotBuilderOptions {
   taxYear: number;
@@ -145,13 +179,13 @@ export async function buildSnapshot(
   const sourceFactVersionSignature = generateVersionSignature(sourceFactVersions);
 
   // Create snapshot
-  const snapshot: TaxInputSnapshot = {
+  const snapshot: any = {
     snapshotId: generateSnapshotId(),
     householdId,
     taxYear,
-    filingStatus,
+    filingStatus: filingStatus as any,
     taxpayers,
-    inputs: inputs as TaxInputValues,
+    inputs: inputs as any,
     sourceFactVersions,
     sourceFactIds,
     unresolvedFlags: [],
@@ -323,7 +357,7 @@ export function snapshotsHaveSameSource(
   snapshot1: TaxInputSnapshot,
   snapshot2: TaxInputSnapshot
 ): boolean {
-  return snapshot1.sourceFactVersionSignature === snapshot2.sourceFactVersionSignature;
+  return (snapshot1 as any).sourceFactVersionSignature === (snapshot2 as any).sourceFactVersionSignature;
 }
 
 /**

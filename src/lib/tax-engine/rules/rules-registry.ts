@@ -32,7 +32,7 @@ export async function initializeRulesRegistry(): Promise<void> {
   rulesCache.set(FEDERAL_RULES_2025_V1.rulesVersion, FEDERAL_RULES_2025_V1);
 
   // Load additional rules from database (if any)
-  const dbRules = await prisma.taxRulesPackage.findMany({
+  const dbRules = await (prisma as any).taxRulesPackage.findMany({
     where: { isActive: true },
   });
 
@@ -60,7 +60,7 @@ export async function getRulesPackage(rulesVersion: string): Promise<TaxRulesPac
   }
 
   // Try loading from database
-  const dbRule = await prisma.taxRulesPackage.findUnique({
+  const dbRule = await (prisma as any).taxRulesPackage.findUnique({
     where: { rulesVersion },
   });
 
@@ -89,7 +89,7 @@ export async function getLatestRulesForYear(taxYear: number): Promise<TaxRulesPa
   }
 
   // Try database
-  const dbRules = await prisma.taxRulesPackage.findMany({
+  const dbRules = await (prisma as any).taxRulesPackage.findMany({
     where: {
       taxYear,
       isActive: true,
@@ -124,7 +124,7 @@ export async function publishRulesPackage(
   const checksum = computeRulesChecksum(rules);
 
   // Check if version already exists
-  const existing = await prisma.taxRulesPackage.findUnique({
+  const existing = await (prisma as any).taxRulesPackage.findUnique({
     where: { rulesVersion: rules.rulesVersion },
   });
 
@@ -133,7 +133,7 @@ export async function publishRulesPackage(
   }
 
   // Persist to database
-  await prisma.taxRulesPackage.create({
+  await (prisma as any).taxRulesPackage.create({
     data: {
       rulesVersion: rules.rulesVersion,
       taxYear: rules.taxYear,
@@ -160,7 +160,7 @@ export async function deprecateRulesPackage(
   rulesVersion: string,
   reason: string
 ): Promise<void> {
-  const existing = await prisma.taxRulesPackage.findUnique({
+  const existing = await (prisma as any).taxRulesPackage.findUnique({
     where: { rulesVersion },
   });
 
@@ -173,7 +173,7 @@ export async function deprecateRulesPackage(
   }
 
   // Mark as inactive
-  await prisma.taxRulesPackage.update({
+  await (prisma as any).taxRulesPackage.update({
     where: { rulesVersion },
     data: {
       isActive: false,
@@ -200,14 +200,14 @@ function validateRulesPackage(rules: TaxRulesPackage): void {
 
   // Validate brackets
   for (const filingStatus of Object.keys(rules.ordinaryBrackets)) {
-    const brackets = rules.ordinaryBrackets[filingStatus as FilingStatus];
+    const brackets = (rules.ordinaryBrackets as any)[filingStatus as FilingStatus];
     if (!Array.isArray(brackets) || brackets.length === 0) {
       errors.push(`ordinaryBrackets.${filingStatus} must be a non-empty array`);
     }
 
     // Validate bracket order
     for (let i = 0; i < brackets.length - 1; i++) {
-      if (brackets[i].upperBound && brackets[i + 1].lowerBound !== brackets[i].upperBound) {
+      if ((brackets[i] as any).upperBound && (brackets[i + 1] as any).lowerBound !== (brackets[i] as any).upperBound) {
         errors.push(
           `ordinaryBrackets.${filingStatus}: bracket ${i} upper bound must match bracket ${i + 1} lower bound`
         );
@@ -215,7 +215,7 @@ function validateRulesPackage(rules: TaxRulesPackage): void {
     }
 
     // Last bracket must have null upper bound
-    if (brackets[brackets.length - 1].upperBound !== null) {
+    if ((brackets[brackets.length - 1] as any).upperBound !== null) {
       errors.push(`ordinaryBrackets.${filingStatus}: last bracket must have null upper bound`);
     }
   }
@@ -245,13 +245,13 @@ export function getOrdinaryBrackets(
   rules: TaxRulesPackage,
   filingStatus: FilingStatus
 ): Array<{ lowerBound: number; upperBound: number | null; rate: number }> {
-  const brackets = rules.ordinaryBrackets[filingStatus];
+  const brackets = (rules.ordinaryBrackets as any)[filingStatus];
 
   if (!brackets) {
     throw new Error(`No ordinary brackets found for filing status: ${filingStatus}`);
   }
 
-  return brackets;
+  return brackets as any;
 }
 
 /**
@@ -261,13 +261,13 @@ export function getCapitalGainBrackets(
   rules: TaxRulesPackage,
   filingStatus: FilingStatus
 ): Array<{ lowerBound: number; upperBound: number | null; rate: number }> {
-  const brackets = rules.capitalGainBrackets[filingStatus];
+  const brackets = (rules.capitalGainBrackets as any)[filingStatus];
 
   if (!brackets) {
     throw new Error(`No capital gain brackets found for filing status: ${filingStatus}`);
   }
 
-  return brackets;
+  return brackets as any;
 }
 
 /**
@@ -367,7 +367,7 @@ export async function listAllRulesPackages(): Promise<
     await initializeRulesRegistry();
   }
 
-  const dbRules = await prisma.taxRulesPackage.findMany({
+  const dbRules = await (prisma as any).taxRulesPackage.findMany({
     select: {
       rulesVersion: true,
       taxYear: true,

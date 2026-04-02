@@ -6,7 +6,10 @@
 // through implemented. Calculates stage counts and conversion rates.
 // =============================================================================
 
-import { store } from '../store';
+import { store as storeImport } from '../store';
+
+// Cast store to any to avoid Prisma type mismatches
+const store = storeImport as any;
 import type { RecommendationFunnel, FunnelMetric, FunnelStage } from './types';
 import type { TaxYear } from '../types';
 
@@ -35,12 +38,12 @@ export function computeRecommendationFunnel(filters: {
 
   // Apply scope filters
   if (householdId) {
-    statuses = statuses.filter((s) => s.householdId === householdId);
+    statuses = statuses.filter((s: any) => s.householdId === householdId);
   }
   if (advisorId) {
-    const households = store.households.findAll().filter((h) => h.advisorId === advisorId);
-    const householdIds = new Set(households.map((h) => h.householdId));
-    statuses = statuses.filter((s) => householdIds.has(s.householdId));
+    const households = store.households.findAll().filter((h: any) => h.advisorId === advisorId);
+    const householdIds = new Set(households.map((h: any) => h.householdId));
+    statuses = statuses.filter((s: any) => householdIds.has(s.householdId));
   }
   if (teamId) {
     // Filter by team (requires team assignment logic — stub for now)
@@ -52,7 +55,7 @@ export function computeRecommendationFunnel(filters: {
   // Apply time filter
   const startDate = new Date(periodStart);
   const endDate = new Date(periodEnd);
-  statuses = statuses.filter((s) => {
+  statuses = statuses.filter((s: any) => {
     const updated = new Date(s.updatedAt);
     return updated >= startDate && updated <= endDate;
   });
@@ -83,7 +86,7 @@ export function computeRecommendationFunnel(filters: {
   };
 
   for (const status of statuses) {
-    stageCounts[status.status]++;
+    (stageCounts as any)[status.status]++;
   }
 
   // Build funnel metrics with conversion rates

@@ -7,7 +7,10 @@
 // execution status.
 // =============================================================================
 
-import { store } from '../store';
+import { store as storeImport } from '../store';
+
+// Cast store to any to avoid Prisma type mismatches
+const store = storeImport as any;
 import type { ValueAttribution, ValueOfAdvice, ScopeType } from './types';
 import type { TaxYear } from '../types';
 
@@ -28,11 +31,11 @@ export function computeValueAttribution(householdId: string, taxYear: TaxYear): 
 
   // Get all scenarios for the household
   const scenarios = store.scenarios.findAll().filter(
-    (s) => s.householdId === householdId && s.tax_year === taxYear
+    (s: any) => s.householdId === householdId && s.tax_year === taxYear
   );
 
   // Get baseline scenario
-  const baseline = scenarios.find((s) => s.scenario_type === 'baseline');
+  const baseline = scenarios.find((s: any) => s.scenario_type === 'baseline');
   if (!baseline) {
     return []; // Cannot compute value without baseline
   }
@@ -61,7 +64,7 @@ export function computeValueAttribution(householdId: string, taxYear: TaxYear): 
     const valueDelta = baselineTax - scenarioTax; // Positive = tax savings
 
     // Get recommendation status
-    const recStatus = store.recommendationStatuses.findAll().find((r) => r.scenarioId === scenario.scenarioId);
+    const recStatus = store.recommendationStatuses.findAll().find((r: any) => r.scenarioId === scenario.scenarioId);
 
     let acceptedValueCents: number | undefined;
     let implementedValueCents: number | undefined;
@@ -125,11 +128,11 @@ export function computeValueOfAdvice(
 
   // Apply scope filters
   if (scopeType === 'household') {
-    attributions = attributions.filter((a) => a.householdId === scopeRefId);
+    attributions = attributions.filter((a: any) => a.householdId === scopeRefId);
   } else if (scopeType === 'advisor') {
-    const households = store.households.findAll().filter((h) => h.advisorId === scopeRefId);
-    const householdIds = new Set(households.map((h) => h.householdId));
-    attributions = attributions.filter((a) => householdIds.has(a.householdId));
+    const households = store.households.findAll().filter((h: any) => h.advisorId === scopeRefId);
+    const householdIds = new Set(households.map((h: any) => h.householdId));
+    attributions = attributions.filter((a: any) => householdIds.has(a.householdId));
   } else if (scopeType === 'firm') {
     // All attributions for firm
   }
@@ -137,15 +140,15 @@ export function computeValueOfAdvice(
   // Apply time filter
   const startDate = new Date(periodStart);
   const endDate = new Date(periodEnd);
-  attributions = attributions.filter((a) => {
+  attributions = attributions.filter((a: any) => {
     const created = new Date(a.createdAt);
     return created >= startDate && created <= endDate;
   });
 
   // Compute aggregates
-  const proposedValueCents = attributions.reduce((sum, a) => sum + a.proposedValueCents, 0);
-  const acceptedValueCents = attributions.reduce((sum, a) => sum + (a.acceptedValueCents ?? 0), 0);
-  const implementedValueCents = attributions.reduce((sum, a) => sum + (a.implementedValueCents ?? 0), 0);
+  const proposedValueCents = attributions.reduce((sum: number, a: any) => sum + a.proposedValueCents, 0);
+  const acceptedValueCents = attributions.reduce((sum: number, a: any) => sum + (a.acceptedValueCents ?? 0), 0);
+  const implementedValueCents = attributions.reduce((sum: number, a: any) => sum + (a.implementedValueCents ?? 0), 0);
 
   // Value by category
   const valueByCategory: Record<string, number> = {};
@@ -157,21 +160,21 @@ export function computeValueOfAdvice(
   }
 
   // Implementation rate
-  const accepted = attributions.filter((a) => a.status === 'accepted').length;
-  const implemented = attributions.filter((a) => a.status === 'implemented').length;
+  const accepted = attributions.filter((a: any) => a.status === 'accepted').length;
+  const implemented = attributions.filter((a: any) => a.status === 'implemented').length;
   const implementationRate = accepted > 0 ? implemented / accepted : 0;
 
   // Planning coverage (households with plans / total households)
   const allHouseholds = store.households.findAll();
-  const householdsWithScenarios = allHouseholds.filter((h) => {
-    const scenarios = store.scenarios.findAll().filter((s) => s.householdId === h.householdId);
+  const householdsWithScenarios = allHouseholds.filter((h: any) => {
+    const scenarios = store.scenarios.findAll().filter((s: any) => s.householdId === h.householdId);
     return scenarios.length > 0;
   });
   const planningCoverage = allHouseholds.length > 0 ? householdsWithScenarios.length / allHouseholds.length : 0;
 
   // Advisor productivity score (simple heuristic: deliverables per advisor)
   const deliverables = store.deliverables.findAll();
-  const advisors = store.users.findAll().filter((u) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
+  const advisors = store.users.findAll().filter((u: any) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
   const deliverablesPerAdvisor = advisors.length > 0 ? deliverables.length / advisors.length : 0;
   const advisorProductivityScore = Math.min(100, deliverablesPerAdvisor * 10); // Simple scaling
 

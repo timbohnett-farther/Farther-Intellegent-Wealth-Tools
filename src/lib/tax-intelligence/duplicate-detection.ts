@@ -34,7 +34,7 @@ export async function checkExactDuplicate(
   fileHash: string
 ): Promise<DuplicateCheckResult> {
   try {
-    const existingDoc = await prisma.taxDocument.findFirst({
+    const existingDoc = await (prisma as any).taxDocument.findFirst({
       where: {
         householdId,
         fileHash,
@@ -77,7 +77,7 @@ export async function checkLikelyDuplicate(
 ): Promise<DuplicateCheckResult> {
   try {
     // Get recent uploads for this household
-    const recentDocs = await prisma.taxDocument.findMany({
+    const recentDocs = await (prisma as any).taxDocument.findMany({
       where: {
         householdId,
         uploadedAt: {

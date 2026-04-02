@@ -156,10 +156,10 @@ describe('OpportunityDetectionOrchestrator', () => {
     });
 
     it('should handle birthday not yet reached this year', () => {
-      const dob = new Date('1970-04-01');
+      const dob = new Date('1970-12-15');
       const age = (orchestrator as any).calculateAge(dob);
 
-      expect(age).toBe(55); // Birthday already passed
+      expect(age).toBe(55); // Birthday not yet reached this year
     });
 
     it('should handle birthday today', () => {

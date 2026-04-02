@@ -90,7 +90,7 @@ export async function compareScenarios(
   createdBy: string
 ): Promise<ScenarioComparison> {
   // Fetch baseline scenario
-  const baselineScenario = await prisma.planningScenario.findUnique({
+  const baselineScenario = await (prisma as any).planningScenario.findUnique({
     where: { id: request.baselineScenarioId },
   });
 
@@ -99,7 +99,7 @@ export async function compareScenarios(
   }
 
   // Fetch comparison scenarios
-  const comparisonScenarios = await prisma.planningScenario.findMany({
+  const comparisonScenarios = await (prisma as any).planningScenario.findMany({
     where: {
       id: { in: request.comparisonScenarioIds },
     },
@@ -113,21 +113,21 @@ export async function compareScenarios(
   // Note: This would integrate with Phase 3 tax calculation system
   const baselineOutput = await loadTaxOutput(baselineScenario.baselineRunId);
   const comparisonOutputs = await Promise.all(
-    comparisonScenarios.map(s => loadTaxOutput(s.scenarioRunId))
+    comparisonScenarios.map((s: any) => loadTaxOutput(s.scenarioRunId))
   );
 
   // Generate comparison payload
   const comparisonPayload = generateComparisonPayload({
     baselineRunId: baselineScenario.baselineRunId,
     baselineOutput,
-    comparisonRunIds: comparisonScenarios.map(s => s.scenarioRunId),
+    comparisonRunIds: comparisonScenarios.map((s: any) => s.scenarioRunId),
     comparisonOutputs,
     householdId: request.householdId,
     taxYear: request.taxYear,
   });
 
   // Save comparison
-  const comparison = await prisma.scenarioComparison.create({
+  const comparison = await (prisma as any).scenarioComparison.create({
     data: {
       householdId: request.householdId,
       taxYear: request.taxYear,
@@ -384,7 +384,7 @@ function parseScenarioComparison(comparison: any): ScenarioComparison {
  * Get comparison by ID
  */
 export async function getComparison(comparisonId: string): Promise<ScenarioComparison | null> {
-  const comparison = await prisma.scenarioComparison.findUnique({
+  const comparison = await (prisma as any).scenarioComparison.findUnique({
     where: { id: comparisonId },
   });
 
@@ -400,7 +400,7 @@ export async function listComparisons(householdId: string, taxYear?: number): Pr
   const where: any = { householdId };
   if (taxYear) where.taxYear = taxYear;
 
-  const comparisons = await prisma.scenarioComparison.findMany({
+  const comparisons = await (prisma as any).scenarioComparison.findMany({
     where,
     orderBy: { createdAt: 'desc' },
   });

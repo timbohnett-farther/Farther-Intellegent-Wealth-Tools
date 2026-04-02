@@ -31,7 +31,7 @@ export const NIITModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot, rules } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Get AGI and filing status
     const agi = getIntermediate<number>(context, 'agi', 0);

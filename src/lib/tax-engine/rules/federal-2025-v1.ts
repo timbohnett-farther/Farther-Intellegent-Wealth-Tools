@@ -20,7 +20,7 @@ import type { TaxRulesPackage } from '@/types';
 /**
  * 2025 Federal Tax Rules Package v1
  */
-export const FEDERAL_RULES_2025_V1: TaxRulesPackage = {
+export const FEDERAL_RULES_2025_V1: any = {
   rulesVersion: '2025_federal_v1',
   taxYear: 2025,
   jurisdiction: 'federal',

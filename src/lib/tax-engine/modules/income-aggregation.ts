@@ -21,7 +21,7 @@ export const IncomeAggregationModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Ordinary income sources
     const wages = inputs.wages || 0;
@@ -41,7 +41,10 @@ export const IncomeAggregationModule: TaxCalculationModule = {
 
     // Preferential income (qualified dividends, capital gains)
     const qualifiedDividends = inputs.qualifiedDividends || 0;
-    const capitalGainLossNet = inputs.capitalGainLossNet || 0;
+    // Support both field conventions: capitalGainLossNet (summary) or longTermCapitalGains (detailed)
+    const longTermCapitalGains = inputs.longTermCapitalGains || 0;
+    const shortTermCapitalGains = inputs.shortTermCapitalGains || 0;
+    const capitalGainLossNet = inputs.capitalGainLossNet || longTermCapitalGains;
 
     // Calculate totals
     const wagesTotal = wages + salaries + tips;
@@ -53,7 +56,8 @@ export const IncomeAggregationModule: TaxCalculationModule = {
       businessIncome +
       rentalIncome +
       unemploymentIncome +
-      otherIncome;
+      otherIncome +
+      shortTermCapitalGains; // Short-term capital gains are taxed as ordinary income
 
     const retirementIncomeGross = iraDistributionsTaxable + pensionIncomeTaxable;
 

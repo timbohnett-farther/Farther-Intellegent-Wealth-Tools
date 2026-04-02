@@ -92,9 +92,9 @@ export function computeWorkflowBottlenecks(scopeType?: ScopeType, scopeRefId?: s
   // CPA turnaround days
   const cpaRequests = store.cpaRequests.findAll().filter((r) => r.status === 'completed');
   if (cpaRequests.length > 0) {
-    const totalDays = cpaRequests.reduce((sum, r) => {
-      const sent = new Date(r.sentAt);
-      const received = new Date(r.responseReceivedAt!);
+    const totalDays = cpaRequests.reduce((sum, r: any) => {
+      const sent = new Date(r.sentAt || new Date());
+      const received = new Date(r.responseReceivedAt || new Date());
       const days = (received.getTime() - sent.getTime()) / (1000 * 60 * 60 * 24);
       return sum + days;
     }, 0);

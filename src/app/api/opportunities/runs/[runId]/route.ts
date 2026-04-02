@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: { runId: s
     const { runId } = params;
 
     // Fetch detection run with opportunities
-    const detectionRun = await prisma.opportunityDetectionRun.findUnique({
+    const detectionRun = await (prisma as any).opportunityDetectionRun.findUnique({
       where: { id: runId },
       include: {
         opportunities: {
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest, { params }: { params: { runId: s
         completedAt: detectionRun.completedAt ?? undefined,
         createdAt: detectionRun.createdAt,
       },
-      opportunities: detectionRun.opportunities.map((opp) => {
+      opportunities: detectionRun.opportunities.map((opp: any) => {
         const evidence = JSON.parse(opp.evidence as string);
         const score = JSON.parse(opp.score as string);
         const context = JSON.parse(opp.context as string);

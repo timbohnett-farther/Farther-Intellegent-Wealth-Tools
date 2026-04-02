@@ -65,10 +65,11 @@ export async function GET(
     }
 
     // Fetch total count
-    const total = await prisma.opportunity.count({ where });
+    const db = prisma as any;
+    const total = await db.opportunity.count({ where });
 
     // Fetch opportunities with pagination
-    const opportunities = await prisma.opportunity.findMany({
+    const opportunities = await db.opportunity.findMany({
       where,
       orderBy,
       skip: query.offset,
@@ -77,11 +78,11 @@ export async function GET(
 
     // Build response
     const response: ListHouseholdOpportunitiesResponse = {
-      opportunities: opportunities.map((opp) => {
-        const evidence = JSON.parse(opp.evidence as string);
-        const score = JSON.parse(opp.score as string);
-        const context = JSON.parse(opp.context as string);
-        const statusHistory = opp.statusHistory ? JSON.parse(opp.statusHistory as string) : [];
+      opportunities: opportunities.map((opp: any) => {
+        const evidence = JSON.parse(opp.evidenceJson ?? opp.evidence ?? '[]');
+        const score = JSON.parse(opp.scoreJson ?? opp.score ?? '{}');
+        const context = JSON.parse(opp.contextJson ?? opp.context ?? '{}');
+        const statusHistory = opp.statusHistoryJson ? JSON.parse(opp.statusHistoryJson) : (opp.statusHistory ? JSON.parse(opp.statusHistory) : []);
 
         return {
           id: opp.id,
@@ -127,7 +128,7 @@ export async function GET(
         error: 'Validation Error',
         message: 'Invalid query parameters',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

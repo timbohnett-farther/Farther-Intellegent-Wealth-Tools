@@ -584,7 +584,7 @@ export interface BaseEvent {
   source: 'tax-engine';
 }
 
-export interface CalculationRunCompletedEvent extends BaseEvent {
+export interface TaxEngineCalculationRunCompletedEvent extends BaseEvent {
   eventType: 'calculation_run.completed';
   payload: {
     runId: string;
@@ -597,7 +597,7 @@ export interface CalculationRunCompletedEvent extends BaseEvent {
   };
 }
 
-export interface CalculationRunSupersededEvent extends BaseEvent {
+export interface TaxEngineCalculationRunSupersededEvent extends BaseEvent {
   eventType: 'calculation_run.superseded';
   payload: {
     oldRunId: string;
@@ -607,7 +607,7 @@ export interface CalculationRunSupersededEvent extends BaseEvent {
   };
 }
 
-export interface ValidationFailedEvent extends BaseEvent {
+export interface TaxEngineValidationFailedEvent extends BaseEvent {
   eventType: 'validation.failed';
   payload: {
     snapshotId: string;
@@ -617,10 +617,10 @@ export interface ValidationFailedEvent extends BaseEvent {
   };
 }
 
-export type TaxEngineEvent =
-  | CalculationRunCompletedEvent
-  | CalculationRunSupersededEvent
-  | ValidationFailedEvent;
+export type TaxEngineBasicEvent =
+  | TaxEngineCalculationRunCompletedEvent
+  | TaxEngineCalculationRunSupersededEvent
+  | TaxEngineValidationFailedEvent;
 
 // ==================== API RESPONSES ====================
 

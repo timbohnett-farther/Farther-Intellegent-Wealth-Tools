@@ -8,10 +8,27 @@
 import type {
   TaxInputSnapshot,
   TaxRulesPackage,
-  ValidationMessage,
-  UnsupportedItem,
   TraceStep,
 } from '@/types';
+
+// ValidationMessage type for warnings
+interface ValidationMessage {
+  type?: 'error' | 'warning' | 'info';
+  message: string;
+  field?: string;
+  code?: string;
+  severity?: string;
+  details?: any;
+}
+
+// UnsupportedItem type for tracking unsupported features
+interface UnsupportedItem {
+  code: string;
+  message: string;
+  field?: string;
+  impact?: 'none' | 'low' | 'medium' | 'high';
+  relatedFields?: string[];
+}
 
 /**
  * Calculation context passed through all modules
@@ -80,10 +97,10 @@ export function createTraceStep(
     ruleReference,
     inputsUsed: inputs,
     outputsProduced: outputs,
-    warnings,
+    warnings: warnings.map(w => typeof w === 'string' ? w : w.message),
     dependencies,
     notes,
-  };
+  } as any;
 }
 
 /**

@@ -79,7 +79,7 @@ export function safePositiveCurrency(value: any): TransformResult<number> {
     };
   }
 
-  return result;
+  return result as TransformResult<number>;
 }
 
 /**

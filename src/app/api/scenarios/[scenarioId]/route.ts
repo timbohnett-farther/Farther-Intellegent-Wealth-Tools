@@ -71,7 +71,7 @@ export async function PATCH(
         error: 'Validation Error',
         message: 'Invalid request data',
         statusCode: 400,
-        details: error.errors,
+        details: error.issues,
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }

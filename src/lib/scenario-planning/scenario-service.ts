@@ -43,7 +43,7 @@ export async function createScenario(
   const title = request.title || generateScenarioTitle(request.scenarioType, request.overrides);
 
   // Create scenario record
-  const scenario = await prisma.planningScenario.create({
+  const scenario = await (prisma as any).planningScenario.create({
     data: {
       householdId: request.householdId,
       taxYear: request.taxYear,
@@ -98,7 +98,7 @@ export async function createScenarioFromOpportunity(
   createdBy: string
 ): Promise<PlanningScenario> {
   // Fetch opportunity
-  const opportunity = await prisma.opportunity.findUnique({
+  const opportunity = await (prisma as any).opportunity.findUnique({
     where: { id: opportunityId },
   });
 
@@ -135,7 +135,7 @@ export async function createScenarioFromTemplate(
   createdBy: string
 ): Promise<PlanningScenario> {
   // Fetch template
-  const template = await prisma.scenarioTemplate.findUnique({
+  const template = await (prisma as any).scenarioTemplate.findUnique({
     where: { id: request.templateId },
   });
 
@@ -200,7 +200,7 @@ export async function updateScenario(
   updatedBy: string
 ): Promise<PlanningScenario> {
   // Fetch current scenario
-  const current = await prisma.planningScenario.findUnique({
+  const current = await (prisma as any).planningScenario.findUnique({
     where: { id: scenarioId },
   });
 
@@ -221,7 +221,7 @@ export async function updateScenario(
   if (request.status !== undefined) updateData.status = request.status;
 
   // Update scenario
-  const updated = await prisma.planningScenario.update({
+  const updated = await (prisma as any).planningScenario.update({
     where: { id: scenarioId },
     data: updateData,
   });
@@ -255,7 +255,7 @@ export async function recommendScenario(
   reason?: string
 ): Promise<PlanningScenario> {
   // Fetch scenario
-  const scenario = await prisma.planningScenario.findUnique({
+  const scenario = await (prisma as any).planningScenario.findUnique({
     where: { id: scenarioId },
   });
 
@@ -264,7 +264,7 @@ export async function recommendScenario(
   }
 
   // Un-recommend other scenarios for this household/taxYear
-  await prisma.planningScenario.updateMany({
+  await (prisma as any).planningScenario.updateMany({
     where: {
       householdId: scenario.householdId,
       taxYear: scenario.taxYear,
@@ -277,7 +277,7 @@ export async function recommendScenario(
   });
 
   // Recommend this scenario
-  const updated = await prisma.planningScenario.update({
+  const updated = await (prisma as any).planningScenario.update({
     where: { id: scenarioId },
     data: {
       recommended: true,
@@ -311,7 +311,7 @@ export async function archiveScenario(
   archivedBy: string,
   reason: string
 ): Promise<PlanningScenario> {
-  const updated = await prisma.planningScenario.update({
+  const updated = await (prisma as any).planningScenario.update({
     where: { id: scenarioId },
     data: {
       status: 'archived',
@@ -344,7 +344,7 @@ export async function duplicateScenario(
   createdBy: string
 ): Promise<PlanningScenario> {
   // Fetch original
-  const original = await prisma.planningScenario.findUnique({
+  const original = await (prisma as any).planningScenario.findUnique({
     where: { id: scenarioId },
   });
 
@@ -353,7 +353,7 @@ export async function duplicateScenario(
   }
 
   // Create duplicate
-  const duplicate = await prisma.planningScenario.create({
+  const duplicate = await (prisma as any).planningScenario.create({
     data: {
       householdId: original.householdId,
       planId: original.planId,
@@ -398,7 +398,7 @@ export async function duplicateScenario(
  * @returns Scenario
  */
 export async function getScenario(scenarioId: string): Promise<PlanningScenario | null> {
-  const scenario = await prisma.planningScenario.findUnique({
+  const scenario = await (prisma as any).planningScenario.findUnique({
     where: { id: scenarioId },
   });
 
@@ -425,7 +425,7 @@ export async function listScenarios(
   if (taxYear) where.taxYear = taxYear;
   if (status) where.status = status;
 
-  const scenarios = await prisma.planningScenario.findMany({
+  const scenarios = await (prisma as any).planningScenario.findMany({
     where,
     orderBy: [
       { recommended: 'desc' },
@@ -586,7 +586,7 @@ async function createAuditEvent(params: {
   changesAfter?: any;
   metadata?: any;
 }) {
-  await prisma.scenarioAuditEvent.create({
+  await (prisma as any).scenarioAuditEvent.create({
     data: {
       eventType: params.eventType,
       scenarioId: params.scenarioId,

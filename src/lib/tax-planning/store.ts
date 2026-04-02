@@ -793,7 +793,7 @@ class TaxPlanningStore {
   listValueAttributions(householdId?: string): ValueAttribution[] {
     let result = Array.from(this.valueAttributionsMap.values());
     if (householdId) {
-      result = result.filter((v) => v.household_id === householdId);
+      result = result.filter((v: any) => v.householdId === householdId || v.household_id === householdId);
     }
     return clone(result);
   }
@@ -866,7 +866,7 @@ class TaxPlanningStore {
   getGovernanceObject<T>(type: string, id: string): T | undefined {
     const map = this.getGovernanceMap(type);
     const obj = map.get(id);
-    return obj ? clone(obj) : undefined;
+    return obj ? (clone(obj) as any) : undefined;
   }
 
   /**
@@ -874,7 +874,7 @@ class TaxPlanningStore {
    */
   listGovernanceObjects<T>(type: string): T[] {
     const map = this.getGovernanceMap(type);
-    return clone(Array.from(map.values()));
+    return clone(Array.from(map.values())) as T[];
   }
 
   /**
