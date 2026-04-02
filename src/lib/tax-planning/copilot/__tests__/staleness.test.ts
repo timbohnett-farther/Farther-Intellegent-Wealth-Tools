@@ -46,15 +46,15 @@ function mockAnswer(overrides: Partial<CopilotAnswer> = {}): CopilotAnswer {
 }
 
 beforeEach(() => {
-  // Reset store
-  (store as any).copilotAnswers = new Map();
-  (store as any).households = new Map();
-  (store as any).persons = new Map();
-  (store as any).documents = new Map();
-  (store as any).extractedFields = new Map();
-  (store as any).taxReturns = new Map();
-  (store as any).scenarios = new Map();
-  (store as any).calcRuns = new Map();
+  // Reset store (use actual private field names with Map suffix)
+  (store as any).copilotAnswersMap = new Map();
+  (store as any).householdsMap = new Map();
+  (store as any).personsMap = new Map();
+  (store as any).documentsMap = new Map();
+  (store as any).extractedFieldsMap = new Map();
+  (store as any).taxReturnsMap = new Map();
+  (store as any).scenariosMap = new Map();
+  (store as any).calcRunsMap = new Map();
   store.seed();
 });
 

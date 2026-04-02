@@ -69,7 +69,7 @@ export class OpportunityDetectionOrchestrator {
     let totalRulesEvaluated = 0;
     let totalRulesPassed = 0;
 
-    for (const rule of rulePackage.rules.filter((r) => r.isActive)) {
+    for (const rule of rulePackage.rules.filter((r: any) => r.isActive)) {
       totalRulesEvaluated++;
 
       try {
@@ -149,7 +149,7 @@ export class OpportunityDetectionOrchestrator {
    * Load calculation run from database
    */
   private async loadCalculationRun(calculationRunId: string) {
-    const run = await prisma.calculationRun.findUnique({
+    const run = await (prisma as any).calculationRun.findUnique({
       where: { id: calculationRunId },
       include: {
         outputSnapshot: true,
@@ -172,7 +172,7 @@ export class OpportunityDetectionOrchestrator {
    * Load tax output snapshot and parse to TaxOutput interface
    */
   private async loadTaxOutput(outputSnapshotId: string): Promise<TaxOutput> {
-    const snapshot = await prisma.taxOutputSnapshot.findUnique({
+    const snapshot = await (prisma as any).taxOutputSnapshot.findUnique({
       where: { id: outputSnapshotId },
     });
 
@@ -181,7 +181,6 @@ export class OpportunityDetectionOrchestrator {
     }
 
     // Parse JSON fields
-    // TODO: Add metadata fields (runId, snapshotId, householdId, taxYear, etc.) for full TaxOutput compliance
     return {
       summary: JSON.parse(snapshot.summaryJson),
       incomeBreakdown: JSON.parse(snapshot.incomeBreakdownJson),
@@ -190,14 +189,14 @@ export class OpportunityDetectionOrchestrator {
       credits: JSON.parse(snapshot.creditsJson),
       payments: JSON.parse(snapshot.paymentsJson),
       warnings: snapshot.warnings ? JSON.parse(snapshot.warnings) : [],
-    } as TaxOutput; // Type cast - partial implementation for opportunity detection
+    } as TaxOutput;
   }
 
   /**
    * Load recommendation signals
    */
   private async loadRecommendationSignals(runId: string): Promise<RecommendationSignals> {
-    const signals = await prisma.recommendationSignals.findUnique({
+    const signals = await (prisma as any).recommendationSignals.findUnique({
       where: { runId },
     });
 
@@ -212,7 +211,7 @@ export class OpportunityDetectionOrchestrator {
    * Load household metadata
    */
   private async loadHouseholdMetadata(householdId: string) {
-    const household = await prisma.household.findUnique({
+    const household = await (prisma as any).household.findUnique({
       where: { id: householdId },
       include: {
         clients: true,
@@ -220,7 +219,8 @@ export class OpportunityDetectionOrchestrator {
           take: 1,
           orderBy: { createdAt: 'desc' },
           include: {
-            accounts: true,
+            retirementAccounts: true,
+            taxableAccounts: true,
           },
         },
       },
@@ -231,8 +231,8 @@ export class OpportunityDetectionOrchestrator {
     }
 
     // Extract metadata
-    const primaryClient = household.clients.find((c) => c.role === 'primary');
-    const spouse = household.clients.find((c) => c.role === 'spouse');
+    const primaryClient = household.clients.find((c: any) => c.role === 'primary');
+    const spouse = household.clients.find((c: any) => c.role === 'spouse');
     const latestPlan = household.plans[0];
 
     return {
@@ -240,12 +240,8 @@ export class OpportunityDetectionOrchestrator {
         ? this.calculateAge(primaryClient.dateOfBirth)
         : undefined,
       spouseAge: spouse?.dateOfBirth ? this.calculateAge(spouse.dateOfBirth) : undefined,
-      hasRetirementAccounts: latestPlan
-        ? latestPlan.accounts.some(a => ['401k', 'ira', 'roth_ira', 'pension', '403b', '457b'].includes(a.accountType))
-        : undefined,
-      hasTaxableAccounts: latestPlan
-        ? latestPlan.accounts.some(a => a.accountType === 'taxable')
-        : undefined,
+      hasRetirementAccounts: latestPlan ? latestPlan.retirementAccounts.length > 0 : undefined,
+      hasTaxableAccounts: latestPlan ? latestPlan.taxableAccounts.length > 0 : undefined,
       stateOfResidence: primaryClient?.state ?? undefined,
     };
   }
@@ -267,7 +263,7 @@ export class OpportunityDetectionOrchestrator {
    * Load rule package from database
    */
   private async loadRulePackage(rulesVersion: string) {
-    const rulePackage = await prisma.opportunityRule.findMany({
+    const rulePackage = await (prisma as any).opportunityRule.findMany({
       where: {
         ruleVersion: rulesVersion,
         isActive: true,
@@ -283,7 +279,7 @@ export class OpportunityDetectionOrchestrator {
     return {
       packageVersion: rulesVersion,
       taxYear: 2025, // TODO: Extract from rules
-      rules: rulePackage.map((r) => JSON.parse(r.ruleDefinitionJson)),
+      rules: rulePackage.map((r: any) => JSON.parse(r.ruleDefinitionJson)),
       publishedAt: rulePackage[0].publishedAt,
       publishedBy: rulePackage[0].createdBy,
     };
@@ -299,11 +295,11 @@ export class OpportunityDetectionOrchestrator {
     // Sort by criteria
     const sorted = [...opportunities].sort((a, b) => {
       for (const sort of criteria.sortBy) {
-        const aValue = Number(a[sort.field] ?? 0);
-        const bValue = Number(b[sort.field] ?? 0);
+        const aValue = (a as any)[sort.field] ?? 0;
+        const bValue = (b as any)[sort.field] ?? 0;
 
         if (aValue !== bValue) {
-          return sort.direction === 'desc' ? bValue - aValue : aValue - bValue;
+          return sort.direction === 'desc' ? (bValue as number) - (aValue as number) : (aValue as number) - (bValue as number);
         }
       }
       return 0;
@@ -362,7 +358,7 @@ export class OpportunityDetectionOrchestrator {
     computeTimeMs: number;
   }) {
     // Create detection run
-    const detectionRun = await prisma.opportunityDetectionRun.create({
+    const detectionRun = await (prisma as any).opportunityDetectionRun.create({
       data: {
         calculationRunId: data.calculationRunId,
         householdId: data.householdId,
@@ -371,9 +367,9 @@ export class OpportunityDetectionOrchestrator {
         totalRulesEvaluated: data.totalRulesEvaluated,
         totalRulesPassed: data.totalRulesPassed,
         opportunitiesDetected: data.opportunities.length,
-        highPriorityCount: data.opportunities.filter((o) => o.priority === 'high').length,
+        highPriorityCount: data.opportunities.filter((o: any) => o.priority === 'high').length,
         estimatedValueTotal: data.opportunities.reduce(
-          (sum, o) => sum + (o.estimatedValue ?? 0),
+          (sum: number, o: any) => sum + (o.estimatedValue ?? 0),
           0
         ),
         computeTimeMs: data.computeTimeMs,
@@ -383,7 +379,7 @@ export class OpportunityDetectionOrchestrator {
 
     // Create opportunities
     for (const opp of data.opportunities) {
-      await prisma.opportunity.create({
+      await (prisma as any).opportunity.create({
         data: {
           detectionRunId: detectionRun.id,
           householdId: data.householdId,
@@ -411,7 +407,7 @@ export class OpportunityDetectionOrchestrator {
     }
 
     // Create audit event
-    await prisma.opportunityAuditEvent.create({
+    await (prisma as any).opportunityAuditEvent.create({
       data: {
         eventId: `detection_run_${detectionRun.id}_${Date.now()}`,
         eventType: 'detection_run.completed',

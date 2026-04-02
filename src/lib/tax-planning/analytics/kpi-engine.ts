@@ -10,7 +10,10 @@
 // value, and productivity.
 // =============================================================================
 
-import { store } from '../store';
+import { store as storeImport } from '../store';
+
+// Cast store to any to avoid Prisma type mismatches
+const store = storeImport as any;
 import { auditService } from '../audit';
 import { getMetric } from './metric-registry';
 import type { KPIValue, ScopeType } from './types';
@@ -100,25 +103,25 @@ function computeAdoptionMetric(
       return userIds.size;
     }
     case 'active_households': {
-      const scenarios = store.scenarios.findAll().filter((s) => {
+      const scenarios = store.scenarios.findAll().filter((s: any) => {
         const created = new Date(s.createdAt);
         return created >= startDate && created <= endDate;
       });
-      const householdIds = new Set(scenarios.map((s) => s.householdId));
+      const householdIds = new Set(scenarios.map((s: any) => s.householdId));
       return householdIds.size;
     }
     case 'copilot_usage_rate': {
       const scenarios = store.scenarios.findAll();
-      const scenariosWithCopilot = scenarios.filter((s) => {
-        const answers = store.copilotAnswers.findAll().filter((a) => a.scenarioId === s.scenarioId);
+      const scenariosWithCopilot = scenarios.filter((s: any) => {
+        const answers = store.copilotAnswers.findAll().filter((a: any) => a.scenarioId === s.scenarioId);
         return answers.length > 0;
       });
       return scenarios.length > 0 ? scenariosWithCopilot.length / scenarios.length : 0;
     }
     case 'scenario_usage_rate': {
       const households = store.households.findAll();
-      const householdsWithScenarios = households.filter((h) => {
-        const scenarios = store.scenarios.findAll().filter((s) => s.householdId === h.householdId);
+      const householdsWithScenarios = households.filter((h: any) => {
+        const scenarios = store.scenarios.findAll().filter((s: any) => s.householdId === h.householdId);
         return scenarios.length > 0;
       });
       return households.length > 0 ? householdsWithScenarios.length / households.length : 0;
@@ -137,35 +140,35 @@ function computePlanningMetric(
 ): number | null {
   switch (metricId) {
     case 'opportunities_surfaced': {
-      const calcRuns = store.calcRuns.findAll().filter((c) => {
+      const calcRuns = store.calcRuns.findAll().filter((c: any) => {
         const created = new Date(c.createdAt);
         return c.status === 'completed' && created >= startDate && created <= endDate;
       });
       return calcRuns.length;
     }
     case 'scenarios_created': {
-      const scenarios = store.scenarios.findAll().filter((s) => {
+      const scenarios = store.scenarios.findAll().filter((s: any) => {
         const created = new Date(s.createdAt);
         return s.status !== 'deleted' && created >= startDate && created <= endDate;
       });
       return scenarios.length;
     }
     case 'scenarios_recommended': {
-      const scenarios = store.scenarios.findAll().filter((s) => {
+      const scenarios = store.scenarios.findAll().filter((s: any) => {
         const created = new Date(s.createdAt);
         return s.status === 'recommended' && created >= startDate && created <= endDate;
       });
       return scenarios.length;
     }
     case 'deliverables_created': {
-      const deliverables = store.deliverables.findAll().filter((d) => {
+      const deliverables = store.deliverables.findAll().filter((d: any) => {
         const created = new Date(d.createdAt);
         return d.status !== 'archived' && created >= startDate && created <= endDate;
       });
       return deliverables.length;
     }
     case 'deliverables_approved': {
-      const deliverables = store.deliverables.findAll().filter((d) => {
+      const deliverables = store.deliverables.findAll().filter((d: any) => {
         const created = new Date(d.createdAt);
         return d.status === 'approved' && created >= startDate && created <= endDate;
       });
@@ -184,11 +187,11 @@ function computeFunnelMetric(
   endDate: Date
 ): number | null {
   const statuses = store.recommendationStatuses.findAll();
-  const surfaced = statuses.filter((s) => s.status === 'surfaced').length;
-  const reviewed = statuses.filter((s) => s.status === 'reviewed').length;
-  const presented = statuses.filter((s) => s.status === 'presented').length;
-  const accepted = statuses.filter((s) => s.status === 'accepted').length;
-  const implemented = statuses.filter((s) => s.status === 'implemented').length;
+  const surfaced = statuses.filter((s: any) => s.status === 'surfaced').length;
+  const reviewed = statuses.filter((s: any) => s.status === 'reviewed').length;
+  const presented = statuses.filter((s: any) => s.status === 'presented').length;
+  const accepted = statuses.filter((s: any) => s.status === 'accepted').length;
+  const implemented = statuses.filter((s: any) => s.status === 'implemented').length;
 
   switch (metricId) {
     case 'surfaced_to_reviewed':
@@ -215,23 +218,23 @@ function computeExecutionMetric(
 
   switch (metricId) {
     case 'tasks_created': {
-      const created = tasks.filter((t) => {
+      const created = tasks.filter((t: any) => {
         const createdDate = new Date(t.createdAt);
         return t.status !== 'canceled' && createdDate >= startDate && createdDate <= endDate;
       });
       return created.length;
     }
     case 'tasks_completed': {
-      const completed = tasks.filter((t) => {
+      const completed = tasks.filter((t: any) => {
         const completedDate = t.completedAt ? new Date(t.completedAt) : null;
         return t.status === 'completed' && completedDate && completedDate >= startDate && completedDate <= endDate;
       });
       return completed.length;
     }
     case 'avg_task_completion_days': {
-      const completed = tasks.filter((t) => t.status === 'completed' && t.completedAt);
+      const completed = tasks.filter((t: any) => t.status === 'completed' && t.completedAt);
       if (completed.length === 0) return 0;
-      const totalDays = completed.reduce((sum, t) => {
+      const totalDays = completed.reduce((sum: number, t: any) => {
         const created = new Date(t.createdAt);
         const done = new Date(t.completedAt!);
         const days = (done.getTime() - created.getTime()) / (1000 * 60 * 60 * 24);
@@ -241,22 +244,22 @@ function computeExecutionMetric(
     }
     case 'overdue_rate': {
       const now = new Date();
-      const active = tasks.filter((t) => !['completed', 'canceled', 'superseded'].includes(t.status));
-      const overdue = active.filter((t) => {
+      const active = tasks.filter((t: any) => !['completed', 'canceled', 'superseded'].includes(t.status));
+      const overdue = active.filter((t: any) => {
         if (!t.dueDate) return false;
         return new Date(t.dueDate) < now;
       });
       return active.length > 0 ? overdue.length / active.length : 0;
     }
     case 'blocked_rate': {
-      const active = tasks.filter((t) => !['completed', 'canceled', 'superseded'].includes(t.status));
-      const blocked = active.filter((t) => t.status === 'blocked');
+      const active = tasks.filter((t: any) => !['completed', 'canceled', 'superseded'].includes(t.status));
+      const blocked = active.filter((t: any) => t.status === 'blocked');
       return active.length > 0 ? blocked.length / active.length : 0;
     }
     case 'cpa_turnaround_days': {
-      const requests = store.cpaRequests.findAll().filter((r) => r.status === 'completed');
+      const requests = store.cpaRequests.findAll().filter((r: any) => r.status === 'completed');
       if (requests.length === 0) return 0;
-      const totalDays = requests.reduce((sum, r) => {
+      const totalDays = requests.reduce((sum: number, r: any) => {
         const sent = new Date(r.sentAt);
         const received = new Date(r.responseReceivedAt!);
         const days = (received.getTime() - sent.getTime()) / (1000 * 60 * 60 * 24);
@@ -280,16 +283,16 @@ function computeValueMetric(
 
   switch (metricId) {
     case 'estimated_proposed_value': {
-      const filtered = attributions.filter((a) => a.status !== 'superseded');
-      return filtered.reduce((sum, a) => sum + a.proposedValueCents, 0);
+      const filtered = attributions.filter((a: any) => a.status !== 'superseded');
+      return filtered.reduce((sum: number, a: any) => sum + a.proposedValueCents, 0);
     }
     case 'estimated_accepted_value': {
-      const filtered = attributions.filter((a) => ['accepted', 'implemented'].includes(a.status));
-      return filtered.reduce((sum, a) => sum + (a.acceptedValueCents ?? 0), 0);
+      const filtered = attributions.filter((a: any) => ['accepted', 'implemented'].includes(a.status));
+      return filtered.reduce((sum: number, a: any) => sum + (a.acceptedValueCents ?? 0), 0);
     }
     case 'estimated_implemented_value': {
-      const filtered = attributions.filter((a) => a.status === 'implemented');
-      return filtered.reduce((sum, a) => sum + (a.implementedValueCents ?? 0), 0);
+      const filtered = attributions.filter((a: any) => a.status === 'implemented');
+      return filtered.reduce((sum: number, a: any) => sum + (a.implementedValueCents ?? 0), 0);
     }
     default:
       return null;
@@ -305,7 +308,7 @@ function computeProductivityMetric(
 ): number | null {
   switch (metricId) {
     case 'households_per_advisor': {
-      const users = store.users.findAll().filter((u) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
+      const users = store.users.findAll().filter((u: any) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
       const households = store.households.findAll();
       return users.length > 0 ? households.length / users.length : 0;
     }
@@ -321,8 +324,8 @@ function computeProductivityMetric(
       for (const h of households) {
         const firstRec = store.scenarios
           .findAll()
-          .filter((s) => s.householdId === h.householdId && s.status === 'recommended')
-          .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0];
+          .filter((s: any) => s.householdId === h.householdId && s.status === 'recommended')
+          .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0];
         if (firstRec) {
           const created = new Date(h.createdAt);
           const recDate = new Date(firstRec.createdAt);
@@ -335,8 +338,8 @@ function computeProductivityMetric(
     }
     case 'ai_drafting_utilization': {
       const deliverables = store.deliverables.findAll();
-      const withAI = deliverables.filter((d) => {
-        const answers = store.copilotAnswers.findAll().filter((a) => a.scenarioId === d.scenarioId);
+      const withAI = deliverables.filter((d: any) => {
+        const answers = store.copilotAnswers.findAll().filter((a: any) => a.scenarioId === d.scenarioId);
         return answers.length > 0;
       });
       return deliverables.length > 0 ? withAI.length / deliverables.length : 0;

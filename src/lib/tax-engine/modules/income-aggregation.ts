@@ -21,7 +21,7 @@ export const IncomeAggregationModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Ordinary income sources
     const wages = inputs.wages || 0;
@@ -29,19 +29,22 @@ export const IncomeAggregationModule: TaxCalculationModule = {
     const tips = inputs.tips || 0;
     const taxableInterest = inputs.taxableInterest || 0;
     const ordinaryDividends = inputs.ordinaryDividends || 0;
-    const businessIncomeLoss = inputs.businessIncomeLoss || 0;
-    const scheduleE = inputs.scheduleE || 0;
-    const unemploymentCompensation = inputs.unemploymentCompensation || 0;
+    const businessIncome = inputs.businessIncome || 0;
+    const rentalIncome = inputs.rentalIncome || 0;
+    const unemploymentIncome = inputs.unemploymentIncome || 0;
     const otherIncome = inputs.otherIncome || 0;
 
     // Retirement income
     const iraDistributionsTaxable = inputs.iraDistributionsTaxable || 0;
-    const pensionsAnnuitiesTaxable = inputs.pensionsAnnuitiesTaxable || 0;
-    const socialSecurityBenefits = inputs.socialSecurityBenefits || 0;
+    const pensionIncomeTaxable = inputs.pensionIncomeTaxable || 0;
+    const socialSecurityTotal = inputs.socialSecurityTotal || 0;
 
     // Preferential income (qualified dividends, capital gains)
     const qualifiedDividends = inputs.qualifiedDividends || 0;
-    const capitalGainLoss = inputs.capitalGainLoss || 0;
+    // Support both field conventions: capitalGainLossNet (summary) or longTermCapitalGains (detailed)
+    const longTermCapitalGains = inputs.longTermCapitalGains || 0;
+    const shortTermCapitalGains = inputs.shortTermCapitalGains || 0;
+    const capitalGainLossNet = inputs.capitalGainLossNet || longTermCapitalGains;
 
     // Calculate totals
     const wagesTotal = wages + salaries + tips;
@@ -50,19 +53,20 @@ export const IncomeAggregationModule: TaxCalculationModule = {
       wagesTotal +
       taxableInterest +
       (ordinaryDividends - qualifiedDividends) + // Ordinary portion of dividends
-      businessIncomeLoss +
-      scheduleE +
-      unemploymentCompensation +
-      otherIncome;
+      businessIncome +
+      rentalIncome +
+      unemploymentIncome +
+      otherIncome +
+      shortTermCapitalGains; // Short-term capital gains are taxed as ordinary income
 
-    const retirementIncomeGross = iraDistributionsTaxable + pensionsAnnuitiesTaxable;
+    const retirementIncomeGross = iraDistributionsTaxable + pensionIncomeTaxable;
 
     // Preferential income (taxed at capital gains rates)
-    const preferentialIncomeGross = qualifiedDividends + Math.max(0, capitalGainLoss);
+    const preferentialIncomeGross = qualifiedDividends + Math.max(0, capitalGainLossNet);
 
     // Gross income (before adjustments)
     const grossIncome =
-      ordinaryIncomeGross + retirementIncomeGross + preferentialIncomeGross + socialSecurityBenefits;
+      ordinaryIncomeGross + retirementIncomeGross + preferentialIncomeGross + socialSecurityTotal;
 
     // Provisional income for Social Security taxability calculation
     // Provisional = AGI + Tax-exempt interest + 50% of SS benefits
@@ -72,14 +76,14 @@ export const IncomeAggregationModule: TaxCalculationModule = {
       retirementIncomeGross +
       preferentialIncomeGross +
       taxExemptInterest +
-      socialSecurityBenefits * 0.5;
+      socialSecurityTotal * 0.5;
 
     // Store in intermediates
     context = setIntermediate(context, 'wagesTotal', wagesTotal);
     context = setIntermediate(context, 'ordinaryIncomeGross', ordinaryIncomeGross);
     context = setIntermediate(context, 'retirementIncomeGross', retirementIncomeGross);
     context = setIntermediate(context, 'preferentialIncomeGross', preferentialIncomeGross);
-    context = setIntermediate(context, 'socialSecurityGross', socialSecurityBenefits);
+    context = setIntermediate(context, 'socialSecurityGross', socialSecurityTotal);
     context = setIntermediate(context, 'grossIncome', grossIncome);
     context = setIntermediate(context, 'provisionalIncomeForSS', provisionalIncomeForSS);
     context = setIntermediate(context, 'taxExemptInterest', taxExemptInterest);
@@ -96,13 +100,13 @@ export const IncomeAggregationModule: TaxCalculationModule = {
         { field: 'taxableInterest', value: taxableInterest },
         { field: 'ordinaryDividends', value: ordinaryDividends },
         { field: 'qualifiedDividends', value: qualifiedDividends },
-        { field: 'capitalGainLoss', value: capitalGainLoss },
-        { field: 'businessIncomeLoss', value: businessIncomeLoss },
-        { field: 'scheduleE', value: scheduleE },
+        { field: 'capitalGainLossNet', value: capitalGainLossNet },
+        { field: 'businessIncome', value: businessIncome },
+        { field: 'rentalIncome', value: rentalIncome },
         { field: 'iraDistributionsTaxable', value: iraDistributionsTaxable },
-        { field: 'pensionsAnnuitiesTaxable', value: pensionsAnnuitiesTaxable },
-        { field: 'socialSecurityBenefits', value: socialSecurityBenefits },
-        { field: 'unemploymentCompensation', value: unemploymentCompensation },
+        { field: 'pensionIncomeTaxable', value: pensionIncomeTaxable },
+        { field: 'socialSecurityTotal', value: socialSecurityTotal },
+        { field: 'unemploymentIncome', value: unemploymentIncome },
         { field: 'otherIncome', value: otherIncome },
         { field: 'taxExemptInterest', value: taxExemptInterest },
       ],
@@ -111,7 +115,7 @@ export const IncomeAggregationModule: TaxCalculationModule = {
         ordinaryIncomeGross,
         retirementIncomeGross,
         preferentialIncomeGross,
-        socialSecurityGross: socialSecurityBenefits,
+        socialSecurityGross: socialSecurityTotal,
         grossIncome,
         provisionalIncomeForSS,
       },

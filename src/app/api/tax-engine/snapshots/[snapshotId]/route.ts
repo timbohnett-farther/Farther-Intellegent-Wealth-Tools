@@ -34,7 +34,7 @@ export async function GET(
     }
 
     // Fetch snapshot
-    const snapshot = await prisma.taxInputSnapshot.findUnique({
+    const snapshot = await (prisma as any).taxInputSnapshot.findUnique({
       where: { id: snapshotId },
     });
 

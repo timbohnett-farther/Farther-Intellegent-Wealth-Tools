@@ -26,7 +26,7 @@ import { getCapitalGainBrackets } from '../rules/rules-registry';
 export const CapitalGainsTaxModule: TaxCalculationModule = {
   moduleName: 'capital_gains_tax',
   description: 'Calculate federal tax on long-term capital gains and qualified dividends at preferential rates',
-  dependencies: ['filing_status_resolver', 'taxable_income_composer'],
+  dependencies: ['filing_status_resolver', 'taxable_income_composer', 'ordinary_income_tax'],
 
   run(context: CalculationContext): CalculationContext {
     const { rules } = context;

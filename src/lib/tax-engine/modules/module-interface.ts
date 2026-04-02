@@ -11,19 +11,22 @@ import type {
   TraceStep,
 } from '@/types';
 
-// Local types for module system (not in @/types)
-export interface ValidationMessage {
-  code: string;
-  severity: 'info' | 'warning' | 'error' | 'soft_fail' | 'hard_fail';
-  field?: string;
+// ValidationMessage type for warnings
+interface ValidationMessage {
+  type?: 'error' | 'warning' | 'info';
   message: string;
+  field?: string;
+  code?: string;
+  severity?: string;
   details?: any;
 }
 
-export interface UnsupportedItem {
+// UnsupportedItem type for tracking unsupported features
+interface UnsupportedItem {
   code: string;
   message: string;
-  impact: 'none' | 'low' | 'medium' | 'high';
+  field?: string;
+  impact?: 'none' | 'low' | 'medium' | 'high';
   relatedFields?: string[];
 }
 
@@ -87,27 +90,17 @@ export function createTraceStep(
   dependencies: string[] = [],
   notes: string[] = []
 ): TraceStep {
-  // Convert warnings to string array
-  const warningStrings = warnings.map(w => w.message);
-
-  // Convert string dependencies to numbers if possible, otherwise empty
-  const dependencyNumbers = dependencies
-    .map(d => parseInt(d.replace(/^\D+/, ''), 10))
-    .filter(n => !isNaN(n));
-
   return {
-    stepNumber,
+    stepId: `${moduleName}_${stepNumber}`,
+    stepOrder: stepNumber,
     moduleName,
-    operation: ruleReference,
-    inputs: inputs.reduce((acc, input) => {
-      acc[input.field] = input.value;
-      return acc;
-    }, {} as Record<string, any>),
-    formula: notes.join('; ') || ruleReference,
-    result: outputs,
-    warnings: warningStrings,
-    dependencies: dependencyNumbers,
-  };
+    ruleReference,
+    inputsUsed: inputs,
+    outputsProduced: outputs,
+    warnings: warnings.map(w => typeof w === 'string' ? w : w.message),
+    dependencies,
+    notes,
+  } as any;
 }
 
 /**

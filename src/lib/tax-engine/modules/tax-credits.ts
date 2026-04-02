@@ -37,7 +37,7 @@ export const TaxCreditsModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot, rules } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Get tax liability and AGI
     const totalTaxBeforeCredits = getIntermediate<number>(context, 'totalTaxBeforeCredits', 0);

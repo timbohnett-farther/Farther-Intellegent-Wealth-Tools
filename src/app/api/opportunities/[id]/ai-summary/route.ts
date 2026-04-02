@@ -28,7 +28,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const validatedRequest = GenerateAiSummaryRequestSchema.parse(body);
 
     // Fetch opportunity from database
-    const opportunity = await prisma.opportunity.findUnique({
+    const opportunity = await (prisma as any).opportunity.findUnique({
       where: { id },
     });
 

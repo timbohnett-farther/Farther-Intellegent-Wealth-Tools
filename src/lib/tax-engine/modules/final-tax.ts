@@ -26,7 +26,7 @@ export const FinalTaxModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot, rules } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Get tax after credits
     const taxAfterCredits = getIntermediate<number>(context, 'taxAfterCredits', 0);

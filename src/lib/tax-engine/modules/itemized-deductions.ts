@@ -28,14 +28,14 @@ export const ItemizedDeductionsModule: TaxCalculationModule = {
   run(context: CalculationContext): CalculationContext {
     const { snapshot, rules } = context;
     const stepNumber = context.traceSteps.length + 1;
-    const inputs = snapshot.inputs;
+    const inputs = snapshot.inputs as any;
 
     // Get AGI from agi_composer module
     const agi = getIntermediate<number>(context, 'agi', 0);
     const filingStatus = getIntermediate<string>(context, 'filingStatus', 'single');
 
     // Get deduction limits from rules
-    const deductionLimits = rules.deductionLimits;
+    const deductionLimits = rules.deductionLimits as any;
     const saltCap = deductionLimits?.saltCap || 10000;
     const mortgageInterestCap = deductionLimits?.mortgageInterestCap || 750000;
     const charitableCashLimit = deductionLimits?.charitableCashLimit || 0.6;

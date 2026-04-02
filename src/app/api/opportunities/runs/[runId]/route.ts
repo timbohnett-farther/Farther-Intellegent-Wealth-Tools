@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: { runId: s
     const { runId } = params;
 
     // Fetch detection run with opportunities
-    const detectionRun = await prisma.opportunityDetectionRun.findUnique({
+    const detectionRun = await (prisma as any).opportunityDetectionRun.findUnique({
       where: { id: runId },
       include: {
         opportunities: {
@@ -50,18 +50,19 @@ export async function GET(request: NextRequest, { params }: { params: { runId: s
         totalRulesPassed: detectionRun.totalRulesPassed,
         opportunitiesDetected: detectionRun.opportunitiesDetected,
         highPriorityCount: detectionRun.highPriorityCount,
-        estimatedValueTotal: detectionRun.estimatedValueTotal ?? undefined,
+        totalEstimatedValue: detectionRun.totalEstimatedValue,
         computeTimeMs: detectionRun.computeTimeMs,
         status: detectionRun.status as any,
         error: detectionRun.error ?? undefined,
-        completedAt: detectionRun.completedAt,
+        startedAt: detectionRun.startedAt,
+        completedAt: detectionRun.completedAt ?? undefined,
         createdAt: detectionRun.createdAt,
       },
-      opportunities: detectionRun.opportunities.map((opp) => {
-        const evidence = JSON.parse(opp.evidenceJson as string);
-        const score = JSON.parse(opp.scoreJson as string);
-        const context = JSON.parse(opp.contextJson as string);
-        const statusHistory: any[] = []; // TODO: Derive from audit events or remove
+      opportunities: detectionRun.opportunities.map((opp: any) => {
+        const evidence = JSON.parse(opp.evidence as string);
+        const score = JSON.parse(opp.score as string);
+        const context = JSON.parse(opp.context as string);
+        const statusHistory = opp.statusHistory ? JSON.parse(opp.statusHistory as string) : [];
 
         return {
           id: opp.id,

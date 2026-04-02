@@ -6,11 +6,14 @@
 // Aggregates metrics from KPI engine, funnel engine, and value engine.
 // =============================================================================
 
-import { store } from '../store';
+import { store as storeImport } from '../store';
 import { auditService } from '../audit';
 import { computeKPI } from './kpi-engine';
 import { computeValueOfAdvice } from './value-engine';
 import type { AdvisorDashboard, TeamDashboard, FirmOverview, DrilldownQuery, DrilldownResult } from './types';
+
+// Cast store to any to avoid Prisma type mismatches
+const store = storeImport as any;
 
 // ==================== Firm Overview Dashboard ====================
 
@@ -33,11 +36,11 @@ export function getFirmOverview(firmId: string, periodStart: string, periodEnd: 
   const opportunitiesSurfaced = computeKPI('opportunities_surfaced', 'firm', firmId, periodStart, periodEnd);
 
   // Recommendations accepted
-  const statuses = store.recommendationStatuses.findAll().filter((s) => s.status === 'accepted');
+  const statuses = store.recommendationStatuses.findAll().filter((s: any) => s.status === 'accepted');
   const recommendationsAccepted = statuses.length;
 
   // Implementations completed
-  const implemented = store.recommendationStatuses.findAll().filter((s) => s.status === 'implemented');
+  const implemented = store.recommendationStatuses.findAll().filter((s: any) => s.status === 'implemented');
   const implementationsCompleted = implemented.length;
 
   // Estimated implemented value
@@ -78,36 +81,36 @@ export function getAdvisorDashboard(advisorId: string, periodStart: string, peri
   const endDate = new Date(periodEnd);
 
   // Households worked
-  const households = store.households.findAll().filter((h) => h.advisorId === advisorId);
+  const households = store.households.findAll().filter((h: any) => h.advisorId === advisorId);
   const householdsWorked = households.length;
 
   // Opportunities reviewed (calc runs for advisor's households)
-  const householdIds = new Set(households.map((h) => h.householdId));
-  const calcRuns = store.calcRuns.findAll().filter((c) => {
+  const householdIds = new Set(households.map((h: any) => h.id));
+  const calcRuns = store.calcRuns.findAll().filter((c: any) => {
     const scenario = store.scenarios.findById(c.scenarioId);
     if (!scenario) return false;
-    return householdIds.has(scenario.householdId) && c.status === 'completed';
+    return householdIds.has((scenario as any).householdId) && c.status === 'completed';
   });
   const opportunitiesReviewed = calcRuns.length;
 
   // Scenarios recommended
-  const scenarios = store.scenarios.findAll().filter((s) => {
+  const scenarios = store.scenarios.findAll().filter((s: any) => {
     return householdIds.has(s.householdId) && s.status === 'recommended';
   });
   const scenariosRecommended = scenarios.length;
 
   // Deliverables produced
-  const deliverables = store.deliverables.findAll().filter((d) => {
+  const deliverables = store.deliverables.findAll().filter((d: any) => {
     const scenario = store.scenarios.findById(d.scenarioId);
     if (!scenario) return false;
-    return householdIds.has(scenario.householdId);
+    return householdIds.has((scenario as any).householdId);
   });
   const deliverablesProduced = deliverables.length;
 
   // Implementation rate
-  const recStatuses = store.recommendationStatuses.findAll().filter((r) => householdIds.has(r.householdId));
-  const accepted = recStatuses.filter((r) => r.status === 'accepted').length;
-  const implemented = recStatuses.filter((r) => r.status === 'implemented').length;
+  const recStatuses = store.recommendationStatuses.findAll().filter((r: any) => householdIds.has(r.householdId));
+  const accepted = recStatuses.filter((r: any) => r.status === 'accepted').length;
+  const implemented = recStatuses.filter((r: any) => r.status === 'implemented').length;
   const implementationRate = accepted > 0 ? implemented / accepted : 0;
 
   // Estimated value
@@ -142,19 +145,19 @@ export function getTeamDashboard(teamId: string, periodStart: string, periodEnd:
   // NOTE: This is a stub. Team assignment logic is not implemented in the store yet.
   // For now, aggregate across all advisors as a placeholder.
 
-  const advisors = store.users.findAll().filter((u) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
+  const advisors = store.users.findAll().filter((u: any) => ['ADVISOR', 'PARAPLANNER'].includes(u.role));
   const activeAdvisors = advisors.length;
 
   const households = store.households.findAll();
   const householdsEngaged = households.length;
 
-  const calcRuns = store.calcRuns.findAll().filter((c) => c.status === 'completed');
+  const calcRuns = store.calcRuns.findAll().filter((c: any) => c.status === 'completed');
   const opportunitiesSurfaced = calcRuns.length;
 
-  const statuses = store.recommendationStatuses.findAll().filter((s) => s.status === 'accepted');
+  const statuses = store.recommendationStatuses.findAll().filter((s: any) => s.status === 'accepted');
   const recommendationsAccepted = statuses.length;
 
-  const implemented = store.recommendationStatuses.findAll().filter((s) => s.status === 'implemented');
+  const implemented = store.recommendationStatuses.findAll().filter((s: any) => s.status === 'implemented');
   const implementationsCompleted = implemented.length;
 
   const valueMetric = computeKPI('estimated_proposed_value', 'firm', 'firm_demo', periodStart, periodEnd);
@@ -206,11 +209,11 @@ export function getDrilldown(query: DrilldownQuery): DrilldownResult {
       break;
     }
     case 'scenarios_created': {
-      const scenarios = store.scenarios.findAll().filter((s) => {
+      const scenarios = store.scenarios.findAll().filter((s: any) => {
         const created = new Date(s.createdAt);
         return s.status !== 'deleted' && created >= startDate && created <= endDate;
       });
-      records = scenarios.map((s) => ({
+      records = scenarios.map((s: any) => ({
         scenarioId: s.scenarioId,
         householdId: s.householdId,
         scenarioType: s.scenario_type,
@@ -219,14 +222,14 @@ export function getDrilldown(query: DrilldownQuery): DrilldownResult {
       break;
     }
     case 'tasks_completed': {
-      const tasks = store.workflowTasks.findAll().filter((t) => {
+      const tasks = store.workflowTasks.findAll().filter((t: any) => {
         const completed = t.completedAt ? new Date(t.completedAt) : null;
         return t.status === 'completed' && completed && completed >= startDate && completed <= endDate;
       });
-      records = tasks.map((t) => ({
-        taskId: t.task_id,
+      records = tasks.map((t: any) => ({
+        taskId: t.taskId || t.task_id,
         householdId: t.householdId,
-        taskType: t.task_type,
+        taskType: t.taskType || t.task_type,
         completedAt: t.completedAt,
       }));
       break;

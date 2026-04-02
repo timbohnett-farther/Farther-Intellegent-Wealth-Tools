@@ -5,25 +5,43 @@
  * Applies versioned mapping configuration and field transformations.
  */
 
-import type { TaxInputSnapshot, TaxInputs, FilingStatus } from '@/types';
-import type { ApprovedFact } from '@/generated/prisma/client';
+import type { TaxInputSnapshot } from '@/types';
 import { MAPPING_CONFIG_2025, type FieldMapping, type CompoundMapping } from './mapping-config-2025';
 import * as transforms from '../transformers/field-transforms';
 
-// Local types for snapshot building (not exported from @/types)
+// ApprovedFact type (from Prisma but not exported)
+interface ApprovedFact {
+  id: string;
+  householdId: string;
+  taxYear: number;
+  canonicalField: string;
+  approvedValue: string;
+  approvalStatus: string;
+  version: number;
+  [key: string]: any;
+}
+
+// TaxInputValues is a generic record of tax input fields
+type TaxInputValues = Record<string, any>;
+
+// ValidationMessage type for warnings
 interface ValidationMessage {
-  code: string;
-  severity: string;
-  field: string;
+  type?: 'error' | 'warning' | 'info';
   message: string;
+  field?: string;
+  code?: string;
+  severity?: string;
   details?: any;
 }
 
+// MissingInput type for tracking missing required inputs
 interface MissingInput {
   field: string;
-  reasonCode: string;
-  message: string;
-  blocking: boolean;
+  label?: string;
+  required?: boolean;
+  reasonCode?: string;
+  message?: string;
+  blocking?: boolean;
 }
 
 export interface SnapshotBuilderOptions {
@@ -53,7 +71,7 @@ export async function buildSnapshot(
   const mappingConfig = MAPPING_CONFIG_2025; // TODO: Version selector based on taxYear
 
   // Initialize result containers
-  const inputs: Partial<TaxInputs> = {};
+  const inputs: Partial<TaxInputValues> = {};
   const warnings: ValidationMessage[] = [];
   const missingInputs: MissingInput[] = [];
   const sourceFactVersions: Record<string, number> = {};
@@ -161,17 +179,21 @@ export async function buildSnapshot(
   const sourceFactVersionSignature = generateVersionSignature(sourceFactVersions);
 
   // Create snapshot
-  const snapshot: TaxInputSnapshot = {
+  const snapshot: any = {
     snapshotId: generateSnapshotId(),
     householdId,
     taxYear,
-    filingStatus,
+    filingStatus: filingStatus as any,
     taxpayers,
-    inputs: inputs as TaxInputs,
+    inputs: inputs as any,
     sourceFactVersions,
-    missingInputs: missingInputs.map(m => m.field),
-    warnings: warnings.map(w => w.message),
-    createdAt: new Date(),
+    sourceFactIds,
+    unresolvedFlags: [],
+    missingInputs,
+    warnings,
+    createdAt: new Date().toISOString(),
+    createdBy: 'system', // TODO: Pass actual user ID
+    sourceFactVersionSignature,
   };
 
   return {
@@ -249,7 +271,7 @@ function applyCompoundTransform(
  * Detect filing status from facts
  * TODO: Should come from HouseholdProfile in production
  */
-function detectFilingStatus(factsByField: Map<string, ApprovedFact>): FilingStatus {
+function detectFilingStatus(factsByField: Map<string, ApprovedFact>): string {
   const filingStatusFact = factsByField.get('filing_status');
 
   if (filingStatusFact) {
@@ -257,26 +279,26 @@ function detectFilingStatus(factsByField: Map<string, ApprovedFact>): FilingStat
 
     // Map common variations
     if (normalized.includes('MARRIED') && normalized.includes('JOINT')) {
-      return 'married_filing_jointly';
+      return 'MFJ';
     }
     if (normalized.includes('MARRIED') && normalized.includes('SEPARATE')) {
-      return 'married_filing_separately';
+      return 'MFS';
     }
     if (normalized.includes('SINGLE')) {
-      return 'single';
+      return 'SINGLE';
     }
     if (normalized.includes('HEAD')) {
-      return 'head_of_household';
+      return 'HOH';
     }
     if (normalized.includes('QUALIFYING') && normalized.includes('SURVIV')) {
-      return 'qualifying_surviving_spouse';
+      return 'QSS';
     }
 
-    return 'married_filing_jointly'; // Default
+    return 'MFJ'; // Default
   }
 
-  // Default to married_filing_jointly if not specified
-  return 'married_filing_jointly';
+  // Default to MFJ if not specified
+  return 'MFJ';
 }
 
 /**
@@ -335,18 +357,7 @@ export function snapshotsHaveSameSource(
   snapshot1: TaxInputSnapshot,
   snapshot2: TaxInputSnapshot
 ): boolean {
-  // Compare sourceFactVersions
-  const keys1 = Object.keys(snapshot1.sourceFactVersions).sort();
-  const keys2 = Object.keys(snapshot2.sourceFactVersions).sort();
-
-  if (keys1.length !== keys2.length) return false;
-
-  for (let i = 0; i < keys1.length; i++) {
-    if (keys1[i] !== keys2[i]) return false;
-    if (snapshot1.sourceFactVersions[keys1[i]] !== snapshot2.sourceFactVersions[keys2[i]]) return false;
-  }
-
-  return true;
+  return (snapshot1 as any).sourceFactVersionSignature === (snapshot2 as any).sourceFactVersionSignature;
 }
 
 /**

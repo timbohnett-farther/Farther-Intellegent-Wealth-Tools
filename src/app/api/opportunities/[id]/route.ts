@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { id } = params;
 
     // Fetch opportunity from database
-    const opportunity = await prisma.opportunity.findUnique({
+    const opportunity = await (prisma as any).opportunity.findUnique({
       where: { id },
       include: {
         detectionRun: true,

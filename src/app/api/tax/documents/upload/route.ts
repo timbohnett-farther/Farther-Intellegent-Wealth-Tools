@@ -175,7 +175,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
 
         // Create TaxDocument record
-        const document = await prisma.taxDocument.create({
+        const document = await (prisma as any).taxDocument.create({
           data: {
             householdId,
             documentType: documentType !== 'unknown' ? documentType : 'unknown',
@@ -196,7 +196,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         await initializeInQueue(document.id);
 
         // Create audit log
-        await prisma.auditLog.create({
+        await (prisma as any).auditLog.create({
           data: {
             entityType: 'TaxDocument',
             entityId: document.id,

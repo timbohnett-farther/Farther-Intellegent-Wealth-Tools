@@ -51,7 +51,11 @@ type Permission =
   | 'governance:review'
   | 'governance:settings'
   | 'analytics:read'
-  | 'analytics:admin';
+  | 'analytics:admin'
+  | 'rollover:read'
+  | 'rollover:write'
+  | 'rollover:admin'
+  | 'rollover:export';
 
 // ==================== Role-Permission Matrix ====================
 
@@ -103,6 +107,10 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'governance:settings',
     'analytics:read',
     'analytics:admin',
+    'rollover:read',
+    'rollover:write',
+    'rollover:admin',
+    'rollover:export',
   ],
   ADVISOR: [
     'households:read',
@@ -131,6 +139,9 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'cpa:read',
     'governance:read',
     'analytics:read',
+    'rollover:read',
+    'rollover:write',
+    'rollover:export',
   ],
   PARAPLANNER: [
     'households:read',
@@ -154,6 +165,8 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'workflow:write',
     'crm:read',
     'cpa:read',
+    'rollover:read',
+    'rollover:write',
   ],
   OPS: [
     'households:read',
@@ -169,6 +182,7 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'governance:read',
     'governance:review',
     'analytics:read',
+    'rollover:read',
   ],
   READONLY: [
     'households:read',
@@ -179,6 +193,7 @@ const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'workflow:read',
     'governance:read',
     'analytics:read',
+    'rollover:read',
   ],
   CLIENT: [
     'households:read',

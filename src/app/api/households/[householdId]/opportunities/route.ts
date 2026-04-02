@@ -65,10 +65,11 @@ export async function GET(
     }
 
     // Fetch total count
-    const total = await prisma.opportunity.count({ where });
+    const db = prisma as any;
+    const total = await db.opportunity.count({ where });
 
     // Fetch opportunities with pagination
-    const opportunities = await prisma.opportunity.findMany({
+    const opportunities = await db.opportunity.findMany({
       where,
       orderBy,
       skip: query.offset,
@@ -77,11 +78,11 @@ export async function GET(
 
     // Build response
     const response: ListHouseholdOpportunitiesResponse = {
-      opportunities: opportunities.map((opp) => {
-        const evidence = JSON.parse(opp.evidenceJson as string);
-        const score = JSON.parse(opp.scoreJson as string);
-        const context = JSON.parse(opp.contextJson as string);
-        const statusHistory: any[] = []; // TODO: Derive from audit events or remove
+      opportunities: opportunities.map((opp: any) => {
+        const evidence = JSON.parse(opp.evidenceJson ?? opp.evidence ?? '[]');
+        const score = JSON.parse(opp.scoreJson ?? opp.score ?? '{}');
+        const context = JSON.parse(opp.contextJson ?? opp.context ?? '{}');
+        const statusHistory = opp.statusHistoryJson ? JSON.parse(opp.statusHistoryJson) : (opp.statusHistory ? JSON.parse(opp.statusHistory) : []);
 
         return {
           id: opp.id,

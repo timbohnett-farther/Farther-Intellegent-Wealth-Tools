@@ -49,29 +49,20 @@ function createMockSnapshot(
       businessIncome: 0,
       rentalIncome: 0,
       royaltyIncome: 0,
-      socialSecurityGross: 0,
-      totalIncome: 0,
-      iraDeduction: 0,
+      socialSecurityTotal: 0,
+      iraContributionsDeductible: 0,
       studentLoanInterest: 0,
-      hsaDeduction: 0,
+      hsaContributionsDeductible: 0,
       educatorExpenses: 0,
-      selfEmploymentTaxDeduction: 0,
-      selfEmployedHealthInsurance: 0,
-      alimonyPaid: 0,
-      agi: 0,
-      medicalExpenses: 0,
+      medicalDentalExpenses: 0,
       stateLocalIncomeTaxes: 0,
       realEstateTaxes: 0,
       personalPropertyTaxes: 0,
       mortgageInterest: 0,
-      charitableCash: 0,
-      charitableNoncash: 0,
-      otherItemizedDeductions: 0,
-      standardDeduction: 0,
-      itemizedDeductions: 0,
+      charitableCashContributions: 0,
+      charitableNoncashContributions: 0,
       qualifiedBusinessIncome: 0,
       isSpecifiedServiceBusiness: false,
-      taxableIncome: 0,
       taxWithheld: 0,
       ...inputs,
     } as any,
@@ -120,13 +111,13 @@ describe('Ordinary Income Tax Module', () => {
 
     expect(result.context.intermediates.grossIncome).toBe(155000);
     expect(result.context.intermediates.preferentialIncomeGross).toBe(55000); // 50k LT gains + 5k qual div
-    expect(result.context.intermediates.taxableIncome).toBe(125800); // 155000 - 29200
-    expect(result.context.intermediates.ordinaryTaxableIncome).toBe(70800); // 125800 - 55000
+    expect(result.context.intermediates.taxableIncome).toBe(125000); // 155000 - 30000 (2025 MFJ std deduction)
+    expect(result.context.intermediates.ordinaryTaxableIncome).toBe(70000); // 125000 - 55000
     expect(result.context.intermediates.ordinaryIncomeTax).toBeGreaterThan(0);
 
-    // MFJ brackets: 10% up to 23200, 12% from 23200 to 70800
-    // Expected: 2320 + 5712 = 8032
-    expect(result.context.intermediates.ordinaryIncomeTax).toBeCloseTo(8032, 0);
+    // MFJ brackets: 10% up to 23200, 12% from 23200 to 70000
+    // Expected: 2320 + 5616 = 7936
+    expect(result.context.intermediates.ordinaryIncomeTax).toBeCloseTo(7936, 0);
   });
 
   it('should calculate effective and marginal tax rates', async () => {
@@ -185,10 +176,10 @@ describe('Capital Gains Tax Module', () => {
     const rules = FEDERAL_RULES_2025_V1;
     const result = await runTaxCalculation(snapshot, rules);
 
-    // Total income: 260000, taxable: 230800 (260000 - 29200)
+    // Total income: 260000, taxable: 230000 (260000 - 30000)
     // Preferential: 60000
-    // Ordinary: 170800
-    // Preferential stacks on top: 170800 to 230800 (all in 15% bracket for MFJ)
+    // Ordinary: 170000
+    // Preferential stacks on top: 170000 to 230000 (all in 15% bracket for MFJ, 0% up to 94050)
     expect(result.context.intermediates.capitalGainsTaxableIncome).toBe(60000);
     expect(result.context.intermediates.capitalGainsTax).toBe(9000); // 60000 * 0.15
   });
@@ -343,10 +334,10 @@ describe('Full Tax Pipeline (All Modules)', () => {
       longTermCapitalGains: 75000,
       shortTermCapitalGains: 10000,
       rentalIncome: 25000,
-      iraDeduction: 7000,
+      iraContributionsDeductible: 7000,
       stateLocalIncomeTaxes: 15000, // Over SALT cap
       mortgageInterest: 20000,
-      charitableCash: 15000,
+      charitableCashContributions: 15000,
     });
 
     const rules = FEDERAL_RULES_2025_V1;

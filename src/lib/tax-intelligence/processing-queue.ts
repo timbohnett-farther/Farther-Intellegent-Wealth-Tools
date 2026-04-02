@@ -50,7 +50,7 @@ export interface StatusTransition {
  */
 export async function initializeInQueue(documentId: string): Promise<boolean> {
   try {
-    await prisma.taxDocument.update({
+    await (prisma as any).taxDocument.update({
       where: { id: documentId },
       data: {
         processingStatus: 'queued',
@@ -59,7 +59,7 @@ export async function initializeInQueue(documentId: string): Promise<boolean> {
     });
 
     // Log to audit trail
-    await prisma.auditLog.create({
+    await (prisma as any).auditLog.create({
       data: {
         entityType: 'TaxDocument',
         entityId: documentId,
@@ -86,7 +86,7 @@ export async function transitionStatus(transition: StatusTransition): Promise<bo
     const { documentId, from, to, reason, metadata } = transition;
 
     // Verify current status matches expected 'from' status
-    const document = await prisma.taxDocument.findUnique({
+    const document = await (prisma as any).taxDocument.findUnique({
       where: { id: documentId },
       select: { processingStatus: true },
     });
@@ -104,7 +104,7 @@ export async function transitionStatus(transition: StatusTransition): Promise<bo
     }
 
     // Update status
-    await prisma.taxDocument.update({
+    await (prisma as any).taxDocument.update({
       where: { id: documentId },
       data: {
         processingStatus: to,
@@ -115,7 +115,7 @@ export async function transitionStatus(transition: StatusTransition): Promise<bo
     });
 
     // Log transition
-    await prisma.auditLog.create({
+    await (prisma as any).auditLog.create({
       data: {
         entityType: 'TaxDocument',
         entityId: documentId,
@@ -148,7 +148,7 @@ export async function markAsFailed(
   allowRetry: boolean = true
 ): Promise<boolean> {
   try {
-    const document = await prisma.taxDocument.findUnique({
+    const document = await (prisma as any).taxDocument.findUnique({
       where: { id: documentId },
       select: { retryCount: true },
     });
@@ -160,7 +160,7 @@ export async function markAsFailed(
     const maxRetries = 3;
     const shouldRetry = allowRetry && document.retryCount < maxRetries;
 
-    await prisma.taxDocument.update({
+    await (prisma as any).taxDocument.update({
       where: { id: documentId },
       data: {
         processingStatus: shouldRetry ? 'queued' : 'failed',
@@ -172,7 +172,7 @@ export async function markAsFailed(
     });
 
     // Log failure
-    await prisma.auditLog.create({
+    await (prisma as any).auditLog.create({
       data: {
         entityType: 'TaxDocument',
         entityId: documentId,
@@ -201,7 +201,7 @@ export async function markAsFailed(
  */
 export async function getHouseholdQueue(householdId: string): Promise<QueueItem[]> {
   try {
-    const documents = await prisma.taxDocument.findMany({
+    const documents = await (prisma as any).taxDocument.findMany({
       where: {
         householdId,
         processingStatus: {
@@ -282,7 +282,7 @@ export async function getQueueStats(householdId?: string) {
   try {
     const where = householdId ? { householdId } : {};
 
-    const stats = await prisma.taxDocument.groupBy({
+    const stats = await (prisma as any).taxDocument.groupBy({
       by: ['processingStatus'],
       where,
       _count: true,

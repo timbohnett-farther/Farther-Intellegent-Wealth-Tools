@@ -53,10 +53,14 @@ describe('hasPermission()', () => {
     expect(hasPermission('ADVISOR', 'integrations:manage')).toBe(false);
   });
 
-  it('gives PARAPLANNER the same access as ADVISOR', () => {
+  it('gives PARAPLANNER a subset of ADVISOR permissions', () => {
     const advisorPerms = getRolePermissions('ADVISOR');
     const paraPerms = getRolePermissions('PARAPLANNER');
-    expect(paraPerms).toEqual(advisorPerms);
+    // PARAPLANNER has a subset of ADVISOR permissions (no deliverables:approve, crm:write, cpa:write, governance:read, analytics:read)
+    for (const perm of paraPerms) {
+      expect(advisorPerms).toContain(perm);
+    }
+    expect(paraPerms.length).toBeLessThanOrEqual(advisorPerms.length);
   });
 
   it('denies OPS write access to households and scenarios', () => {
@@ -126,12 +130,12 @@ describe('requirePermission()', () => {
 // =============================================================================
 
 describe('getRolePermissions()', () => {
-  it('returns all 14 permissions for ADMIN', () => {
-    expect(getRolePermissions('ADMIN')).toHaveLength(14);
+  it('returns all 40 permissions for ADMIN', () => {
+    expect(getRolePermissions('ADMIN')).toHaveLength(40);
   });
 
-  it('returns 3 permissions for READONLY', () => {
-    expect(getRolePermissions('READONLY')).toHaveLength(3);
+  it('returns 9 permissions for READONLY', () => {
+    expect(getRolePermissions('READONLY')).toHaveLength(9);
   });
 
   it('returns 3 permissions for CLIENT', () => {

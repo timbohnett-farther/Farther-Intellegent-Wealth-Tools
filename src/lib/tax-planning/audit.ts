@@ -75,7 +75,14 @@ type AuditEventKey =
   | 'governance.authorization.denied'
   | 'analytics.metric.calculated'
   | 'analytics.dashboard.refreshed'
-  | 'analytics.value.attributed';
+  | 'analytics.value.attributed'
+  | 'rollover.analysis.created'
+  | 'rollover.analysis.updated'
+  | 'rollover.analysis.deleted'
+  | 'rollover.analysis.scored'
+  | 'rollover.narrative.generated'
+  | 'rollover.report.generated'
+  | 'rollover.hubspot.synced';
 
 // ==================== ID Generation ====================
 

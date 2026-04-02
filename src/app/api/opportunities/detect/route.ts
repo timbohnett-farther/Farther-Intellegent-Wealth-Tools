@@ -11,9 +11,9 @@ import { z } from 'zod';
 import { opportunityDetectionOrchestrator } from '@/lib/opportunity-engine';
 import {
   DetectOpportunitiesRequestSchema,
+  type DetectOpportunitiesResponse,
   type ApiErrorResponse,
 } from '@/lib/opportunity-engine/schemas';
-import type { DetectOpportunitiesResponse } from '@/types/opportunity-engine';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -25,16 +25,31 @@ export async function POST(request: NextRequest) {
     const validatedRequest = DetectOpportunitiesRequestSchema.parse(body);
 
     // Run opportunity detection
-    const result = await opportunityDetectionOrchestrator.detectOpportunities(validatedRequest);
+    const result = await opportunityDetectionOrchestrator.detectOpportunities(validatedRequest as any);
 
     // Return successful response
     const response: DetectOpportunitiesResponse = {
-      detectionRunId: result.detectionRunId,
-      opportunitiesDetected: result.opportunitiesDetected,
-      highPriorityCount: result.highPriorityCount,
-      estimatedValueTotal: result.estimatedValueTotal,
-      computeTimeMs: result.computeTimeMs,
-      opportunities: result.opportunities as any, // Type mismatch: OpportunityCategory types need alignment
+      detectionRun: {
+        id: result.detectionRunId,
+        calculationRunId: validatedRequest.calculationRunId,
+        householdId: (result as any).householdId,
+        taxYear: (result as any).taxYear,
+        rulesVersion: (result as any).rulesVersion,
+        totalRulesEvaluated: (result as any).totalRulesEvaluated,
+        totalRulesPassed: (result as any).totalRulesPassed,
+        opportunitiesDetected: result.opportunitiesDetected,
+        highPriorityCount: result.highPriorityCount,
+        totalEstimatedValue: result.estimatedValueTotal ?? 0,
+        computeTimeMs: result.computeTimeMs,
+        status: 'completed',
+        startedAt: new Date(),
+        completedAt: new Date(),
+        createdAt: new Date(),
+      },
+      opportunities: result.opportunities.map((opp: any) => ({
+        ...opp,
+        statusHistory: [],
+      })),
     };
 
     return NextResponse.json(response, { status: 200 });

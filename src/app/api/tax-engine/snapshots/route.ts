@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch approved facts for household and tax year
-    const approvedFacts = await prisma.approvedFact.findMany({
+    const approvedFacts = await (prisma as any).approvedFact.findMany({
       where: {
         householdId,
         taxYear,
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Persist snapshot to database
-    const savedSnapshot = await prisma.taxInputSnapshot.create({
+    const savedSnapshot = await (prisma as any).taxInputSnapshot.create({
       data: {
         id: result.snapshot.snapshotId,
         householdId,
@@ -142,7 +142,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch snapshots
-    const snapshots = await prisma.taxInputSnapshot.findMany({
+    const snapshots = await (prisma as any).taxInputSnapshot.findMany({
       where,
       orderBy: {
         createdAt: 'desc',
@@ -151,7 +151,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Parse JSON fields for response
-    const snapshotsWithParsed = snapshots.map((snapshot) => ({
+    const snapshotsWithParsed = snapshots.map((snapshot: any) => ({
       snapshotId: snapshot.id,
       householdId: snapshot.householdId,
       taxYear: snapshot.taxYear,

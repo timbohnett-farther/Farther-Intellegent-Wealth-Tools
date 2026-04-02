@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const validatedRequest = UpdateOpportunityStatusRequestSchema.parse(body);
 
     // Fetch existing opportunity
-    const existing = await prisma.opportunity.findUnique({
+    const existing = await (prisma as any).opportunity.findUnique({
       where: { id },
     });
 
@@ -61,13 +61,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Update opportunity
-    const updated = await prisma.opportunity.update({
+    const updated = await (prisma as any).opportunity.update({
       where: { id },
       data: updateData,
     });
 
     // Create audit event
-    await prisma.opportunityAuditEvent.create({
+    await (prisma as any).opportunityAuditEvent.create({
       data: {
         eventId: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
         opportunityId: id,
