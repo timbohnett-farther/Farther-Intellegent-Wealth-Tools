@@ -859,3 +859,105 @@ All 4 steps completed successfully:
 
 ### Status: COMPLETE ✅
 Tool separation complete. All 3 tools (Rollover, Debt IQ, Relocation) now standalone.
+
+---
+
+## 2026-04-03 (continued) — FMSS: Railway Deployment Documentation
+
+### Task
+Create comprehensive Railway deployment guides and automation scripts for FMSS SMA Monitoring System
+
+### Implementation: COMPLETE ✅
+
+**Deployment Documentation Created:**
+1. ✅ `workers/deploy-to-railway.sh` (Bash deployment script)
+   - Automated Railway CLI deployment workflow
+   - Interactive prompts for API keys and configuration
+   - PostgreSQL database setup
+   - Environment variable configuration
+   - Cron service creation guidance
+   - Manual test run option
+   
+2. ✅ `workers/deploy-to-railway.ps1` (PowerShell deployment script)
+   - Windows-compatible deployment automation
+   - Same features as Bash script
+   - Color-coded output for better readability
+   - Secure password input handling
+   
+3. ✅ `workers/RAILWAY_QUICKSTART.md` (Quick start guide)
+   - 30-minute deployment walkthrough
+   - Two deployment methods: automated CLI or manual Dashboard
+   - Step-by-step Railway Dashboard configuration
+   - Complete cron service setup (4 services)
+   - Environment variables reference table
+   - Troubleshooting section
+   - Cost estimation ($42-75/month for APIs)
+   - Success metrics and monitoring guide
+
+**Deployment Architecture:**
+
+**Services Required (5 total):**
+1. Main workers service (Python)
+2. `sma-discovery-cron` (Weekly: Monday 4:00 UTC)
+3. `sma-acquisition-cron` (Daily: 5:00 UTC)
+4. `sma-parsing-change-cron` (Daily: 6:00 UTC)
+5. `sma-alert-cron` (Daily: 7:00 UTC) — Optional
+
+**Environment Variables (11 required + 6 optional):**
+
+Required:
+- `DATABASE_URL` (auto-provided by Railway PostgreSQL)
+- `TAVILY_API_KEY`
+- `BRIGHT_DATA_API_KEY`
+- `MINIMAX_API_KEY`
+- `STORAGE_PATH=/app/storage/fact_sheets`
+
+Optional (email alerts):
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASSWORD`
+- `ALERT_FROM_EMAIL`
+- `ALERT_TO_EMAILS`
+
+**Cron Schedules:**
+```
+Discovery:      0 4 * * 1   (Weekly: Monday 4:00 UTC)
+Acquisition:    0 5 * * *   (Daily: 5:00 UTC)
+Parsing/Change: 0 6 * * *   (Daily: 6:00 UTC)
+Alerts:         0 7 * * *   (Daily: 7:00 UTC)
+```
+
+**Expected Performance:**
+- Discovery: 50-200 URLs/week, 15-30 min runtime
+- Acquisition: 20-100 docs/day, 10-20 min runtime
+- Parsing: 20-100 docs/day, 10-15 min runtime
+- Alerts: 0-10 emails/day, 1-2 min runtime
+
+**Files Created:**
+1. `workers/deploy-to-railway.sh` (350 lines)
+2. `workers/deploy-to-railway.ps1` (350 lines)
+3. `workers/RAILWAY_QUICKSTART.md` (800+ lines)
+
+**Documentation Features:**
+- Automated deployment scripts for Windows and Unix
+- Interactive prompts for all configuration
+- Manual Railway Dashboard step-by-step guide
+- Complete environment variable reference
+- Cron configuration templates
+- Troubleshooting guide (5 common issues)
+- Cost estimation and optimization tips
+- Success metrics and monitoring checklist
+- Admin UI access guide
+- Advisor UI access guide
+
+**Next Steps:**
+1. ⏳ Run deployment script: `./workers/deploy-to-railway.sh` or `.\workers\deploy-to-railway.ps1`
+2. ⏳ Configure 4 cron services in Railway Dashboard
+3. ⏳ Monitor first week of automated runs
+4. ⏳ Verify data in admin UI (`/admin/sma-runs`, `/admin/sma-documents`, `/admin/sma-changes`)
+5. ⏳ Test advisor UI (`/fmss/sma`, comparison tool, CSV export)
+
+**Status:** DEPLOYMENT READY
+All deployment documentation and automation scripts complete. System ready for Railway production deployment.
+
