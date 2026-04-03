@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { TaxComparisonChart } from '@/components/relocation/TaxComparisonChart';
+import { AssumptionsDrawer } from '@/components/relocation/AssumptionsDrawer';
+import { ExportResults } from '@/components/relocation/ExportResults';
 
 // Leaving States (9 high-tax jurisdictions)
 const LEAVING_STATES = [
@@ -365,6 +368,21 @@ export default function RelocationCalculatorPage() {
       {/* Results */}
       {showResults && calculationResult && (
         <div className="space-y-6">
+          {/* Export Actions */}
+          <div className="flex justify-end">
+            <ExportResults
+              calculationResult={calculationResult}
+              userInputs={{
+                leavingState,
+                destinationState,
+                filingStatus,
+                ordinaryIncome,
+                capitalGains,
+                netWorth,
+              }}
+            />
+          </div>
+
           {/* Main Results Card */}
           <div className="rounded-lg border p-6" style={{ background: 'var(--s-card-bg)', borderColor: 'var(--s-border-subtle)' }}>
             <h2 className="mb-6 text-lg font-semibold text-text">Estimated Tax Comparison</h2>
@@ -435,27 +453,23 @@ export default function RelocationCalculatorPage() {
             </div>
           </div>
 
-          {/* Assumptions & Caveats */}
+          {/* Tax Comparison Chart */}
           <div className="rounded-lg border p-6" style={{ background: 'var(--s-card-bg)', borderColor: 'var(--s-border-subtle)' }}>
-            <h3 className="mb-3 text-sm font-semibold text-text">Assumptions</h3>
-            <ul className="ml-4 list-disc space-y-1 text-xs text-text-muted">
-              {calculationResult.assumptions.map((assumption: string, idx: number) => (
-                <li key={idx}>{assumption}</li>
-              ))}
-            </ul>
-
-            <h3 className="mb-3 mt-6 text-sm font-semibold text-warning-700 dark:text-warning-400">Important Disclosures</h3>
-            <ul className="ml-4 list-disc space-y-1 text-xs text-text-muted">
-              {calculationResult.caveats.map((caveat: string, idx: number) => (
-                <li key={idx}>{caveat}</li>
-              ))}
-            </ul>
-
-            <p className="mt-4 text-xs text-text-faint">
-              Calculation Date: {new Date(calculationResult.calculationDate).toLocaleString()} |
-              Rules Version: {calculationResult.rulesVersionUsed.origin} / {calculationResult.rulesVersionUsed.destination}
-            </p>
+            <h3 className="mb-4 text-lg font-semibold text-text">Tax Burden Comparison</h3>
+            <TaxComparisonChart
+              originState={calculationResult.originState}
+              destinationState={calculationResult.destinationState}
+            />
           </div>
+
+          {/* Assumptions & Caveats Drawer */}
+          <AssumptionsDrawer
+            assumptions={calculationResult.assumptions}
+            caveats={calculationResult.caveats}
+            jurisdictionNotes={calculationResult.jurisdictionSpecificNotes}
+            calculationDate={calculationResult.calculationDate}
+            rulesVersion={calculationResult.rulesVersionUsed}
+          />
         </div>
       )}
 
