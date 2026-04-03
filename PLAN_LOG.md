@@ -90,10 +90,32 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
    - Version creation on content changes only
    - Full audit trail with acquisition timestamps
 
-**Phase 4: Parsing Layer**
-- Implement PyMuPDF extraction
-- Deterministic field parsing
-- Parsed document persistence
+**Phase 4: Parsing Layer** — COMPLETE ✅
+1. ✅ Implement PyMuPDF extraction
+   - Created `workers/sma_monitoring/parsing_worker.py` (650+ lines)
+   - PDFParser class using PyMuPDF (fitz) library
+   - Text extraction from all PDF pages
+   - PDF metadata extraction (page count, author, dates, creator)
+2. ✅ Deterministic field parsing
+   - FieldExtractor class with regex-based pattern matching
+   - Strategy name extraction (title line, filename fallback)
+   - Manager name extraction (firm identification)
+   - Date extraction with multiple format support (MM/DD/YYYY, Month D, YYYY)
+   - Currency amount extraction (with million/billion multipliers)
+   - Percentage and basis points extraction
+   - Performance metrics table parsing (YTD, 1Y, 3Y, 5Y, 10Y, Inception)
+   - Benchmark identification
+   - AUM extraction with unit conversion
+   - Minimum investment parsing
+   - Management fee extraction (bps and percentage)
+3. ✅ Parsed document persistence
+   - ParsingWorker orchestrator class
+   - Storage in `fmss_sma_parsed_documents` table
+   - Upsert logic (ON CONFLICT DO UPDATE)
+   - Raw text storage (first 50k characters)
+   - Structured field storage (12+ fields)
+   - Metadata JSON with extraction details
+   - CLI interface with 3 invocation modes
 
 **Phase 5: AI Enrichment + Change Detection**
 - MiniMax extraction backfill
@@ -173,34 +195,43 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 3 COMPLETE ✅
+### Status: PHASE 4 COMPLETE ✅
 **Phase 1:** ✅ Database Schema + Provider Registry + Admin UI
 **Phase 2:** ✅ Discovery Worker + URL Classification + Run Logging
 **Phase 3:** ✅ Acquisition Worker + Content Validation + Version Tracking
+**Phase 4:** ✅ Parsing Worker + Field Extraction + Data Persistence
 
-**Phase 3 Deliverables:**
-- `workers/sma_monitoring/acquisition_worker.py` - Bright Data acquisition worker (500+ lines)
-- BrightDataFetcher class with Web Unlocker API
-- DirectFetcher fallback for direct HTTP downloads
-- ContentValidator with PDF/HTML validation
-- SHA-256 content hashing for change detection
-- Version tracking system with hash comparison
-- Local file storage with configurable paths
-- CLI interface with 3 invocation modes: `--provider`, `--all-pending`, `--url-id`
+**Phase 4 Deliverables:**
+- `workers/sma_monitoring/parsing_worker.py` - PyMuPDF parsing worker (650+ lines)
+- PDFParser class for text extraction
+- FieldExtractor class with deterministic regex patterns
+- ParsingWorker orchestrator with database persistence
+- Updated `requirements.txt` with PyMuPDF==1.24.0
 
-**Worker Features:**
-- Bright Data Web Unlocker for protected content
-- Automatic fallback to direct HTTP fetch
-- PDF signature validation (checks for %PDF header and %%EOF trailer)
-- HTML validation with size and format checks
-- Content deduplication via SHA-256 hashing
-- Version creation only on content changes
-- Database tracking in `fmss_sma_fact_sheet_documents` and `fmss_sma_fact_sheet_versions`
-- Error handling with retry logic and logging
+**Extracted Fields (12+):**
+- Strategy name (title or filename-based)
+- Manager name (firm identification)
+- Inception date (multiple format support)
+- Assets under management (AUM with multipliers)
+- Minimum investment
+- Management fee (bps and percentage)
+- Benchmark
+- Performance metrics: YTD, 1Y, 3Y, 5Y, 10Y, Inception
+- PDF metadata: page count, author, dates, creator
 
-**Next:** Phase 4 - Parsing Layer (PyMuPDF text extraction, deterministic field parsing)
+**Parser Features:**
+- PyMuPDF (fitz) text extraction from all pages
+- Multi-pattern regex matching for dates, currency, percentages
+- Intelligent field extraction with fallback patterns
+- Performance table parsing
+- Metadata JSON storage with raw extraction values
+- Upsert logic for re-parsing updates
+- CLI interface: `--provider`, `--all-pending`, `--document-id`
+- Error handling with structured logging
 
-Phases 1-3 COMPLETE. Ready for Phase 4 implementation.
+**Next:** Phase 5 - AI Enrichment + Change Detection (MiniMax extraction, change events)
+
+Phases 1-4 COMPLETE. Ready for Phase 5 implementation.
 
 ---
 

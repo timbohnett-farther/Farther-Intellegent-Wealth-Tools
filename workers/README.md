@@ -131,9 +131,67 @@ $ python -m sma_monitoring.acquisition_worker --provider blackrock
    Errors: 0
 ```
 
-### Parsing Worker (Phase 4)
+### Parsing Worker (`sma_monitoring/parsing_worker.py`)
 
-Extracts text from PDFs using PyMuPDF.
+Extracts text from PDF fact sheets using PyMuPDF and parses structured fields.
+
+**Features:**
+- PyMuPDF (fitz) text extraction from PDF documents
+- Deterministic regex-based field extraction
+- Multi-pattern matching for common fields (dates, currency, percentages)
+- Performance metrics extraction (YTD, 1Y, 3Y, 5Y, 10Y, Inception)
+- Parsed data storage in `fmss_sma_parsed_documents`
+- PDF metadata extraction (page count, author, creation date)
+- Fallback extraction patterns for non-standard layouts
+
+**Extracted Fields:**
+- Strategy name (from title or filename)
+- Manager name (firm name)
+- Inception date
+- Assets under management (AUM)
+- Minimum investment
+- Management fee (basis points and percentage)
+- Benchmark
+- Performance metrics (YTD, 1Y, 3Y, 5Y, 10Y, Since Inception)
+- PDF metadata (page count, author, dates)
+
+**Usage:**
+
+```bash
+# Parse documents for a single provider
+python -m sma_monitoring.parsing_worker --provider jpmorgan
+
+# Parse all unparsed documents
+python -m sma_monitoring.parsing_worker --all-pending
+
+# Parse specific document by ID
+python -m sma_monitoring.parsing_worker --document-id <uuid>
+```
+
+**Output:**
+- Parsed data stored in `fmss_sma_parsed_documents` table
+- Raw text (first 50k characters)
+- Structured fields (strategy name, fees, performance, etc.)
+- Metadata JSON with extraction details
+- Console output with parsing stats
+
+**Example:**
+
+```bash
+$ python -m sma_monitoring.parsing_worker --provider blackrock
+
+2026-04-04 03:30:00 - INFO - Starting parsing for provider: BlackRock
+2026-04-04 03:30:01 - INFO - Found 8 unparsed documents
+2026-04-04 03:30:02 - INFO - Parsing document: doc_123 (blackrock/doc_123/a3b2c1d4.pdf)
+2026-04-04 03:30:03 - INFO - Extracted 45000 characters from 4 pages
+2026-04-04 03:30:04 - INFO - Extracted 9 fields: strategy_name, manager_name, inception_date, aum, minimum_investment, management_fee, benchmark, performance
+2026-04-04 03:30:05 - INFO - Saved parsed data for document doc_123
+2026-04-04 03:30:20 - INFO - Parsing complete: 8 documents parsed, 0 failures
+
+✅ Parsing complete:
+   Documents parsed: 8
+   Failures: 0
+```
 
 ### Change Detection Worker (Phase 5)
 
