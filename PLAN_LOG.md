@@ -1,5 +1,114 @@
 # Plan Log — Farther Intelligent Wealth Tools
 
+## 2026-04-04 01:15 — FMSS Phase 2: SMA Ingestion Pipeline
+
+### Task
+Build complete SMA ingestion pipeline: web scraping (Bright Data + Tavily) → AI extraction (MiniMax M2.7) → database upsert → audit logging.
+
+### Implementation Plan
+1. ✅ Create unified web scraper (`fetch-url-as-markdown.ts`)
+2. ✅ Create MiniMax SMA extractor (`minimax-sma-extractor.ts`)
+3. ✅ Create SMA ingestion worker with full pipeline (`sma-ingestion-worker.ts`)
+4. ✅ Create API endpoint for triggering ingestion (`/api/fmss/ingest/sma`)
+5. ⏳ Test build and deployment readiness
+
+### Architecture
+**Pipeline Flow:**
+```
+URL → fetchUrlAsMarkdown() → extractSMAData() → upsertSMAStrategy() → upsertUrlManifest() → logIngestionRun()
+```
+
+**Key Components:**
+- **Scraper:** Bright Data (primary) with Tavily (fallback), SHA-256 content hashing
+- **Extractor:** MiniMax M2.7 with structured JSON schema (30+ fields)
+- **Worker:** Batch processing with rate limiting, content deduplication, audit trail
+- **API:** Single + batch endpoints with 5-minute timeout, max 50 URLs per request
+
+### Data Model
+**Extracted Fields (30+):**
+- Manager info: strategy_name, manager_name, manager_firm, inception_date, aum_mm
+- Investment: asset_class, strategy_type, investment_objective, benchmark
+- Fees: management_fee_bps, performance_fee_pct, minimum_investment
+- Performance: ytd_return, 1yr/3yr/5yr/10yr/inception returns
+- Risk: sharpe_ratio, sortino_ratio, max_drawdown, standard_deviation, beta, alpha
+- Holdings: top_holdings[], sector_allocation{}, number_of_holdings
+- Metadata: fact_sheet_date, last_scraped_at, content_hash
+
+### Files Created
+1. **NEW:** `src/lib/fmss/scraper/fetch-url-as-markdown.ts` (218 lines)
+   - Unified scraper with Bright Data + Tavily fallback
+   - HTML-to-text conversion with entity decoding
+   - SHA-256 content hashing for change detection
+   - Timeout handling (30s default) with AbortController
+
+2. **NEW:** `src/lib/fmss/extraction/minimax-sma-extractor.ts` (310 lines)
+   - MiniMax M2.7 integration for structured extraction
+   - Type-safe SMAData interface with 30+ fields
+   - Detailed extraction prompt with schema + examples
+   - JSON parsing with markdown code block detection
+   - Graceful fallback for failed extractions
+
+3. **NEW:** `src/lib/fmss/workers/sma-ingestion-worker.ts` (372 lines)
+   - Complete end-to-end ingestion pipeline
+   - Content deduplication with hash comparison
+   - Upsert to `fmss_sma_strategies` table (by strategy_name natural key)
+   - URL manifest tracking in `fmss_sma_url_manifest`
+   - Audit logging to `fmss_ingest_log`
+   - Batch processing with concurrent control (default 3)
+   - Rate limit delays between batches (2s default)
+
+4. **NEW:** `src/app/api/fmss/ingest/sma/route.ts` (201 lines)
+   - POST endpoint for single/batch ingestion
+   - Input validation (URL format, batch size max 50)
+   - 5-minute max duration for long-running jobs
+   - GET endpoint for health check + API docs
+
+### Features
+- **Smart Deduplication:** Skip re-scraping if content_hash unchanged
+- **Rate Limiting:** Configurable concurrent requests + delays
+- **Error Resilience:** Promise.allSettled for batch processing
+- **Comprehensive Logging:** Duration, tokens used, success/failure tracking
+- **Natural Key Upsert:** Match by strategy_name for updates vs. inserts
+
+### Batch Processing
+```typescript
+// Single URL
+POST /api/fmss/ingest/sma
+{ "url": "https://example.com/sma.pdf" }
+
+// Batch URLs (max 50)
+POST /api/fmss/ingest/sma
+{
+  "urls": ["url1", "url2", "url3"],
+  "options": {
+    "skip_if_unchanged": true,
+    "extraction_model": "minimax-2.7",
+    "concurrent": 3,
+    "delay_between_batches_ms": 2000
+  }
+}
+```
+
+### Next Steps
+1. ⏳ Run `npm run build` to verify compilation
+2. ⏳ Test with sample SMA fact sheet URL
+3. ⏳ Commit Phase 2 work
+4. ⏳ Update Railway to run migration
+5. ⏳ Seed initial data (scoring dimensions, categories, data sources)
+6. ⏳ Begin Phase 3: Alternative Funds EDGAR worker
+
+### Dependencies
+- Drizzle ORM database connection (from Phase 1)
+- MINIMAX_API_KEY environment variable
+- BRIGHT_DATA_API_KEY environment variable
+- TAVILY_API_KEY environment variable (fallback)
+- PostgreSQL `fmss_*` tables (from Phase 1 migration)
+
+### Status: IN PROGRESS ⏳
+Pipeline code complete. Ready for build verification and testing.
+
+---
+
 ## 2026-04-03 23:30 — Debt-IQ: Statement Upload for Loans & Credit Cards
 
 ### Task

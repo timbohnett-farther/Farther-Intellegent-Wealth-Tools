@@ -2815,3 +2815,208 @@ model relocation_scraper_sources {
   @@index([source_type])
   @@index([is_active])
 }
+
+// ==================== CRM MIGRATION SYSTEM ====================
+
+model MigrationSession {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  platform    String   // SourceSystemType: REDTAIL, WEALTHBOX, COMMONWEALTH, SALESFORCE, ADVIZON
+  name        String
+  description String?
+  status      String   // MigrationStatus: UPLOADING, PARSING, MAPPING, VALIDATING, IMPORTING, COMPLETED, FAILED
+
+  // Progress tracking
+  totalRecords    Int     @default(0) @map("total_records")
+  parsedRecords   Int     @default(0) @map("parsed_records")
+  mappedRecords   Int     @default(0) @map("mapped_records")
+  importedRecords Int     @default(0) @map("imported_records")
+  errorCount      Int     @default(0) @map("error_count")
+
+  // Metadata
+  uploadedBy      String?  @map("uploaded_by")
+  completedAt     DateTime? @map("completed_at")
+  errorLog        String?  @map("error_log")  // JSON stored as text
+
+  // Relations
+  files           UploadFile[]
+  contacts        RawContact[]
+  households      RawHousehold[]
+  activities      RawActivity[]
+  relationships   RawRelationship[]
+  fieldMappings   FieldMapping[]
+
+  @@map("migration_sessions")
+}
+
+model UploadFile {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  originalName    String   @map("original_name")
+  storedPath      String   @map("stored_path")   // File system path or S3 key
+  mimeType        String   @map("mime_type")
+  sizeBytes       Int      @map("size_bytes")    // Changed from BigInt to Int for SQLite compatibility
+
+  uploadStatus    String   @map("upload_status")  // UploadStatus: UPLOADING, COMPLETED, FAILED
+  uploadProgress  Float    @default(0) @map("upload_progress")  // 0-100
+
+  // Chunked upload tracking
+  totalChunks     Int      @default(0) @map("total_chunks")
+  uploadedChunks  Int      @default(0) @map("uploaded_chunks")
+  chunkMetadata   String?  @map("chunk_metadata")  // JSON stored as text
+
+  @@map("upload_files")
+}
+
+model RawContact {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // Source identifiers
+  sourceId        String   @map("source_id")      // ID from source CRM
+  sourceType      String?  @map("source_type")    // contact_type if available
+
+  // Store all source data as JSON for flexibility
+  rawData         String   @map("raw_data")       // JSON stored as text
+
+  // Extracted common fields (for quick preview)
+  firstName       String?  @map("first_name")
+  lastName        String?  @map("last_name")
+  email           String?
+  phone           String?
+  company         String?
+
+  // Mapping and validation
+  mappingStatus   String   @map("mapping_status")  // MappingStatus: UNMAPPED, MAPPED, VALIDATED, IMPORTED, ERROR
+  validationErrors String? @map("validation_errors")  // JSON stored as text
+
+  // HubSpot import tracking
+  hubspotId       String?  @map("hubspot_id")
+  importedAt      DateTime? @map("imported_at")
+  importError     String?  @map("import_error")
+
+  @@unique([sessionId, sourceId])
+  @@index([sessionId, mappingStatus])
+  @@map("raw_contacts")
+}
+
+model RawHousehold {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  sourceId        String   @map("source_id")
+  rawData         String   @map("raw_data")       // JSON stored as text
+
+  // Extracted preview fields
+  householdName   String?  @map("household_name")
+  primaryContact  String?  @map("primary_contact")
+  aum             Float?   // Changed from Decimal to Float for SQLite compatibility
+
+  mappingStatus   String   @map("mapping_status")  // MappingStatus
+  validationErrors String? @map("validation_errors")  // JSON stored as text
+
+  hubspotId       String?  @map("hubspot_id")
+  importedAt      DateTime? @map("imported_at")
+  importError     String?  @map("import_error")
+
+  @@unique([sessionId, sourceId])
+  @@index([sessionId, mappingStatus])
+  @@map("raw_households")
+}
+
+model RawActivity {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  sourceId        String   @map("source_id")
+  rawData         String   @map("raw_data")       // JSON stored as text
+
+  // Activity classification
+  activityType    String   @map("activity_type")  // ActivityType: NOTE, MEETING, CALL, EMAIL, TASK
+
+  // Preview fields
+  subject         String?
+  description     String?
+  activityDate    DateTime? @map("activity_date")
+  relatedContactId String? @map("related_contact_id")
+
+  mappingStatus   String   @map("mapping_status")  // MappingStatus
+  validationErrors String? @map("validation_errors")  // JSON stored as text
+
+  hubspotId       String?  @map("hubspot_id")
+  importedAt      DateTime? @map("imported_at")
+  importError     String?  @map("import_error")
+
+  @@unique([sessionId, sourceId])
+  @@index([sessionId, activityType])
+  @@index([sessionId, mappingStatus])
+  @@map("raw_activities")
+}
+
+model RawRelationship {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  sourceId        String   @map("source_id")
+  rawData         String   @map("raw_data")       // JSON stored as text
+
+  // Relationship details
+  fromEntityType  String   @map("from_entity_type")  // EntityType: CONTACT, HOUSEHOLD
+  fromEntityId    String   @map("from_entity_id")    // sourceId reference
+  toEntityType    String   @map("to_entity_type")    // EntityType: CONTACT, HOUSEHOLD
+  toEntityId      String   @map("to_entity_id")
+  relationshipType String? @map("relationship_type")  // spouse, child, advisor, etc.
+
+  mappingStatus   String   @map("mapping_status")  // MappingStatus
+  validationErrors String? @map("validation_errors")  // JSON stored as text
+
+  importedAt      DateTime? @map("imported_at")
+  importError     String?  @map("import_error")
+
+  @@unique([sessionId, sourceId])
+  @@index([sessionId, mappingStatus])
+  @@map("raw_relationships")
+}
+
+model FieldMapping {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  sessionId       String   @map("session_id")
+  session         MigrationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // Mapping definition
+  entityType      String   @map("entity_type")      // EntityType: CONTACT, HOUSEHOLD
+  sourceField     String   @map("source_field")     // JSON path in rawData
+  targetProperty  String   @map("target_property")  // HubSpot property internal name
+
+  // Transformation rules
+  transformationType String? @map("transformation_type")  // direct, concat, split, lookup, custom
+  transformationConfig String? @map("transformation_config")  // JSON stored as text
+
+  // Validation
+  required        Boolean  @default(false)
+  defaultValue    String?  @map("default_value")
+
+  @@unique([sessionId, entityType, sourceField])
+  @@map("field_mappings")
+}
