@@ -104,8 +104,10 @@ async function loadTaxRules(taxYear: number): Promise<TaxRulesPackage> {
     throw new Error(`No active tax rules found for tax year ${taxYear}`);
   }
 
-  // Parse complete rules JSON
-  const parsedRules = JSON.parse(rules.rulesJson as string);
+  // Parse complete rules JSON (if stored as string, otherwise use as-is)
+  const parsedRules = typeof rules.rulesJson === 'string'
+    ? JSON.parse(rules.rulesJson)
+    : rules.rulesJson || {};
 
   return {
     ...parsedRules,

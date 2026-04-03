@@ -42,7 +42,7 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
     const adjustments: Record<string, number> = {};
 
     // Traditional IRA contributions (deductible portion)
-    const iraContributionDeduction = inputs.iraContributionDeduction || 0;
+    const iraContributionDeduction = inputs.iraContributionDeduction || inputs.iraContributionsDeductible || 0;
     if (iraContributionDeduction > 0) {
       // Validate against IRA limits from rules
       const iraLimits = rules.retirementContributions?.traditionalIRA;
@@ -54,15 +54,15 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
             'IRA_CONTRIBUTION_EXCEEDS_LIMIT',
             'warning',
             `IRA contribution ($${iraContributionDeduction}) exceeds annual limit ($${maxContribution})`,
-            'iraContributionDeduction',
+            'iraContributionsDeductible',
             { provided: iraContributionDeduction, limit: maxContribution }
           );
-          adjustments.iraContributionDeduction = maxContribution;
+          adjustments.iraContributionsDeductible = maxContribution;
         } else {
-          adjustments.iraContributionDeduction = iraContributionDeduction;
+          adjustments.iraContributionsDeductible = iraContributionDeduction;
         }
       } else {
-        adjustments.iraContributionDeduction = iraContributionDeduction;
+        adjustments.iraContributionsDeductible = iraContributionDeduction;
       }
     }
 
@@ -86,7 +86,7 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
     }
 
     // HSA contributions (deductible portion)
-    const hsaDeduction = inputs.hsaDeduction || 0;
+    const hsaDeduction = inputs.hsaDeduction || inputs.hsaContributionsDeductible || 0;
     if (hsaDeduction > 0) {
       // Validate against HSA limits from rules
       const hsaLimits = rules.retirementContributions?.hsa;
@@ -99,15 +99,15 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
             'HSA_CONTRIBUTION_EXCEEDS_LIMIT',
             'warning',
             `HSA contribution ($${hsaDeduction}) exceeds individual limit ($${maxContribution})`,
-            'hsaDeduction',
+            'hsaContributionsDeductible',
             { provided: hsaDeduction, limit: maxContribution }
           );
-          adjustments.hsaDeduction = maxContribution;
+          adjustments.hsaContributionsDeductible = maxContribution;
         } else {
-          adjustments.hsaDeduction = hsaDeduction;
+          adjustments.hsaContributionsDeductible = hsaDeduction;
         }
       } else {
-        adjustments.hsaDeduction = hsaDeduction;
+        adjustments.hsaContributionsDeductible = hsaDeduction;
       }
     }
 
@@ -178,14 +178,14 @@ export const AdjustmentsToIncomeModule: TaxCalculationModule = {
       notes.push('No adjustments to income');
     } else {
       notes.push(`Total adjustments: $${totalAdjustments.toLocaleString()}`);
-      if (adjustments.iraContributionDeduction) {
-        notes.push(`  - IRA contributions: $${adjustments.iraContributionDeduction.toLocaleString()}`);
+      if (adjustments.iraContributionsDeductible) {
+        notes.push(`  - IRA contributions: $${adjustments.iraContributionsDeductible.toLocaleString()}`);
       }
       if (adjustments.studentLoanInterest) {
         notes.push(`  - Student loan interest: $${adjustments.studentLoanInterest.toLocaleString()}`);
       }
-      if (adjustments.hsaDeduction) {
-        notes.push(`  - HSA contributions: $${adjustments.hsaDeduction.toLocaleString()}`);
+      if (adjustments.hsaContributionsDeductible) {
+        notes.push(`  - HSA contributions: $${adjustments.hsaContributionsDeductible.toLocaleString()}`);
       }
       if (adjustments.selfEmployedHealthInsurance) {
         notes.push(

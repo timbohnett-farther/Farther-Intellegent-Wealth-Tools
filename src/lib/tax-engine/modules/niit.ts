@@ -77,8 +77,16 @@ export const NIITModule: TaxCalculationModule = {
     // This includes: interest, dividends, capital gains, rents, royalties, passive income
     const taxableInterest = inputs.taxableInterest || 0;
     const ordinaryDividends = inputs.ordinaryDividends || 0;
-    const capitalGains = Math.max(0, inputs.capitalGainLoss || 0); // Only positive gains
-    const scheduleEIncome = Math.max(0, inputs.scheduleE || 0); // Rental, royalty, etc (only positive)
+
+    // Capital gains (combine both short and long term, or use capitalGainLoss if provided)
+    const longTermCapitalGains = inputs.longTermCapitalGains || 0;
+    const shortTermCapitalGains = inputs.shortTermCapitalGains || 0;
+    const capitalGains = Math.max(0, inputs.capitalGainLoss || (longTermCapitalGains + shortTermCapitalGains));
+
+    // Schedule E income (rental, royalty, etc) - combine separate fields or use scheduleE
+    const rentalIncome = inputs.rentalIncome || 0;
+    const royaltyIncome = inputs.royaltyIncome || 0;
+    const scheduleEIncome = Math.max(0, inputs.scheduleE || (rentalIncome + royaltyIncome));
 
     // Net investment income = sum of investment income sources
     const netInvestmentIncome =

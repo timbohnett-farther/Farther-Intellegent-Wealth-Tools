@@ -32,7 +32,7 @@ export const FinalTaxModule: TaxCalculationModule = {
     const taxAfterCredits = getIntermediate<number>(context, 'taxAfterCredits', 0);
 
     // Get payments and withholding
-    const federalTaxWithheld = inputs.federalIncomeTaxWithheld || 0;
+    const federalTaxWithheld = inputs.federalIncomeTaxWithheld || inputs.taxWithheld || 0;
     const estimatedTaxPayments = inputs.estimatedTaxPayments || 0;
     const excessSocialSecurityWithheld = inputs.excessSocialSecurityWithheld || 0;
 

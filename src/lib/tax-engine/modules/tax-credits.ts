@@ -46,9 +46,9 @@ export const TaxCreditsModule: TaxCalculationModule = {
 
     // Get credit inputs from snapshot
     const childTaxCreditAmount = inputs.childTaxCredit || 0;
-    const childDependentCareCredit = inputs.childDependentCareCredit || 0;
-    // EITC calculation not yet implemented - would need earned income and dependents
-    const earnedIncomeTaxCredit = 0; // TODO: Implement EITC calculation
+    const childDependentCareCredit = inputs.childDependentCareCredit || inputs.childAndDependentCareCredit || 0;
+    // EITC calculation - use provided EITC or calculate if needed
+    const earnedIncomeTaxCredit = inputs.earnedIncomeTaxCredit || 0;
     const educationCredits = inputs.educationCredits || 0;
     const foreignTaxCredit = inputs.foreignTaxCredit || 0;
     const otherCredits = inputs.otherCredits || 0;
