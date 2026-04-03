@@ -14,7 +14,13 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
      sma_fact_sheet_documents, sma_fact_sheet_versions, sma_parsed_documents,
      sma_change_events, sma_provider_runs, sma_document_alerts
    - Build verified: ✅ Passing (80 pages, 0 errors)
-2. ⏳ Load top-50 provider seed data
+2. ✅ Load top-50 provider seed data
+   - Created `src/lib/db/seed/sma-providers-seed.ts` with 50 providers + 13 seed URLs
+   - Tier 1 (ranks 1-10): AUM ≥ $50B (J.P. Morgan, BlackRock, Vanguard, etc.)
+   - Tier 2 (ranks 11-25): AUM $10-50B (Northern Trust, Invesco, Prudential, etc.)
+   - Tier 3 (ranks 26-50): AUM < $10B (Envestnet, Baird, Artisan, etc.)
+   - Initial seed URLs for J.P. Morgan, BlackRock, Aperio, Vanguard, Fidelity, SSGA
+   - Build verified: ✅ Passing
 3. ⏳ Build provider admin UI
 4. ⏳ Build seed URL admin UI
 
