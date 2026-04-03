@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth, useToast } from '@/lib/tax-planning/auth-context';
+import DebtStatementUploader, { type ExtractedDebtData } from '@/components/debt-iq/DebtStatementUploader';
 import type {
   CreditCard,
   BalanceTransferOffer,
@@ -113,6 +114,23 @@ function PayoffTab({ token }: { token: string | null }) {
   const [extraPayment, setExtraPayment] = useState('300');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PayoffResult | null>(null);
+  const [showStatementUpload, setShowStatementUpload] = useState(false);
+
+  const handleDataExtracted = (data: ExtractedDebtData) => {
+    if ('issuer' in data && 'balance' in data && 'apr' in data) {
+      const newCard: CardEntry = {
+        id: `card-${cards.length}`,
+        issuer: data.issuer,
+        balance: data.balance.toString(),
+        apr: data.apr.toString(),
+        limit: 'creditLimit' in data ? data.creditLimit.toString() : '',
+        minPayment: 'minimumPayment' in data ? data.minimumPayment.toString() : '',
+      };
+      setCards((prev) => [...prev, newCard]);
+      setShowStatementUpload(false);
+      addToast('Credit card statement data loaded successfully', 'success');
+    }
+  };
 
   const addCard = () => setCards((prev) => [...prev, emptyCard(prev.length)]);
   const removeCard = (idx: number) => setCards((prev) => prev.filter((_, i) => i !== idx));
@@ -155,6 +173,29 @@ function PayoffTab({ token }: { token: string | null }) {
 
   return (
     <div className="space-y-6">
+      {/* Upload Toggle */}
+      <div className="flex items-center justify-between rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4">
+        <div>
+          <p className="text-sm font-medium text-text">Import from Statement</p>
+          <p className="text-xs text-text-muted">Upload a credit card statement to add a new card</p>
+        </div>
+        <button
+          onClick={() => setShowStatementUpload(!showStatementUpload)}
+          className="rounded-lg bg-accent-primary px-4 py-2 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
+        >
+          {showStatementUpload ? 'Cancel' : 'Upload Statement'}
+        </button>
+      </div>
+
+      {/* Statement Upload */}
+      {showStatementUpload && (
+        <DebtStatementUploader
+          debtType="credit_card"
+          onDataExtracted={handleDataExtracted}
+          onError={(error) => addToast(error, 'error')}
+        />
+      )}
+
       {/* Card entries */}
       {cards.map((card, idx) => (
         <div key={card.id} className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6">

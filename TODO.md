@@ -2,6 +2,39 @@
 
 ## High Priority
 
+### FMSS Phase 1 Follow-Up
+
+- [ ] **User adds API keys to Railway**
+  - MINIMAX_API_KEY (MiniMax M2.7 AI)
+  - BRIGHT_DATA_API_KEY (web scraping)
+  - FMP_API_KEY (Financial Modeling Prep)
+  - FINNHUB_API_KEY, ALETHEIA_API_KEY, FRED_API_KEY, ALPHA_VANTAGE_API_KEY, ECONDB_API_KEY
+
+- [ ] **Run FMSS database migration on Railway**
+  - Execute: `npm run db:migrate`
+  - Verify all 14 tables created successfully
+  - Confirm indexes are in place
+
+- [ ] **Create initial FMSS route structure**
+  - `/fmss/` — Dashboard/landing page
+  - `/fmss/sma` — SMA strategies list
+  - `/fmss/alternatives` — Alternative funds list
+  - `/fmss/equities` — Equities list
+  - `/fmss/etfs` — ETFs list
+  - `/fmss/compare` — Comparison tool
+
+- [ ] **Seed FMSS initial data**
+  - Seed 8 scoring dimensions (risk-adjusted perf, manager pedigree, etc.)
+  - Seed asset categories (equity, fixed income, alternatives, etc.)
+  - Seed data sources (Bright Data, Tavily, Finnhub, etc.)
+
+- [ ] **Begin Phase 2: SMA Ingestion**
+  - Build unified `fetch_url_as_markdown()` scraper
+  - Implement Bright Data Web Unlocker integration
+  - Add Tavily Extract as backup
+  - Create MiniMax M2.7 extraction worker
+  - Build SMA URL manifest manager
+
 ### Sprint 3 Follow-Up
 
 - [ ] **Manual testing: Admin dashboard workflow**
@@ -104,7 +137,10 @@
 - [x] Sprint 4: Testing & QA
 - [x] Health endpoint for Railway deployment
 - [x] Fix Next.js dynamic route warnings
+- [x] FMSS Phase 1: Drizzle ORM setup, schema creation, migration generation
+- [x] 401(k) Rollover: Statement upload with MiniMax extraction
+- [x] Tool separation: Moved Rollover, Debt IQ, Relocation to standalone routes
 
 ---
 
-**Last Updated:** 2026-04-03 20:50
+**Last Updated:** 2026-04-03 22:45

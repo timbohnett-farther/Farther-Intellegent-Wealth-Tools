@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth, useToast } from '@/lib/tax-planning/auth-context';
+import DebtStatementUploader, { type ExtractedDebtData } from '@/components/debt-iq/DebtStatementUploader';
 import type {
   RefinanceCurrentLoan,
   RefinanceProposedLoan,
@@ -130,6 +131,7 @@ function RefinanceTab({ token }: { token: string | null }) {
   ]);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<RefinanceScenarioResult[] | null>(null);
+  const [showStatementUpload, setShowStatementUpload] = useState(false);
 
   const addScenario = () => {
     if (scenarios.length >= 3) return;
@@ -142,6 +144,19 @@ function RefinanceTab({ token }: { token: string | null }) {
 
   const updateScenario = (idx: number, field: keyof ProposedScenario, value: string) => {
     setScenarios((prev) => prev.map((s, i) => i === idx ? { ...s, [field]: value } : s));
+  };
+
+  const handleDataExtracted = (data: ExtractedDebtData) => {
+    if ('lender' in data && 'balance' in data) {
+      setBalance(data.balance.toString());
+      setRate(data.interestRate.toString());
+      setPayment(data.monthlyPayment.toString());
+      if ('remainingTerm' in data && data.remainingTerm) {
+        setRemainingTerm(data.remainingTerm.toString());
+      }
+      setShowStatementUpload(false);
+      addToast('Mortgage statement data loaded successfully', 'success');
+    }
   };
 
   const runAnalysis = async () => {
@@ -170,16 +185,41 @@ function RefinanceTab({ token }: { token: string | null }) {
 
   return (
     <div className="space-y-6">
-      {/* Current loan */}
-      <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6">
-        <h3 className="text-sm font-semibold text-text mb-4">Current Loan</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <InputField label="Balance" value={balance} onChange={setBalance} prefix="$" />
-          <InputField label="Rate (%)" value={rate} onChange={setRate} suffix="%" step={0.125} />
-          <InputField label="Remaining Term (mo)" value={remainingTerm} onChange={setRemainingTerm} />
-          <InputField label="Monthly Payment" value={payment} onChange={setPayment} prefix="$" />
+      {/* Upload Toggle */}
+      <div className="flex items-center justify-between rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-4">
+        <div>
+          <p className="text-sm font-medium text-text">Import from Statement</p>
+          <p className="text-xs text-text-muted">Upload your mortgage statement to auto-fill loan details</p>
         </div>
+        <button
+          onClick={() => setShowStatementUpload(!showStatementUpload)}
+          className="rounded-lg bg-accent-primary px-4 py-2 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
+        >
+          {showStatementUpload ? 'Enter Manually' : 'Upload Statement'}
+        </button>
       </div>
+
+      {/* Statement Upload */}
+      {showStatementUpload && (
+        <DebtStatementUploader
+          debtType="mortgage"
+          onDataExtracted={handleDataExtracted}
+          onError={(error) => addToast(error, 'error')}
+        />
+      )}
+
+      {/* Current loan */}
+      {!showStatementUpload && (
+        <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6">
+          <h3 className="text-sm font-semibold text-text mb-4">Current Loan</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <InputField label="Balance" value={balance} onChange={setBalance} prefix="$" />
+            <InputField label="Rate (%)" value={rate} onChange={setRate} suffix="%" step={0.125} />
+            <InputField label="Remaining Term (mo)" value={remainingTerm} onChange={setRemainingTerm} />
+            <InputField label="Monthly Payment" value={payment} onChange={setPayment} prefix="$" />
+          </div>
+        </div>
+      )}
 
       {/* Proposed scenarios */}
       {scenarios.map((s, idx) => (
