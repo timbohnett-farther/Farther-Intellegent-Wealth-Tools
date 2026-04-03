@@ -2627,3 +2627,191 @@ model TaxCalculationRun {
   @@index([runType])
   @@map("tax_calculation_runs")
 }
+// ==================== INTERSTATE TAX MIGRATION CALCULATOR (Phase 1) ====================
+
+model relocation_jurisdictions {
+  id                      String   @id
+  code                    String   @unique
+  name                    String
+  type                    String
+  is_destination_enabled  Boolean  @default(true)
+  is_leaving_state_enabled Boolean @default(false)
+  tax_year                Int
+  effective_date          String
+  last_reviewed_at        String
+  status                  String   @default("draft")
+  source_set_id           String?
+  notes_public            String?
+  notes_internal          String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  // Relations
+  income_tax_rules        relocation_income_tax_rules[]
+  estate_rules            relocation_estate_rules[]
+  puerto_rico_rules       relocation_puerto_rico_rules?
+  source_documents        relocation_source_documents[]
+
+  @@index([code])
+  @@index([tax_year])
+  @@index([status])
+}
+
+model relocation_income_tax_rules {
+  id                      String   @id
+  jurisdiction_id         String
+  filing_status           String
+  system_type             String
+  ordinary_income_taxed   Boolean  @default(true)
+  ordinary_income_brackets String?
+  flat_rate               Float?
+  standard_deduction      Float    @default(0)
+  capital_gains_mode      String
+  capital_gains_rate      Float?
+  capital_gains_exemption Float    @default(0)
+  special_logic_key       String?
+  active_from             String
+  active_to               String?
+  version                 Int      @default(1)
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  jurisdiction            relocation_jurisdictions @relation(fields: [jurisdiction_id], references: [id], onDelete: Cascade)
+
+  @@index([jurisdiction_id])
+  @@index([filing_status])
+}
+
+model relocation_estate_rules {
+  id                      String   @id
+  jurisdiction_id         String
+  estate_tax_mode         String
+  estate_exemption        Float?
+  estate_rate_schedule_key String?
+  inheritance_tax_mode    String   @default("none")
+  inheritance_rule_key    String?
+  active_from             String
+  active_to               String?
+  version                 Int      @default(1)
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  jurisdiction            relocation_jurisdictions @relation(fields: [jurisdiction_id], references: [id], onDelete: Cascade)
+
+  @@index([jurisdiction_id])
+}
+
+model relocation_puerto_rico_rules {
+  id                          String   @id
+  jurisdiction_id             String   @unique
+  bona_fide_residency_required Boolean @default(true)
+  act60_enabled               Boolean  @default(true)
+  decree_timing_options       String
+  post_2026_preferential_rate Float    @default(0.04)
+  pre_residency_gains_rate    Float    @default(0.05)
+  primary_residence_required  Boolean  @default(true)
+  special_logic_key           String?
+  active_from                 String
+  active_to                   String?
+  version                     Int      @default(1)
+  act_38_2026_changes         String?
+  created_at                  DateTime @default(now())
+  updated_at                  DateTime @default(now()) @updatedAt
+
+  jurisdiction                relocation_jurisdictions @relation(fields: [jurisdiction_id], references: [id], onDelete: Cascade)
+}
+
+model relocation_source_documents {
+  id                      String   @id
+  jurisdiction_id         String
+  source_type             String
+  title                   String
+  url                     String
+  publisher               String
+  published_date          String?
+  retrieved_at            String
+  is_authoritative        Boolean  @default(false)
+  content_hash            String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  jurisdiction            relocation_jurisdictions @relation(fields: [jurisdiction_id], references: [id], onDelete: Cascade)
+
+  @@index([jurisdiction_id])
+  @@index([source_type])
+}
+
+model relocation_source_sets {
+  id                      String   @id
+  jurisdiction_code       String
+  tax_year                Int
+  document_ids            String
+  review_status           String   @default("pending")
+  approved_by             String?
+  approved_at             String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  @@index([jurisdiction_code])
+  @@index([review_status])
+}
+
+model relocation_candidate_updates {
+  id                      String   @id
+  jurisdiction_code       String
+  source_type             String
+  source_url              String
+  detected_date           String
+  proposed_changes        String
+  extracted_by            String
+  confidence_score        Float
+  extraction_summary      String
+  review_status           String   @default("pending")
+  reviewed_by             String?
+  review_date             String?
+  review_notes            String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  @@index([jurisdiction_code])
+  @@index([review_status])
+}
+
+model relocation_calculation_runs {
+  id                          String   @id
+  leaving_state               String
+  destination_state           String
+  filing_status               String
+  ordinary_income             Float
+  capital_gains               Float
+  estate_value                Float?
+  puerto_rico_mode            String?
+  result_annual_savings       Float
+  result_10yr_savings         Float
+  result_estate_exposure_flag String?
+  rules_version_hash          String
+  user_id                     String?
+  session_id                  String?
+  ip_address                  String?
+  created_at                  DateTime @default(now())
+
+  @@index([leaving_state])
+  @@index([destination_state])
+  @@index([created_at])
+}
+
+model relocation_scraper_sources {
+  id                      String   @id
+  source_name             String
+  source_type             String
+  base_url                String
+  scraping_frequency      String
+  last_scraped            String?
+  is_active               Boolean  @default(true)
+  scraper_config          String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+
+  @@index([source_type])
+  @@index([is_active])
+}

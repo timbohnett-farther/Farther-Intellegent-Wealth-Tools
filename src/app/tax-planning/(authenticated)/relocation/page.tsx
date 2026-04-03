@@ -97,25 +97,69 @@ export default function RelocationCalculatorPage() {
 
   // Results
   const [showResults, setShowResults] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [calculationResult, setCalculationResult] = useState<any>(null);
+  const [calculationError, setCalculationError] = useState<string | null>(null);
 
   const handleDestinationChange = (value: string) => {
     setDestinationState(value);
     setShowPuertoRicoOptions(value === 'PR');
   };
 
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
+    // Reset previous results
+    setCalculationError(null);
+    setCalculationResult(null);
+    setShowResults(false);
+
+    // Validation
     if (!leavingState || !destinationState) {
-      alert('Please select both a leaving state and destination state.');
+      setCalculationError('Please select both a leaving state and destination state.');
       return;
     }
 
     if (!ordinaryIncome || parseFloat(ordinaryIncome) < 0) {
-      alert('Please enter a valid annual ordinary income.');
+      setCalculationError('Please enter a valid annual ordinary income.');
       return;
     }
 
-    // TODO: Implement actual tax calculation logic
-    setShowResults(true);
+    // Call API
+    setIsCalculating(true);
+    try {
+      const response = await fetch('/api/relocation/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          leavingStateCode: leavingState,
+          destinationStateCode: destinationState,
+          filingStatus: filingStatus,
+          annualOrdinaryIncome: parseFloat(ordinaryIncome),
+          annualCapitalGains: parseFloat(capitalGains) || 0,
+          netWorth: netWorth ? parseFloat(netWorth) : undefined,
+          puertoRico:
+            destinationState === 'PR'
+              ? {
+                  assumeBonaFideResidency: bonaFideResidency,
+                  act60Enabled: act60Scenario === 'act60',
+                  act60Cohort: act60Scenario === 'act60' ? 'post_2026' : 'not_applicable',
+                }
+              : undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Calculation failed');
+      }
+
+      const data = await response.json();
+      setCalculationResult(data);
+      setShowResults(true);
+    } catch (error: any) {
+      setCalculationError(error.message || 'An error occurred during calculation');
+    } finally {
+      setIsCalculating(false);
+    }
   };
 
   const inputStyle = {
@@ -299,50 +343,117 @@ export default function RelocationCalculatorPage() {
         )}
 
         {/* Calculate Button */}
-        <div className="mt-6 flex justify-end">
-          <button
-            type="button"
-            onClick={handleCalculate}
-            className="rounded-lg bg-accent-primary px-6 py-2.5 text-sm font-medium text-text-onBrand transition-colors hover:bg-accent-primary/90"
-          >
-            Calculate Tax Impact
-          </button>
+        <div className="mt-6 flex flex-col gap-3">
+          {calculationError && (
+            <div className="rounded-md bg-error/10 px-4 py-3 text-sm text-error">
+              {calculationError}
+            </div>
+          )}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleCalculate}
+              disabled={isCalculating}
+              className="rounded-lg bg-accent-primary px-6 py-2.5 text-sm font-medium text-text-onBrand transition-colors hover:bg-accent-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isCalculating ? 'Calculating...' : 'Calculate Tax Impact'}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Results (placeholder) */}
-      {showResults && (
-        <div className="rounded-lg border p-6" style={{ background: 'var(--s-card-bg)', borderColor: 'var(--s-border-subtle)' }}>
-          <h2 className="mb-4 text-lg font-semibold text-text">Estimated Tax Comparison</h2>
+      {/* Results */}
+      {showResults && calculationResult && (
+        <div className="space-y-6">
+          {/* Main Results Card */}
+          <div className="rounded-lg border p-6" style={{ background: 'var(--s-card-bg)', borderColor: 'var(--s-border-subtle)' }}>
+            <h2 className="mb-6 text-lg font-semibold text-text">Estimated Tax Comparison</h2>
 
-          <div className="space-y-4 text-sm text-text-muted">
-            <p>
-              <strong className="text-text">Current State:</strong> {LEAVING_STATES.find(s => s.value === leavingState)?.label}
-            </p>
-            <p>
-              <strong className="text-text">Destination:</strong> {DESTINATION_STATES.find(s => s.value === destinationState)?.label}
-            </p>
+            {/* Jurisdiction Comparison */}
+            <div className="mb-6 grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-text-muted">Current State</p>
+                <p className="text-lg font-semibold text-text">{calculationResult.originState.jurisdictionName}</p>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">Destination</p>
+                <p className="text-lg font-semibold text-text">{calculationResult.destinationState.jurisdictionName}</p>
+              </div>
+            </div>
 
-            <div className="mt-6 rounded-md bg-brand-500/10 p-4 text-brand-700 dark:text-brand-400">
-              <p className="text-sm font-medium">🚧 Tax Calculation Engine — Coming Soon</p>
-              <p className="mt-1 text-xs">
-                Full tax calculation with state income tax, capital gains treatment, estate tax analysis, and multi-year projections will be implemented in Phase 1.
-              </p>
+            {/* Tax Breakdown */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg border p-4" style={{ borderColor: 'var(--s-border-subtle)' }}>
+                  <p className="mb-1 text-xs text-text-muted">Annual State Tax ({calculationResult.originState.jurisdictionCode})</p>
+                  <p className="text-2xl font-bold text-text">
+                    ${calculationResult.originState.totalIncomeTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="mt-1 text-xs text-text-faint">
+                    Effective Rate: {(calculationResult.originState.effectiveTaxRate * 100).toFixed(2)}%
+                  </p>
+                </div>
+
+                <div className="rounded-lg border p-4" style={{ borderColor: 'var(--s-border-subtle)' }}>
+                  <p className="mb-1 text-xs text-text-muted">Annual State Tax ({calculationResult.destinationState.jurisdictionCode})</p>
+                  <p className="text-2xl font-bold text-text">
+                    ${calculationResult.destinationState.totalIncomeTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="mt-1 text-xs text-text-faint">
+                    Effective Rate: {(calculationResult.destinationState.effectiveTaxRate * 100).toFixed(2)}%
+                  </p>
+                </div>
+              </div>
+
+              {/* Annual Savings/Cost */}
+              <div className={`rounded-lg p-6 text-center ${calculationResult.annualTaxDifference < 0 ? 'bg-success/10' : 'bg-error/10'}`}>
+                <p className="mb-2 text-sm font-medium text-text-muted">
+                  {calculationResult.annualTaxDifference < 0 ? 'Estimated Annual Tax Savings' : 'Estimated Annual Tax Increase'}
+                </p>
+                <p className={`text-4xl font-bold ${calculationResult.annualTaxDifference < 0 ? 'text-success' : 'text-error'}`}>
+                  ${Math.abs(calculationResult.annualTaxDifference).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                </p>
+                <p className="mt-3 text-xs text-text-muted">
+                  10-Year Illustration: ${Math.abs(calculationResult.tenYearIllustration).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                </p>
+              </div>
+
+              {/* Estate Tax Notes */}
+              {(calculationResult.originState.estateOrInheritanceTaxApplies || calculationResult.destinationState.estateOrInheritanceTaxApplies) && (
+                <div className="rounded-md bg-warning-500/10 p-4 text-sm">
+                  <p className="font-semibold text-warning-700 dark:text-warning-400">Estate Tax Considerations</p>
+                  <ul className="ml-4 mt-2 list-disc space-y-1 text-xs text-text-muted">
+                    {calculationResult.originState.estateOrInheritanceTaxApplies && (
+                      <li>{calculationResult.originState.jurisdictionName} imposes estate or inheritance tax</li>
+                    )}
+                    {calculationResult.destinationState.estateOrInheritanceTaxApplies && (
+                      <li>{calculationResult.destinationState.jurisdictionName} imposes estate or inheritance tax</li>
+                    )}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Disclosures */}
-          <div className="mt-6 rounded-lg border border-warning-500/30 bg-warning-500/5 p-4 text-xs text-text-muted">
-            <p className="mb-2 font-semibold text-warning-700 dark:text-warning-400">Important Disclosures</p>
-            <ul className="ml-4 list-disc space-y-1">
-              <li>This tool provides educational illustrations based on selected assumptions and current law summaries.</li>
-              <li>Actual taxes depend on residency determination, income sourcing, deductions, timing, and individual legal status.</li>
-              <li>Puerto Rico scenarios require bona fide residency analysis and may require separate legal and tax review.</li>
-              <li>Outputs are not guarantees and should not be used to prepare a tax return.</li>
-              <li>Tax law changes frequently. Results reflect rules as of the "Current law as of" date displayed.</li>
+          {/* Assumptions & Caveats */}
+          <div className="rounded-lg border p-6" style={{ background: 'var(--s-card-bg)', borderColor: 'var(--s-border-subtle)' }}>
+            <h3 className="mb-3 text-sm font-semibold text-text">Assumptions</h3>
+            <ul className="ml-4 list-disc space-y-1 text-xs text-text-muted">
+              {calculationResult.assumptions.map((assumption: string, idx: number) => (
+                <li key={idx}>{assumption}</li>
+              ))}
             </ul>
-            <p className="mt-3 text-xs text-text-faint">
-              Current law as of: <strong>March 2026</strong> | Last reviewed: <strong>March 20, 2026</strong>
+
+            <h3 className="mb-3 mt-6 text-sm font-semibold text-warning-700 dark:text-warning-400">Important Disclosures</h3>
+            <ul className="ml-4 list-disc space-y-1 text-xs text-text-muted">
+              {calculationResult.caveats.map((caveat: string, idx: number) => (
+                <li key={idx}>{caveat}</li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-xs text-text-faint">
+              Calculation Date: {new Date(calculationResult.calculationDate).toLocaleString()} |
+              Rules Version: {calculationResult.rulesVersionUsed.origin} / {calculationResult.rulesVersionUsed.destination}
             </p>
           </div>
         </div>

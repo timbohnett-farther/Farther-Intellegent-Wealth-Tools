@@ -6,6 +6,8 @@
  * - User input facts
  * - Calculation results
  * - Update workflow metadata
+ *
+ * @module relocation-calculator/types
  */
 
 // ==================== JURISDICTION TAX RULES ====================
