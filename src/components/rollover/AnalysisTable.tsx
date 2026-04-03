@@ -128,7 +128,7 @@ export function AnalysisTable({ analyses, loading }: AnalysisTableProps) {
             >
               <td className="px-4 py-3">
                 <Link
-                  href={`/tax-planning/rollover/${analysis.analysis_id}`}
+                  href={`/rollover/${analysis.analysis_id}`}
                   className="font-medium text-accent-primary hover:underline"
                 >
                   {analysis.client_name}

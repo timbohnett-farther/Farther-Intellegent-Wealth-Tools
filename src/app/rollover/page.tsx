@@ -67,7 +67,7 @@ export default function RolloverDashboardPage() {
           </p>
         </div>
         <Link
-          href="/tax-planning/rollover/new"
+          href="/rollover/new"
           className="inline-flex items-center gap-2 rounded-lg bg-accent-primary px-4 py-2.5 text-sm font-medium text-text-onBrand transition-colors hover:bg-accent-primary/90"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -113,7 +113,7 @@ export default function RolloverDashboardPage() {
             token={token}
             onSelect={(plan) => {
               // Navigate to new analysis with plan pre-selected
-              window.location.href = `/tax-planning/rollover/new?plan_id=${plan.plan_id}`;
+              window.location.href = `/rollover/new?plan_id=${plan.plan_id}`;
             }}
           />
         )}

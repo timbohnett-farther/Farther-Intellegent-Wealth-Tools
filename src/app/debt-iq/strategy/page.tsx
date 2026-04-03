@@ -411,7 +411,7 @@ export default function DebtPayoffStrategyPage() {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Link href="/tax-planning/debt-iq" className="text-sm text-accent-primarySoft hover:text-accent-primarySoft">
+            <Link href="/debt-iq" className="text-sm text-accent-primarySoft hover:text-accent-primarySoft">
               Debt Analysis
             </Link>
             <span className="text-text-faint">/</span>
@@ -431,7 +431,7 @@ export default function DebtPayoffStrategyPage() {
           <p className="text-base font-medium text-text-muted mb-2">No debts to optimize</p>
           <p className="text-sm text-text-muted mb-4">Add debts to your household profile to use the payoff optimizer.</p>
           <Link
-            href="/tax-planning/debt-iq"
+            href="/debt-iq"
             className="rounded-lg bg-accent-primary px-5 py-2.5 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors"
           >
             Back to Debt Dashboard

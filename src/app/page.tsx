@@ -99,7 +99,7 @@ const TOOLS: ToolCard[] = [
     title: '401(k) Rollover Analyzer',
     description:
       'Comprehensive 401(k) plan evaluation and rollover analysis. Score retirement plans across 27 criteria including fees, investment options, and features. Generate compliant documentation, benchmark against industry standards, and build data-driven rollover recommendations.',
-    href: '/tax-planning/rollover',
+    href: '/rollover',
     status: 'live',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -115,7 +115,7 @@ const TOOLS: ToolCard[] = [
     title: 'Debt IQ — Strategic Debt Analysis',
     description:
       'Comprehensive debt optimization platform analyzing mortgage, securities-backed lending, credit cards, auto loans, student debt, and business financing. Calculate after-tax cost of debt, model payoff strategies, identify refinancing opportunities, and quantify tax deductions across 6 debt categories.',
-    href: '/tax-planning/debt-iq',
+    href: '/debt-iq',
     status: 'live',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -149,7 +149,7 @@ const TOOLS: ToolCard[] = [
     title: 'Interstate Tax Migration Calculator',
     description:
       'Illustrate annual and multi-year tax impact of relocating from 9 high-tax states to any U.S. state, D.C., or Puerto Rico. Compare state income tax, capital gains treatment, estate tax exposure, and Act 60 scenarios. Educational planning tool with AI-powered tax rules updates and compliance disclosures.',
-    href: '/tax-planning/relocation',
+    href: '/relocation',
     status: 'live',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

@@ -95,7 +95,7 @@ export function NewAnalysisClient() {
       if (res.ok) {
         const analysis = await res.json();
         setToast({ message: 'Rollover analysis created successfully.', type: 'success' });
-        router.push(`/tax-planning/rollover/${analysis.analysis_id}`);
+        router.push(`/rollover/${analysis.analysis_id}`);
       } else {
         const err = await res.json();
         setToast({ message: err.error?.message ?? 'Failed to create analysis.', type: 'error' });
@@ -138,7 +138,7 @@ export function NewAnalysisClient() {
         {/* Back button */}
         <button
           type="button"
-          onClick={() => router.push('/tax-planning/rollover')}
+          onClick={() => router.push('/rollover')}
           className="flex items-center gap-1 text-sm text-text-muted hover:text-text"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

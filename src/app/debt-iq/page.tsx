@@ -361,13 +361,13 @@ export default function DebtIQDashboardPage() {
         </div>
         <div className="flex items-center gap-3">
           <Link
-            href="/tax-planning/debt-iq/strategy"
+            href="/debt-iq/strategy"
             className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl px-4 py-2 text-sm font-medium text-text-muted hover:bg-surface-subtle transition-colors"
           >
             Payoff Optimizer
           </Link>
           <Link
-            href="/tax-planning/debt-iq/analysis/mortgage"
+            href="/debt-iq/analysis/mortgage"
             className="rounded-lg bg-accent-primary px-4 py-2 text-sm font-medium text-text hover:bg-accent-primary/80 transition-colors shadow-sm"
           >
             Run Analysis
@@ -439,7 +439,7 @@ export default function DebtIQDashboardPage() {
         <div className="flex items-center justify-between px-6 py-4 border-b border-limestone-100">
           <h3 className="text-base font-semibold text-text">All Debts</h3>
           <Link
-            href="/tax-planning/debt-iq/strategy"
+            href="/debt-iq/strategy"
             className="text-sm font-medium text-accent-primarySoft hover:text-accent-primarySoft transition-colors"
           >
             View Strategy &rarr;
@@ -536,12 +536,12 @@ export default function DebtIQDashboardPage() {
         <h3 className="text-sm font-semibold uppercase text-text-faint mb-3">Analysis Tools</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { label: 'Mortgage', href: '/tax-planning/debt-iq/analysis/mortgage', icon: '\uD83C\uDFE0' },
-            { label: 'Student Loans', href: '/tax-planning/debt-iq/analysis/student-loans', icon: '\uD83C\uDF93' },
-            { label: 'Credit Cards', href: '/tax-planning/debt-iq/analysis/credit-cards', icon: '\uD83D\uDCB3' },
-            { label: 'Securities', href: '/tax-planning/debt-iq/analysis/securities', icon: '\uD83D\uDCC8' },
-            { label: 'Auto Loans', href: '/tax-planning/debt-iq/analysis/auto', icon: '\uD83D\uDE97' },
-            { label: 'Business Debt', href: '/tax-planning/debt-iq/analysis/business', icon: '\uD83C\uDFE2' },
+            { label: 'Mortgage', href: '/debt-iq/analysis/mortgage', icon: '\uD83C\uDFE0' },
+            { label: 'Student Loans', href: '/debt-iq/analysis/student-loans', icon: '\uD83C\uDF93' },
+            { label: 'Credit Cards', href: '/debt-iq/analysis/credit-cards', icon: '\uD83D\uDCB3' },
+            { label: 'Securities', href: '/debt-iq/analysis/securities', icon: '\uD83D\uDCC8' },
+            { label: 'Auto Loans', href: '/debt-iq/analysis/auto', icon: '\uD83D\uDE97' },
+            { label: 'Business Debt', href: '/debt-iq/analysis/business', icon: '\uD83C\uDFE2' },
           ].map((tool) => (
             <Link
               key={tool.label}

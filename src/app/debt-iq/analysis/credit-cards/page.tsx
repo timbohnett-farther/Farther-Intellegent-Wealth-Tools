@@ -585,7 +585,7 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div>
         <nav className="flex items-center gap-1 text-sm text-text-faint mb-1">
-          <Link href="/tax-planning/debt-iq" className="hover:text-accent-primarySoft transition-colors">Debt IQ</Link>
+          <Link href="/debt-iq" className="hover:text-accent-primarySoft transition-colors">Debt IQ</Link>
           <span>/</span>
           <span className="text-text-muted">Credit Card Optimizer</span>
         </nav>

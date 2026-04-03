@@ -172,7 +172,7 @@ export default function BusinessDebtAnalysisPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Link href="/tax-planning/debt-iq" className="text-sm text-accent-primarySoft hover:text-accent-primarySoft">Debt Analysis</Link>
+          <Link href="/debt-iq" className="text-sm text-accent-primarySoft hover:text-accent-primarySoft">Debt Analysis</Link>
           <span className="text-text-faint">/</span>
           <span className="text-sm text-text-muted">Business Debt Analyzer</span>
         </div>
