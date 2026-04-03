@@ -6,7 +6,7 @@
 Build production-grade SMA monitoring subsystem inside FMSS that maintains a database of top 50 wealth managers, discovers SMA strategy pages and fact sheet PDFs, checks daily for updates, downloads only changed documents, extracts structured data, and creates auditable change history.
 
 ### Implementation Plan (8 Phases)
-**Phase 1: Database + Provider Registry** — IN PROGRESS ⏳
+**Phase 1: Database + Provider Registry** — COMPLETE ✅
 1. ✅ Create additive schema tables (extend FMSS, preserve existing)
    - Added 9 new monitoring tables to `src/lib/db/schema.ts`
    - Generated Drizzle migration: `0001_optimal_ultragirl.sql`
@@ -21,8 +21,17 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
    - Tier 3 (ranks 26-50): AUM < $10B (Envestnet, Baird, Artisan, etc.)
    - Initial seed URLs for J.P. Morgan, BlackRock, Aperio, Vanguard, Fidelity, SSGA
    - Build verified: ✅ Passing
-3. ⏳ Build provider admin UI
-4. ⏳ Build seed URL admin UI
+3. ✅ Build provider admin UI
+   - Created `/admin/sma-providers` page with provider registry table
+   - Stats cards: total providers, active discovery, tier breakdowns
+   - Full provider details: rank, AUM, strategies, tier, discovery mode, auth sensitivity
+   - Edit functionality placeholder (Phase 6)
+4. ✅ Build seed URL admin UI
+   - Created `/admin/sma-urls` page with seed URL management table
+   - Stats cards: total URLs, active URLs, type breakdown
+   - Full URL details: priority, provider, URL/label, type, crawl depth, status
+   - Failure tracking and last crawled dates
+   - Edit functionality placeholder (Phase 6)
 
 **Phase 2: Discovery Layer**
 - Implement Tavily discovery worker
@@ -120,11 +129,15 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 1 IN PROGRESS ⏳
-**Database Schema:** ✅ Complete — 9 new tables added, migration generated (`0001_optimal_ultragirl.sql`)
-**Next:** Load top-50 provider seed data, build admin UI for provider/URL management
+### Status: PHASE 1 COMPLETE ✅
+**Database Schema:** ✅ 9 new tables added, migration generated (`0001_optimal_ultragirl.sql`)
+**Provider Seed Data:** ✅ 50 providers + 13 seed URLs loaded
+**Admin UI:** ✅ Provider and seed URL management pages created
+**Build:** ✅ Passing (80 pages, 0 errors)
 
-Phase 2 (SMA ingestion) committed. Currently implementing Fact Sheet Monitoring Phase 1 (database + provider registry).
+**Next:** Phase 2 - Discovery Layer (Tavily discovery worker, sitemap parsing, URL classification)
+
+Phase 2 (SMA ingestion) committed. Phase 1 (database + provider registry) COMPLETE.
 
 ---
 
