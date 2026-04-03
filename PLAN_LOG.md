@@ -147,11 +147,40 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
    - Medium: Moderate changes above threshold, manager changes
    - Low: Minor text updates, formatting changes
 
-**Phase 6: Admin Ops + Alerts**
-- Admin document/run views
-- Material change alerts
-- Retry workflows
-- Audit trail surfaces
+**Phase 6: Admin Ops + Alerts** — COMPLETE ✅
+1. ✅ Admin document management view
+   - Created `src/app/admin/sma-documents/page.tsx`
+   - Document listing with provider, URL, type, version count
+   - Parsing status indicators (Parsed/Not Parsed, Stored)
+   - Stats dashboard: Total documents, parsed count, pending URLs, processing count
+   - Last acquired timestamp tracking
+   - Direct links to source URLs
+2. ✅ Run history view
+   - Created `src/app/admin/sma-runs/page.tsx`
+   - Run listing with provider, type (discovery/acquisition/parsing), status
+   - Stats dashboard: Total runs, successful, failed, currently running
+   - Success/failure rate calculations
+   - Duration tracking (minutes:seconds format)
+   - Results display: URLs discovered, processed, errors
+   - Triggered by audit trail
+3. ✅ Change events view
+   - Created `src/app/admin/sma-changes/page.tsx`
+   - Change event listing with severity classification
+   - Stats dashboard: Total changes, high/medium severity, action required count
+   - Material changes display with bullet points
+   - Field changes grid with old → new value comparisons
+   - Advisor action required badges
+   - Change summary descriptions
+   - Source document links
+4. ✅ Admin UI features
+   - Tailwind v4 semantic token styling
+   - Server-side rendering with Suspense
+   - Loading states with spinner
+   - Empty states with helpful messages
+   - Responsive grid layouts (1/2/4 columns)
+   - Color-coded severity badges (high=red, medium=yellow, low=gray)
+   - Sortable tables with hover effects
+   - Stats cards with percentage calculations
 
 **Phase 7: Scheduler + Jobs**
 - Daily monitoring job (5:00 UTC)
@@ -219,39 +248,42 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 5 COMPLETE ✅
+### Status: PHASE 6 COMPLETE ✅
 **Phase 1:** ✅ Database Schema + Provider Registry + Admin UI
 **Phase 2:** ✅ Discovery Worker + URL Classification + Run Logging
 **Phase 3:** ✅ Acquisition Worker + Content Validation + Version Tracking
 **Phase 4:** ✅ Parsing Worker + Field Extraction + Data Persistence
 **Phase 5:** ✅ Change Detection + AI Analysis + Event Generation
+**Phase 6:** ✅ Admin Views + Document Management + Run History + Change Events
 
-**Phase 5 Deliverables:**
-- `workers/sma_monitoring/change_worker.py` - AI-powered change detection (650+ lines)
-- FieldComparator class for deterministic field comparison
-- MinimaxChangeAnalyzer class for semantic analysis
-- ChangeWorker orchestrator with event persistence
-- Significance thresholds for numeric field changes
+**Phase 6 Deliverables:**
+- `src/app/admin/sma-documents/page.tsx` - Document tracking UI (120+ lines)
+- `src/app/admin/sma-runs/page.tsx` - Run history UI (140+ lines)
+- `src/app/admin/sma-changes/page.tsx` - Change events UI (180+ lines)
+- Complete admin dashboard suite for FMSS monitoring
 
-**Change Detection Features:**
-- Field-level comparison (text, numeric, date fields)
-- Significance thresholds: AUM (5%), fees (5 bps), performance (2-5%)
-- MiniMax M2.7 semantic change analysis
-- Human-readable change summaries
-- Material change identification
-- Severity classification (low/medium/high)
-- Advisor action recommendations
-- Change event storage with version tracking
-- CLI interface: `--provider`, `--all-active`, `--document-id`
+**Admin UI Features:**
+- **Documents View**: Document listing, parsing status, version tracking, stats dashboard
+- **Runs View**: Worker execution history, success/failure rates, duration tracking, results display
+- **Changes View**: Change event feed, severity classification, material changes, field comparisons
+- Server-side rendering with Drizzle ORM queries
+- Tailwind v4 semantic tokens for consistent styling
+- Responsive layouts (mobile → tablet → desktop)
+- Loading states with Suspense
+- Empty states with helpful messages
+- Color-coded severity badges
+- Stats cards with percentage calculations
+- Direct links to source documents
 
-**Severity Classification:**
-- **High**: Fee changes ≥10 bps, performance shifts ≥5%, AUM changes ≥20%
-- **Medium**: Moderate changes above threshold, manager changes
-- **Low**: Minor text updates, formatting changes
+**Stats Dashboards:**
+- Documents: Total, parsed, pending URLs, processing
+- Runs: Total, successful, failed, running
+- Changes: Total, high/medium severity, action required
 
-**Next:** Phase 6 - Admin Ops + Alerts (UI for document/run management, alert workflows)
+**Next:** Phase 7 - Scheduler + Jobs (Railway Cron configuration)
+**Next:** Phase 8 - FMSS Surface Integration (Expose strategy data in FMSS pages)
 
-Phases 1-5 COMPLETE. Ready for Phase 6 implementation.
+Phases 1-6 COMPLETE. Core monitoring system operational. Ready for scheduling (Phase 7) and surface integration (Phase 8).
 
 ---
 
