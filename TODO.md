@@ -139,8 +139,9 @@
 - [x] Fix Next.js dynamic route warnings
 - [x] FMSS Phase 1: Drizzle ORM setup, schema creation, migration generation
 - [x] 401(k) Rollover: Statement upload with MiniMax extraction
+- [x] Debt-IQ: Statement upload for mortgage and credit card analysis
 - [x] Tool separation: Moved Rollover, Debt IQ, Relocation to standalone routes
 
 ---
 
-**Last Updated:** 2026-04-03 22:45
+**Last Updated:** 2026-04-04 00:35
