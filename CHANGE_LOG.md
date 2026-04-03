@@ -1,5 +1,134 @@
 # Change Log — Farther Intelligent Wealth Tools
 
+## 2026-04-04 02:45 — FMSS Phase 2: SMA Ingestion Pipeline + Migration System Fixes 🚀
+
+### Summary
+Completed **FMSS Phase 2 SMA Ingestion Pipeline** with unified web scraper (Bright Data + Tavily fallback), MiniMax M2.7 AI extraction, complete ingestion worker, and API endpoint. Also fixed critical TypeScript type errors across 5 CRM migration parser files to enable successful build.
+
+### Implementation Complete
+1. ✅ Unified web scraper with Bright Data (primary) + Tavily (fallback)
+2. ✅ MiniMax M2.7 extractor for structured SMA data (30+ fields)
+3. ✅ Complete ingestion worker with SHA-256 deduplication
+4. ✅ POST /api/fmss/ingest/sma endpoint (single + batch)
+5. ✅ Fixed TypeScript errors in 5 migration parsers
+6. ✅ Build passed (80 pages, 0 errors)
+7. ✅ Committed and pushed (8222462)
+
+### Files Added — FMSS Phase 2 (4 files, 1,175 lines)
+
+**NEW FILES (4):**
+- `src/lib/fmss/scraper/fetch-url-as-markdown.ts` (218 lines)
+  - Unified scraper: Bright Data primary → Tavily fallback
+  - HTML-to-markdown conversion with entity decoding
+  - SHA-256 content hashing for change detection
+  - Timeout handling (30s default) with AbortController
+  - Returns: {success, content, source, contentHash, error}
+
+- `src/lib/fmss/extraction/minimax-sma-extractor.ts` (310 lines)
+  - MiniMax M2.7 integration via Anthropic-compatible API
+  - SMAData interface with 30+ fields (manager, fees, performance, risk, holdings)
+  - Detailed extraction prompt with schema + examples
+  - JSON parsing with markdown code block detection
+  - Graceful fallback for failed extractions
+  - Token usage tracking
+
+- `src/lib/fmss/workers/sma-ingestion-worker.ts` (446 lines)
+  - Complete end-to-end ingestion pipeline
+  - Step 1: Scrape URL (Bright Data → Tavily)
+  - Step 2: Check content hash (skip if unchanged)
+  - Step 3: Extract structured data (MiniMax M2.7)
+  - Step 4: Upsert to `fmss_sma_strategies` table (natural key: strategy_name)
+  - Step 5: Update `fmss_sma_url_manifest` with hash
+  - Step 6: Log to `fmss_ingest_log`
+  - Batch processing with configurable concurrency (default 3)
+  - Rate limit delays between batches (2s default)
+  - Promise.allSettled for error resilience
+
+- `src/app/api/fmss/ingest/sma/route.ts` (201 lines)
+  - POST endpoint for single/batch SMA ingestion
+  - Input validation: URL format, batch size max 50
+  - 5-minute max duration (export maxDuration = 300)
+  - GET endpoint: health check + API docs
+  - Options: skip_if_unchanged, scrape_timeout, extraction_model, concurrent, delay_between_batches_ms
+
+### Files Modified — Migration Parser Fixes (5 files)
+
+**MODIFIED FILES (5):**
+- `src/lib/migration/parsers/advizon-parser.ts`
+  - Fixed parseClient/parseHousehold/parsePortfolio return types
+  - Changed from returning Prisma models to interface types (RawContactData, RawHouseholdData)
+  - Convert null → undefined for optional fields
+  - Fixed record field types (number not string)
+  - Fixed ParseError.message (was .error)
+  - Added recordsParsed to onProgress callbacks
+  - Fixed validateFile return type (error not message)
+
+- `src/lib/migration/parsers/commonwealth-parser.ts`
+  - Same fixes as advizon-parser
+  - Added RawActivityData for parseActivity
+
+- `src/lib/migration/parsers/salesforce-parser.ts`
+  - Fixed 4 parse methods: parseContact, parseAccount, parseOpportunity, parseActivity
+  - Same pattern: Prisma model → interface type, null → undefined
+
+- `src/lib/migration/parsers/redtail-parser.ts`
+  - Fixed validateFile return type (error not message)
+
+- `src/lib/migration/parsers/wealthbox-parser.ts`
+  - Same parser fixes as others
+
+### FMSS Phase 2 Features
+- **Smart Deduplication:** Skip re-scraping if content_hash unchanged
+- **Rate Limiting:** Configurable concurrent requests + delays
+- **Error Resilience:** Promise.allSettled for batch processing
+- **Comprehensive Logging:** Duration, tokens used, success/failure tracking
+- **Natural Key Upsert:** Match by strategy_name for updates vs. inserts
+- **Batch Processing:** Process up to 50 URLs with concurrent control
+
+### API Usage
+
+**Single URL:**
+```bash
+POST /api/fmss/ingest/sma
+{
+  "url": "https://example.com/sma-factsheet.pdf"
+}
+```
+
+**Batch URLs:**
+```bash
+POST /api/fmss/ingest/sma
+{
+  "urls": ["url1", "url2", "url3"],
+  "options": {
+    "skip_if_unchanged": true,
+    "extraction_model": "minimax-2.7",
+    "concurrent": 3,
+    "delay_between_batches_ms": 2000
+  }
+}
+```
+
+### Build Status
+✅ **Build Passed:** 80 pages, 0 TypeScript errors
+✅ **Committed:** 8222462
+✅ **Pushed:** origin/main
+
+### Deployment Status
+⏳ **Railway Migration:** Pending (run `railway run npm run db:migrate`)
+⏳ **Seed Data:** Pending (scoring dimensions, categories, data sources)
+
+### Next Steps
+1. Run Railway migration to create FMSS tables
+2. Seed initial data (dimensions, categories, sources)
+3. Test SMA ingestion with sample fact sheet
+4. Begin **FMSS Fact Sheet Monitoring** system (new PRD)
+
+### Known Issues
+None
+
+---
+
 ## 2026-04-04 00:30 — Debt-IQ: Statement Upload for Mortgages & Credit Cards 🚀
 
 ### Summary

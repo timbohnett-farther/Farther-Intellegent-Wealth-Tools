@@ -1,5 +1,118 @@
 # Plan Log — Farther Intelligent Wealth Tools
 
+## 2026-04-04 02:30 — FMSS: SMA Fact Sheet Monitoring System
+
+### Task
+Build production-grade SMA monitoring subsystem inside FMSS that maintains a database of top 50 wealth managers, discovers SMA strategy pages and fact sheet PDFs, checks daily for updates, downloads only changed documents, extracts structured data, and creates auditable change history.
+
+### Implementation Plan (8 Phases)
+**Phase 1: Database + Provider Registry**
+1. Create additive schema tables (extend FMSS, preserve existing)
+2. Load top-50 provider seed data
+3. Build provider admin UI
+4. Build seed URL admin UI
+
+**Phase 2: Discovery Layer**
+- Implement Tavily discovery worker
+- Implement sitemap parsing
+- Implement discovered URL classification
+- Build run logging
+
+**Phase 3: Acquisition Layer**
+- Implement Bright Data unlocker fetch
+- Implement browser fallback
+- Validate PDFs
+- Save files and hashes
+- Version documents
+
+**Phase 4: Parsing Layer**
+- Implement PyMuPDF extraction
+- Deterministic field parsing
+- Parsed document persistence
+
+**Phase 5: AI Enrichment + Change Detection**
+- MiniMax extraction backfill
+- Strengths/risks/summary
+- Change-event generation
+- Score narrative generation
+
+**Phase 6: Admin Ops + Alerts**
+- Admin document/run views
+- Material change alerts
+- Retry workflows
+- Audit trail surfaces
+
+**Phase 7: Scheduler + Jobs**
+- Daily monitoring job (5:00 UTC)
+- Weekly discovery job (Monday 4:00 UTC)
+- Quarterly validation job
+
+**Phase 8: FMSS Surface Integration**
+- Expose normalized strategy data in FMSS pages
+- Connect change history
+- Comparison workflows
+
+### Architecture
+**Discovery:** Tavily (discovery) → classify URLs → store in `sma_discovered_urls`
+**Acquisition:** Bright Data (fetch) → validate PDF → hash → store file → version documents
+**Parsing:** PyMuPDF (text) → deterministic rules → AI backfill → `sma_parsed_documents`
+**Change:** Compare versions → detect material changes → `sma_change_events` → alerts
+**Scheduler:** Railway Cron → daily/weekly jobs
+
+### New Tables Required (Additive)
+1. `sma_providers` — Top 50 provider registry with fetch preferences
+2. `sma_provider_seed_urls` — Starting points for discovery (hub pages, catalogs, direct PDFs)
+3. `sma_discovered_urls` — URLs found during crawl (classified by type)
+4. `sma_fact_sheet_documents` — Document tracking with hashes
+5. `sma_fact_sheet_versions` — Version history for change detection
+6. `sma_parsed_documents` — Extracted text and structured data
+7. `sma_change_events` — Material change alerts
+8. `sma_provider_runs` — Run history and logging
+9. `sma_document_alerts` — Notification queue
+
+### Tier 1 Providers (Initial Working Set)
+1. **J.P. Morgan Asset Management** — Explore SMAs catalog
+2. **BlackRock / Aperio** — Tax-managed equity hub with tab anchors
+3. More providers from top-50 list (Vanguard, Fidelity, State Street GA, etc.)
+
+### Critical Rules (from PRD)
+1. Preserve FMSS core tables (`sma_strategies`, `sma_url_manifest`)
+2. Use MiniMax M2.7 via Anthropic-compatible endpoint (NOT Anthropic directly)
+3. Never store raw HTML/PDF in Postgres (file paths only)
+4. Tavily = discovery layer, Bright Data = acquisition layer
+5. Deterministic parsing before AI interpretation
+6. Hash-based change detection (binary + text) before AI summarization
+7. Provider-specific rules (not one generic crawler)
+8. Discovery and acquisition are separate concerns
+
+### Files to Create
+**Database:**
+- `src/lib/db/schema.ts` — Add 9 new tables
+- Migration file via Drizzle
+
+**Backend/Workers (Python):**
+- `workers/sma_discovery_worker.py` — Tavily discovery + classification
+- `workers/sma_acquisition_worker.py` — Bright Data fetch + validation
+- `workers/sma_pdf_parser.py` — PyMuPDF extraction
+- `workers/sma_change_worker.py` — Version comparison
+- `workers/sma_alert_worker.py` — Notification handling
+
+**Frontend/Admin (Next.js):**
+- `src/app/admin/sma-providers/page.tsx` — Provider management
+- `src/app/admin/sma-urls/page.tsx` — Seed URL management
+- `src/app/admin/sma-documents/page.tsx` — Document tracking
+- `src/app/admin/sma-runs/page.tsx` — Run history
+
+**Data/Config:**
+- Seed JSON for top-50 providers
+- Seed JSON for current working set URLs
+- Provider rules config (BlackRock, JPM-specific patterns)
+
+### Status: STARTING ⏳
+Phase 2 committed. Beginning Fact Sheet Monitoring implementation with Phase 1 (database + provider registry).
+
+---
+
 ## 2026-04-04 01:15 — FMSS Phase 2: SMA Ingestion Pipeline
 
 ### Task
@@ -90,22 +203,37 @@ POST /api/fmss/ingest/sma
 ```
 
 ### Next Steps
-1. ⏳ Run `npm run build` to verify compilation
-2. ⏳ Test with sample SMA fact sheet URL
-3. ⏳ Commit Phase 2 work
+1. ✅ Run `npm run build` to verify compilation — PASSED (80 pages, 0 errors)
+2. ✅ Commit Phase 2 work — Committed (8222462) and pushed
+3. ⏳ Test with sample SMA fact sheet URL
 4. ⏳ Update Railway to run migration
 5. ⏳ Seed initial data (scoring dimensions, categories, data sources)
-6. ⏳ Begin Phase 3: Alternative Funds EDGAR worker
+6. ⏳ Begin FMSS Fact Sheet Monitoring (new PRD)
+
+### Build Status
+✅ Build passed (80 pages, 0 errors)
+✅ Committed: `8222462`
+✅ Pushed to main
+
+### Migration System Fixes
+Fixed TypeScript type errors in 5 migration parser files:
+- Changed parse method return types from Prisma models to interface types
+- Standardized ParseError.message field (was .error)
+- Added recordsParsed to all onProgress callbacks
+- Fixed record field types (number instead of string)
+- Fixed validateFile return types (error instead of message)
+
+**Files Fixed:** advizon-parser.ts, commonwealth-parser.ts, redtail-parser.ts, salesforce-parser.ts, wealthbox-parser.ts
 
 ### Dependencies
-- Drizzle ORM database connection (from Phase 1)
-- MINIMAX_API_KEY environment variable
-- BRIGHT_DATA_API_KEY environment variable
-- TAVILY_API_KEY environment variable (fallback)
-- PostgreSQL `fmss_*` tables (from Phase 1 migration)
+- Drizzle ORM database connection (from Phase 1) ✅
+- MINIMAX_API_KEY environment variable ✅
+- BRIGHT_DATA_API_KEY environment variable ✅
+- TAVILY_API_KEY environment variable (fallback) ✅
+- PostgreSQL `fmss_*` tables (from Phase 1 migration) ✅
 
-### Status: IN PROGRESS ⏳
-Pipeline code complete. Ready for build verification and testing.
+### Status: COMPLETE ✅
+Phase 2 SMA ingestion pipeline complete and committed. Ready for Railway migration and Fact Sheet Monitoring implementation.
 
 ---
 
