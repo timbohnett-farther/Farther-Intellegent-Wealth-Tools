@@ -20,6 +20,7 @@ import {
 } from '@/lib/tax-intelligence/file-storage';
 import { checkForDuplicates } from '@/lib/tax-intelligence/duplicate-detection';
 import { initializeInQueue } from '@/lib/tax-intelligence/processing-queue';
+import { processDocument, type DocumentType } from '@/lib/document-processing/minimax-processor';
 
 interface UploadResult {
   documentId: string;
@@ -194,6 +195,68 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         // Initialize in processing queue
         await initializeInQueue(document.id);
+
+        // Process document with MiniMax 2.7 AI
+        try {
+          console.log(`[Upload API] Processing document ${document.id} with MiniMax...`);
+
+          // Determine document type for processor
+          const processorDocType: DocumentType =
+            documentType === 'form_1040' ? 'tax_return_1040' :
+            documentType === 'schedule_d' ? 'tax_return_schedule_d' :
+            documentType === 'w2' ? 'tax_return_w2' :
+            'generic_financial';
+
+          // Process with MiniMax
+          const processingResult = await processDocument({
+            documentType: processorDocType,
+            fileBuffer: fileBuffer,
+            mimeType: file.type,
+          });
+
+          if (processingResult.success) {
+            console.log(`[Upload API] Document processed successfully (confidence: ${processingResult.confidence})`);
+
+            // Store extracted data to DocumentPage
+            await (prisma as any).documentPage.create({
+              data: {
+                documentId: document.id,
+                pageNumber: 1,
+                rawText: processingResult.rawText,
+                textLayerJson: JSON.stringify(processingResult.extractedData),
+                ocrConfidence: processingResult.confidence,
+                processingTimeMs: processingResult.processingTimeMs,
+              },
+            });
+
+            // Update document status to ocr_complete
+            await (prisma as any).taxDocument.update({
+              where: { id: document.id },
+              data: {
+                processingStatus: 'ocr_complete',
+                hasTextLayer: true,
+              },
+            });
+
+            console.log(`[Upload API] Document ${document.id} marked as ocr_complete`);
+          } else {
+            console.warn(`[Upload API] Document processing failed for ${document.id}`);
+
+            // Update status to processing_failed
+            await (prisma as any).taxDocument.update({
+              where: { id: document.id },
+              data: { processingStatus: 'processing_failed' },
+            });
+          }
+        } catch (processingError) {
+          console.error(`[Upload API] MiniMax processing error for ${document.id}:`, processingError);
+
+          // Mark as processing_failed but don't fail the upload
+          await (prisma as any).taxDocument.update({
+            where: { id: document.id },
+            data: { processingStatus: 'processing_failed' },
+          });
+        }
 
         // Create audit log
         await (prisma as any).auditLog.create({

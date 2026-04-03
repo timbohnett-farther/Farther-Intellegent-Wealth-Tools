@@ -1,126 +1,75 @@
 # Plan Log — Farther Intelligent Wealth Tools
 
-## 2026-04-03 21:00 — Separate Tools: Extract Rollover & Debt IQ from Tax Planning
+## 2026-04-03 22:15 — NEW TOOL: Farther Market Scoring System (FMSS)
 
-### Task
-Separate 401(k) Rollover Analyzer and Debt IQ from Tax Planning system. Each tool should be standalone at the top level.
+### Project Overview
+Build a unified advisor intelligence platform that scores and compares Separately Managed Accounts (SMAs), alternative investments, ETFs, and individual equities from a single interface.
 
-### Current Objective
-1. Move `/tax-planning/(authenticated)/rollover/` → `/rollover/`
-2. Move `/tax-planning/(authenticated)/debt-iq/` → `/debt-iq/`
-3. Update all navigation links and hrefs
-4. Update API routes from `/api/v1/rollover/` (keep as-is, or optionally move)
-5. Verify no broken links or imports
-6. Test build and routing
-7. Commit and push changes
+**The moat:** AI digestion layer that reads raw SMA fact sheets, earnings transcripts, EDGAR filings, and news — then uses MiniMax M2.7 to normalize and score them into a consistent 0–100 rubric.
 
-### Problem Identified
-**Current Structure (INCORRECT):**
-```
-/tax-planning/
-  ├── (authenticated)/
-  │   ├── rollover/          ❌ Should be standalone
-  │   ├── debt-iq/           ❌ Should be standalone
-  │   ├── relocation/        ❌ Should be standalone
-  │   ├── intelligence/      ✓ Belongs here
-  │   ├── dashboard/         ✓ Belongs here
-  │   └── ...other tax tools
-```
+### Tech Stack (NON-NEGOTIABLE)
+- **Frontend:** Next.js 15 App Router, TypeScript, Tailwind CSS
+- **ORM:** Drizzle ORM (NOT Prisma)
+- **Database:** PostgreSQL on Railway
+- **Python Workers:** Python 3.11 (separate Railway service)
+- **Web Scraping:** Bright Data Web Unlocker (primary) + Tavily Extract (backup)
+- **AI Model:** MiniMax M2.7 (standard) + MiniMax M2.7-highspeed (batch)
+- **Hosting:** Railway with cron schedules
 
-**Correct Structure (NEEDED):**
-```
-/rollover/                   ✓ Standalone tool
-/debt-iq/                    ✓ Standalone tool
-/relocation/                 ✓ Standalone tool (or optionally keep in tax-planning)
-/tax-planning/
-  ├── intelligence/          ✓ Tax document OCR
-  ├── dashboard/             ✓ Tax planning dashboard
-  └── ...other tax-specific tools
-```
+### Architecture Summary
+1. **Web Crawlers:** Bright Data (primary) → Tavily (backup) → unified `fetch_url_as_markdown()`
+2. **5 Public API Workers:** Finnhub, Aletheia, FRED, Alpha Vantage, Econdb
+3. **AI Digestion:** MiniMax M2.7 extracts structured data from all sources
+4. **Scoring Engine:** 8 dimensions (risk-adjusted perf, manager pedigree, fee efficiency, etc.)
+5. **Frontend:** Next.js routes for SMAs, alts, equities, ETFs, comparison tool
 
-### Files to Change
+### Database Schema
+14 tables total:
+- **Core Assets:** `sma_strategies`, `sma_url_manifest`, `alternative_funds`, `equities`, `etfs`
+- **Signals:** `scoring_signals`, `scores`, `macro_indicators`, `earnings_call_sentiment`, `news_sentiment_signals`
+- **System:** `ingest_log`
 
-**Homepage Navigation:**
-- `src/app/page.tsx` (Line 102, 118, 152)
-  - Change `href: '/tax-planning/rollover'` → `href: '/rollover'`
-  - Change `href: '/tax-planning/debt-iq'` → `href: '/debt-iq'`
-  - Change `href: '/tax-planning/relocation'` → `href: '/relocation'`
+### Build Phases (8 weeks estimated)
+**Phase 1:** Foundation — Repository setup, Next.js init, Drizzle ORM, schema migration
+**Phase 2:** SMA Ingestion — Bright Data + Tavily scraper, MiniMax extraction, URL manager
+**Phase 3:** EDGAR Worker — Form ADV/D for alternative funds
+**Phase 4:** FMP Worker — Equity/ETF fundamentals
+**Phase 5:** Public API Workers — Finnhub, Aletheia, FRED, Alpha Vantage, Econdb
+**Phase 6:** Signal & Scoring Workers — SOV.AI/QuiverQuant signals, composite scoring
+**Phase 7:** Next.js Frontend — Dashboard, list views, detail pages, comparison tool
+**Phase 8:** Testing & Hardening — End-to-end testing, error handling, pilot launch
 
-**Directory Moves:**
-- Move `src/app/tax-planning/(authenticated)/rollover/` → `src/app/rollover/`
-- Move `src/app/tax-planning/(authenticated)/debt-iq/` → `src/app/debt-iq/`
-- Move `src/app/tax-planning/(authenticated)/relocation/` → `src/app/relocation/`
+### Critical Implementation Rules
+1. Schema.ts is single source of truth — never create tables outside it
+2. Use Drizzle ORM, NOT Prisma (explicitly forbidden)
+3. Use App Router, NOT Pages Router
+4. Never store raw HTML/PDF — only text content from scrapers
+5. Use `fetch_url_as_markdown()` unified function — never call Bright Data/Tavily directly
+6. MiniMax M2.7 for standard extractions, MiniMax M2.7-highspeed for batch loops
+7. All API calls must respect rate limits with `time.sleep()` delays
+8. Log all worker runs to `ingest_log` table
+9. Use upsert (`ON CONFLICT DO UPDATE`) for all worker inserts
+10. Never commit `.env.local`
 
-**Internal Navigation Updates:**
-- Search for all hardcoded `/tax-planning/rollover` links
-- Search for all hardcoded `/tax-planning/debt-iq` links
-- Search for all hardcoded `/tax-planning/relocation` links
-- Update breadcrumbs, sidebar navigation, back buttons
+### Questions for User Before Starting
+1. **Which phase to start?** Full Phase 1 foundation, or specific component?
+2. **Repository location?** Add to existing `Farther-Intellegent-Wealth-Tools` repo or create new repo?
+3. **Route structure?** Should FMSS be at `/fmss/` or separate domain?
+4. **Environment keys?** Do you have all API keys ready (MiniMax, Bright Data, SOV.AI, etc.)?
+5. **Scope for this session?** Full Phase 1, or smaller initial setup?
 
-**API Routes:**
-- `/api/v1/rollover/` can stay as-is (versioned API pattern)
-- `/api/relocation/` already correct (not nested under tax-planning)
-- No Debt IQ API routes exist (just calculations)
+### Next Steps (Awaiting User Direction)
+⏳ Confirm repository structure and route placement
+⏳ Confirm which build phase to start with
+⏳ Verify API keys are available
+⏳ Begin Phase 1 foundation work
 
-### Expected Files to Change
-- **MOVE:** `src/app/tax-planning/(authenticated)/rollover/` → `src/app/rollover/`
-- **MOVE:** `src/app/tax-planning/(authenticated)/debt-iq/` → `src/app/debt-iq/`
-- **MOVE:** `src/app/tax-planning/(authenticated)/relocation/` → `src/app/relocation/`
-- **EDIT:** `src/app/page.tsx` — Update 3 href links
-- **EDIT:** Any files with hardcoded `/tax-planning/rollover` or `/tax-planning/debt-iq` links
-- **EDIT:** Layout files if they reference these routes
-- **EDIT:** `PLAN_LOG.md` — This file
-- **NEW/EDIT:** `CHANGE_LOG.md` — Post-push documentation
-
-### Risks / Dependencies
-- Must update ALL navigation references (grep for hardcoded paths)
-- Rollover has extensive sub-routes: `/rollover/[id]`, `/rollover/admin`, `/rollover/new`
-- Debt IQ has analysis sub-routes: `/analysis/mortgage`, `/analysis/credit-cards`, etc.
-- Must preserve authentication on moved routes
-- Next.js routing should handle directory moves cleanly
-- Build must pass after moves
-
-### Questions to Resolve
-1. **Relocation Calculator**: Keep in `/tax-planning/relocation` or move to `/relocation`?
-   - **Argument for tax-planning**: It's specifically about tax implications of state moves
-   - **Argument for standalone**: It's a distinct calculator tool like Box Spread
-   - **User preference?**
-
-2. **Authentication**: Do moved routes keep same auth requirements?
-   - Currently under `/tax-planning/(authenticated)/` route group
-   - Need to create new `(authenticated)` groups under `/rollover/` and `/debt-iq/`
-
-### Next Steps
-1. ⏳ Confirm with user: Should Relocation stay in tax-planning or also move?
-2. ⏳ Search for all hardcoded navigation references
-3. ⏳ Move directories with git mv (preserves history)
-4. ⏳ Update all navigation links
-5. ⏳ Create authentication layout in new locations
-6. ⏳ Verify build passes
-7. ⏳ Test routing manually
-8. ⏳ Commit and push
-
-### Expected Outcome
-- Rollover Analyzer: Standalone tool at `/rollover/`
-- Debt IQ: Standalone tool at `/debt-iq/`
-- Tax Planning: Clean separation, only contains tax-specific tools
-- All navigation updated, no broken links
-- Authentication preserved
-- Build passes successfully
-
-### Status: PLANNING
-Awaiting user confirmation on Relocation Calculator placement and ready to proceed.
+### Status: PLANNING — AWAITING USER DIRECTION
+Comprehensive build spec received. Ready to start once user confirms scope and approach.
 
 ---
 
-## 2026-04-03 20:30 — Sprint 3: AI Update System and Admin Review Workflow
+## 2026-04-03 21:25 — Architecture Refactor: Separate Standalone Tools from Tax Planning
 
 ### Status: COMPLETE ✅
-Sprint 3 implementation complete. Build passes. Pushed to main (commit 2d1af80).
-
----
-
-## 2026-04-03 16:45 — Health Endpoint Implementation for Railway Deployment
-
-### Status: COMPLETE ✅
-Health endpoint deployed. Railway staging verified.
+Tool separation complete. All 3 tools (Rollover, Debt IQ, Relocation) now standalone.

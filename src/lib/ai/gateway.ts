@@ -10,8 +10,9 @@
 // ── Configuration ────────────────────────────────────────────────────────────
 
 const ZOLO_API_KEY = process.env.AI_ZOLO_KEY ?? '';
+const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY ?? '';
 const ZOLO_BASE_URL = 'https://api.aizolo.com/v1/chat/completions';
-const ZOLO_MODEL = 'gpt-4o';
+const ZOLO_MODEL = 'minimax-2.7';
 
 const ANTHROPIC_API_KEY = process.env.AI_API_KEY ?? '';
 const ANTHROPIC_BASE_URL = process.env.AI_BASE_URL ?? 'https://api.anthropic.com';
@@ -30,6 +31,14 @@ export interface AIRequest {
   jsonMode?: boolean;
 }
 
+export interface AIDocumentRequest extends AIRequest {
+  documents?: Array<{
+    type: 'pdf' | 'image';
+    data: string; // base64 encoded
+    mimeType: string; // 'application/pdf' | 'image/jpeg' | 'image/png'
+  }>;
+}
+
 export interface AIResponse {
   text: string;
   provider: 'zolo' | 'anthropic';
@@ -42,11 +51,11 @@ type Provider = 'zolo' | 'anthropic';
 // ── Provider Detection ───────────────────────────────────────────────────────
 
 export function isAIAvailable(): boolean {
-  return ZOLO_API_KEY.length > 0 || ANTHROPIC_API_KEY.length > 0;
+  return MINIMAX_API_KEY.length > 0 || ZOLO_API_KEY.length > 0 || ANTHROPIC_API_KEY.length > 0;
 }
 
 export function getActiveProvider(): Provider {
-  if (ZOLO_API_KEY.length > 0) return 'zolo';
+  if (MINIMAX_API_KEY.length > 0 || ZOLO_API_KEY.length > 0) return 'zolo';
   if (ANTHROPIC_API_KEY.length > 0) return 'anthropic';
   throw new Error('[AI Gateway] No AI provider configured');
 }
@@ -75,12 +84,39 @@ export function extractJSON<T>(text: string): T {
 
 // ── Provider Implementations ─────────────────────────────────────────────────
 
-async function callZolo(req: AIRequest): Promise<AIResponse> {
+async function callZolo(req: AIRequest | AIDocumentRequest): Promise<AIResponse> {
+  const isDocRequest = 'documents' in req && req.documents && req.documents.length > 0;
+
+  // Build user message content
+  let userContent: any;
+
+  if (isDocRequest) {
+    // Multimodal request with documents
+    const contentParts: any[] = [
+      { type: 'text', text: req.userPrompt }
+    ];
+
+    // Add documents
+    for (const doc of (req as AIDocumentRequest).documents!) {
+      contentParts.push({
+        type: doc.type === 'pdf' ? 'document' : 'image_url',
+        [doc.type === 'pdf' ? 'document' : 'image_url']: {
+          [doc.type === 'pdf' ? 'url' : 'url']: `data:${doc.mimeType};base64,${doc.data}`,
+        },
+      });
+    }
+
+    userContent = contentParts;
+  } else {
+    // Simple text request
+    userContent = req.userPrompt;
+  }
+
   const body: Record<string, unknown> = {
     model: ZOLO_MODEL,
     messages: [
       { role: 'system', content: req.systemPrompt },
-      { role: 'user', content: req.userPrompt },
+      { role: 'user', content: userContent },
     ],
     temperature: req.temperature ?? 0.3,
     max_tokens: req.maxTokens ?? 4096,
@@ -90,11 +126,14 @@ async function callZolo(req: AIRequest): Promise<AIResponse> {
     body.response_format = { type: 'json_object' };
   }
 
+  // Use MINIMAX_API_KEY if available, fallback to ZOLO_API_KEY
+  const apiKey = MINIMAX_API_KEY || ZOLO_API_KEY;
+
   const response = await fetch(ZOLO_BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${ZOLO_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify(body),
   });
@@ -193,13 +232,13 @@ async function callWithRetry(
  * Sends a prompt to the best available AI provider.
  * Tries Zolo first (if configured), then Anthropic, with retries on each.
  */
-export async function callAI(req: AIRequest): Promise<AIResponse> {
+export async function callAI(req: AIRequest | AIDocumentRequest): Promise<AIResponse> {
   if (!isAIAvailable()) {
-    throw new Error('[AI Gateway] No AI provider configured. Set AI_ZOLO_KEY or AI_API_KEY.');
+    throw new Error('[AI Gateway] No AI provider configured. Set MINIMAX_API_KEY, AI_ZOLO_KEY, or AI_API_KEY.');
   }
 
   const providers: Array<{ name: Provider; fn: (r: AIRequest) => Promise<AIResponse>; available: boolean }> = [
-    { name: 'zolo', fn: callZolo, available: ZOLO_API_KEY.length > 0 },
+    { name: 'zolo', fn: callZolo, available: MINIMAX_API_KEY.length > 0 || ZOLO_API_KEY.length > 0 },
     { name: 'anthropic', fn: callAnthropic, available: ANTHROPIC_API_KEY.length > 0 },
   ];
 
@@ -219,4 +258,14 @@ export async function callAI(req: AIRequest): Promise<AIResponse> {
   }
 
   throw lastError ?? new Error('[AI Gateway] All providers failed');
+}
+
+// ── Document Processing Helper ───────────────────────────────────────────────
+
+/**
+ * Specialized helper for document processing with vision.
+ * Accepts documents in base64 format and returns extracted data.
+ */
+export async function callAIWithDocuments(req: AIDocumentRequest): Promise<AIResponse> {
+  return callAI(req);
 }
