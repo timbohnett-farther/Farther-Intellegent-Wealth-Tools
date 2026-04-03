@@ -193,9 +193,79 @@ $ python -m sma_monitoring.parsing_worker --provider blackrock
    Failures: 0
 ```
 
-### Change Detection Worker (Phase 5)
+### Change Detection Worker (`sma_monitoring/change_worker.py`)
 
-Detects material changes between document versions using AI.
+Detects material changes between document versions using AI-powered semantic analysis.
+
+**Features:**
+- Field-level change detection with deterministic comparison
+- Significance thresholds for numeric changes (AUM, fees, performance)
+- MiniMax M2.7 AI-powered semantic change analysis
+- Human-readable change summaries
+- Material change classification (low/medium/high severity)
+- Advisor action recommendations
+- Change event storage in `fmss_sma_change_events`
+
+**Change Detection:**
+1. **Text Changes**: Strategy name, manager name, benchmark
+2. **Numeric Changes**: AUM (5%+ threshold), fees (5 bps+ threshold), performance (2%+ threshold)
+3. **Date Changes**: Inception date modifications
+4. **Content Changes**: Document content hash differences
+
+**Significance Thresholds:**
+- AUM: 5% relative change
+- Minimum investment: 10% relative change
+- Management fee: 5 basis points absolute change
+- YTD/1Y return: 2-3% absolute change
+- 3Y/5Y/10Y return: 1.5-2% absolute change
+
+**Severity Classification:**
+- **High**: Major fee changes (≥10 bps), large performance shifts (≥5%), significant AUM changes (≥20%)
+- **Medium**: Moderate changes above threshold, manager changes
+- **Low**: Minor text updates, formatting changes
+
+**Usage:**
+
+```bash
+# Detect changes for a single provider
+python -m sma_monitoring.change_worker --provider jpmorgan
+
+# Detect changes for all active documents
+python -m sma_monitoring.change_worker --all-active
+
+# Analyze specific document
+python -m sma_monitoring.change_worker --document-id <uuid>
+```
+
+**Output:**
+- Change events stored in `fmss_sma_change_events` table
+- Change summary with severity classification
+- Material changes list for advisor review
+- Recommended actions (if applicable)
+- Console output with change detection stats
+
+**Example:**
+
+```bash
+$ python -m sma_monitoring.change_worker --provider blackrock
+
+2026-04-04 04:00:00 - INFO - Starting change detection for provider: BlackRock
+2026-04-04 04:00:01 - INFO - Found 5 documents with multiple versions
+2026-04-04 04:00:02 - INFO - Detecting changes for document: doc_123
+2026-04-04 04:00:03 - INFO - Comparing version 1 → 2
+2026-04-04 04:00:04 - INFO - Running AI-powered change analysis...
+2026-04-04 04:00:07 - INFO - Detected 3 material changes:
+   - Management fee increased from 40 bps to 45 bps (HIGH severity)
+   - YTD return updated from 8.5% to 11.2%
+   - Benchmark changed from S&P 500 to Russell 1000
+2026-04-04 04:00:08 - INFO - Saved change event for document doc_123
+2026-04-04 04:00:15 - INFO - Change detection complete: 5 documents, 3 changes detected
+
+✅ Change detection complete:
+   Documents analyzed: 5
+   Changes detected: 3
+   Errors: 0
+```
 
 ## Database Schema
 

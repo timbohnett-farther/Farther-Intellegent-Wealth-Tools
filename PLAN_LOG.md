@@ -117,11 +117,35 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
    - Metadata JSON with extraction details
    - CLI interface with 3 invocation modes
 
-**Phase 5: AI Enrichment + Change Detection**
-- MiniMax extraction backfill
-- Strengths/risks/summary
-- Change-event generation
-- Score narrative generation
+**Phase 5: AI Enrichment + Change Detection** — COMPLETE ✅
+1. ✅ Implement change detection worker
+   - Created `workers/sma_monitoring/change_worker.py` (650+ lines)
+   - FieldComparator class for deterministic field-level comparison
+   - MinimaxChangeAnalyzer class for AI-powered semantic analysis
+   - ChangeWorker orchestrator for version comparison
+2. ✅ Field-level change detection
+   - Text field comparison (strategy name, manager, benchmark)
+   - Numeric field comparison with significance thresholds
+   - AUM changes (5%+ relative threshold)
+   - Fee changes (5 bps+ absolute threshold)
+   - Performance changes (2-5%+ absolute threshold)
+   - Date change detection (inception date)
+3. ✅ MiniMax AI analysis
+   - Semantic change summarization
+   - Material change identification
+   - Severity classification (low/medium/high)
+   - Advisor action recommendations
+   - Human-readable change descriptions
+4. ✅ Change event generation
+   - Storage in `fmss_sma_change_events` table
+   - Version tracking (old version → new version)
+   - Material changes JSON storage
+   - Field changes JSON with severity levels
+   - Detected timestamp and metadata
+5. ✅ Severity classification
+   - High: Major fee changes (≥10 bps), large performance shifts (≥5%), significant AUM changes (≥20%)
+   - Medium: Moderate changes above threshold, manager changes
+   - Low: Minor text updates, formatting changes
 
 **Phase 6: Admin Ops + Alerts**
 - Admin document/run views
@@ -195,43 +219,39 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 4 COMPLETE ✅
+### Status: PHASE 5 COMPLETE ✅
 **Phase 1:** ✅ Database Schema + Provider Registry + Admin UI
 **Phase 2:** ✅ Discovery Worker + URL Classification + Run Logging
 **Phase 3:** ✅ Acquisition Worker + Content Validation + Version Tracking
 **Phase 4:** ✅ Parsing Worker + Field Extraction + Data Persistence
+**Phase 5:** ✅ Change Detection + AI Analysis + Event Generation
 
-**Phase 4 Deliverables:**
-- `workers/sma_monitoring/parsing_worker.py` - PyMuPDF parsing worker (650+ lines)
-- PDFParser class for text extraction
-- FieldExtractor class with deterministic regex patterns
-- ParsingWorker orchestrator with database persistence
-- Updated `requirements.txt` with PyMuPDF==1.24.0
+**Phase 5 Deliverables:**
+- `workers/sma_monitoring/change_worker.py` - AI-powered change detection (650+ lines)
+- FieldComparator class for deterministic field comparison
+- MinimaxChangeAnalyzer class for semantic analysis
+- ChangeWorker orchestrator with event persistence
+- Significance thresholds for numeric field changes
 
-**Extracted Fields (12+):**
-- Strategy name (title or filename-based)
-- Manager name (firm identification)
-- Inception date (multiple format support)
-- Assets under management (AUM with multipliers)
-- Minimum investment
-- Management fee (bps and percentage)
-- Benchmark
-- Performance metrics: YTD, 1Y, 3Y, 5Y, 10Y, Inception
-- PDF metadata: page count, author, dates, creator
+**Change Detection Features:**
+- Field-level comparison (text, numeric, date fields)
+- Significance thresholds: AUM (5%), fees (5 bps), performance (2-5%)
+- MiniMax M2.7 semantic change analysis
+- Human-readable change summaries
+- Material change identification
+- Severity classification (low/medium/high)
+- Advisor action recommendations
+- Change event storage with version tracking
+- CLI interface: `--provider`, `--all-active`, `--document-id`
 
-**Parser Features:**
-- PyMuPDF (fitz) text extraction from all pages
-- Multi-pattern regex matching for dates, currency, percentages
-- Intelligent field extraction with fallback patterns
-- Performance table parsing
-- Metadata JSON storage with raw extraction values
-- Upsert logic for re-parsing updates
-- CLI interface: `--provider`, `--all-pending`, `--document-id`
-- Error handling with structured logging
+**Severity Classification:**
+- **High**: Fee changes ≥10 bps, performance shifts ≥5%, AUM changes ≥20%
+- **Medium**: Moderate changes above threshold, manager changes
+- **Low**: Minor text updates, formatting changes
 
-**Next:** Phase 5 - AI Enrichment + Change Detection (MiniMax extraction, change events)
+**Next:** Phase 6 - Admin Ops + Alerts (UI for document/run management, alert workflows)
 
-Phases 1-4 COMPLETE. Ready for Phase 5 implementation.
+Phases 1-5 COMPLETE. Ready for Phase 6 implementation.
 
 ---
 
