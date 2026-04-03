@@ -337,11 +337,39 @@ Workers interact with these tables:
 
 ## Scheduling (Phase 7)
 
-Workers will be scheduled via Railway Cron:
+Workers are scheduled via Railway Cron services. See `RAILWAY_DEPLOYMENT.md` for complete setup guide.
 
-- **Daily Monitoring** (5:00 UTC): Acquisition + parsing for known documents
-- **Weekly Discovery** (Monday 4:00 UTC): Discovery for all active providers
-- **Quarterly Validation** (1st of quarter): Full re-crawl and validation
+### Cron Schedule Summary
+
+| Job | Schedule | Command | Purpose |
+|-----|----------|---------|---------|
+| **Discovery** | Mon 4:00 UTC | `python cron_discovery.py` | Discover new fact sheet URLs |
+| **Acquisition** | Daily 5:00 UTC | `python cron_acquisition.py` | Download pending documents |
+| **Parsing + Change** | Daily 6:00 UTC | `python cron_parsing_change.py` | Parse docs & detect changes |
+| **Quarterly Validation** | 1st of quarter | Manual trigger | Full re-crawl validation |
+
+### Cron Entry Points
+
+Three wrapper scripts provide clean entry points for Railway Cron:
+
+- `cron_discovery.py` - Weekly discovery worker
+- `cron_acquisition.py` - Daily acquisition worker
+- `cron_parsing_change.py` - Daily parsing + change detection (combined)
+
+### Railway Deployment
+
+```bash
+# Deploy workers to Railway
+cd workers
+railway up
+
+# Create 3 separate Cron services in Railway dashboard:
+# 1. sma-discovery-cron (0 4 * * 1)
+# 2. sma-acquisition-cron (0 5 * * *)
+# 3. sma-parsing-change-cron (0 6 * * *)
+```
+
+See `RAILWAY_DEPLOYMENT.md` for detailed deployment instructions.
 
 ## Development
 
