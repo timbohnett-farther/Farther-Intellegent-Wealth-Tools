@@ -33,11 +33,36 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
    - Failure tracking and last crawled dates
    - Edit functionality placeholder (Phase 6)
 
-**Phase 2: Discovery Layer**
-- Implement Tavily discovery worker
-- Implement sitemap parsing
-- Implement discovered URL classification
-- Build run logging
+**Phase 2: Discovery Layer** — COMPLETE ✅
+1. ✅ Implement Tavily discovery worker
+   - Created `workers/sma_monitoring/discovery_worker.py` (600+ lines)
+   - Tavily Search API integration for intelligent crawling
+   - BeautifulSoup link extraction from seed URLs
+   - Heuristic URL classification (fact_sheet, brochure, commentary, performance, holdings)
+   - Confidence scoring (0-1 scale) based on URL, title, content patterns
+   - Database storage in `fmss_sma_discovered_urls` with SHA-256 URL hashing
+2. ✅ Implement sitemap parsing
+   - Integrated into discovery worker link extraction
+   - Domain filtering to stay within allowed_domains_json
+   - Deduplication of discovered URLs
+3. ✅ Implement discovered URL classification
+   - Pattern-based classifier with 5 URL types
+   - Multi-source scoring: URL (40%), title (30%), content (20%)
+   - Confidence threshold: 0.3+ for classification
+   - Defaults to 'unknown' for low-confidence URLs
+4. ✅ Build run logging
+   - Run creation in `fmss_sma_provider_runs` table
+   - Status tracking: running → success/failed
+   - Stats tracking: urls_discovered, errors_encountered, duration_seconds
+   - Triggered_by field for audit trail
+
+**Worker Features:**
+- CLI arguments: `--provider`, `--provider-id`, `--all-active`
+- Two discovery strategies: link crawl + Tavily search
+- Error handling with try/catch and logging
+- Database connection pooling with context managers
+- Structured logging with timestamps
+- ON CONFLICT DO UPDATE for upsert behavior
 
 **Phase 3: Acquisition Layer**
 - Implement Bright Data unlocker fetch
@@ -129,15 +154,21 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 1 COMPLETE ✅
-**Database Schema:** ✅ 9 new tables added, migration generated (`0001_optimal_ultragirl.sql`)
-**Provider Seed Data:** ✅ 50 providers + 13 seed URLs loaded
-**Admin UI:** ✅ Provider and seed URL management pages created
-**Build:** ✅ Passing (80 pages, 0 errors)
+### Status: PHASE 2 COMPLETE ✅
+**Phase 1:** ✅ Database Schema + Provider Registry + Admin UI
+**Phase 2:** ✅ Discovery Worker + URL Classification + Run Logging
 
-**Next:** Phase 2 - Discovery Layer (Tavily discovery worker, sitemap parsing, URL classification)
+**Deliverables:**
+- `workers/sma_monitoring/discovery_worker.py` - Tavily-based URL discovery (600+ lines)
+- `workers/requirements.txt` - Python dependencies
+- `workers/README.md` - Worker documentation and usage guide
+- Heuristic URL classifier with 5 types (fact_sheet, brochure, commentary, performance, holdings)
+- Run logging system with stats tracking
+- CLI interface with 3 invocation modes
 
-Phase 2 (SMA ingestion) committed. Phase 1 (database + provider registry) COMPLETE.
+**Next:** Phase 3 - Acquisition Layer (Bright Data PDF/HTML downloads, content hashing, version tracking)
+
+Phases 1-2 COMPLETE. Ready for Phase 3 implementation.
 
 ---
 
