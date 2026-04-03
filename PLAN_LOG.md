@@ -6,11 +6,17 @@
 Build production-grade SMA monitoring subsystem inside FMSS that maintains a database of top 50 wealth managers, discovers SMA strategy pages and fact sheet PDFs, checks daily for updates, downloads only changed documents, extracts structured data, and creates auditable change history.
 
 ### Implementation Plan (8 Phases)
-**Phase 1: Database + Provider Registry**
-1. Create additive schema tables (extend FMSS, preserve existing)
-2. Load top-50 provider seed data
-3. Build provider admin UI
-4. Build seed URL admin UI
+**Phase 1: Database + Provider Registry** — IN PROGRESS ⏳
+1. ✅ Create additive schema tables (extend FMSS, preserve existing)
+   - Added 9 new monitoring tables to `src/lib/db/schema.ts`
+   - Generated Drizzle migration: `0001_optimal_ultragirl.sql`
+   - Tables: sma_providers, sma_provider_seed_urls, sma_discovered_urls,
+     sma_fact_sheet_documents, sma_fact_sheet_versions, sma_parsed_documents,
+     sma_change_events, sma_provider_runs, sma_document_alerts
+   - Build verified: ✅ Passing (80 pages, 0 errors)
+2. ⏳ Load top-50 provider seed data
+3. ⏳ Build provider admin UI
+4. ⏳ Build seed URL admin UI
 
 **Phase 2: Discovery Layer**
 - Implement Tavily discovery worker
@@ -108,8 +114,11 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: STARTING ⏳
-Phase 2 committed. Beginning Fact Sheet Monitoring implementation with Phase 1 (database + provider registry).
+### Status: PHASE 1 IN PROGRESS ⏳
+**Database Schema:** ✅ Complete — 9 new tables added, migration generated (`0001_optimal_ultragirl.sql`)
+**Next:** Load top-50 provider seed data, build admin UI for provider/URL management
+
+Phase 2 (SMA ingestion) committed. Currently implementing Fact Sheet Monitoring Phase 1 (database + provider registry).
 
 ---
 

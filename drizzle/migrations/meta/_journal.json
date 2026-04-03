@@ -8,6 +8,13 @@
       "when": 1775235801485,
       "tag": "0000_nostalgic_gunslinger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775247648893,
+      "tag": "0001_optimal_ultragirl",
+      "breakpoints": true
     }
   ]
 }
