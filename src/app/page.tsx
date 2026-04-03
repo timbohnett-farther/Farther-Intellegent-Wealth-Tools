@@ -32,6 +32,23 @@ const TOOLS: ToolCard[] = [
     tags: ['Financial Planning', 'Tax', 'Retirement', 'Estate', 'Goals'],
   },
   {
+    title: 'Farther Market Scoring System (FMSS)',
+    description:
+      'AI-powered intelligence platform for scoring SMAs, alternative investments, ETFs, and equities. 8-dimension scoring system with web scraping, MiniMax AI extraction, earnings sentiment, insider trading signals, and macro indicators from 6 data sources.',
+    href: '/fmss',
+    status: 'live',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5Z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+        <circle cx="12" cy="12" r="2" />
+      </svg>
+    ),
+    color: 'from-accent-primary to-brand-800',
+    tags: ['AI Scoring', 'Market Intelligence', 'SMAs', 'Alternatives', 'Sentiment'],
+  },
+  {
     title: 'Box Spread Lending Calculator',
     description:
       'Comprehensive analysis tool for portfolio-based liquidity via box spreads. Compare borrowing costs, model tax efficiency under Section 1256, stress test margin safety, and run Monte Carlo simulations — all in one interactive dashboard.',

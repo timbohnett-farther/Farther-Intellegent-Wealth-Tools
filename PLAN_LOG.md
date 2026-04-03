@@ -224,23 +224,44 @@ Build a unified advisor intelligence platform that scores and compares Separatel
 - ✅ PostgreSQL (Railway DATABASE_URL)
 - ✅ Separate from existing Prisma setup (Prisma = existing tools, Drizzle = FMSS only)
 
-### Next Steps (Awaiting API Keys from User)
-1. ⏳ User adds API keys to Railway environment:
-   - MINIMAX_API_KEY (MiniMax M2.7 AI)
-   - BRIGHT_DATA_API_KEY (web scraping primary)
-   - FMP_API_KEY (Financial Modeling Prep — documented in session)
-   - FINNHUB_API_KEY
-   - ALETHEIA_API_KEY
-   - FRED_API_KEY
-   - ALPHA_VANTAGE_API_KEY
-   - ECONDB_API_KEY
-2. ⏳ Run migration on Railway: `npm run db:migrate`
-3. ⏳ Create initial FMSS route structure at `/fmss/`
-4. ⏳ Seed initial data (scoring dimensions, asset categories, data sources)
-5. ⏳ Begin Phase 2: SMA Ingestion
+### API Keys & Routes: COMPLETED ✅ (2026-04-04 00:45)
 
-### Status: PHASE 1 COMPLETE — AWAITING API KEYS
-Database schema and migration ready. Pausing for user to add API keys to Railway environment before continuing.
+**API Keys Secured (6 of 6):**
+1. ✅ MINIMAX_API_KEY (MiniMax M2.7 AI) — added to Railway
+2. ✅ BRIGHT_DATA_API_KEY (web scraping) — added to Railway
+3. ✅ FMP_API_KEY (Financial Modeling Prep) — added to Railway
+4. ✅ FINNHUB_API_KEY (market data) — added to Railway
+5. ✅ ALPHA_VANTAGE_API_KEY (earnings sentiment) — added to Railway
+6. ✅ FRED_API_KEY (economic data) — added to Railway
+7. ✅ ECONDB (no key needed)
+8. ✅ Aletheia removed (replaced by FMP + Finnhub + Alpha Vantage)
+
+**Route Structure Created:**
+1. ✅ `/fmss/` — Main dashboard with 8-dimension scoring overview
+2. ✅ `/fmss/sma` — SMA strategies (Phase 2)
+3. ✅ `/fmss/alternatives` — Alternative funds (Phase 3)
+4. ✅ `/fmss/equities` — Equity analysis (Phase 4)
+5. ✅ `/fmss/etfs` — ETF analysis (Phase 4)
+6. ✅ `/fmss/compare` — Comparison tool
+7. ✅ Homepage updated with FMSS tool card
+
+**Seed Data Script:**
+✅ `src/lib/db/seed/fmss-initial-data.ts` created with:
+- 8 scoring dimensions (with weights and formulas)
+- 25 asset categories (asset classes, sectors, strategies)
+- 9 data source configurations
+
+**Railway Project:** `3679da16-f826-4b02-bb56-f3d4682b5e9d`
+
+**Build Status:** ✅ Passing (71 pages, 0 errors)
+
+### Next Steps
+1. ⏳ Run migration on Railway: `railway run npm run db:migrate`
+2. ⏳ Seed initial data: `railway run tsx src/lib/db/seed/fmss-initial-data.ts`
+3. ⏳ Begin Phase 2: SMA Ingestion (Bright Data + MiniMax)
+
+### Status: READY FOR MIGRATION → PHASE 2
+All API keys secured. Route structure complete. Awaiting Railway migration to create tables, then ready to start Phase 2 SMA ingestion development.
 
 ---
 
