@@ -64,12 +64,31 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Structured logging with timestamps
 - ON CONFLICT DO UPDATE for upsert behavior
 
-**Phase 3: Acquisition Layer**
-- Implement Bright Data unlocker fetch
-- Implement browser fallback
-- Validate PDFs
-- Save files and hashes
-- Version documents
+**Phase 3: Acquisition Layer** — COMPLETE ✅
+1. ✅ Implement Bright Data unlocker fetch
+   - Created `workers/sma_monitoring/acquisition_worker.py` (500+ lines)
+   - BrightDataFetcher class with Web Unlocker API integration
+   - DirectFetcher class for fallback HTTP requests
+   - Timeout handling (30s default) with retry logic
+2. ✅ Implement browser fallback
+   - DirectFetcher with user-agent headers for direct downloads
+   - Automatic fallback when Bright Data fails or is unavailable
+   - Support for both authenticated and public URLs
+3. ✅ Validate PDFs and HTML
+   - ContentValidator class with PDF signature detection
+   - HTML validation with size and format checks
+   - Document type classification (pdf, html, unknown)
+   - Size validation (minimum 100 bytes, truncation warnings)
+4. ✅ Save files and hashes
+   - SHA-256 content hashing for change detection
+   - Local file storage in configurable STORAGE_PATH
+   - File naming: {provider_key}/{document_id}/{hash[:16]}.{ext}
+   - Database storage of file paths and metadata
+5. ✅ Version documents
+   - Version tracking in `fmss_sma_fact_sheet_versions` table
+   - Hash comparison for change detection
+   - Version creation on content changes only
+   - Full audit trail with acquisition timestamps
 
 **Phase 4: Parsing Layer**
 - Implement PyMuPDF extraction
@@ -154,21 +173,34 @@ Build production-grade SMA monitoring subsystem inside FMSS that maintains a dat
 - Seed JSON for current working set URLs
 - Provider rules config (BlackRock, JPM-specific patterns)
 
-### Status: PHASE 2 COMPLETE ✅
+### Status: PHASE 3 COMPLETE ✅
 **Phase 1:** ✅ Database Schema + Provider Registry + Admin UI
 **Phase 2:** ✅ Discovery Worker + URL Classification + Run Logging
+**Phase 3:** ✅ Acquisition Worker + Content Validation + Version Tracking
 
-**Deliverables:**
-- `workers/sma_monitoring/discovery_worker.py` - Tavily-based URL discovery (600+ lines)
-- `workers/requirements.txt` - Python dependencies
-- `workers/README.md` - Worker documentation and usage guide
-- Heuristic URL classifier with 5 types (fact_sheet, brochure, commentary, performance, holdings)
-- Run logging system with stats tracking
-- CLI interface with 3 invocation modes
+**Phase 3 Deliverables:**
+- `workers/sma_monitoring/acquisition_worker.py` - Bright Data acquisition worker (500+ lines)
+- BrightDataFetcher class with Web Unlocker API
+- DirectFetcher fallback for direct HTTP downloads
+- ContentValidator with PDF/HTML validation
+- SHA-256 content hashing for change detection
+- Version tracking system with hash comparison
+- Local file storage with configurable paths
+- CLI interface with 3 invocation modes: `--provider`, `--all-pending`, `--url-id`
 
-**Next:** Phase 3 - Acquisition Layer (Bright Data PDF/HTML downloads, content hashing, version tracking)
+**Worker Features:**
+- Bright Data Web Unlocker for protected content
+- Automatic fallback to direct HTTP fetch
+- PDF signature validation (checks for %PDF header and %%EOF trailer)
+- HTML validation with size and format checks
+- Content deduplication via SHA-256 hashing
+- Version creation only on content changes
+- Database tracking in `fmss_sma_fact_sheet_documents` and `fmss_sma_fact_sheet_versions`
+- Error handling with retry logic and logging
 
-Phases 1-2 COMPLETE. Ready for Phase 3 implementation.
+**Next:** Phase 4 - Parsing Layer (PyMuPDF text extraction, deterministic field parsing)
+
+Phases 1-3 COMPLETE. Ready for Phase 4 implementation.
 
 ---
 

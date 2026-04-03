@@ -78,9 +78,58 @@ $ python -m sma_monitoring.discovery_worker --provider blackrock
    Errors: 0
 ```
 
-### Acquisition Worker (Phase 3)
+### Acquisition Worker (`sma_monitoring/acquisition_worker.py`)
 
-Downloads fact sheet PDFs and HTML pages using Bright Data.
+Downloads fact sheet PDFs and HTML pages using Bright Data Web Unlocker.
+
+**Features:**
+- Bright Data Web Unlocker API integration (primary)
+- Direct HTTP fetch fallback
+- PDF validation with signature detection
+- HTML validation with size checks
+- SHA-256 content hashing for change detection
+- Version tracking (only creates new version if content changed)
+- Document tracking in `fmss_sma_fact_sheet_documents`
+- Version storage in `fmss_sma_fact_sheet_versions`
+
+**Usage:**
+
+```bash
+# Acquire URLs for a single provider
+python -m sma_monitoring.acquisition_worker --provider jpmorgan
+
+# Acquire all pending URLs (status='pending')
+python -m sma_monitoring.acquisition_worker --all-pending
+
+# Acquire specific URL by ID
+python -m sma_monitoring.acquisition_worker --url-id <uuid>
+```
+
+**Output:**
+- Documents stored in `fmss_sma_fact_sheet_documents` table
+- Versions tracked in `fmss_sma_fact_sheet_versions` table
+- Files saved to local storage (STORAGE_PATH env var)
+- Console output with acquisition stats
+
+**Example:**
+
+```bash
+$ python -m sma_monitoring.acquisition_worker --provider blackrock
+
+2026-04-04 03:00:00 - INFO - Starting acquisition for provider: blackrock
+2026-04-04 03:00:01 - INFO - Found 12 pending URLs for BlackRock
+2026-04-04 03:00:02 - INFO - Fetching: https://www.blackrock.com/us/...fact-sheet.pdf
+2026-04-04 03:00:05 - INFO - Downloaded 2.4 MB, hash: a3b2c1d4...
+2026-04-04 03:00:06 - INFO - Content changed, creating new version
+2026-04-04 03:00:07 - INFO - Saved to storage: blackrock/doc_123/a3b2c1d4.pdf
+2026-04-04 03:00:15 - INFO - Acquisition complete: 12 documents, 8 new versions
+
+✅ Acquisition complete:
+   Documents acquired: 12
+   New versions created: 8
+   Unchanged (skipped): 4
+   Errors: 0
+```
 
 ### Parsing Worker (Phase 4)
 
