@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PlanSearchInput } from '@/components/rollover/PlanSearchInput';
+import StatementUploader from '@/components/rollover/StatementUploader';
 import type { PlanSearchResult, NarrativeTemplate } from '@/lib/rollover-engine/types';
 
 const US_STATES = [
@@ -37,6 +38,7 @@ export function NewAnalysisClient() {
   const [stockBasisDollars, setStockBasisDollars] = useState('');
   const [template, setTemplate] = useState<NarrativeTemplate>('STANDARD');
   const [notes, setNotes] = useState('');
+  const [showStatementUpload, setShowStatementUpload] = useState(false);
 
   // Pre-select plan from URL param
   useEffect(() => {
@@ -271,8 +273,50 @@ export function NewAnalysisClient() {
           )}
 
           {step === 2 && (
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-text">Account Information</h2>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-text">Account Information</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowStatementUpload(!showStatementUpload)}
+                  className="text-sm text-accent-primary hover:underline"
+                >
+                  {showStatementUpload ? 'Enter Manually' : 'Upload Statement'}
+                </button>
+              </div>
+
+              {/* Statement Upload Section */}
+              {showStatementUpload && (
+                <div className="pb-4 border-b" style={{ borderColor: 'var(--s-border-subtle)' }}>
+                  <StatementUploader
+                    onDataExtracted={(data) => {
+                      // Auto-populate form fields from extracted data
+                      setBalanceDollars(data.balance.toString());
+
+                      // If custodian matches a known plan, try to select it
+                      // (This would require a more sophisticated plan matching algorithm)
+
+                      // Set default age if not already set
+                      if (!age) {
+                        setAge('55'); // Default assumption
+                      }
+
+                      // Hide upload section after successful extraction
+                      setShowStatementUpload(false);
+
+                      // Show success toast
+                      setToast({
+                        message: 'Statement data loaded successfully. Please review and complete remaining fields.',
+                        type: 'success'
+                      });
+                    }}
+                    onError={(error) => {
+                      setToast({ message: error, type: 'error' });
+                    }}
+                  />
+                </div>
+              )}
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-text-muted">Account Balance ($) *</label>
