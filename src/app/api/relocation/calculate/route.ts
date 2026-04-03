@@ -14,6 +14,8 @@ import {
   type FilingStatus,
 } from '@/lib/relocation-calculator';
 
+export const dynamic = 'force-dynamic';
+
 interface CalculateRequestBody {
   leavingStateCode: string;
   destinationStateCode: string;
