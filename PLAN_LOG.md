@@ -376,11 +376,64 @@ Parsing (Daily) → Change Detection (Daily) → Admin UI + Advisor UI
 4. Monitor via admin UI
 5. Advisors access via `/fmss/sma`
 
-**Next Steps (Optional Enhancements):**
-- Phase 9: Comparison tool (side-by-side strategy comparison)
-- Phase 10: Search and filtering (by provider, AUM, fees, performance)
-- Phase 11: Email alerts for high-severity changes
-- Phase 12: Export functionality (PDF reports, CSV exports)
+**Phase 9: Comparison Tool** — COMPLETE ✅
+1. ✅ Side-by-side strategy comparison page
+   - Created `src/app/fmss/sma/compare/page.tsx` (400+ lines)
+   - Compare 2-4 strategies simultaneously
+   - Field-by-field comparison table
+   - Best performance highlighting (★ Best indicator)
+   - Lowest fee highlighting (✓ Lowest indicator)
+   - Color-coded returns (green/red)
+   - Query parameter support: `/fmss/sma/compare?ids=doc1,doc2,doc3`
+   - Legend with comparison indicators
+   - Links to individual strategy detail pages
+
+**Phase 10: Advanced Search/Filtering** — COMPLETE ✅
+1. ✅ Filter component with multi-criteria search
+   - Created `src/components/fmss/StrategyFilters.tsx` (client component)
+   - Search by strategy name or manager
+   - Filter by provider (dropdown with all providers)
+   - Filter by AUM range (min/max in millions)
+   - Filter by fee range (min/max in basis points)
+   - Filter by minimum 1-year return (percentage)
+   - Active filters display with badges
+   - Clear all filters button
+   - Query parameter persistence
+   - Responsive grid layout (1 → 2 → 3 columns)
+
+**Phase 11: Email Alerts** — COMPLETE ✅
+1. ✅ Email alert worker for high-severity changes
+   - Created `workers/sma_monitoring/alert_worker.py` (350+ lines)
+   - EmailAlertSender class with SMTP integration
+   - HTML email template with severity color coding
+   - Material changes and field changes display
+   - Advisor action required indicators
+   - Alert record tracking in fmss_sma_document_alerts
+   - CLI interface: `--check-alerts`, `--send-pending`
+   - Environment variable configuration:
+     - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
+     - ALERT_FROM_EMAIL, ALERT_TO_EMAILS
+   - 7-day window for high-severity changes
+   - Deduplication (only sends once per change)
+
+**Phase 12: Export Functionality** — COMPLETE ✅
+1. ✅ CSV export API endpoint
+   - Created `src/app/api/fmss/sma/export/route.ts`
+   - Export all strategies or selected IDs
+   - CSV format with 15 columns:
+     - Strategy Name, Manager, Provider
+     - Inception Date, AUM, Minimum Investment
+     - Management Fee, Benchmark
+     - Performance: YTD, 1Y, 3Y, 5Y, 10Y, Inception
+     - Document URL
+   - Query parameters:
+     - `format=csv` (CSV export)
+     - `ids=doc1,doc2,doc3` (specific strategies)
+   - Automatic filename with date
+   - CSV escaping for commas and quotes
+   - 1000 strategy limit per export
+
+**ALL PHASES 1-12 COMPLETE!**
 
 ---
 
