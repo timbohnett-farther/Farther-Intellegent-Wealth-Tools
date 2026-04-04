@@ -3046,3 +3046,286 @@ model FieldMapping {
   @@unique([sessionId, entityType, sourceField])
   @@map("field_mappings")
 }
+
+// ==================== PROPOSAL ENGINE ====================
+
+model ProposalSession {
+  id              String   @id @default(cuid())
+  firmId          String   @map("firm_id")
+  advisorId       String   @map("advisor_id")
+  clientId        String?  @map("client_id")
+  householdId     String?  @map("household_id")
+  clientName      String   @map("client_name")
+  proposalType    String   @map("proposal_type")
+  occasion        String
+  status          String   @default("DRAFT")
+  wizardStep      Int      @default(1) @map("wizard_step")
+  assetsInScope   Int      @default(0) @map("assets_in_scope") // MoneyCents
+  relationshipTier String? @map("relationship_tier")
+  notes           String?
+  proposedModelId String?  @map("proposed_model_id")
+  templateId      String?  @map("template_id")
+
+  // JSON blobs for complex data
+  currentPortfolio String? @map("current_portfolio") // JSON
+  riskProfile     String?  @map("risk_profile") // JSON
+  analytics       String?  // JSON
+  taxTransition   String?  @map("tax_transition") // JSON
+  feeAnalysis     String?  @map("fee_analysis") // JSON
+  stressTests     String?  @map("stress_tests") // JSON
+  sections        String?  // JSON
+  narrative       String?  // JSON
+  tracking        String?  // JSON
+
+  sentAt          DateTime? @map("sent_at")
+  viewedAt        DateTime? @map("viewed_at")
+  acceptedAt      DateTime? @map("accepted_at")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  scans           ProposalScan[]
+  results         ProposalResult[]
+
+  @@index([firmId])
+  @@index([advisorId])
+  @@index([clientId])
+  @@index([householdId])
+  @@index([status])
+  @@map("proposal_sessions")
+}
+
+model ProposalScan {
+  id              String   @id @default(cuid())
+  proposalId      String   @map("proposal_id")
+  proposal        ProposalSession @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  institution     String
+  accountType     String   @map("account_type")
+  accountNumber   String?  @map("account_number")
+  accountHolder   String?  @map("account_holder")
+  statementDate   String?  @map("statement_date")
+  totalValue      Int      @default(0) @map("total_value") // MoneyCents
+  holdings        String?  // JSON array of holdings
+  cashAndEquiv    Int      @default(0) @map("cash_and_equiv") // MoneyCents
+  confidence      Float    @default(0)
+  flaggedForReview String? @map("flagged_for_review") // JSON array
+  captureMethod   String   @default("OCR_SCAN") @map("capture_method")
+  fileName        String?  @map("file_name")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([proposalId])
+  @@map("proposal_scans")
+}
+
+model ProposalResult {
+  id              String   @id @default(cuid())
+  proposalId      String   @map("proposal_id")
+  proposal        ProposalSession @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  resultType      String   @map("result_type") // ANALYTICS, TAX_TRANSITION, FEE_ANALYSIS, NARRATIVE, PDF
+  inputParams     String?  @map("input_params") // JSON - params used to generate this result
+  outputData      String?  @map("output_data") // JSON - the computed result
+  pdfUrl          String?  @map("pdf_url")
+  status          String   @default("COMPLETED")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([proposalId])
+  @@index([resultType])
+  @@map("proposal_results")
+}
+
+// ==================== TAX SCENARIO PERSISTENCE ====================
+
+model TaxScenarioRecord {
+  id              String   @id @default(cuid())
+  householdId     String   @map("household_id")
+  firmId          String   @map("firm_id")
+  name            String
+  description     String?
+  taxYear         Int      @map("tax_year")
+  filingStatus    String   @map("filing_status")
+  state           String?
+  status          String   @default("DRAFT")
+
+  // Input data
+  inputSnapshot   String?  @map("input_snapshot") // JSON
+  overrides       String?  // JSON
+
+  // Results
+  resultData      String?  @map("result_data") // JSON
+  federalTax      Int?     @map("federal_tax") // MoneyCents
+  stateTax        Int?     @map("state_tax") // MoneyCents
+  effectiveRate   Float?   @map("effective_rate")
+
+  isBaseline      Boolean  @default(false) @map("is_baseline")
+  parentId        String?  @map("parent_id")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  calcRuns        TaxCalcRunRecord[]
+
+  @@index([householdId])
+  @@index([firmId])
+  @@index([taxYear])
+  @@map("tax_scenario_records")
+}
+
+model TaxCalcRunRecord {
+  id              String   @id @default(cuid())
+  scenarioId      String   @map("scenario_id")
+  scenario        TaxScenarioRecord @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  status          String   @default("PENDING") // PENDING, RUNNING, COMPLETED, FAILED
+  inputHash       String?  @map("input_hash") // SHA-256 of inputs for cache detection
+  resultData      String?  @map("result_data") // JSON
+  errorMessage    String?  @map("error_message")
+  durationMs      Int?     @map("duration_ms")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  completedAt     DateTime? @map("completed_at")
+
+  @@index([scenarioId])
+  @@index([inputHash])
+  @@map("tax_calc_run_records")
+}
+
+// ==================== ROLLOVER ANALYSIS PERSISTENCE ====================
+
+model RolloverAnalysisRecord {
+  id              String   @id @default(cuid())
+  householdId     String?  @map("household_id")
+  clientId        String?  @map("client_id")
+  firmId          String   @map("firm_id")
+  advisorId       String?  @map("advisor_id")
+
+  planName        String   @map("plan_name")
+  planEin         String?  @map("plan_ein")
+  currentBalance  Int      @default(0) @map("current_balance") // MoneyCents
+  accountType     String?  @map("account_type")
+
+  // Analysis inputs
+  inputParams     String?  @map("input_params") // JSON
+
+  // Analysis results
+  overallScore    Float?   @map("overall_score")
+  feeScore        Float?   @map("fee_score")
+  investmentScore Float?   @map("investment_score")
+  serviceScore    Float?   @map("service_score")
+  recommendation  String?  // ROLLOVER, STAY, PARTIAL_ROLLOVER
+  narrative       String?  // AI-generated narrative
+  resultData      String?  @map("result_data") // JSON full results
+  pdfUrl          String?  @map("pdf_url")
+
+  status          String   @default("COMPLETED")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId])
+  @@index([clientId])
+  @@index([firmId])
+  @@map("rollover_analysis_records")
+}
+
+// ==================== DOCUMENT STORAGE ====================
+
+model DocumentRecord {
+  id              String   @id @default(cuid())
+  householdId     String?  @map("household_id")
+  clientId        String?  @map("client_id")
+  firmId          String   @map("firm_id")
+  uploadedBy      String?  @map("uploaded_by")
+
+  fileName        String   @map("file_name")
+  originalName    String   @map("original_name")
+  mimeType        String   @map("mime_type")
+  fileSize        Int      @map("file_size") // bytes
+  fileHash        String?  @map("file_hash") // SHA-256
+
+  // Storage location
+  storageProvider String   @default("local") @map("storage_provider") // local, s3, r2
+  storagePath     String   @map("storage_path") // bucket key or file path
+  storageUrl      String?  @map("storage_url") // public or signed URL
+
+  // Document classification
+  documentType    String   @map("document_type") // TAX_RETURN, STATEMENT, IPS, REGBI, PROPOSAL_PDF, etc.
+  taxYear         Int?     @map("tax_year")
+  category        String?  // uploaded, generated, signed
+
+  // Processing status
+  processingStatus String  @default("UPLOADED") @map("processing_status") // UPLOADED, PROCESSING, EXTRACTED, ERROR
+  extractedData   String?  @map("extracted_data") // JSON from OCR/AI extraction
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([householdId])
+  @@index([clientId])
+  @@index([firmId])
+  @@index([documentType])
+  @@index([fileHash])
+  @@map("document_records")
+}
+
+// ==================== SEARCH INDEX ====================
+
+model SearchIndex {
+  id              String   @id @default(cuid())
+  entityType      String   @map("entity_type") // CLIENT, HOUSEHOLD, PROPOSAL, PLAN, DOCUMENT, SCENARIO
+  entityId        String   @map("entity_id")
+  firmId          String   @map("firm_id")
+
+  // Searchable text fields
+  title           String   // Primary display name
+  subtitle        String?  // Secondary text (type, status, etc.)
+  searchText      String   @map("search_text") // Combined searchable text (lowercased)
+
+  // Metadata for display
+  status          String?
+  category        String?
+  value           Int?     // MoneyCents for financial entities
+
+  lastUpdated     DateTime @default(now()) @map("last_updated")
+
+  @@unique([entityType, entityId])
+  @@index([firmId])
+  @@index([entityType])
+  @@index([searchText])
+  @@map("search_index")
+}
+
+// ==================== COMPUTATION RESULT CACHE ====================
+
+model ComputationResult {
+  id              String   @id @default(cuid())
+  computationType String   @map("computation_type") // RISK_SCORE, FEE_ANALYSIS, MONTE_CARLO, STRESS_TEST, SIDE_BY_SIDE, NARRATIVE
+  entityType      String   @map("entity_type") // PROPOSAL, SCENARIO, ROLLOVER, HOUSEHOLD
+  entityId        String   @map("entity_id")
+  firmId          String   @map("firm_id")
+
+  // Input fingerprint for cache matching
+  inputHash       String   @map("input_hash") // SHA-256 of serialized inputs
+  inputParams     String   @map("input_params") // JSON of input parameters
+
+  // Output
+  resultData      String   @map("result_data") // JSON of computation result
+  resultSummary   String?  @map("result_summary") // Human-readable summary
+
+  // Metadata
+  durationMs      Int?     @map("duration_ms")
+  provider        String?  // AI provider used (if applicable)
+  version         String?  // Algorithm version
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  expiresAt       DateTime? @map("expires_at") // For cache TTL
+
+  @@unique([computationType, entityType, entityId, inputHash])
+  @@index([entityType, entityId])
+  @@index([computationType])
+  @@index([firmId])
+  @@map("computation_results")
+}
