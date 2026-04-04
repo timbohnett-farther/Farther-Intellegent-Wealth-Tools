@@ -49,8 +49,7 @@ export async function POST(
     console.error("Duplicate detection error:", error);
     return NextResponse.json(
       {
-        error: "Failed to run duplicate detection",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to run duplicate detection. Please try again.",
       },
       { status: 500 }
     );

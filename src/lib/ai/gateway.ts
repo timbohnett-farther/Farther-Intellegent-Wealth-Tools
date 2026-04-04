@@ -7,7 +7,11 @@
 // Callers should catch errors and fall back to template-based generation.
 // =============================================================================
 
+import { fetchWithTimeout } from '@/lib/fetch-with-timeout';
+
 // ── Configuration ────────────────────────────────────────────────────────────
+
+const AI_TIMEOUT_MS = 60_000; // 60s for AI calls (can be slow)
 
 const ZOLO_API_KEY = process.env.AI_ZOLO_KEY ?? '';
 const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY ?? '';
@@ -129,14 +133,14 @@ async function callZolo(req: AIRequest | AIDocumentRequest): Promise<AIResponse>
   // Use MINIMAX_API_KEY if available, fallback to ZOLO_API_KEY
   const apiKey = MINIMAX_API_KEY || ZOLO_API_KEY;
 
-  const response = await fetch(ZOLO_BASE_URL, {
+  const response = await fetchWithTimeout(ZOLO_BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify(body),
-  });
+  }, AI_TIMEOUT_MS);
 
   if (!response.ok) {
     const errorBody = await response.text().catch(() => 'Unknown error');
@@ -160,7 +164,7 @@ async function callZolo(req: AIRequest | AIDocumentRequest): Promise<AIResponse>
 }
 
 async function callAnthropic(req: AIRequest): Promise<AIResponse> {
-  const response = await fetch(`${ANTHROPIC_BASE_URL}/v1/messages`, {
+  const response = await fetchWithTimeout(`${ANTHROPIC_BASE_URL}/v1/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -176,7 +180,7 @@ async function callAnthropic(req: AIRequest): Promise<AIResponse> {
       ],
       ...(req.temperature !== undefined && { temperature: req.temperature }),
     }),
-  });
+  }, AI_TIMEOUT_MS);
 
   if (!response.ok) {
     const errorBody = await response.text().catch(() => 'Unknown error');

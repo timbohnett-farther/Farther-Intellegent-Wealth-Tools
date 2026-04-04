@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Upload init error:", error);
     return NextResponse.json(
-      { error: "Failed to initialize upload", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to initialize upload. Please try again." },
       { status: 500 }
     );
   }

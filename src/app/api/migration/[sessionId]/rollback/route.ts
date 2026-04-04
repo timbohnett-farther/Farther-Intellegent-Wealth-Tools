@@ -73,8 +73,7 @@ export async function POST(
     console.error("Rollback error:", error);
     return NextResponse.json(
       {
-        error: "Failed to rollback",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to rollback. Please try again.",
       },
       { status: 500 }
     );

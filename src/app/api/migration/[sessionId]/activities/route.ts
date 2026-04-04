@@ -81,7 +81,7 @@ export async function GET(
   } catch (error) {
     console.error("Fetch activities error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch activities", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to fetch activities. Please try again." },
       { status: 500 }
     );
   }

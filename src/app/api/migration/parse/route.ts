@@ -88,8 +88,7 @@ export async function POST(request: NextRequest) {
     console.error("Parse trigger error:", error);
     return NextResponse.json(
       {
-        error: "Failed to start parse job",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to start parse job. Please try again.",
       },
       { status: 500 }
     );

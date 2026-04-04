@@ -29,6 +29,6 @@ export async function POST(
     }
 
     console.error(`[API] Error:`, error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+    return NextResponse.json({ error: 'Operation failed. Please try again.' }, { status: 500 });
   }
 }

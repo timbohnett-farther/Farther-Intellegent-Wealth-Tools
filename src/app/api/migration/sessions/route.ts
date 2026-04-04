@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("List sessions error:", error);
     return NextResponse.json(
-      { error: "Failed to list sessions", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to list sessions. Please try again." },
       { status: 500 }
     );
   }
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Create session error:", error);
     return NextResponse.json(
-      { error: "Failed to create session", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to create session. Please try again." },
       { status: 500 }
     );
   }

@@ -76,7 +76,7 @@ export async function GET(
   } catch (error) {
     console.error("Fetch households error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch households", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to fetch households. Please try again." },
       { status: 500 }
     );
   }

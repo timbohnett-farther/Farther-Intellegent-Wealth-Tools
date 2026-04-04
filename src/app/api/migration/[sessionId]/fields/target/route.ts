@@ -83,8 +83,7 @@ export async function GET(
     console.error("Target fields fetch error:", error);
     return NextResponse.json(
       {
-        error: "Failed to fetch target fields",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to fetch target fields. Please try again.",
       },
       { status: 500 }
     );

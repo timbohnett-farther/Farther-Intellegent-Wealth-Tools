@@ -55,8 +55,7 @@ export async function POST(
     console.error("Validation trigger error:", error);
     return NextResponse.json(
       {
-        error: "Failed to start validation",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to start validation. Please try again.",
       },
       { status: 500 }
     );

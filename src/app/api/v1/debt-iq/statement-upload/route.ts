@@ -221,7 +221,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       {
         success: false,
         error: 'An unexpected error occurred. Please try again.',
-        details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );

@@ -86,7 +86,7 @@ export function calculateStrategyYear(
 
   // Concentrated position reduction via diversification
   // TALS strategies reduce concentrated exposure through leverage rebalancing
-  const diversificationRate = Math.min(0.20, (gL - 1.0) * 0.15 + 0.05);
+  const diversificationRate = Math.min(0.20, Math.max(0, (gL - 1.0) * 0.15 + 0.05));
   const concentratedPctRemaining = Math.max(
     0,
     prev.concentratedPctRemaining * (1 - diversificationRate)

@@ -89,7 +89,7 @@ export async function POST(
       payload,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Export failed';
-    return errorResponse('EXPORT_ERROR', message, 400);
+    console.error('[Deliverables] Export error:', error);
+    return errorResponse('EXPORT_ERROR', 'Export failed. Please try again.', 400);
   }
 }

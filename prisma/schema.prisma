@@ -59,6 +59,7 @@ model Advisor {
   // Tax Intelligence relations
   uploadedTaxDocuments TaxDocument[]
 
+  @@index([firmId])
   @@map("advisors")
 }
 
@@ -100,6 +101,8 @@ model Household {
   // Phase 5: Scenario Planning Workspace relations
   planningScenarios        PlanningScenario[]
 
+  @@index([firmId])
+  @@index([advisorId])
   @@map("households")
 }
 
@@ -169,6 +172,9 @@ model Client {
   insurancePolicies InsurancePolicy[]
   estateDocuments EstateDocument[]
 
+  @@index([householdId])
+  @@index([firmId])
+  @@index([advisorId])
   @@index([dateOfBirth])
   @@map("clients")
 }
@@ -188,6 +194,7 @@ model Dependent {
 
   household       Household @relation(fields: [householdId], references: [id])
 
+  @@index([householdId])
   @@map("dependents")
 }
 
@@ -267,6 +274,10 @@ model Plan {
   planningScenarios     PlanningScenario[]
 
   @@index([status])
+  @@index([householdId])
+  @@index([advisorId])
+  @@index([firmId])
+  @@index([primaryClientId])
   @@map("plans")
 }
 
@@ -374,6 +385,8 @@ model IncomeSource {
   plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
   client                Client   @relation(fields: [clientId], references: [id])
 
+  @@index([planId])
+  @@index([clientId])
   @@map("income_sources")
 }
 
@@ -416,6 +429,7 @@ model Expense {
 
   plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
 
+  @@index([planId])
   @@map("expenses")
 }
 
@@ -550,6 +564,8 @@ model Account {
   coOwner               Client?  @relation("AccountCoOwner", fields: [coOwnerId], references: [id])
   beneficiaryDesignations BeneficiaryDesignation[]
 
+  @@index([planId])
+  @@index([clientId])
   @@index([accountType])
   @@index([taxBucket])
   @@map("accounts")
@@ -613,6 +629,7 @@ model Goal {
 
   plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
 
+  @@index([planId])
   @@map("goals")
 }
 
@@ -658,6 +675,7 @@ model InsurancePolicy {
   plan                  Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
   insuredClient         Client   @relation(fields: [insuredClientId], references: [id])
 
+  @@index([planId])
   @@map("insurance_policies")
 }
 
@@ -783,6 +801,8 @@ model PlanResult {
   plan                        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
   scenario                    Scenario? @relation(fields: [scenarioId], references: [id])
 
+  @@index([planId])
+  @@index([scenarioId])
   @@map("plan_results")
 }
 

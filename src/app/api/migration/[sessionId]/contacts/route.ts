@@ -79,7 +79,7 @@ export async function GET(
   } catch (error) {
     console.error("Fetch contacts error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch contacts", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to fetch contacts. Please try again." },
       { status: 500 }
     );
   }

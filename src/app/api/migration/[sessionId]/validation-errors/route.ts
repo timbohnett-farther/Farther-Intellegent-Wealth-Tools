@@ -96,8 +96,7 @@ export async function GET(
     console.error("Fetch validation errors error:", error);
     return NextResponse.json(
       {
-        error: "Failed to fetch validation errors",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to fetch validation errors. Please try again.",
       },
       { status: 500 }
     );

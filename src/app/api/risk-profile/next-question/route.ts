@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     console.error('AI question generation failed:', error);
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'AI generation failed',
+        error: 'AI generation failed. Please try again.',
         fallback: true,
       },
       { status: 500 },

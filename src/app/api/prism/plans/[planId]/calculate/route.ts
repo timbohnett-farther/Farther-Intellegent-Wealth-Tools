@@ -453,9 +453,8 @@ export async function POST(
     });
   } catch (error) {
     console.error('Plan calculation error:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error during plan calculation';
     return NextResponse.json(
-      { error: 'Plan calculation failed', details: message },
+      { error: 'Plan calculation failed. Please try again.' },
       { status: 500 }
     );
   }

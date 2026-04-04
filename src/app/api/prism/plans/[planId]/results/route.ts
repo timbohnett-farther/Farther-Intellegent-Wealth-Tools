@@ -90,9 +90,8 @@ export async function GET(
     });
   } catch (error) {
     console.error('Error fetching plan results:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error fetching plan results';
     return NextResponse.json(
-      { error: 'Failed to fetch plan results', details: message },
+      { error: 'Failed to fetch plan results. Please try again.' },
       { status: 500 }
     );
   }

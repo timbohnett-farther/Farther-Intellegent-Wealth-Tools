@@ -6,10 +6,13 @@
 // Supports async generation with polling and PDF/PPTX export.
 // =============================================================================
 
+import { fetchWithTimeout } from '@/lib/fetch-with-timeout';
+
 // ── Configuration ────────────────────────────────────────────────────────────
 
 const GAMMA_API_KEY = process.env.GAMMA_API_KEY ?? '';
 const GAMMA_BASE_URL = 'https://public-api.gamma.app/v1.0';
+const GAMMA_FETCH_TIMEOUT_MS = 15_000; // 15s per request
 const DEFAULT_POLL_INTERVAL_MS = 5_000;
 const DEFAULT_MAX_WAIT_MS = 120_000;
 
@@ -41,14 +44,14 @@ export function isGammaAvailable(): boolean {
 // ── API Helpers ──────────────────────────────────────────────────────────────
 
 async function gammaFetch(path: string, options: RequestInit = {}): Promise<Response> {
-  const response = await fetch(`${GAMMA_BASE_URL}${path}`, {
+  const response = await fetchWithTimeout(`${GAMMA_BASE_URL}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       'X-API-KEY': GAMMA_API_KEY,
       ...options.headers,
     },
-  });
+  }, GAMMA_FETCH_TIMEOUT_MS);
 
   if (!response.ok) {
     const errorBody = await response.text().catch(() => 'Unknown error');

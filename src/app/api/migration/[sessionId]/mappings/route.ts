@@ -47,8 +47,7 @@ export async function GET(
     console.error("List mappings error:", error);
     return NextResponse.json(
       {
-        error: "Failed to list mappings",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to list mappings. Please try again.",
       },
       { status: 500 }
     );
@@ -122,8 +121,7 @@ export async function POST(
 
     return NextResponse.json(
       {
-        error: "Failed to create mapping",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to create mapping. Please try again.",
       },
       { status: 500 }
     );

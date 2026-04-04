@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Chunk upload error:", error);
     return NextResponse.json(
-      { error: "Failed to upload chunk", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to upload chunk. Please try again." },
       { status: 500 }
     );
   }

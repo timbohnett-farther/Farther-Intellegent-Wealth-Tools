@@ -124,8 +124,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        error: "Failed to complete upload",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to complete upload. Please try again.",
       },
       { status: 500 }
     );

@@ -129,8 +129,7 @@ export async function POST(
     console.error("Preview transformation error:", error);
     return NextResponse.json(
       {
-        error: "Failed to preview transformation",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to preview transformation. Please try again.",
       },
       { status: 500 }
     );

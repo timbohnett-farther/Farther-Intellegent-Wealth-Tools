@@ -57,8 +57,7 @@ export async function PUT(
     console.error("Update mapping error:", error);
     return NextResponse.json(
       {
-        error: "Failed to update mapping",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to update mapping. Please try again.",
       },
       { status: 500 }
     );
@@ -91,8 +90,7 @@ export async function DELETE(
     console.error("Delete mapping error:", error);
     return NextResponse.json(
       {
-        error: "Failed to delete mapping",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to delete mapping. Please try again.",
       },
       { status: 500 }
     );

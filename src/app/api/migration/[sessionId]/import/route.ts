@@ -90,8 +90,7 @@ export async function POST(
     console.error("Import trigger error:", error);
     return NextResponse.json(
       {
-        error: "Failed to start import",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to start import. Please try again.",
       },
       { status: 500 }
     );
@@ -147,7 +146,7 @@ async function runImport(jobId: string, sessionId: string, entityTypes: string[]
     job.status = "FAILED";
     job.errors.push({
       recordId: "session",
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: "Operation failed",
     });
   }
 }

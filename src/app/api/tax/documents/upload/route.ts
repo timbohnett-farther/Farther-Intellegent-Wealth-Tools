@@ -298,7 +298,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           filename: file.name,
           fileUrl: '',
           status: 'error',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: 'File processing failed',
         });
         stats.failed++;
       }
@@ -316,8 +316,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json(
       {
         success: false,
-        error: 'Upload failed',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Upload failed. Please try again.',
       },
       { status: 500 }
     );

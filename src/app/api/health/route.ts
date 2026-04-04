@@ -44,7 +44,6 @@ export async function GET() {
       database: {
         status: 'disconnected',
         responseTime: `${responseTime}ms`,
-        error: error instanceof Error ? error.message : 'Unknown database error',
       },
       version: process.env.npm_package_version || '1.0.0',
       environment: process.env.NODE_ENV || 'development',

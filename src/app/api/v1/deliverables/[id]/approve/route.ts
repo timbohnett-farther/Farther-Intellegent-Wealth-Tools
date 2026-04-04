@@ -75,7 +75,7 @@ export async function POST(
     );
     return NextResponse.json(approved);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Approval failed';
-    return errorResponse('APPROVAL_ERROR', message, 400);
+    console.error('[Deliverables] Approval error:', error);
+    return errorResponse('APPROVAL_ERROR', 'Approval failed. Please try again.', 400);
   }
 }

@@ -36,7 +36,7 @@ export async function GET(
 
     const errorResponse: ApiErrorResponse = {
       error: 'Internal Server Error',
-      message: error instanceof Error ? error.message : 'An unexpected error occurred',
+      message: 'An unexpected error occurred. Please try again.',
       statusCode: 500,
     };
 

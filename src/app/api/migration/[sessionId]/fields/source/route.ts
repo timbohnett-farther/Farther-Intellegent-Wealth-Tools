@@ -129,8 +129,7 @@ export async function GET(
     console.error("Source fields discovery error:", error);
     return NextResponse.json(
       {
-        error: "Failed to discover source fields",
-        details: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to discover source fields. Please try again.",
       },
       { status: 500 }
     );

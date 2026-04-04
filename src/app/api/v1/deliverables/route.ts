@@ -106,8 +106,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       { status: 201 }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Assembly failed';
-    return errorResponse('ASSEMBLY_ERROR', message, 500);
+    console.error('[Deliverables] Assembly error:', error);
+    return errorResponse('ASSEMBLY_ERROR', 'Assembly failed. Please try again.', 500);
   }
 }
 

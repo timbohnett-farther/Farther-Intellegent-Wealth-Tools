@@ -136,8 +136,7 @@ export async function POST(request: NextRequest) {
     console.error('[Update Detection] Error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to run update detection workflow',
-        details: error instanceof Error ? error.message : String(error),
+        error: 'Failed to run update detection workflow. Please try again.',
       },
       { status: 500 }
     );

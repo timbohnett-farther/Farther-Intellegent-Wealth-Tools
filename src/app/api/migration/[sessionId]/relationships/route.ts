@@ -66,7 +66,7 @@ export async function GET(
   } catch (error) {
     console.error("Fetch relationships error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch relationships", details: error instanceof Error ? error.message : "Unknown error" },
+      { error: "Failed to fetch relationships. Please try again." },
       { status: 500 }
     );
   }
