@@ -69,8 +69,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json(err, { status: 401 });
   }
 
-  // Stage 1: Accept any password
-  // In Stage 2 this will validate password hashes
+  // SECURITY: Basic password validation (Stage 1)
+  // Stage 2 will validate against stored password hashes
+  if (!body.password || body.password.length < 8) {
+    const err: ErrorEnvelope = {
+      error: {
+        code: 'AUTH_FAILED',
+        message: 'Invalid email or password.',
+        details: {},
+        correlationId: crypto.randomUUID(),
+      },
+    };
+    return NextResponse.json(err, { status: 401 });
+  }
+
+  // TODO: Replace with proper password hash verification before production
+  // For now, reject empty/short passwords to prevent trivial bypasses
 
   // ---------- Generate tokens ----------
   const accessToken = createMockToken({

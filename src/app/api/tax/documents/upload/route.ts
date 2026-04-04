@@ -52,10 +52,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const taxYear = formData.get('taxYear') as string;
     const documentType = formData.get('documentType') as string;
 
-    // Validation
+    // SECURITY: Validate required fields
     if (!householdId || !uploadedBy) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields: householdId, uploadedBy' },
+        { status: 400 }
+      );
+    }
+
+    // SECURITY: Validate field format (basic check)
+    if (typeof householdId !== 'string' || householdId.trim().length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid householdId format' },
+        { status: 400 }
+      );
+    }
+
+    if (typeof uploadedBy !== 'string' || uploadedBy.trim().length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid uploadedBy format' },
         { status: 400 }
       );
     }

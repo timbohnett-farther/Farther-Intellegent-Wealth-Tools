@@ -1,9 +1,18 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prism/db';
+import { parseAuthContext } from '@/lib/tax-planning/rbac';
 
 export async function GET(request: NextRequest) {
   try {
+    // SECURITY: Require authentication for admin endpoint
+    const auth = parseAuthContext(request.headers.get('authorization'));
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Unauthorized - missing or invalid authorization' },
+        { status: 401 }
+      );
+    }
     const firm = await prisma.firm.findFirst({
       include: {
         _count: {
