@@ -3,9 +3,9 @@ export const dynamic = 'force-dynamic';
 // POST /api/v1/proposals/:id/scan  - Upload statement for OCR scanning
 // =============================================================================
 //
-// Stage 1 stub: generates a realistic StatementScanResult based on filename
-// hints.  Parses the filename to guess institution and generates 8-15 holdings
-// with real ETF/stock tickers, cost basis, and unrealized gains.
+// Real OCR path: when `fileData` (base64) is provided, uses MiniMax M2.7
+// vision via the statement-scanner pipeline. Falls back to mock generation
+// when no file data is provided (for testing without AI keys).
 // =============================================================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -22,6 +22,8 @@ import { cents } from '@/lib/tax-planning/types';
 import { proposalStore } from '@/lib/proposal-engine/store';
 import { parseAuthContext, hasPermission } from '@/lib/tax-planning/rbac';
 import { auditService } from '@/lib/tax-planning/audit';
+import { scanStatement } from '@/lib/proposal-engine/ocr/statement-scanner';
+import { isAIAvailable } from '@/lib/ai/gateway';
 
 // ==================== Helpers ====================
 
@@ -231,30 +233,46 @@ export async function POST(
     return errorResponse('VALIDATION_ERROR', 'One or more fields failed validation.', 400, errors);
   }
 
-  // ---------- Generate mock scan result ----------
-  const detected = detectInstitution(body.filename);
-  const holdingCount = 8 + Math.floor(Math.random() * 8); // 8-15 holdings
-  const totalValue = (proposal.assetsInScope as number) || 50000000; // fallback to $500K in cents
+  // ---------- OCR Scan or Mock ----------
+  // If fileData (base64) is provided and AI is available, use real OCR
+  const bodyAny = body as unknown as Record<string, unknown>;
+  const hasFileData = typeof bodyAny.fileData === 'string' && (bodyAny.fileData as string).length > 0;
 
-  const { holdings, flaggedForReview, cashAndEquivalents } = generateMockHoldings(totalValue, holdingCount);
+  let scanResult: StatementScanResult;
 
-  const confidence = 0.88 + Math.random() * 0.11; // 0.88 - 0.99
+  if (hasFileData && isAIAvailable()) {
+    // Real OCR path: MiniMax M2.7 vision extraction
+    scanResult = await scanStatement({
+      base64Data: bodyAny.fileData as string,
+      mimeType: body.fileType,
+      fileName: body.filename,
+      accountHolder: proposal.clientName,
+    });
+  } else {
+    // Mock fallback for testing or when no AI keys configured
+    const detected = detectInstitution(body.filename);
+    const holdingCount = 8 + Math.floor(Math.random() * 8);
+    const totalValue = (proposal.assetsInScope as number) || 50000000;
 
-  const scanResult: StatementScanResult = {
-    scanId: crypto.randomUUID(),
-    accountHolder: proposal.clientName,
-    institution: detected.institution,
-    accountType: detected.accountType,
-    accountNumber: `****${Math.floor(1000 + Math.random() * 9000)}`,
-    statementDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    totalValue: holdings.reduce((sum, h) => sum + (h.marketValue as number), 0) as MoneyCents,
-    holdings,
-    cashAndEquivalents: cashAndEquivalents as MoneyCents,
-    confidence: Math.round(confidence * 100) / 100,
-    flaggedForReview,
-    captureMethod: 'OCR_SCAN',
-    processedAt: new Date().toISOString(),
-  };
+    const { holdings, flaggedForReview, cashAndEquivalents } = generateMockHoldings(totalValue, holdingCount);
+    const confidence = 0.88 + Math.random() * 0.11;
+
+    scanResult = {
+      scanId: crypto.randomUUID(),
+      accountHolder: proposal.clientName,
+      institution: detected.institution,
+      accountType: detected.accountType,
+      accountNumber: `****${Math.floor(1000 + Math.random() * 9000)}`,
+      statementDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      totalValue: holdings.reduce((sum, h) => sum + (h.marketValue as number), 0) as MoneyCents,
+      holdings,
+      cashAndEquivalents: cashAndEquivalents as MoneyCents,
+      confidence: Math.round(confidence * 100) / 100,
+      flaggedForReview,
+      captureMethod: 'OCR_SCAN',
+      processedAt: new Date().toISOString(),
+    };
+  }
 
   // Store the scan result
   proposalStore.addScanResult(id, scanResult);
@@ -270,7 +288,7 @@ export async function POST(
       scanId: scanResult.scanId,
       filename: body.filename,
       institution: scanResult.institution,
-      holdingCount: holdings.length,
+      holdingCount: scanResult.holdings.length,
       confidence: scanResult.confidence,
       action: 'proposal.scan',
     },
