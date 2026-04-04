@@ -22,21 +22,15 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
       strategy_name: smaParsedDocuments.strategy_name,
       manager_name: smaParsedDocuments.manager_name,
       inception_date: smaParsedDocuments.inception_date,
-      aum_amount: smaParsedDocuments.aum_amount,
-      minimum_investment: smaParsedDocuments.minimum_investment,
+      aum_mm: smaParsedDocuments.aum_mm,
       management_fee_bps: smaParsedDocuments.management_fee_bps,
-      benchmark: smaParsedDocuments.benchmark,
-      ytd_return: smaParsedDocuments.ytd_return,
-      one_year_return: smaParsedDocuments.one_year_return,
-      three_year_return: smaParsedDocuments.three_year_return,
-      five_year_return: smaParsedDocuments.five_year_return,
-      ten_year_return: smaParsedDocuments.ten_year_return,
-      inception_return: smaParsedDocuments.inception_return,
-      raw_text: smaParsedDocuments.raw_text,
+      full_text: smaParsedDocuments.full_text,
       parsed_at: smaParsedDocuments.parsed_at,
+      extraction_confidence: smaParsedDocuments.extraction_confidence,
+      extraction_model: smaParsedDocuments.extraction_model,
       provider_key: smaProviders.provider_key,
       provider_name: smaProviders.provider_name,
-      document_url: smaFactSheetDocuments.url,
+      document_url: smaFactSheetDocuments.canonical_url,
       document_type: smaFactSheetDocuments.document_type,
       version_count: smaFactSheetDocuments.version_count,
     })
@@ -55,10 +49,11 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
     .select({
       id: smaChangeEvents.id,
       change_summary: smaChangeEvents.change_summary,
-      material_changes_json: smaChangeEvents.material_changes_json,
-      severity: smaChangeEvents.severity,
-      advisor_action_required: smaChangeEvents.advisor_action_required,
-      field_changes_json: smaChangeEvents.field_changes_json,
+      change_type: smaChangeEvents.change_type,
+      change_severity: smaChangeEvents.change_severity,
+      field_changed: smaChangeEvents.field_changed,
+      old_value: smaChangeEvents.old_value,
+      new_value: smaChangeEvents.new_value,
       detected_at: smaChangeEvents.detected_at,
     })
     .from(smaChangeEvents)
@@ -71,7 +66,7 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
     .select({
       id: smaFactSheetVersions.id,
       version_number: smaFactSheetVersions.version_number,
-      file_size_bytes: smaFactSheetVersions.file_size_bytes,
+      content_size_bytes: smaFactSheetVersions.content_size_bytes,
       acquired_at: smaFactSheetVersions.acquired_at,
     })
     .from(smaFactSheetVersions)
@@ -121,12 +116,8 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
         <div className="rounded-xl border border-border bg-surface p-6">
           <p className="text-sm font-medium text-text-secondary">Assets Under Management</p>
           <p className="mt-2 text-2xl font-semibold text-text-primary">
-            {strategy.aum_amount
-              ? strategy.aum_amount >= 1_000_000_000
-                ? `$${(strategy.aum_amount / 1_000_000_000).toFixed(2)}B`
-                : strategy.aum_amount >= 1_000_000
-                ? `$${(strategy.aum_amount / 1_000_000).toFixed(1)}M`
-                : `$${(strategy.aum_amount / 1_000).toFixed(0)}K`
+            {strategy.aum_mm
+              ? `$${parseFloat(strategy.aum_mm).toFixed(1)}M`
               : 'N/A'
             }
           </p>
@@ -148,87 +139,46 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
         </div>
 
         <div className="rounded-xl border border-border bg-surface p-6">
-          <p className="text-sm font-medium text-text-secondary">Minimum Investment</p>
+          <p className="text-sm font-medium text-text-secondary">Extraction Confidence</p>
           <p className="mt-2 text-2xl font-semibold text-text-primary">
-            {strategy.minimum_investment
-              ? `$${strategy.minimum_investment.toLocaleString()}`
+            {strategy.extraction_confidence
+              ? `${(parseFloat(strategy.extraction_confidence) * 100).toFixed(0)}%`
               : 'N/A'
             }
           </p>
+          {strategy.extraction_model && (
+            <p className="mt-1 text-xs text-text-muted">
+              {strategy.extraction_model}
+            </p>
+          )}
         </div>
 
         <div className="rounded-xl border border-border bg-surface p-6">
           <p className="text-sm font-medium text-text-secondary">Inception Date</p>
           <p className="mt-2 text-2xl font-semibold text-text-primary">
-            {strategy.inception_date || 'N/A'}
+            {strategy.inception_date
+              ? new Date(strategy.inception_date).toLocaleDateString()
+              : 'N/A'
+            }
           </p>
         </div>
       </div>
 
-      {/* Performance */}
-      <div className="rounded-xl border border-border bg-surface p-6">
-        <h2 className="text-lg font-semibold text-text-primary">Performance</h2>
-        {strategy.benchmark && (
+      {/* Extracted Text */}
+      {strategy.full_text && (
+        <div className="rounded-xl border border-border bg-surface p-6">
+          <h2 className="text-lg font-semibold text-text-primary">Extracted Text</h2>
           <p className="mt-1 text-sm text-text-secondary">
-            Benchmark: {strategy.benchmark}
+            AI-extracted content from fact sheet
           </p>
-        )}
-
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {strategy.ytd_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">YTD</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.ytd_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.ytd_return >= 0 ? '+' : ''}{strategy.ytd_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
-          {strategy.one_year_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">1 Year</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.one_year_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.one_year_return >= 0 ? '+' : ''}{strategy.one_year_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
-          {strategy.three_year_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">3 Year</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.three_year_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.three_year_return >= 0 ? '+' : ''}{strategy.three_year_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
-          {strategy.five_year_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">5 Year</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.five_year_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.five_year_return >= 0 ? '+' : ''}{strategy.five_year_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
-          {strategy.ten_year_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">10 Year</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.ten_year_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.ten_year_return >= 0 ? '+' : ''}{strategy.ten_year_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
-          {strategy.inception_return !== null && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">Since Inception</p>
-              <p className={`mt-1 text-xl font-semibold ${strategy.inception_return >= 0 ? 'text-success' : 'text-error'}`}>
-                {strategy.inception_return >= 0 ? '+' : ''}{strategy.inception_return.toFixed(2)}%
-              </p>
-            </div>
-          )}
+          <div className="mt-4 max-h-96 overflow-y-auto rounded-md bg-surface-subtle p-4">
+            <pre className="text-xs text-text-primary whitespace-pre-wrap">
+              {strategy.full_text.substring(0, 2000)}
+              {strategy.full_text.length > 2000 && '...'}
+            </pre>
+          </div>
         </div>
-
-        {!strategy.ytd_return && !strategy.one_year_return && (
-          <p className="mt-4 text-sm text-text-muted">No performance data available</p>
-        )}
-      </div>
+      )}
 
       {/* Change History */}
       {changeHistory.length > 0 && (
@@ -242,36 +192,22 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
 
           <div className="divide-y divide-border">
             {changeHistory.map((change) => {
-              const materialChanges = change.material_changes_json
-                ? (typeof change.material_changes_json === 'string'
-                    ? JSON.parse(change.material_changes_json)
-                    : change.material_changes_json)
-                : [];
-
-              const fieldChanges = change.field_changes_json
-                ? (typeof change.field_changes_json === 'string'
-                    ? JSON.parse(change.field_changes_json)
-                    : change.field_changes_json)
-                : [];
-
               return (
                 <div key={change.id} className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        change.severity === 'high'
+                        change.change_severity === 'high'
                           ? 'bg-error/10 text-error dark:bg-error/20'
-                          : change.severity === 'medium'
+                          : change.change_severity === 'medium'
                           ? 'bg-warning/10 text-warning dark:bg-warning/20'
                           : 'bg-surface-subtle text-text-secondary'
                       }`}>
-                        {change.severity} severity
+                        {change.change_severity || 'low'} severity
                       </span>
-                      {change.advisor_action_required && (
-                        <span className="inline-flex items-center rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
-                          Action Required
-                        </span>
-                      )}
+                      <span className="inline-flex items-center rounded-full bg-surface-subtle px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+                        {change.change_type}
+                      </span>
                     </div>
                     <p className="text-sm text-text-secondary">
                       {new Date(change.detected_at).toLocaleDateString('en-US', {
@@ -288,44 +224,24 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
                     {change.change_summary || 'Content updated'}
                   </p>
 
-                  {materialChanges.length > 0 && (
+                  {change.field_changed && (
                     <div className="mt-4">
                       <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
-                        Material Changes
+                        Field Changed
                       </p>
-                      <ul className="mt-2 space-y-1">
-                        {materialChanges.map((materialChange: string, idx: number) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-text-primary">
-                            <span className="text-brand-500">•</span>
-                            <span>{materialChange}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {fieldChanges.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
-                        Field Changes ({fieldChanges.length})
-                      </p>
-                      <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        {fieldChanges.slice(0, 4).map((fieldChange: any, idx: number) => (
-                          <div key={idx} className="rounded-md border border-border bg-surface-subtle p-3">
-                            <p className="text-xs font-medium text-text-primary">
-                              {fieldChange.field.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
-                            </p>
-                            <div className="mt-1 flex items-center gap-2 text-xs">
-                              <span className="text-text-muted line-through">
-                                {String(fieldChange.old_value).substring(0, 20)}
-                              </span>
-                              <span className="text-text-muted">→</span>
-                              <span className="text-text-primary font-medium">
-                                {String(fieldChange.new_value).substring(0, 20)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="mt-2 rounded-md border border-border bg-surface-subtle p-3">
+                        <p className="text-xs font-medium text-text-primary">
+                          {change.field_changed.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                        </p>
+                        <div className="mt-1 flex items-center gap-2 text-xs">
+                          <span className="text-text-muted line-through">
+                            {change.old_value ? String(change.old_value).substring(0, 40) : 'N/A'}
+                          </span>
+                          <span className="text-text-muted">→</span>
+                          <span className="text-text-primary font-medium">
+                            {change.new_value ? String(change.new_value).substring(0, 40) : 'N/A'}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -351,9 +267,11 @@ async function StrategyDetailContent({ documentId }: { documentId: string }) {
                   <p className="text-sm font-medium text-text-primary">
                     Version {version.version_number}
                   </p>
-                  <p className="text-xs text-text-muted">
-                    {(version.file_size_bytes / 1024).toFixed(1)} KB
-                  </p>
+                  {version.content_size_bytes && (
+                    <p className="text-xs text-text-muted">
+                      {(version.content_size_bytes / 1024).toFixed(1)} KB
+                    </p>
+                  )}
                 </div>
                 <p className="text-sm text-text-secondary">
                   {new Date(version.acquired_at).toLocaleDateString('en-US', {

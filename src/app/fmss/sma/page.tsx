@@ -32,7 +32,7 @@ async function SMAStrategiesContent() {
     .select({ count: count() })
     .from(smaChangeEvents)
     .where(and(
-      eq(smaChangeEvents.severity, 'high'),
+      eq(smaChangeEvents.change_severity, 'high'),
       sql`detected_at > NOW() - INTERVAL '7 days'`
     ));
 
@@ -44,18 +44,13 @@ async function SMAStrategiesContent() {
       strategy_name: smaParsedDocuments.strategy_name,
       manager_name: smaParsedDocuments.manager_name,
       inception_date: smaParsedDocuments.inception_date,
-      aum_amount: smaParsedDocuments.aum_amount,
-      minimum_investment: smaParsedDocuments.minimum_investment,
+      aum_mm: smaParsedDocuments.aum_mm,
       management_fee_bps: smaParsedDocuments.management_fee_bps,
-      benchmark: smaParsedDocuments.benchmark,
-      ytd_return: smaParsedDocuments.ytd_return,
-      one_year_return: smaParsedDocuments.one_year_return,
-      three_year_return: smaParsedDocuments.three_year_return,
-      five_year_return: smaParsedDocuments.five_year_return,
+      extraction_confidence: smaParsedDocuments.extraction_confidence,
       parsed_at: smaParsedDocuments.parsed_at,
       provider_key: smaProviders.provider_key,
       provider_name: smaProviders.provider_name,
-      document_url: smaFactSheetDocuments.url,
+      document_url: smaFactSheetDocuments.canonical_url,
       recent_change: sql<boolean>`EXISTS (
         SELECT 1 FROM ${smaChangeEvents}
         WHERE ${smaChangeEvents.document_id} = ${smaParsedDocuments.document_id}
@@ -64,7 +59,7 @@ async function SMAStrategiesContent() {
       high_severity_change: sql<boolean>`EXISTS (
         SELECT 1 FROM ${smaChangeEvents}
         WHERE ${smaChangeEvents.document_id} = ${smaParsedDocuments.document_id}
-          AND ${smaChangeEvents.severity} = 'high'
+          AND ${smaChangeEvents.change_severity} = 'high'
           AND ${smaChangeEvents.detected_at} > NOW() - INTERVAL '7 days'
       )`,
     })
@@ -152,7 +147,7 @@ async function SMAStrategiesContent() {
                   Fee
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-secondary">
-                  Performance
+                  Confidence
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-secondary">
                   Status
@@ -189,12 +184,8 @@ async function SMAStrategiesContent() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-text-primary">
-                    {strategy.aum_amount
-                      ? strategy.aum_amount >= 1_000_000_000
-                        ? `$${(strategy.aum_amount / 1_000_000_000).toFixed(1)}B`
-                        : strategy.aum_amount >= 1_000_000
-                        ? `$${(strategy.aum_amount / 1_000_000).toFixed(0)}M`
-                        : `$${(strategy.aum_amount / 1_000).toFixed(0)}K`
+                    {strategy.aum_mm
+                      ? `$${parseFloat(strategy.aum_mm).toFixed(1)}M`
                       : '-'
                     }
                   </td>
@@ -204,25 +195,11 @@ async function SMAStrategiesContent() {
                       : '-'
                     }
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="space-y-1 text-sm">
-                      {strategy.ytd_return !== null && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-text-muted">YTD:</span>
-                          <span className={strategy.ytd_return >= 0 ? 'text-success' : 'text-error'}>
-                            {strategy.ytd_return >= 0 ? '+' : ''}{strategy.ytd_return.toFixed(2)}%
-                          </span>
-                        </div>
-                      )}
-                      {strategy.one_year_return !== null && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-text-muted">1Y:</span>
-                          <span className={strategy.one_year_return >= 0 ? 'text-success' : 'text-error'}>
-                            {strategy.one_year_return >= 0 ? '+' : ''}{strategy.one_year_return.toFixed(2)}%
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                  <td className="px-6 py-4 text-sm text-text-primary">
+                    {strategy.extraction_confidence
+                      ? `${(parseFloat(strategy.extraction_confidence) * 100).toFixed(0)}%`
+                      : '-'
+                    }
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex flex-col gap-2">

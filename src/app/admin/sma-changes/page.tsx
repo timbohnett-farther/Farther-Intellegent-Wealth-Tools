@@ -14,17 +14,17 @@ async function ChangesContent() {
   const [highSeverity] = await db
     .select({ count: count() })
     .from(smaChangeEvents)
-    .where(eq(smaChangeEvents.severity, 'high'));
+    .where(eq(smaChangeEvents.change_severity, 'high'));
 
   const [mediumSeverity] = await db
     .select({ count: count() })
     .from(smaChangeEvents)
-    .where(eq(smaChangeEvents.severity, 'medium'));
+    .where(eq(smaChangeEvents.change_severity, 'medium'));
 
   const [actionRequired] = await db
     .select({ count: count() })
     .from(smaChangeEvents)
-    .where(eq(smaChangeEvents.advisor_action_required, true));
+    .where(eq(smaChangeEvents.alert_status, 'pending'));
 
   // Get recent change events
   const changes = await db
@@ -32,12 +32,15 @@ async function ChangesContent() {
       id: smaChangeEvents.id,
       document_id: smaChangeEvents.document_id,
       change_summary: smaChangeEvents.change_summary,
-      material_changes_json: smaChangeEvents.material_changes_json,
-      severity: smaChangeEvents.severity,
-      advisor_action_required: smaChangeEvents.advisor_action_required,
-      field_changes_json: smaChangeEvents.field_changes_json,
+      change_type: smaChangeEvents.change_type,
+      change_severity: smaChangeEvents.change_severity,
+      field_changed: smaChangeEvents.field_changed,
+      old_value: smaChangeEvents.old_value,
+      new_value: smaChangeEvents.new_value,
+      advisor_impact_note: smaChangeEvents.advisor_impact_note,
+      alert_status: smaChangeEvents.alert_status,
       detected_at: smaChangeEvents.detected_at,
-      document_url: smaFactSheetDocuments.url,
+      document_url: smaFactSheetDocuments.canonical_url,
       provider_key: smaProviders.provider_key,
       provider_name: smaProviders.provider_name,
     })
@@ -123,18 +126,6 @@ async function ChangesContent() {
 
         <div className="divide-y divide-border">
           {changes.map((change) => {
-            const materialChanges = change.material_changes_json
-              ? (typeof change.material_changes_json === 'string'
-                  ? JSON.parse(change.material_changes_json)
-                  : change.material_changes_json)
-              : [];
-
-            const fieldChanges = change.field_changes_json
-              ? (typeof change.field_changes_json === 'string'
-                  ? JSON.parse(change.field_changes_json)
-                  : change.field_changes_json)
-              : [];
-
             return (
               <div key={change.id} className="p-6 hover:bg-surface-subtle">
                 {/* Header Row */}
@@ -145,15 +136,15 @@ async function ChangesContent() {
                         {change.provider_name}
                       </h3>
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        change.severity === 'high'
+                        change.change_severity === 'high'
                           ? 'bg-error/10 text-error dark:bg-error/20'
-                          : change.severity === 'medium'
+                          : change.change_severity === 'medium'
                           ? 'bg-warning/10 text-warning dark:bg-warning/20'
                           : 'bg-surface-subtle text-text-secondary'
                       }`}>
-                        {change.severity} severity
+                        {change.change_severity || 'low'} severity
                       </span>
-                      {change.advisor_action_required && (
+                      {change.alert_status === 'pending' && (
                         <span className="inline-flex items-center rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
                           Action Required
                         </span>
@@ -179,52 +170,45 @@ async function ChangesContent() {
                   </p>
                 </div>
 
-                {/* Material Changes */}
-                {materialChanges.length > 0 && (
+                {/* Change Type Badge */}
+                <div className="mt-3">
+                  <span className="inline-flex items-center rounded-full bg-surface-subtle px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+                    {change.change_type}
+                  </span>
+                </div>
+
+                {/* Field Changes */}
+                {change.field_changed && (
                   <div className="mt-4">
                     <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
-                      Material Changes
+                      Field Changed
                     </p>
-                    <ul className="mt-2 space-y-1">
-                      {materialChanges.map((materialChange: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-text-primary">
-                          <span className="text-brand-500">•</span>
-                          <span>{materialChange}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mt-2 rounded-md border border-border bg-surface-subtle p-3">
+                      <p className="text-xs font-medium text-text-primary">
+                        {change.field_changed.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                      </p>
+                      <div className="mt-1 flex items-center gap-2 text-xs">
+                        <span className="text-text-muted line-through">
+                          {change.old_value ? String(change.old_value).substring(0, 40) : 'N/A'}
+                        </span>
+                        <span className="text-text-muted">→</span>
+                        <span className="text-text-primary font-medium">
+                          {change.new_value ? String(change.new_value).substring(0, 40) : 'N/A'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 )}
 
-                {/* Field Changes */}
-                {fieldChanges.length > 0 && (
+                {/* Advisor Impact */}
+                {change.advisor_impact_note && (
                   <div className="mt-4">
                     <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
-                      Field Changes ({fieldChanges.length})
+                      Impact Note
                     </p>
-                    <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                      {fieldChanges.slice(0, 4).map((fieldChange: any, idx: number) => (
-                        <div key={idx} className="rounded-md border border-border bg-surface-subtle p-3">
-                          <p className="text-xs font-medium text-text-primary">
-                            {fieldChange.field.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
-                          </p>
-                          <div className="mt-1 flex items-center gap-2 text-xs">
-                            <span className="text-text-muted line-through">
-                              {String(fieldChange.old_value).substring(0, 20)}
-                            </span>
-                            <span className="text-text-muted">→</span>
-                            <span className="text-text-primary font-medium">
-                              {String(fieldChange.new_value).substring(0, 20)}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {fieldChanges.length > 4 && (
-                      <p className="mt-2 text-xs text-text-muted">
-                        +{fieldChanges.length - 4} more changes
-                      </p>
-                    )}
+                    <p className="mt-1 text-sm text-text-primary">
+                      {change.advisor_impact_note}
+                    </p>
                   </div>
                 )}
 

@@ -35,7 +35,7 @@ async function RunsContent() {
       run_type: smaProviderRuns.run_type,
       status: smaProviderRuns.status,
       urls_discovered: smaProviderRuns.urls_discovered,
-      urls_processed: smaProviderRuns.urls_processed,
+      documents_acquired: smaProviderRuns.documents_acquired,
       errors_encountered: smaProviderRuns.errors_encountered,
       duration_seconds: smaProviderRuns.duration_seconds,
       triggered_by: smaProviderRuns.triggered_by,
@@ -189,10 +189,10 @@ async function RunsContent() {
                           <span className="text-text-muted">discovered</span>
                         </p>
                       )}
-                      {run.urls_processed !== null && (
+                      {run.documents_acquired !== null && (
                         <p className="text-text-primary">
-                          <span className="font-medium">{run.urls_processed}</span>{' '}
-                          <span className="text-text-muted">processed</span>
+                          <span className="font-medium">{run.documents_acquired}</span>{' '}
+                          <span className="text-text-muted">acquired</span>
                         </p>
                       )}
                       {run.errors_encountered !== null && run.errors_encountered > 0 && (

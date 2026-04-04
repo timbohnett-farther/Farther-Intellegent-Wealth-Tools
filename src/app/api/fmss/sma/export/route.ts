@@ -23,39 +23,33 @@ export async function GET(request: NextRequest) {
 
   try {
     // Build query
-    let query = db
+    const baseQuery = db
       .select({
         id: smaParsedDocuments.id,
         document_id: smaParsedDocuments.document_id,
         strategy_name: smaParsedDocuments.strategy_name,
         manager_name: smaParsedDocuments.manager_name,
         inception_date: smaParsedDocuments.inception_date,
-        aum_amount: smaParsedDocuments.aum_amount,
-        minimum_investment: smaParsedDocuments.minimum_investment,
+        aum_mm: smaParsedDocuments.aum_mm,
         management_fee_bps: smaParsedDocuments.management_fee_bps,
-        benchmark: smaParsedDocuments.benchmark,
-        ytd_return: smaParsedDocuments.ytd_return,
-        one_year_return: smaParsedDocuments.one_year_return,
-        three_year_return: smaParsedDocuments.three_year_return,
-        five_year_return: smaParsedDocuments.five_year_return,
-        ten_year_return: smaParsedDocuments.ten_year_return,
-        inception_return: smaParsedDocuments.inception_return,
         provider_key: smaProviders.provider_key,
         provider_name: smaProviders.provider_name,
-        document_url: smaFactSheetDocuments.url,
+        document_url: smaFactSheetDocuments.canonical_url,
+        parsed_at: smaParsedDocuments.parsed_at,
+        extraction_confidence: smaParsedDocuments.extraction_confidence,
       })
       .from(smaParsedDocuments)
       .leftJoin(smaFactSheetDocuments, eq(smaParsedDocuments.document_id, smaFactSheetDocuments.id))
-      .leftJoin(smaProviders, eq(smaFactSheetDocuments.provider_id, smaProviders.id))
-      .where(isNotNull(smaParsedDocuments.strategy_name));
+      .leftJoin(smaProviders, eq(smaFactSheetDocuments.provider_id, smaProviders.id));
 
-    // If specific IDs provided
-    if (idsParam) {
-      const ids = idsParam.split(',');
-      query = query.where(inArray(smaParsedDocuments.document_id, ids)) as any;
-    }
-
-    const strategies = await query.limit(1000);
+    // If specific IDs provided, filter by them
+    const strategies = idsParam
+      ? await baseQuery
+          .where(inArray(smaParsedDocuments.document_id, idsParam.split(',')))
+          .limit(1000)
+      : await baseQuery
+          .where(isNotNull(smaParsedDocuments.strategy_name))
+          .limit(1000);
 
     if (strategies.length === 0) {
       return NextResponse.json(
@@ -100,16 +94,10 @@ function generateCSV(strategies: any[]): string {
     "Manager",
     "Provider",
     "Inception Date",
-    "AUM",
-    "Minimum Investment",
+    "AUM (MM)",
     "Management Fee (bps)",
-    "Benchmark",
-    "YTD Return (%)",
-    "1 Year Return (%)",
-    "3 Year Return (%)",
-    "5 Year Return (%)",
-    "10 Year Return (%)",
-    "Since Inception (%)",
+    "Parsed At",
+    "Extraction Confidence",
     "Document URL",
   ];
 
@@ -118,17 +106,11 @@ function generateCSV(strategies: any[]): string {
     escapeCSV(s.strategy_name || ""),
     escapeCSV(s.manager_name || ""),
     escapeCSV(s.provider_name || ""),
-    escapeCSV(s.inception_date || ""),
-    s.aum_amount ? formatAUM(s.aum_amount) : "",
-    s.minimum_investment ? s.minimum_investment.toString() : "",
+    s.inception_date ? new Date(s.inception_date).toISOString().split('T')[0] : "",
+    s.aum_mm ? s.aum_mm.toString() : "",
     s.management_fee_bps ? s.management_fee_bps.toString() : "",
-    escapeCSV(s.benchmark || ""),
-    s.ytd_return !== null ? s.ytd_return.toFixed(2) : "",
-    s.one_year_return !== null ? s.one_year_return.toFixed(2) : "",
-    s.three_year_return !== null ? s.three_year_return.toFixed(2) : "",
-    s.five_year_return !== null ? s.five_year_return.toFixed(2) : "",
-    s.ten_year_return !== null ? s.ten_year_return.toFixed(2) : "",
-    s.inception_return !== null ? s.inception_return.toFixed(2) : "",
+    s.parsed_at ? new Date(s.parsed_at).toISOString() : "",
+    s.extraction_confidence ? s.extraction_confidence.toString() : "",
     escapeCSV(s.document_url || ""),
   ]);
 

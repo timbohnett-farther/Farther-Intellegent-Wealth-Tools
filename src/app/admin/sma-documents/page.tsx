@@ -24,23 +24,23 @@ async function DocumentsContent() {
   const [totalPending] = await db
     .select({ count: count() })
     .from(smaDiscoveredUrls)
-    .where(eq(smaDiscoveredUrls.status, 'pending'));
+    .where(eq(smaDiscoveredUrls.acquisition_status, 'pending'));
 
   const [totalProcessing] = await db
     .select({ count: count() })
-    .from(smaDiscoveredUrls)
-    .where(eq(smaDiscoveredUrls.status, 'processing'));
+    .from(smaFactSheetDocuments)
+    .where(eq(smaFactSheetDocuments.parse_status, 'pending'));
 
   // Get recent documents
   const documents = await db
     .select({
       id: smaFactSheetDocuments.id,
-      url: smaFactSheetDocuments.url,
+      canonical_url: smaFactSheetDocuments.canonical_url,
       document_type: smaFactSheetDocuments.document_type,
       current_content_hash: smaFactSheetDocuments.current_content_hash,
       version_count: smaFactSheetDocuments.version_count,
-      file_path: smaFactSheetDocuments.file_path,
-      last_acquired_at: smaFactSheetDocuments.last_acquired_at,
+      parse_status: smaFactSheetDocuments.parse_status,
+      last_checked: smaFactSheetDocuments.last_checked,
       created_at: smaFactSheetDocuments.created_at,
       provider_key: smaProviders.provider_key,
       provider_name: smaProviders.provider_name,
@@ -48,7 +48,7 @@ async function DocumentsContent() {
     })
     .from(smaFactSheetDocuments)
     .leftJoin(smaProviders, eq(smaFactSheetDocuments.provider_id, smaProviders.id))
-    .orderBy(desc(smaFactSheetDocuments.last_acquired_at))
+    .orderBy(desc(smaFactSheetDocuments.last_checked))
     .limit(100);
 
   return (
@@ -161,12 +161,12 @@ async function DocumentsContent() {
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <a
-                      href={doc.url}
+                      href={doc.canonical_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="max-w-md truncate text-brand-500 hover:text-brand-600 hover:underline"
                     >
-                      {doc.url}
+                      {doc.canonical_url}
                     </a>
                   </td>
                   <td className="px-6 py-4">
@@ -184,22 +184,19 @@ async function DocumentsContent() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        doc.parsed
+                        doc.parse_status === 'parsed'
                           ? 'bg-success/10 text-success dark:bg-success/20'
-                          : 'bg-surface-subtle text-text-muted'
+                          : doc.parse_status === 'pending'
+                          ? 'bg-warning/10 text-warning dark:bg-warning/20'
+                          : 'bg-error/10 text-error dark:bg-error/20'
                       }`}>
-                        {doc.parsed ? 'Parsed' : 'Not Parsed'}
+                        {doc.parse_status || 'pending'}
                       </span>
-                      {doc.file_path && (
-                        <span className="inline-flex items-center rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
-                          Stored
-                        </span>
-                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-text-secondary">
-                    {doc.last_acquired_at
-                      ? new Date(doc.last_acquired_at).toLocaleDateString('en-US', {
+                    {doc.last_checked
+                      ? new Date(doc.last_checked).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
                           year: 'numeric',
