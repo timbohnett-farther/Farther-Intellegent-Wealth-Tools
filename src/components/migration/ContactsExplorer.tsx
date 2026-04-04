@@ -22,8 +22,8 @@ interface Contact {
   phone?: string;
   company?: string;
   mappingStatus: string;
-  rawData: any;
-  validationErrors: any;
+  rawData: Record<string, unknown>;
+  validationErrors: Record<string, string>[];
 }
 
 interface ContactsExplorerProps {
@@ -68,15 +68,15 @@ export function ContactsExplorer({ sessionId }: ContactsExplorerProps) {
     }
   };
 
-  const getMappingStatusVariant = (status: string) => {
-    const variants: Record<string, any> = {
-      UNMAPPED: "secondary",
-      MAPPED: "default",
-      VALIDATED: "default",
-      IMPORTED: "default",
-      ERROR: "destructive",
+  const getMappingStatusVariant = (status: string): "neutral" | "info" | "success" | "warning" | "critical" => {
+    const variants: Record<string, "neutral" | "info" | "success" | "warning" | "critical"> = {
+      UNMAPPED: "neutral",
+      MAPPED: "info",
+      VALIDATED: "success",
+      IMPORTED: "success",
+      ERROR: "critical",
     };
-    return variants[status] || "secondary";
+    return variants[status] ?? "neutral";
   };
 
   return (

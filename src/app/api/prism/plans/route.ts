@@ -7,6 +7,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const clientId = searchParams.get('clientId');
+    const limit = Math.min(parseInt(searchParams.get('limit') ?? '50'), 100);
+    const offset = parseInt(searchParams.get('offset') ?? '0');
 
     const where: Record<string, unknown> = {};
 
@@ -28,6 +30,8 @@ export async function GET(request: NextRequest) {
         coClient: true,
       },
       orderBy: { updatedAt: 'desc' },
+      take: limit,
+      skip: offset,
     });
 
     return NextResponse.json(plans);
@@ -64,7 +68,27 @@ export async function POST(request: NextRequest) {
 
     const plan = await prisma.plan.create({
       data: {
-        ...body,
+        householdId,
+        firmId,
+        advisorId,
+        primaryClientId,
+        coClientId: body.coClientId,
+        name: body.name ?? 'Financial Plan',
+        status: body.status ?? 'draft',
+        planType: body.planType ?? 'comprehensive',
+        wealthTier,
+        startYear,
+        endYear,
+        baseYear,
+        completionScore: body.completionScore ?? 0,
+        sectionsComplete: body.sectionsComplete,
+        planNotes: body.planNotes,
+        lastReviewedAt: body.lastReviewedAt ? new Date(body.lastReviewedAt) : undefined,
+        nextReviewAt: body.nextReviewAt ? new Date(body.nextReviewAt) : undefined,
+        clientPortalEnabled: body.clientPortalEnabled ?? false,
+        clientPortalToken: body.clientPortalToken,
+        version: body.version ?? 1,
+        parentPlanId: body.parentPlanId,
       },
       include: {
         primaryClient: true,

@@ -566,6 +566,7 @@ model Account {
 
   @@index([planId])
   @@index([clientId])
+  @@index([coOwnerId])
   @@index([accountType])
   @@index([taxBucket])
   @@map("accounts")
@@ -676,6 +677,7 @@ model InsurancePolicy {
   insuredClient         Client   @relation(fields: [insuredClientId], references: [id])
 
   @@index([planId])
+  @@index([insuredClientId])
   @@map("insurance_policies")
 }
 
@@ -697,6 +699,8 @@ model EstateDocument {
   plan            Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
   client          Client   @relation(fields: [clientId], references: [id])
 
+  @@index([planId])
+  @@index([clientId])
   @@map("estate_documents")
 }
 
@@ -720,6 +724,8 @@ model BeneficiaryDesignation {
   account           Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   plan              Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
 
+  @@index([accountId])
+  @@index([planId])
   @@map("beneficiary_designations")
 }
 
