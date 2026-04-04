@@ -87,8 +87,8 @@ export function computePortfolioRiskScore(
 ): PortfolioRiskResult {
   if (holdings.length === 0) {
     return {
-      score: 0,
-      label: riskScoreToLabel(0),
+      score: 1,
+      label: 'CONSERVATIVE',
       securityScores: [],
       concentrationPenalty: 0,
       correlationBonus: 0,
@@ -115,7 +115,7 @@ export function computePortfolioRiskScore(
   const sectorAllocations = new Map<string, number>();
 
   for (const holding of holdings) {
-    const weight = holding.marketValue / totalValue;
+    const weight = totalValue > 0 ? (holding.marketValue as number) / totalValue : 0;
     const enrichment = holding.ticker ? enrichments?.get(holding.ticker) : undefined;
 
     // Default fallback values if enrichment missing
@@ -170,7 +170,7 @@ export function computePortfolioRiskScore(
 
   // Concentration penalty (Herfindahl-Hirschman Index)
   const hhi = holdings.reduce((sum, h) => {
-    const weight = h.marketValue / totalValue;
+    const weight = totalValue > 0 ? (h.marketValue as number) / totalValue : 0;
     return sum + weight * weight;
   }, 0);
 

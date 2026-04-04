@@ -116,7 +116,7 @@ export function runProposalMonteCarlo(params: MonteCarloParams): MonteCarloResul
   const realReturnEstimate = expectedReturn - inflationRate
 
   // Shortfall risk (probability of ending below starting value in real terms)
-  const realStartingValue = portfolioValue / Math.pow(1 + inflationRate, timeHorizonYears)
+  const realStartingValue = portfolioValue * Math.pow(1 + inflationRate, timeHorizonYears)
   const shortfallRisk = terminalValues.filter(v => v < realStartingValue).length / simulationCount
 
   // Best and worst paths
@@ -201,7 +201,8 @@ function calculatePercentiles(
  */
 function randomNormal(mean: number, stdDev: number): number {
   // Box-Muller transform
-  const u1 = Math.random()
+  let u1 = Math.random()
+  if (u1 === 0) u1 = 1e-10; // Prevent log(0)
   const u2 = Math.random()
 
   const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2)

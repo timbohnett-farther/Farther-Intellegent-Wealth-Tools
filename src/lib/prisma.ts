@@ -16,12 +16,14 @@ const adapter = new PrismaLibSql({
   url: process.env.DATABASE_URL || 'file:./dev.db',
 });
 
+type PrismaClientOptions = ConstructorParameters<typeof PrismaClient>[0];
+
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-  } as any);
+  } as unknown as PrismaClientOptions);
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;

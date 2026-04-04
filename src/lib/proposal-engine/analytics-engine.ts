@@ -271,7 +271,8 @@ export function computePortfolioMetrics(holdings: Holding[]): PortfolioMetrics {
   }
 
   const netUnrealizedGainLoss = totalUnrealizedGain - totalUnrealizedLoss;
-  // Rough tax drag estimate: 20% LTCG + 3.8% NIIT on gains
+  // Estimated tax drag: 20% federal LTCG + 3.8% NIIT = 23.8%
+  // Conservative estimate for HNW clients. Adjust per client's actual marginal rate.
   const estimatedTaxDrag = Math.round(totalUnrealizedGain * 0.238);
 
   // Allocation percentages

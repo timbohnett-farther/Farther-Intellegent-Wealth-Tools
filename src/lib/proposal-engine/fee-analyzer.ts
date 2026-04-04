@@ -144,7 +144,7 @@ function computeWeightedExpenseRatio(
   }
 
   const denominator = valueSum > 0 ? valueSum : totalValue;
-  return weightedSum / denominator;
+  return denominator > 0 ? weightedSum / denominator : 0;
 }
 
 /**

@@ -17,14 +17,15 @@ export async function POST(request: NextRequest) {
     // HubSpot sends events as an array
     const events = Array.isArray(body) ? body : [body];
 
+    // Query firm once before loop (fix N+1 query)
+    const firm = await prisma.firm.findFirst({ select: { id: true } });
+
     const processed: string[] = [];
 
     for (const event of events) {
       const { eventType, objectType, objectId, propertyName, propertyValue } = event;
 
       // Record each webhook event in the audit log
-      const firm = await prisma.firm.findFirst({ select: { id: true } });
-
       if (firm) {
         await prisma.auditEntry.create({
           data: {

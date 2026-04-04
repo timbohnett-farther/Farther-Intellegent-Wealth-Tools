@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prism/db';
+import { z } from 'zod';
 
 export async function GET(
   request: NextRequest,
@@ -45,6 +46,15 @@ export async function GET(
   }
 }
 
+const PatchPlanSchema = z.object({
+  name: z.string().optional(),
+  status: z.string().optional(),
+  version: z.number().optional(),
+  notes: z.string().optional(),
+  lastReviewedAt: z.union([z.string(), z.date()]).optional(),
+  nextReviewAt: z.union([z.string(), z.date()]).optional(),
+}).strict();
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ planId: string }> }
@@ -52,6 +62,15 @@ export async function PATCH(
   try {
     const { planId } = await params;
     const body = await request.json();
+
+    // Validate request body
+    const parsed = PatchPlanSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: parsed.error.issues },
+        { status: 400 }
+      );
+    }
 
     const existing = await prisma.plan.findUnique({
       where: { id: planId },
@@ -64,16 +83,17 @@ export async function PATCH(
       );
     }
 
-    if (body.lastReviewedAt) {
-      body.lastReviewedAt = new Date(body.lastReviewedAt);
+    const updateData = { ...parsed.data };
+    if (updateData.lastReviewedAt) {
+      updateData.lastReviewedAt = new Date(updateData.lastReviewedAt);
     }
-    if (body.nextReviewAt) {
-      body.nextReviewAt = new Date(body.nextReviewAt);
+    if (updateData.nextReviewAt) {
+      updateData.nextReviewAt = new Date(updateData.nextReviewAt);
     }
 
     const plan = await prisma.plan.update({
       where: { id: planId },
-      data: body,
+      data: updateData,
     });
 
     return NextResponse.json(plan);

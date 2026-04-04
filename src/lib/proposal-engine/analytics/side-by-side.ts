@@ -206,12 +206,12 @@ function computeAllocationComparison(
   const proposedAlloc = new Map<string, number>();
 
   for (const h of currentHoldings) {
-    const pct = (h.marketValue / currentTotal) * 100;
+    const pct = currentTotal > 0 ? ((h.marketValue as number) / currentTotal) * 100 : 0;
     currentAlloc.set(h.assetClass, (currentAlloc.get(h.assetClass) ?? 0) + pct);
   }
 
   for (const h of proposedHoldings) {
-    const pct = (h.marketValue / proposedTotal) * 100;
+    const pct = proposedTotal > 0 ? ((h.marketValue as number) / proposedTotal) * 100 : 0;
     proposedAlloc.set(h.assetClass, (proposedAlloc.get(h.assetClass) ?? 0) + pct);
   }
 
@@ -280,7 +280,7 @@ function computeDiversificationScore(holdings: Holding[]): number {
 
   // Component 3: Concentration (inverse HHI, max 30 points)
   const hhi = holdings.reduce((sum, h) => {
-    const weight = h.marketValue / totalValue;
+    const weight = totalValue > 0 ? (h.marketValue as number) / totalValue : 0;
     return sum + weight * weight;
   }, 0);
   const concentrationScore = Math.min(30, (1 - hhi) * 50);
