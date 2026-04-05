@@ -203,7 +203,7 @@ export interface OrchestratorState {
   config: EstateAnalysisConfig;
   status: AnalysisStatus;
   current_phase: 'classification' | 'phase1' | 'phase2' | 'synthesis' | 'complete';
-  classified_documents: Array<ClassificationResult & { id: string; fileName: string }>;
+  classified_documents: ClassifiedDocument[];
   active_agents: AgentId[];
   completed_agents: AgentId[];
   all_findings: AgentOutput[];
