@@ -192,7 +192,7 @@ export function shouldRunAgent(
   if (agentId === 'CONFLICT_RESOLUTION') {
     // Only run if COMPLIANCE_RISK detected conflicts
     const conflicts = priorFindings?.conflicts as unknown[] | undefined
-    return conflicts && conflicts.length > 0
+    return !!(conflicts && conflicts.length > 0)
   }
 
   // Phase 3 synthesis agents
