@@ -121,7 +121,7 @@ export async function POST(request: NextRequest, { params }: RouteParams): Promi
   auditService.emit({
     firmId: auth.firmId,
     userId: auth.userId,
-    eventKey: 'doc.generate',
+    eventKey: 'calc.run',
     ip: request.headers.get('x-forwarded-for') ?? '0.0.0.0',
     payload: {
       proposalId: id,

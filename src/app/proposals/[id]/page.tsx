@@ -12,6 +12,9 @@ import {
   BarChart3,
   TrendingUp,
   Loader2,
+  Layers,
+  AlertTriangle,
+  LineChart,
 } from 'lucide-react';
 import type { Proposal } from '@/lib/proposal-engine/types';
 import { formatCurrency, formatCompact, formatPct } from '@/lib/proposal-engine/types';
@@ -19,13 +22,17 @@ import { ProposalStatusBadge } from '@/components/proposal-engine/ProposalStatus
 import { HoldingsReviewTable } from '@/components/proposal-engine/HoldingsReviewTable';
 import { SideBySideComparison } from '@/components/proposal-engine/SideBySideComparison';
 import { RiskScoreGauge } from '@/components/proposal-engine/RiskScoreGauge';
+import { FundXrayPanel } from '@/components/proposal-engine/FundXrayPanel';
+import { StressTestPanel } from '@/components/proposal-engine/StressTestPanel';
+import { MonteCarloFanChart } from '@/components/proposal-engine/MonteCarloFanChart';
+import { DocumentsTab } from '@/components/proposal-engine/DocumentsTab';
 
 export default function ProposalDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'holdings' | 'comparison' | 'narrative'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'holdings' | 'comparison' | 'fund-xray' | 'stress-tests' | 'monte-carlo' | 'documents' | 'narrative'>('overview');
 
   useEffect(() => {
     async function load() {
@@ -68,7 +75,11 @@ export default function ProposalDetailPage() {
     { key: 'overview' as const, label: 'Overview', icon: BarChart3 },
     { key: 'holdings' as const, label: 'Holdings', icon: FileText },
     { key: 'comparison' as const, label: 'Comparison', icon: TrendingUp },
-    { key: 'narrative' as const, label: 'Narrative', icon: Shield },
+    { key: 'fund-xray' as const, label: 'Fund X-Ray', icon: Layers },
+    { key: 'stress-tests' as const, label: 'Stress Tests', icon: AlertTriangle },
+    { key: 'monte-carlo' as const, label: 'Monte Carlo', icon: LineChart },
+    { key: 'documents' as const, label: 'Documents', icon: Shield },
+    { key: 'narrative' as const, label: 'Narrative', icon: FileText },
   ];
 
   return (
@@ -235,6 +246,55 @@ export default function ProposalDetailPage() {
               Complete the portfolio scan and model selection first
             </p>
           </div>
+        )}
+
+        {activeTab === 'fund-xray' && proposal.fundXray && (
+          <FundXrayPanel result={proposal.fundXray} />
+        )}
+
+        {activeTab === 'fund-xray' && !proposal.fundXray && (
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft p-12 text-center">
+            <Layers className="mx-auto h-12 w-12 text-text-faint" />
+            <h3 className="mt-3 text-sm font-semibold text-text">Fund X-Ray not available</h3>
+            <p className="mt-1 text-xs text-text-muted">Run analytics to decompose fund holdings</p>
+          </div>
+        )}
+
+        {activeTab === 'stress-tests' && (proposal.enhancedStressTests || proposal.stressTests.length > 0) && (
+          <StressTestPanel
+            results={proposal.stressTests}
+            enhancedResult={proposal.enhancedStressTests}
+          />
+        )}
+
+        {activeTab === 'stress-tests' && !proposal.enhancedStressTests && proposal.stressTests.length === 0 && (
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft p-12 text-center">
+            <AlertTriangle className="mx-auto h-12 w-12 text-text-faint" />
+            <h3 className="mt-3 text-sm font-semibold text-text">No stress test results</h3>
+            <p className="mt-1 text-xs text-text-muted">Run analytics to generate stress test scenarios</p>
+          </div>
+        )}
+
+        {activeTab === 'monte-carlo' && proposal.monteCarlo && (
+          <MonteCarloFanChart result={proposal.monteCarlo} />
+        )}
+
+        {activeTab === 'monte-carlo' && !proposal.monteCarlo && (
+          <div className="rounded-2xl border border-border-subtle bg-surface-soft p-12 text-center">
+            <LineChart className="mx-auto h-12 w-12 text-text-faint" />
+            <h3 className="mt-3 text-sm font-semibold text-text">Monte Carlo not available</h3>
+            <p className="mt-1 text-xs text-text-muted">Run analytics with Monte Carlo enabled to generate projections</p>
+          </div>
+        )}
+
+        {activeTab === 'documents' && (
+          <DocumentsTab
+            proposalId={proposal.proposalId}
+            ips={proposal.ips}
+            regBI={proposal.regBI}
+            hasRiskProfile={!!proposal.riskProfile}
+            hasProposedModel={!!proposal.proposedModel}
+          />
         )}
 
         {activeTab === 'narrative' && (
