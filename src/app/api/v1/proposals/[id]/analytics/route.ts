@@ -17,6 +17,9 @@ import { computeComparisonAnalytics } from '@/lib/proposal-engine/analytics-engi
 import { analyzeTaxTransition } from '@/lib/proposal-engine/tax-transition';
 import { parseAuthContext, hasPermission } from '@/lib/tax-planning/rbac';
 import { auditService } from '@/lib/tax-planning/audit';
+import { performFundXray } from '@/lib/proposal-engine/analytics/fund-xray';
+import { runEnhancedStressTests } from '@/lib/proposal-engine/analytics/stress-testing';
+import { runProposalMonteCarlo } from '@/lib/proposal-engine/analytics/monte-carlo-bridge';
 
 // ==================== Helpers ====================
 
@@ -102,6 +105,9 @@ export async function GET(
     feeAnalysis: proposal.feeAnalysis,
     taxTransition: proposal.taxTransition,
     stressTests: proposal.stressTests,
+    fundXray: proposal.fundXray ?? null,
+    enhancedStressTests: proposal.enhancedStressTests ?? null,
+    monteCarlo: proposal.monteCarlo ?? null,
     computedAt: proposal.updatedAt,
   });
 }
@@ -161,8 +167,45 @@ export async function POST(
   }
   const proposedHoldings = modelToHoldings(proposal.proposedModel.allocation!, totalValue);
 
+  // ---------- Fund X-ray ----------
+  let fundXrayResult = null;
+  if (body.includeFundXray !== false) {
+    try {
+      fundXrayResult = await performFundXray(currentHoldings);
+    } catch (err) {
+      console.warn('[analytics] Fund X-ray failed, continuing without:', err);
+    }
+  }
+
   // Use the comparison analytics engine which produces full PortfolioAnalytics
-  const analyticsResult = computeComparisonAnalytics(currentHoldings, proposedHoldings);
+  const analyticsResult = computeComparisonAnalytics(currentHoldings, proposedHoldings, fundXrayResult);
+
+  // ---------- Enhanced Stress Tests ----------
+  let enhancedStressResult = null;
+  if (body.includeStressTests !== false) {
+    try {
+      enhancedStressResult = runEnhancedStressTests(currentHoldings);
+    } catch (err) {
+      console.warn('[analytics] Enhanced stress tests failed:', err);
+    }
+  }
+
+  // ---------- Monte Carlo ----------
+  let monteCarloResult = null;
+  if (body.includeMonteCarlo && proposal.riskProfile && proposal.proposedModel) {
+    try {
+      const expectedReturn = proposal.proposedModel.targetReturn ?? 0.07;
+      const volatility = proposal.proposedModel.targetVolatility ?? 0.15;
+      monteCarloResult = runProposalMonteCarlo({
+        portfolioValue: totalValue as any,
+        expectedReturn,
+        volatility,
+        timeHorizonYears: proposal.riskProfile.capacityFactors.timeHorizon,
+      });
+    } catch (err) {
+      console.warn('[analytics] Monte Carlo failed:', err);
+    }
+  }
 
   // ---------- Run optional analyses ----------
   let taxTransitionResult = null;
@@ -175,6 +218,17 @@ export async function POST(
 
   if (taxTransitionResult) {
     proposal.taxTransition = taxTransitionResult;
+  }
+
+  if (fundXrayResult) {
+    proposal.fundXray = fundXrayResult;
+  }
+  if (enhancedStressResult) {
+    proposal.enhancedStressTests = enhancedStressResult;
+    proposal.stressTests = enhancedStressResult.results;
+  }
+  if (monteCarloResult) {
+    proposal.monteCarlo = monteCarloResult;
   }
 
   proposal.updatedAt = new Date().toISOString();
@@ -202,6 +256,9 @@ export async function POST(
     proposalId: id,
     analytics: analyticsResult,
     taxTransition: taxTransitionResult,
+    fundXray: fundXrayResult,
+    enhancedStressTests: enhancedStressResult,
+    monteCarlo: monteCarloResult,
     computedAt: proposal.updatedAt,
   }, { status: 201 });
 }

@@ -19,6 +19,7 @@ import type {
 } from './types';
 import type { MoneyCents } from '../tax-planning/types';
 import { cents } from '../tax-planning/types';
+import type { FundXrayResult } from './analytics/fund-xray';
 
 // =====================================================================
 // Stress Test Return Assumptions (per scenario, per asset class group)
@@ -476,6 +477,7 @@ export function runStressTest(
 export function computeComparisonAnalytics(
   currentHoldings: Holding[],
   proposedHoldings: Holding[],
+  fundXrayResult?: FundXrayResult | null,
 ): { current: PortfolioAnalytics; proposed: PortfolioAnalytics } {
   const allScenarios: StressScenario[] = [
     '2008_FINANCIAL_CRISIS',
@@ -528,7 +530,7 @@ export function computeComparisonAnalytics(
         { factor: 'Quality', exposure: 0.15, label: 'Slight quality tilt' },
         { factor: 'Volatility', exposure: -0.10, label: 'Slight low-vol tilt' },
       ],
-      sectorAllocation: {
+      sectorAllocation: fundXrayResult?.sectorExposure ?? {
         'Technology': 28,
         'Healthcare': 13,
         'Financials': 12,
@@ -541,7 +543,7 @@ export function computeComparisonAnalytics(
         'Materials': 3,
         'Real Estate': 3,
       },
-      geographyAllocation: {
+      geographyAllocation: fundXrayResult?.geographicExposure ?? {
         'United States': metrics.equityPct > 0 ? 65 : 0,
         'Europe': 15,
         'Asia Pacific': 12,
@@ -557,8 +559,14 @@ export function computeComparisonAnalytics(
         'BBB': 15,
         'BB and below': 5,
       } : null,
-      securityOverlap: [],
-      top10Concentration: 35,
+      securityOverlap: fundXrayResult?.overlapAnalysis?.map(o => ({
+        ticker: o.ticker,
+        name: o.name,
+        effectivePct: o.effectiveWeight,
+        appearsIn: o.funds.map(f => f.fundTicker),
+        concentration: (o.effectiveWeight >= 10 ? 'HIGH' : o.effectiveWeight >= 5 ? 'MEDIUM' : 'LOW') as 'HIGH' | 'MEDIUM' | 'LOW',
+      })) ?? [],
+      top10Concentration: fundXrayResult?.top10Concentration ?? 35,
     };
   };
 

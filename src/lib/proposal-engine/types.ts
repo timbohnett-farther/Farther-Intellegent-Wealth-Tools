@@ -29,6 +29,9 @@
  */
 export type { MoneyCents, RateBps, ErrorEnvelope } from '../tax-planning/types';
 import type { MoneyCents, RateBps } from '../tax-planning/types';
+import type { FundXrayResult } from './analytics/fund-xray';
+import type { EnhancedStressResult } from './analytics/stress-testing';
+import type { MonteCarloResult } from './analytics/monte-carlo-bridge';
 
 /**
  * Re-export helper constructors for branded primitives.
@@ -1080,6 +1083,16 @@ export interface Proposal {
   feeAnalysis: FeeAnalysis | null;
   /** Stress test results for the proposed portfolio. */
   stressTests: StressTestResult[];
+  /** Fund X-ray decomposition result */
+  fundXray?: FundXrayResult | null;
+  /** Enhanced stress test result with VaR/CVaR */
+  enhancedStressTests?: EnhancedStressResult | null;
+  /** Monte Carlo simulation result */
+  monteCarlo?: MonteCarloResult | null;
+  /** Investment Policy Statement document */
+  ips?: InvestmentPolicyStatement | null;
+  /** Regulation Best Interest disclosure document */
+  regBI?: RegBIDocument | null;
 
   // -- Step 6: Output --
 
@@ -1358,6 +1371,10 @@ export interface ComputeAnalyticsRequest {
   includeTaxTransition?: boolean;
   /** Whether to include fee comparison analysis (default: false). */
   includeFeeAnalysis?: boolean;
+  /** Whether to include fund X-ray decomposition (default: true). */
+  includeFundXray?: boolean;
+  /** Whether to include Monte Carlo simulation (default: false). */
+  includeMonteCarlo?: boolean;
   /** Custom stress scenario parameters for a user-defined shock. */
   customStressScenario?: {
     /** Equity market shock as a decimal (e.g., -0.30 for -30%). */

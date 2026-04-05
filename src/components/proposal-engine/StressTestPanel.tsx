@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { AlertTriangle, Clock, TrendingDown } from 'lucide-react';
 import type { StressTestResult } from '@/lib/proposal-engine/types';
+import type { EnhancedStressResult } from '@/lib/proposal-engine/analytics/stress-testing';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -12,6 +13,8 @@ import type { StressTestResult } from '@/lib/proposal-engine/types';
 export interface StressTestPanelProps {
   /** Array of stress test results to display. */
   results: StressTestResult[];
+  /** Optional enhanced stress test result with VaR/CVaR metrics. */
+  enhancedResult?: EnhancedStressResult | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -40,16 +43,26 @@ function getReturnBgColor(decimal: number): string {
 // Component
 // ---------------------------------------------------------------------------
 
-export function StressTestPanel({ results }: StressTestPanelProps) {
+export function StressTestPanel({ results, enhancedResult }: StressTestPanelProps) {
+  // Use enhanced results if available, otherwise fall back to basic results
+  const displayResults = useMemo(() => {
+    return enhancedResult?.results ?? results;
+  }, [enhancedResult, results]);
+
   // Find the widest drawdown to scale the bars
   const maxAbsReturn = useMemo(() => {
     return Math.max(
-      ...results.map((r) => Math.abs(r.portfolioReturn)),
+      ...displayResults.map((r) => Math.abs(r.portfolioReturn)),
       0.01,
     );
-  }, [results]);
+  }, [displayResults]);
 
-  if (results.length === 0) {
+  // Identify worst-case scenario
+  const worstCaseScenario = useMemo(() => {
+    return enhancedResult?.worstCase?.scenario ?? null;
+  }, [enhancedResult]);
+
+  if (displayResults.length === 0) {
     return (
       <div className="rounded-2xl border border-border-subtle bg-surface-soft backdrop-blur-xl p-6 text-center shadow-sm">
         <TrendingDown className="mx-auto h-8 w-8 text-text-faint mb-2" />
@@ -61,8 +74,30 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
   return (
     <div className="space-y-4">
       <h3 className="text-sm font-semibold text-text">
-        Stress Test Scenarios ({results.length})
+        Stress Test Scenarios ({displayResults.length})
       </h3>
+
+      {/* VaR/CVaR Summary Cards (only when enhanced result is provided) */}
+      {enhancedResult && (
+        <div className="grid grid-cols-4 gap-3 mb-4">
+          <div className="rounded-xl border border-border-subtle bg-surface-soft p-3 text-center">
+            <div className="text-lg font-bold tabular-nums text-critical-700">{fmtPct(enhancedResult.portfolioVaR95)}</div>
+            <div className="text-[10px] text-text-muted mt-0.5">VaR (95%)</div>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-surface-soft p-3 text-center">
+            <div className="text-lg font-bold tabular-nums text-critical-700">{fmtPct(enhancedResult.portfolioCVaR95)}</div>
+            <div className="text-[10px] text-text-muted mt-0.5">CVaR (95%)</div>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-surface-soft p-3 text-center">
+            <div className="text-lg font-bold tabular-nums text-text">{fmtPct(enhancedResult.averageLoss)}</div>
+            <div className="text-[10px] text-text-muted mt-0.5">Avg Loss</div>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-surface-soft p-3 text-center">
+            <div className="text-lg font-bold tabular-nums text-critical-700">{fmtPct(enhancedResult.maxDrawdown)}</div>
+            <div className="text-[10px] text-text-muted mt-0.5">Max Drawdown</div>
+          </div>
+        </div>
+      )}
 
       {/* Table view */}
       <div className="overflow-x-auto rounded-lg border border-border-subtle shadow-sm">
@@ -78,6 +113,11 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
               <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Benchmark
               </th>
+              {enhancedResult && (
+                <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  Dollar Impact
+                </th>
+              )}
               <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-text-muted">
                 Max Drawdown
               </th>
@@ -90,11 +130,19 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-limestone-100 bg-text">
-            {results.map((result) => {
+            {displayResults.map((result) => {
               const barWidth = (Math.abs(result.portfolioReturn) / maxAbsReturn) * 100;
+              const isWorstCase = worstCaseScenario === result.scenario;
+              const enhancedRow = enhancedResult?.results.find((r) => r.scenario === result.scenario);
 
               return (
-                <tr key={result.scenario} className="hover:bg-surface-subtle transition-colors">
+                <tr
+                  key={result.scenario}
+                  className={cn(
+                    'hover:bg-surface-subtle transition-colors',
+                    isWorstCase && 'bg-critical-500/5'
+                  )}
+                >
                   {/* Scenario */}
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -133,6 +181,20 @@ export function StressTestPanel({ results }: StressTestPanelProps) {
                   >
                     {fmtPct(result.benchmarkReturn)}
                   </td>
+
+                  {/* Dollar Impact (only when enhanced data available) */}
+                  {enhancedResult && (
+                    <td
+                      className={cn(
+                        'px-4 py-3 text-right tabular-nums font-medium',
+                        enhancedRow && enhancedRow.dollarImpact >= 0 ? 'text-success-700' : 'text-critical-700'
+                      )}
+                    >
+                      {enhancedRow
+                        ? `${enhancedRow.dollarImpact >= 0 ? '+' : ''}$${(Math.abs(enhancedRow.dollarImpact) / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+                        : '—'}
+                    </td>
+                  )}
 
                   {/* Max Drawdown */}
                   <td className="px-4 py-3 text-right tabular-nums font-medium text-critical-700">
