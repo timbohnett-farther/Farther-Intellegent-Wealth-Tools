@@ -3329,3 +3329,180 @@ model ComputationResult {
   @@index([firmId])
   @@map("computation_results")
 }
+
+// ==================== TRUST & ESTATE INTELLIGENCE ENGINE ====================
+
+model EstateAnalysis {
+  id                String    @id @default(cuid())
+  clientId          String?   @map("client_id")
+  householdId       String?   @map("household_id")
+  advisorId         String    @map("advisor_id")
+  firmId            String    @map("firm_id")
+  clientName        String    @map("client_name")
+  status            String    @default("PENDING") // PENDING, CLASSIFYING, ANALYZING, SYNTHESIZING, REVIEWING, COMPLETE, ERROR
+  version           Int       @default(1)
+  parentAnalysisId  String?   @map("parent_analysis_id")
+
+  totalDocuments    Int       @default(0) @map("total_documents")
+  totalFindings     Int       @default(0) @map("total_findings")
+  highSeverity      Int       @default(0) @map("high_severity")
+  estimatedTax      Int?      @map("estimated_tax") // MoneyCents
+
+  metadata          String?   // JSON
+
+  completedAt       DateTime? @map("completed_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  estateDocuments   EstateDocument2[]
+  agentExecutions   AgentExecution[]
+  estateFindings    EstateFinding[]
+  estateReports     EstateReport[]
+
+  @@index([advisorId])
+  @@index([firmId])
+  @@index([clientId])
+  @@index([householdId])
+  @@index([status])
+  @@map("estate_analyses")
+}
+
+model EstateDocument2 {
+  id                    String    @id @default(cuid())
+  analysisId            String    @map("analysis_id")
+  analysis              EstateAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  originalFilename      String    @map("original_filename")
+  storagePath           String    @map("storage_path")
+  fileSizeBytes         Int       @map("file_size_bytes")
+  mimeType              String    @map("mime_type")
+
+  documentType          String?   @map("document_type") // REVOCABLE_LIVING_TRUST, IRREVOCABLE_TRUST, etc.
+  documentSubtype       String?   @map("document_subtype")
+  classificationConfidence String? @map("classification_confidence") // HIGH, MEDIUM, LOW
+
+  extractedText         String?   @map("extracted_text")
+  extractionConfidence  Float?    @map("extraction_confidence")
+
+  metadata              String?   // JSON: grantors, trustees, beneficiaries, dates
+  crossReferences       String?   @map("cross_references") // JSON array
+  redFlags              String?   @map("red_flags") // JSON array
+
+  createdAt             DateTime  @default(now()) @map("created_at")
+
+  @@index([analysisId])
+  @@index([documentType])
+  @@map("estate_documents_v2")
+}
+
+model AgentExecution {
+  id              String    @id @default(cuid())
+  analysisId      String    @map("analysis_id")
+  analysis        EstateAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  agentId         String    @map("agent_id") // TRUST_STRUCTURE, TAX_EXPOSURE, etc.
+  phase           Int       // 1 or 2
+  status          String    @default("QUEUED") // QUEUED, RUNNING, COMPLETE, ERROR, SKIPPED
+
+  modelUsed       String?   @map("model_used")
+  inputTokens     Int?      @map("input_tokens")
+  outputTokens    Int?      @map("output_tokens")
+  costUsd         Float?    @map("cost_usd")
+
+  errorMessage    String?   @map("error_message")
+  retryCount      Int       @default(0) @map("retry_count")
+
+  startedAt       DateTime? @map("started_at")
+  completedAt     DateTime? @map("completed_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  findings        EstateFinding[]
+
+  @@index([analysisId])
+  @@index([agentId])
+  @@index([status])
+  @@map("agent_executions")
+}
+
+model EstateFinding {
+  id                String    @id @default(cuid())
+  analysisId        String    @map("analysis_id")
+  analysis          EstateAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  agentExecutionId  String    @map("agent_execution_id")
+  agentExecution    AgentExecution @relation(fields: [agentExecutionId], references: [id], onDelete: Cascade)
+
+  findingCode       String    @map("finding_code") // TSA-001, TEX-003, etc.
+  category          String    // STRUCTURE, RISK, TAX, BENEFICIARY, ENTITY, DIGITAL, STATE, CHARITABLE, INSURANCE
+  severity          String    // HIGH, MEDIUM, LOW, INFO
+  title             String
+  detail            String
+
+  provisionsCited   String?   @map("provisions_cited") // JSON array
+  legalAuthority    String?   @map("legal_authority") // JSON array
+  crossReferences   String?   @map("cross_references") // JSON array
+
+  actionRequired    Boolean   @default(false) @map("action_required")
+  recommendedAction String?   @map("recommended_action")
+  estimatedTaxImpact String?  @map("estimated_tax_impact") // JSON: {amount, direction, confidence}
+
+  conflictResolution String?  @map("conflict_resolution") // JSON
+
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  @@index([analysisId])
+  @@index([agentExecutionId])
+  @@index([severity])
+  @@index([category])
+  @@map("estate_findings")
+}
+
+model EstateReport {
+  id              String    @id @default(cuid())
+  analysisId      String    @map("analysis_id")
+  analysis        EstateAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  format          String    // WEB, DOCX, PDF, SLIDES
+  storagePath     String?   @map("storage_path")
+  version         Int       @default(1)
+
+  uplFilterPassed Boolean   @default(false) @map("upl_filter_passed")
+  qualityGatePassed Boolean @default(false) @map("quality_gate_passed")
+
+  reportData      String?   @map("report_data") // JSON: full report content for WEB format
+
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([analysisId])
+  @@map("estate_reports")
+}
+
+model EstateKnowledgeBase {
+  id              String    @id @default(cuid())
+  category        String    // STATE_TAX, IRC, CASE_LAW, REGULATION, EXEMPTION
+  key             String
+  value           String    // JSON
+  effectiveDate   String    @map("effective_date") // ISO date string
+  expirationDate  String?   @map("expiration_date")
+  source          String?
+  verifiedAt      DateTime? @map("verified_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@unique([category, key, effectiveDate])
+  @@index([category])
+  @@map("estate_knowledge_base")
+}
+
+model EstateAuditLog {
+  id              String    @id @default(cuid())
+  analysisId      String?   @map("analysis_id")
+  action          String
+  actorId         String    @map("actor_id")
+  actorType       String    @map("actor_type") // ADVISOR, SYSTEM, AGENT
+  details         String?   // JSON
+  ipAddress       String?   @map("ip_address")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([analysisId])
+  @@index([actorId])
+  @@map("estate_audit_log")
+}
